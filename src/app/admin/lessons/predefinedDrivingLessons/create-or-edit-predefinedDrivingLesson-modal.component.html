@@ -1,0 +1,74 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #predefinedDrivingLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="predefinedDrivingLesson.id">{{l("EditPredefinedDrivingLesson")}}</span>
+                        <span *ngIf="!predefinedDrivingLesson.id">{{l("CreateNewPredefinedDrivingLesson")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_Name">{{l("Name")}} *</label>
+									<input type="text" id="PredefinedDrivingLesson_Name" class="form-control" [(ngModel)]="predefinedDrivingLesson.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_Number">{{l("Number")}}</label>
+									<input type="number" id="PredefinedDrivingLesson_Number" class="form-control" [(ngModel)]="predefinedDrivingLesson.number" name="Number"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_LessonIdString">{{l("LessonIdString")}} *</label>
+									<input type="text" id="PredefinedDrivingLesson_LessonIdString" class="form-control" [(ngModel)]="predefinedDrivingLesson.lessonIdString" name="LessonIdString"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_Length">{{l("Length")}}</label>
+									<input type="number" id="PredefinedDrivingLesson_Length" class="form-control" [(ngModel)]="predefinedDrivingLesson.length" name="Length"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_RequiredForClasses">{{l("RequiredForClasses")}}</label>
+									<input type="text" id="PredefinedDrivingLesson_RequiredForClasses" class="form-control" [(ngModel)]="predefinedDrivingLesson.requiredForClasses" name="RequiredForClasses"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_NotRequiredIfClasses">{{l("NotRequiredIfClasses")}}</label>
+									<input type="text" id="PredefinedDrivingLesson_NotRequiredIfClasses" class="form-control" [(ngModel)]="predefinedDrivingLesson.notRequiredIfClasses" name="NotRequiredIfClasses"    />
+								</div>
+
+								<div class="form-group">
+									<label for="PredefinedDrivingLesson_SimulatorModuleIdentifier">{{l("SimulatorModuleIdentifier")}}</label>
+									<input type="text" id="PredefinedDrivingLesson_SimulatorModuleIdentifier" class="form-control" [(ngModel)]="predefinedDrivingLesson.simulatorModuleIdentifier" name="SimulatorModuleIdentifier"    />
+								</div>
+
+								<div class="m-checkbox-list">
+									<label for="PredefinedDrivingLesson_CanBeDoneOnSimulator" class="m-checkbox">
+										<input id="PredefinedDrivingLesson_CanBeDoneOnSimulator" type="checkbox" name="CanBeDoneOnSimulator"
+											[(ngModel)]="predefinedDrivingLesson.canBeDoneOnSimulator">
+										{{l("CanBeDoneOnSimulator")}}
+										<span></span>
+									</label>
+								</div>
+
+								
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!predefinedDrivingLessonForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

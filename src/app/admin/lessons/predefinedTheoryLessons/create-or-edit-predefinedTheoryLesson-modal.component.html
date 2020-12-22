@@ -1,0 +1,58 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #predefinedTheoryLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="predefinedTheoryLesson.id">{{l("EditPredefinedTheoryLesson")}}</span>
+                        <span *ngIf="!predefinedTheoryLesson.id">{{l("CreateNewPredefinedTheoryLesson")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="PredefinedTheoryLesson_Name">{{l("Name")}} *</label>
+									<input type="text" id="PredefinedTheoryLesson_Name" class="form-control" [(ngModel)]="predefinedTheoryLesson.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedTheoryLesson_Number">{{l("Number")}}</label>
+									<input type="text" id="PredefinedTheoryLesson_Number" class="form-control" [(ngModel)]="predefinedTheoryLesson.number" name="Number"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedTheoryLesson_LessonIdString">{{l("LessonIdString")}} *</label>
+									<input type="text" id="PredefinedTheoryLesson_LessonIdString" class="form-control" [(ngModel)]="predefinedTheoryLesson.lessonIdString" name="LessonIdString"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedTheoryLesson_Length">{{l("Length")}}</label>
+									<input type="number" id="PredefinedTheoryLesson_Length" class="form-control" [(ngModel)]="predefinedTheoryLesson.length" name="Length"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedTheoryLesson_RequiredForClasses">{{l("RequiredForClasses")}}</label>
+									<input type="text" id="PredefinedTheoryLesson_RequiredForClasses" class="form-control" [(ngModel)]="predefinedTheoryLesson.requiredForClasses" name="RequiredForClasses"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="PredefinedTheoryLesson_NotRequiredIfClasses">{{l("NotRequiredIfClasses")}}</label>
+									<input type="text" id="PredefinedTheoryLesson_NotRequiredIfClasses" class="form-control" [(ngModel)]="predefinedTheoryLesson.notRequiredIfClasses" name="NotRequiredIfClasses"    />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!predefinedTheoryLessonForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

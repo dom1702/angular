@@ -1,0 +1,141 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #simulatorLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="simulatorLesson.id">{{l("EditSimulatorLesson")}}</span>
+                        <span *ngIf="!simulatorLesson.id">{{l("CreateNewSimulatorLesson")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group m-form__group">
+                        <label for="SimulatorName">{{l("Simulator")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SimulatorName" name="simulatorName"
+                                [(ngModel)]="simulatorName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSimulatorModal()"
+                                    type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSimulatorIdNull()"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="simulatorLesson.simulatorId"
+                        [(ngModel)]="simulatorLesson.simulatorId" type="text" required hidden>
+
+                    <div *ngIf="simulatorLesson.simulatorId">
+
+                        <div class="form-group"
+                            *ngIf="simulatorModules != null && simulatorModules.availableModulesOnSim != null">
+                            <label for="SimulatorLesson_Modules">{{l("AvailableModules")}}</label>
+                            <div *ngFor="let m of simulatorModules.availableModulesOnSim">
+                                <h6>{{m.identifier}}</h6>
+                                <div *ngFor="let eu of m.exerciseUnits">
+                                    <label class="m-radio">
+                                        <input type="radio" name="eu_option" [value]="eu"
+                                            [(ngModel)]="selectedExerciseUnit" required>
+                                        {{eu.identifier}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="m-checkbox-list">
+                                <label for="SetTopicAutomatically" class="m-checkbox">
+                                    <input id="SetTopicAutomatically" type="checkbox" name="SetTopicAutomatically"
+                                        [(ngModel)]="setTopicNameAutomatically">
+                                    {{l("SetTopicAutomatically")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="!setTopicNameAutomatically" class="form-group">
+                            <label for="SimulatorLesson_Topic">{{l("Topic")}}</label>
+                            <input type="text" id="SimulatorLesson_Topic" class="form-control"
+                                [(ngModel)]="simulatorLesson.topic" name="Topic" />
+                        </div>
+
+                        <div class="form-group m-form__group">
+                            <label for="studentCompleteName">{{l("Student")}} *</label>
+                            <div class="input-group">
+                                <input class="form-control" id="StudentCompleteName" name="studentCompleteName"
+                                    [(ngModel)]="studentCompleteName" type="text" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue" (click)="openSelectPersonModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button"
+                                        (click)="setStudentIdNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="simulatorLesson.studentId"
+                            [(ngModel)]="simulatorLesson.studentId" type="text" required hidden>
+
+
+
+
+                        <div class="form-group">
+                            <label for="SimulatorLesson_StartTime">{{l("StartDate")}}</label>
+                            <input required class="form-control m-input" type="datetime" bsDatepicker
+                                [(ngModel)]="startTime" id="SimulatorLesson_StartTime" name="SimulatorLesson_StartTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="SimulatorLesson_StartTime">{{l("StartTime")}}</label>
+                            <timepicker [(ngModel)]="startTime" [showMeridian]="ismeridian" name="StartTime">
+                            </timepicker>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="SimulatorLesson_Length">{{l("Length")}}</label>
+                            <input type="number" id="SimulatorLesson_Length" min="1" max="10" class="form-control"
+                                [(ngModel)]="simulatorLesson.length" name="Length" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="SimulatorLesson_Description">{{l("Description")}}</label>
+                            <input type="text" id="SimulatorLesson_Description" class="form-control"
+                                [(ngModel)]="simulatorLesson.description" name="Description" />
+                        </div>
+
+                        <br />
+                        <div class="m-checkbox-list">
+                            <label for="SimulatorLesson_Completed" class="m-checkbox">
+                                <input id="SimulatorLesson_Completed" type="checkbox" name="Completed"
+                                    [(ngModel)]="manuallyMarkCompleted">
+                                {{l("ManuallyMarkCompleted")}}
+                                <span></span>
+                            </label>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!simulatorLessonForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <simulatorLessonPersonLookupTableModal #simulatorLessonPersonLookupTableModal (modalSave)="getNewStudentId()">
+    </simulatorLessonPersonLookupTableModal>
+    <simulatorLessonSimulatorLookupTableModal #simulatorLessonSimulatorLookupTableModal
+        (modalSave)="getNewSimulatorId()"></simulatorLessonSimulatorLookupTableModal>
+
+</div>

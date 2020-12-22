@@ -1,0 +1,285 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="row align-items-center">
+            <div class="mr-auto col-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{ header }}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{"CreateStudentInvoiceHeaderInfo" | localize}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <div *ngIf="!isEdit" class="form-group m-form__group">
+                    <label for="StudentFirstName">{{l("Student")}}</label>
+                    <div class="input-group">
+                        <input class="form-control" id="studentFullName" name="studentFullName"
+                            [(ngModel)]="studentFullName" type="text" disabled>
+                        <div *ngIf="!studentSetBefore" class="input-group-append">
+                            <button class="btn btn-primary blue" (click)="openSelectStudentModal()" type="button"><i
+                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                        </div>
+                        <div *ngIf="!studentSetBefore" class="input-group-prepend">
+                            <button class="btn btn-danger btn-icon" type="button" (click)="setStudentIdNull()"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <input class="form-control" name="studentInvoice.studentId" [(ngModel)]="studentInvoice.studentId"
+                    type="text" hidden>
+
+             
+
+                <form *ngIf="active && studentSet" #studentInvoiceForm="ngForm" novalidate (ngSubmit)="save()"
+                    autocomplete="off" [formGroup]="form">
+
+                    <label for="StudentInvoice_Course">{{l("Course")}} *</label>
+                    <div class="form-group" *ngFor="let course of courses">
+                        <label class="m-radio">
+                            <input type="radio" [value]="course" formControlName="selectedCourse"
+                                (change)='updateCourse()'>
+                            {{course.courseName}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_Date">{{l("InvoiceDate")}} *</label>
+                        <input required class="form-control m-input" type="timepicker" bsDatepicker
+                            formControlName="date">
+                    </div>
+
+                    <div class="form-group">
+                        <label >{{l("Installments")}}</label>
+                        <div class="m-radio-inline">
+                            <label class="m-radio">
+                                <input type="radio" formControlName="installmentActive" [value]='false'>
+                                {{l('No')}}
+                                <span></span>
+                            </label>
+                            <label class="m-radio">
+                                <input type="radio" formControlName="installmentActive" [value]='true'>
+                                {{l('Yes')}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div *ngIf="hasInstallments() == false">
+                    <div class="form-group">
+                        <label for="StudentInvoice_DueDate">{{l("InvoiceDueDate")}} *</label>
+                        <input required class="form-control m-input" type="timepicker" bsDatepicker
+                            formControlName="date_due">
+                    </div>
+                </div>
+                <div class="form-group">
+                <div class="row" *ngIf="hasInstallments() == true">
+                    <div class="col-sm">
+                        <label>{{l('NumberOfInstallments')}}: </label>
+                    <select class="form-control" formControlName="installmentCount">
+                        <option [ngValue]="1">
+                            1
+                        </option>
+                        <option [ngValue]="2">
+                            2
+                        </option>
+                        <option [ngValue]="3">
+                            3
+                        </option>
+                        <option [ngValue]="4">
+                            4
+                        </option>
+                        <option [ngValue]="5">
+                            5
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <label>{{l('InstallmentInterval')}}: </label>
+                    <select class="form-control" formControlName="installmentInterval">
+                        <option [ngValue]="10">
+                            10
+                        </option>
+                        <option [ngValue]="20">
+                            20
+                        </option>
+                        <option [ngValue]="30">
+                            30
+                        </option>
+                        <option [ngValue]="40">
+                            40
+                        </option>
+                        <option [ngValue]="50">
+                            50
+                        </option>
+                    </select>
+                </div>
+                </div>
+            </div>
+                    <div class="form-group">
+                        <label for="StudentInvoice_Interest">{{l("Interest")}}</label>
+                        <input type="number" step="0.5" class="form-control" formControlName="interest" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_RecipientFirstName">{{l("RecipientFirstName")}} *</label>
+                        <input type="text" class="form-control" formControlName="recipientFirstName" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_RecipientLastName">{{l("RecipientLastName")}} *</label>
+                        <input type="text" class="form-control" formControlName="recipientLastName" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_RecipientStreet">{{l("RecipientStreet")}} *</label>
+                        <input type="text" class="form-control" formControlName="recipientStreet" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_RecipientZipCode">{{l("RecipientZipCode")}} *</label>
+                        <input type="text" class="form-control" formControlName="recipientZipCode" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_RecipientCity">{{l("RecipientCity")}} *</label>
+                        <input type="text" class="form-control" formControlName="recipientCity" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_TextStart">{{l("InvoiceTextStart")}}</label>
+                        <input type="text" class="form-control" formControlName="text1" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_TextEnd">{{l("InvoiceTextEnd")}}</label>
+                        <input type="text" class="form-control" formControlName="text2" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StudentInvoice_Reference">{{l("InvoiceReference")}}</label>
+                        <input type="text" class="form-control" formControlName="reference" />
+                    </div>
+
+                    <label for="Items">{{l("Items")}}</label>
+                    <form [formGroup]="itemForm">
+                        <table class="table">
+                            <thead>
+                                <th>{{l("Product")}}</th>
+                                <th>{{l("Qty")}}</th>
+                                <th>{{l("PriceBeforeVat")}}</th>
+                                <th width='100px'>{{l("ItemVat")}}</th>
+                                <!-- <th width='100px'>{{l("Discount")}}</th> -->
+                                <th>{{l("PriceAfterVat")}}</th>
+                                <th>{{l("Sum")}}</th>
+                                <th>{{l("Action")}}</th>
+                            </thead>
+                            <tbody formArrayName="items" *ngFor="let group of getFormData.controls; let i=index">
+                                <tr [formGroupName]="i">
+                                    <td class="form-group">
+                                        <input type="text" class="e-input" formControlName="product"
+                                            placeholder="product">
+                                        <span class="text-danger"
+                                            *ngIf="group.get('product').touched && group.get('product').invalid">name is
+                                            required</span>
+                                    </td>
+                                    <td class="form-group">
+                                        <!-- <input type="text" class="form-control" formControlName="qty" placeholder="qty"> -->
+                                        <ejs-numerictextbox [showSpinButton]='false' locale='de' decimals='2' format='n'
+                                            formControlName="qty" placeholder="qty"></ejs-numerictextbox>
+                                        <!-- <span class="text-danger" *ngIf="group.get('qty').touched && group.get('qty')?.hasError('required')">email required</span>
+                                <span class="text-danger" *ngIf="group.get('qty').touched && !group.get('qty').hasError('required') && group.get('qty').hasError('validEmail')">Please enter correct email domain </span> -->
+                                    </td>
+                                    <td class="form-group">
+                                        <!-- <input type="text" class="form-control" formControlName="priceBeforeVat" placeholder="priceBeforeVat"> -->
+                                        <ejs-numerictextbox [showSpinButton]='false' locale='de' currency='EUR'
+                                            decimals='2' format='c2' formControlName="priceBeforeVat"
+                                            placeholder="priceBeforeVat"></ejs-numerictextbox>
+                                    </td>
+                                    <td class="form-group" width='100px'>
+                                        <!-- <input type="text" class="form-control" formControlName="itemVat" placeholder="itemVa"> -->
+                                        <ejs-numerictextbox [showSpinButton]='false' locale='de' decimals='2' format='n'
+                                            formControlName="itemVat" placeholder="itemVat"></ejs-numerictextbox>
+                                    </td>
+                                    <!-- <td class="form-group" width='100px'>
+                                <ejs-numerictextbox [showSpinButton]='false' locale='de' decimals='2' format='n' formControlName="discount" placeholder="discount"></ejs-numerictextbox>
+                            </td> -->
+                                    <td class="form-group">
+                                        <ejs-numerictextbox [showSpinButton]='false' locale='DE-de' currency='EUR'
+                                            decimals='2' format='c2' formControlName="priceAfterVat"
+                                            placeholder="priceAfterVat"></ejs-numerictextbox>
+                                    </td>
+                                    <td class="form-group">
+                                        <label>{{getItemControlLabel(i, 'sum') | currency:'EUR'}}</label>
+                                    </td>
+                                    <td>
+                                        <button type="button" (click)="remove(i)"
+                                            class="btn mr-5">{{l("Remove")}}</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                    <div class="m--margin-left-20">
+                        <div class="row">
+                            <button type="button" (click)="addItemManually()"
+                                class="btn btn-primary mr-5">{{l("AddNewItemManually")}}</button>
+                            <button *ngIf="studentPricePackageId" type="button" (click)="addPricePackage()"
+                                class="btn btn-primary mr-5">{{l("AddPricePackage")}}</button>
+                            <button type="button" (click)="addProduct()"
+                                class="btn btn-primary mr-5">{{l("AddProduct")}}</button>
+                        </div>
+                    </div>
+
+                    <div class="m--margin-top-40">
+                        <div class="m--margin-left-40">
+                            <hr>
+                            <div class="form-group">
+                                <label for="StudentInvoice_TotalBeforeVat">{{l("TotalBeforeVat")}}:
+                                    {{getControlLabel('totalBeforeVat') | currency:'EUR'}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="StudentInvoice_TotalVat">{{l("TotalVat")}}:
+                                    {{getControlLabel('totalVat') | currency:'EUR'}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="StudentInvoice_TotalAfterVat">{{l("TotalAfterVat")}}:
+                                    {{getControlLabel('totalAfterVat') | currency:'EUR'}}</label>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="m--margin-top-40">
+                        <label class="m-checkbox">
+                            <input type="checkbox" name="CreatePdfOnSave" formControlName="createPdfOnSave">
+                            {{l("CreatePdfOnSave")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!studentInvoiceForm.form.valid  || itemForm.get('items').length == 0"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                    <button type="button" (click)="splitAndSave()" class="btn btn-primary blue" [disabled]="!studentInvoiceForm.form.valid || itemForm.get('items').length < 2"><i class="fa fa-save"></i>
+                        <span>{{l("SplitAndSave")}}</span></button>
+                    <!-- <button type="button" class="btn btn-default" [buttonBusy]="currentlyCreatingPdf" [busyText]="l('CreatingPdfFile')" (click)="createPdfFile()"><span>{{l("CreatePDF")}}</span></button> -->
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <invoice-studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()">
+    </invoice-studentLookupTableModal>
+    <invoice-productLookupTableModal #productLookupTableModal (modalSave)="getNewProductId()">
+    </invoice-productLookupTableModal>
+
+</div>

@@ -1,0 +1,96 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("StudentsOwnOverview")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("StudentsOwnOverviewInfo")}}
+                </span>
+            </div>
+            <div class="col-3">
+
+            </div>
+            <div *ngIf="studentCourses != null && studentCourses.length > 0" class="col-3">
+
+                <label>Course: </label><br>
+                <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged()">
+                    <option *ngFor="let course of studentCourses" [ngValue]="course">
+                        {{course.name}}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+
+                <div *ngIf="selectedStudentCourse != null" class="row">
+
+                    <div *ngIf="drivingLessons != null" class="col-md-6 col-sm-12">
+                        <h5 class="text-md-center">{{l("DrivingLessons")}} </h5>
+                        <div class="m--margin-top-10">
+    
+                            <label>{{l("BasicLessons")}} </label>
+                            <progressbar [animate]="true" [max]="12" [value]="drivingLessons.basicLessonsCompletedCount" [type]="success">
+                                {{drivingLessons.basicLessonsCompletedCount}} / 12
+                            </progressbar>
+                        </div>
+                        <div class="row m--margin-top-20">
+                            <div class="col-6" *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
+                                <div *ngIf="pdl.isDone" class="text-center"><i class="fa fa-check-circle m--font-success"
+                                        title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                <div *ngIf="!pdl.isDone && !pdl.isRunning" class="text-center"><i
+                                        class="fa fa-times-circle m--font-danger"
+                                        title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                <div *ngIf="!pdl.isDone && pdl.isRunning " class="text-center"><i
+                                        class="fa fa-spinner m--font-info"
+                                        title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                            </div>
+    
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        <h5 class="text-md-center">{{l("TheoryLessons")}} </h5>
+                        <div class="m--margin-top-20">
+                            <div class="row">
+                                <div class="col-6" *ngFor="let ptl of theoryLessons; index as i">
+                                    <div *ngIf="ptl.currentState === 0" class="text-center"><i class="fa fa-times-circle"
+                                            title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                    <div *ngIf="ptl.currentState === 1" class="text-center"><i class="fa fa-spinner"
+                                            title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                    <div *ngIf="ptl.currentState === 2" class="text-center"><i
+                                            class="fa fa-check-circle m--font-success"
+                                            title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                    <div *ngIf="ptl.currentState === 3" class="text-center"><i
+                                            class="fa fa-times-circle m--font-danger"
+                                            title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedStudentCourse != null" class="row">
+                    <button type="button" (click)="prepareLessonStart()"
+                        class="btn btn-primary mr-5">{{l("PrepareLessonStart")}}</button>
+                    <button type="button" (click)="startNextOnlineTheoryLesson()"
+                        class="btn btn-primary mr-5">{{l("StartNextOnlineTheoryLesson")}}</button>
+                    <input type="text" class="form-control" [(ngModel)]="finishId" name="LastName" />
+                    <button type="button" (click)="finishOnlineTheoryLesson()"
+                        class="btn btn-primary mr-5">{{l("FinishOnlineTheoryLesson")}}</button>
+                </div>
+                <div *ngIf="selectedStudentCourse == null">
+                    <alert type="danger">
+                        <strong>Oh snap!</strong> You are not yet assigned to a course. Please contact your school.
+                      </alert>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

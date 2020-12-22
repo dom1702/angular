@@ -1,0 +1,520 @@
+<div [@routerTransition]>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-2">
+                <div class="{{licenseClassDivClass}}">
+                    <h6>1</h6><label class="d-none d-md-block">License Class</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="{{licenseClassOwnedDivClass}}">
+                    <h6>2</h6><label class="d-none d-md-block">Previous Licenses</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="{{locationDivClass}}">
+                    <h6>3</h6><label class="d-none d-md-block">Location</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="{{coursesDivClass}}">
+                    <h6>4</h6><label class="d-none d-md-block">Courses</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="{{pricePackageDivClass}}">
+                    <h6>5</h6><label class="d-none d-md-block">Price Packages</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="{{yourDataDivClass}}">
+                    <h6>6</h6><label class="d-none d-md-block">Your data</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-pricing-table-1 m-pricing-table-1--fixed">
+        <div class="m-portlet">
+            <div class="m-portlet__body">
+
+                <div *ngIf="currentPageNumber == 0 && licenseClasses != undefined">
+                    <h3 class="mb-5">What license do you want to acquire?</h3>
+
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="card-deck">
+
+
+                                <div class="card my-5"
+                                    *ngFor="let licenseClass of licenseClasses.licenseClasses;  let i = index">
+                                    <img class="card-img-top" src="{{licenseClass.symbolImageUrl}}"
+                                        alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{l('Class')}} {{licenseClass.licenseClass}}</h5>
+                                        <ul class="list-group list-group-flush mb-5" *ngIf="licenseClass.description">
+                                            <li class="list-group-item"> {{licenseClass.description}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button
+                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            (click)="classToAcquireSelected(licenseClass.licenseClass)">
+                                            Select
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="currentPageNumber == 1 && licenseClassesOwned != undefined">
+                    <h3 class="mb-5">Do you have any licenses completed before?</h3>
+
+                    <button
+                        class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        (click)="classesAlreadyOwnedSelected()">
+                        I don't have any license yet
+                    </button>
+
+                    <div class="container my-5">
+                        <div class="row justify-content-center">
+                            <div class="card-deck">
+
+
+                                <div class="card my-3"
+                                    *ngFor="let licenseClassOwned of licenseClassesOwned.licenseClasses;  let i = index">
+                                    <img class="card-img-top" src="{{licenseClassOwned.symbolImageUrl}}"
+                                        alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{l('Class')}} {{licenseClassOwned.licenseClass}}
+                                        </h5>
+                                        <ul class="list-group list-group-flush mb-5"
+                                            *ngIf="licenseClassOwned.description">
+                                            <li class="list-group-item"> {{licenseClassOwned.description}}
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <label class="m-checkbox mt-3">
+                                            <input type="checkbox" name="licenseClassOwned"
+                                                (change)="previousClassChecked(licenseClassOwned.licenseClass, $event)">
+                                            I have this license
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        (click)="goToPreviousPage()">
+                        Back
+                    </button>
+
+                    <button *ngIf="previousClasses.length > 0"
+                        class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        (click)="classesAlreadyOwnedSelected()">
+                        Next
+                    </button>
+                </div>
+
+                <div *ngIf="currentPageNumber == 2 && offices != undefined">
+                    <h3 class="mb-5">What office do you want to go to?</h3>
+
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="card-deck">
+
+
+                                <div class="card my-5" *ngFor="let location of offices.offices;  let i = index">
+                                    <img class="card-img-top" src="assets/symbols/office.png" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> {{location.officeName}}</h5>
+                                        <ul class="list-group list-group-flush mb-5">
+                                            <li class="list-group-item">{{location.address}}
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <button
+                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            (click)="officeSelected(location.officeId)">
+                                            Select
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        (click)="goToPreviousPage()">
+                        Back
+                    </button>
+                </div>
+
+                <div *ngIf="currentPageNumber == 3 && courses != undefined">
+                    <h3 class="mb-5">What course do you want to enroll in?</h3>
+
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="card-deck">
+
+
+                                <div class="card my-5" *ngFor="let course of courses.courses;  let i = index">
+                                    <img class="card-img-top" src="assets/symbols/course.png" alt="Card image cap">
+                                    <div class="card-body">
+                                        <!-- <h5 class="card-title"> {{course.courseName}}</h5>
+                                            <p class="card-text" style="max-width: 18rem;"> {{course.class}}</p>
+                                            <p class="card-text" style="max-width: 18rem;"> {{course.description}} </p>
+                                            <p class="card-text" style="max-width: 18rem;"> {{course.priceDescription}}</p> -->
+                                        <h5 class="card-title"> {{course.courseName}}</h5>
+                                        <ul class="list-group list-group-flush mb-5">
+                                            <li class="list-group-item">{{l('LicenseClass')}}: {{course.class}}
+                                            </li>
+                                            <li class="list-group-item">{{course.description}}</li>
+                                            <li class="list-group-item">{{course.priceDescription}}</li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <button
+                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            (click)="courseSelected(course.courseId)">
+                                            Select
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        (click)="goToPreviousPage()">
+                        Back
+                    </button>
+                </div>
+
+                <div *ngIf="currentPageNumber == 4 && pricePackages != undefined">
+                    <h3 class="mb-5">What price package do you prefer?</h3>
+
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="card-deck">
+
+
+                                <div class="card my-5" *ngFor="let pp of pricePackages.pricePackages;  let i = index">
+                                    <img class="card-img-top"
+                                        [src]="pp.highlighted ? 'assets/symbols/price_highlighted.png' : 'assets/symbols/price.png'"
+                                        alt="Card image cap">
+                                    <div class="card-body">
+                                        <div *ngIf="pp.highlighted">
+                                            <h2><span class="badge badge-secondary">Standard
+                                                    package</span></h2>
+                                        </div>
+                                        <h5 class="card-title"> {{pp.packageName}} </h5>
+                                        <div class="card-header">
+                                            {{pp.finalPrice}}€
+                                        </div>
+                                        <ul class="list-group list-group-flush mb-5">
+
+                                            <li class="list-group-item"
+                                                *ngFor="let product of pp.products;  let j = index">
+                                                {{product.quantity}}x {{product.name}}
+                                                {{product.totalPrice}}€</li>
+
+                                        </ul>
+
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <button
+                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            (click)="pricePackageSelected(pp.pricePackageId)">
+                                            Select
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        (click)="goToPreviousPage()">
+                        Back
+                    </button>
+                </div>
+
+
+
+
+                <div *ngIf="currentPageNumber == 5">
+                    <h3 class="mb-5">Please enter your data to finish enrollment!</h3>
+
+                    <form (ngSubmit)="onSubmit()" #userDataForm="ngForm">
+                        <div class="form-group row">
+                            <label for="personId" class="col-sm-2 col-form-label">Person ID *</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="personId" placeholder="PPKKVV-XXXX"
+                                    [(ngModel)]="userData.socialSecurityNo" name="ssn" required #ssc="ngModel">
+                                <div *ngIf="ssc.invalid && (ssc.dirty || ssc.touched)" class="alert alert-danger">
+                                    <div *ngIf="ssc.errors.required">
+                                        Person ID is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="firstNameInput" class="col-sm-2 col-form-label">First Name *</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="firstNameInput"
+                                    placeholder="Enter your first name" [(ngModel)]="userData.firstName"
+                                    name="firstName" required #firstName="ngModel">
+                                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                                    class="alert alert-danger">
+                                    <div *ngIf="firstName.errors.required">
+                                        First name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="lastNameInput" class="col-sm-2 col-form-label">Last Name *</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="lastNameInput"
+                                    placeholder="Enter your last name" [(ngModel)]="userData.lastName" name="lastName"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="streetInput" class="col-sm-2 col-form-label">Street *</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="streetInput" placeholder="Enter your street"
+                                    [(ngModel)]="userData.street" name="street" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="zipCodeInput" class="col-sm-2 col-form-label">ZIP code *</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="zipCodeInput"
+                                    placeholder="Enter your ZIP code" [(ngModel)]="userData.zipCode" name="zipCode"
+                                    required>
+                            </div>
+                            <label for="cityInput" class="col-sm-2 col-form-label">City *</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="cityInput" placeholder="Enter your city"
+                                    [(ngModel)]="userData.city" name="city" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="phoneInput" class="col-sm-2 col-form-label">Phone *</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="phoneInput"
+                                    placeholder="Enter your phone number" [(ngModel)]="userData.phone" name="phone"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="emailInput" class="col-sm-2 col-form-label">E-mail *</label>
+                            <div class="col-sm-4">
+                                <input type="email" class="form-control" id="emailInput" placeholder="Enter your email"
+                                    [(ngModel)]="userData.email" name="email" required email #email="ngModel">
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                                    <div *ngIf="email.errors?.email">
+                                        Email not valid.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <label for="confirmEmailInput" class="col-sm-2 col-form-label">Confirm e-mail *</label>
+                            <div class="col-sm-4">
+                                <input type="email" class="form-control" id="confirmEmailInput"
+                                    placeholder="Enter your email again" [(ngModel)]="userData.confirmEmail"
+                                    name="confirmEmail" required email #confirmationEmail="ngModel">
+                                <div *ngIf="(confirmationEmail.invalid && (confirmationEmail.dirty || confirmationEmail.touched))
+                            || confirmationEmail.value !== email.value" class="alert alert-danger">
+                                    <div *ngIf="confirmationEmail.errors?.email">
+                                        Email not valid.
+                                    </div>
+                                    <div *ngIf="confirmationEmail.value !== email.value">
+                                        Emails do not match each other.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <!-- <label for="dateOfBirthInput" class="col-sm-2 col-form-label">Date of birth *</label>
+                            <div class="col-sm-4">
+                                <input class="form-control m-input" type="datetime" bsDatepicker
+                                    [(ngModel)]="dateOfBirth" name="dateOfBirth" required>
+                            </div> -->
+                            <label for="Student_Country" class="col-sm-2 col-form-label">{{l("Country")}}</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" name="Student_Country" [(ngModel)]="currentCountry">
+                                    <option *ngFor="let option of countries" [ngValue]="option.name">
+                                        {{l(option.name)}}
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+
+                            <label for="Student_BirthCountry"
+                                class="col-sm-2 col-form-label">{{l("BirthCountry")}}</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" name="Student_BirthCountry"
+                                    [(ngModel)]="currentBirthCountry">
+                                    <option *ngFor="let option of countries" [ngValue]="option.name">
+                                        {{l(option.name)}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label for="Student_NativeLanguage"
+                                class="col-sm-2 col-form-label">{{l("NativeLanguage")}}</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" name="Student_NativeLanguage"
+                                    [(ngModel)]="currentNativeLanguage">
+                                    <option *ngFor="let option of languages" [ngValue]="option.name">
+                                        {{l(option.name)}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">Additional
+                                information</label>
+                            <div class="col-sm-10"><textarea class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3" [(ngModel)]="userData.additionalInformation"
+                                    name="additionalInformation"></textarea>
+                            </div>
+                        </div>
+
+
+                        <h3 class="my-5">If you don't pay yourself, please add payer's data below!</h3>
+
+                        <div class="form-group row" *ngIf="!hasPayer">
+                            <div class="col text-center">
+                            <button
+                                class="btn btn-link"
+                                (click)="openPayerPart()">
+                                Add payer
+                            </button>
+                        </div>
+                        </div>
+                        <div class="form-group row" *ngIf="hasPayer">
+                            <div class="col text-center">
+                            <button
+                                class="btn btn-link"
+                                (click)="closePayerPart()">
+                                Remove payer
+                            </button>
+                        </div>
+                        </div>
+                        <div *ngIf="hasPayer">
+                            <div class="form-group row">
+                                <label for="payersPersonId" class="col-sm-2 col-form-label">Payers Person ID *</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="payersPersonId"
+                                        placeholder="PPKKVV-XXXX" [(ngModel)]="userData.payersSocialSecurityNo"
+                                        name="payersSocialSecurityNo" [required]="hasPayer">
+                                </div>
+                                <label for="payersNameInput" class="col-sm-2 col-form-label">Payers Name *</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="payersNameInput"
+                                        placeholder="Enter the payers name" [(ngModel)]="userData.payersName"
+                                        name="payersName" [required]="hasPayer">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="payersStreetInput" class="col-sm-2 col-form-label">Payers Street *</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="payersStreetInput"
+                                        placeholder="Enter the payers street" [(ngModel)]="userData.payersStreet"
+                                        name="payersStreet" [required]="hasPayer">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="payersZipCodeInput" class="col-sm-2 col-form-label">Payers ZIP code *</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="payersZipCodeInput"
+                                        placeholder="Enter the payers ZIP code" [(ngModel)]="userData.payersZipCode"
+                                        name="payersZipCode" [required]="hasPayer">
+                                </div>
+                                <label for="payersCityInput" class="col-sm-2 col-form-label">Payers City *</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="payersCityInput"
+                                        placeholder="Enter the payers city" [(ngModel)]="userData.payersCity"
+                                        name="payersCity" [required]="hasPayer">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="payersPhoneInput" class="col-sm-2 col-form-label">Payers Phone *</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="payersPhoneInput"
+                                        placeholder="Enter the payers phone number" [(ngModel)]="userData.payersPhone"
+                                        name="payersPhone" [required]="hasPayer">
+                                </div>
+                                <label for="payersEmailInput" class="col-sm-2 col-form-label">Payers E-mail *</label>
+                                <div class="col-sm-4">
+                                    <input type="email" class="form-control" id="payersEmailInput"
+                                        placeholder="Enter the payers email" [(ngModel)]="userData.payersEmail"
+                                        name="payersEmail" [required]="hasPayer">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
+                                    [(ngModel)]="confirmTerms" name="confirm" required #confirm="ngModel">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    I have read the terms and conditions and agree with them.
+                                </label>
+                                <div *ngIf="confirm.invalid && (confirm.dirty || confirm.touched)"
+                                    class="alert alert-danger">
+                                    <div *ngIf="!confirmTerms">
+                                        You have to agree with terms and conditions.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary" [disabled]="!userDataForm.form.valid"
+                                [buttonBusy]="submitting" [busyText]="l('PleaseWait')">Submit</button>
+                        </div>
+                    </form>
+                    <div class="mt-5">
+                        <button
+                            class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                            (click)="goToPreviousPage()">
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

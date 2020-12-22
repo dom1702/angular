@@ -1,0 +1,90 @@
+
+<div class="row justify-content-center">
+    <p-toast [style]="{marginTop: '80px'}" styleClass="custom-toast" key="toast" position="bottom-right"></p-toast>
+    <div class="col col-sm-2"></div>  
+    <div class="col-sm-8">
+
+        <h3 class="m-portlet__head-text">
+            Welcome to the Drima eLesson!
+        </h3>
+
+        <div class="m--space-10"></div>
+
+        <span>You have to do all lesson parts in order. If you want, you can go back to watch videos again if you want to check your answers. 
+            Duration of this eLesson is at least 45 minutes. The parts consists of videos, tasks and questionnaires. If you 
+            cancel the eLesson, it has to be done again from the start. Short internet connection breaks won't cancel the lesson.
+        </span>
+
+        <p-messages severity="error" [value]="closedMessage" [closable]="false"></p-messages>      
+    
+        <div class="m--space-10"></div>
+
+        <span> You can do the eLesson only during the time the control room is open. A lesson can be started one (1) hour before the control room is closed.</span>
+        
+        <div class="m--space-10"></div>
+
+        
+        <h6> Drima control room opening hours on upcoming days:</h6>
+        <div *ngIf="upcomingOpeningHours"></div>
+        <ul>
+            <li *ngFor="let temp of upcomingOpeningHours; index as i">
+                <div *ngIf="!temp.closed; then thenBlock else elseBlock"></div>                                  
+                <ng-template #thenBlock>
+                    {{getNextDayName(i)}}: {{temp.opening}} - {{temp.closing}}  
+                </ng-template>
+                <ng-template #elseBlock>
+                    {{getNextDayName(i)}}: Closed
+                </ng-template>
+            </li>   
+        </ul>
+        
+        <div *ngIf="todayOpeningHours">            
+            <span>   
+                <p-messages severity="info" [value]="requirementMessage" [closable]="false">               
+                </p-messages>                                               
+            </span>   
+                 
+            <div class="ui-inputgroup">
+                <button pButton type="button" label="Phone:" disabled="true"></button>
+                <span class="ui-inputgroup-addon">+</span>
+                <input type="text" pInputText id="studentPhoneNumberParsed" [(ngModel)]="studentPhoneNumberParsed"><br>         
+                <button pButton type="button" label="{{videoTestButtonName}}" (click)="toggleVideoTestBlock()" ></button>
+            </div> 
+            <br>
+
+            <div *ngIf="showVideoTest">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item"
+                        [src]="testVideoUrl | safeUrl"
+                        frameborder='0'
+                        allowfullscreen>
+                    </iframe>      
+                </div> 
+            </div>
+            
+            <div>
+                <span>
+                    <p-checkbox name="phoneNumber" binary="true" [(ngModel)]="checked">             
+                    </p-checkbox> 
+                    I have checked the phone number, it has the WhatsApp installed and running and I have tested the video.                                                
+                </span>
+            </div>                            
+        
+
+       
+            <div class="m--space-10"></div>
+
+            <div class="row justify-content-md-center">             
+                <div class="col-md-auto">
+                    <button type="button"
+                        class="btn btn-primary mr-5"                       
+                        [disabled]="todayOpeningHours.closed || !todayOpeningHours.closed && checked == false"
+                        (click)="startLesson()">
+                        Start eLesson
+                    </button>
+                </div>               
+            </div>
+        </div>
+    </div>
+    <div class="col col-sm-2"></div>
+</div>

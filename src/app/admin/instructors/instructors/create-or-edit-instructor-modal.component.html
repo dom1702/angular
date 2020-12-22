@@ -1,0 +1,112 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #instructorForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="instructor.id">{{l("EditInstructor")}}</span>
+                        <span *ngIf="!instructor.id">{{l("CreateNewInstructor")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="LicenseClassClass">{{l("LicenseClass")}}</label>
+                        <!-- <div class="input-group">
+                            <input class="form-control" id="LicenseClassClass" name="licenseClassClass" [(ngModel)]="licenseClassClass" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLicenseClassModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger" type="button" (click)="setAllowedClassesToTeachNull()"><i class="fa fa-times"></i></button>
+                            </div>
+						</div> -->
+						<ng-multiselect-dropdown
+						[placeholder]="placeholder"
+						[data]="dropdownList"
+						[(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+						[settings]="dropdownSettings"
+						>
+						</ng-multiselect-dropdown>
+                    </div>
+                    <input class="form-control" name="instructor.allowedClassesToTeach" [(ngModel)]="instructor.allowedClassesToTeach" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Instructor_FirstName">{{l("FirstName")}} *</label>
+									<input type="text" id="Instructor_FirstName" class="form-control" [(ngModel)]="instructor.firstName" name="FirstName"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_LastName">{{l("LastName")}} *</label>
+									<input type="text" id="Instructor_LastName" class="form-control" [(ngModel)]="instructor.lastName" name="LastName"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_Email">{{l("Email")}} *</label>
+									<input type="text" id="Instructor_Email" class="form-control" [(ngModel)]="instructor.email" name="Email"    required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_PhoneNumber">{{l("PhoneNumber")}}</label>
+									<input type="text" id="Instructor_PhoneNumber" class="form-control" [(ngModel)]="instructor.phoneNumber" name="PhoneNumber"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_DateOfBirth">{{l("DateOfBirth")}}</label>
+									 <input required class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="instructor.dateOfBirth._d" id="Instructor_DateOfBirth" name="Instructor_DateOfBirth">
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_Street">{{l("Street")}}</label>
+									<input type="text" id="Instructor_Street" class="form-control" [(ngModel)]="instructor.street" name="Street"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_City">{{l("City")}}</label>
+									<input type="text" id="Instructor_City" class="form-control" [(ngModel)]="instructor.city" name="City"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_ZipCode">{{l("ZipCode")}}</label>
+									<input type="text" id="Instructor_ZipCode" class="form-control" [(ngModel)]="instructor.zipCode" name="ZipCode"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_State">{{l("State")}}</label>
+									<input type="text" id="Instructor_State" class="form-control" [(ngModel)]="instructor.state" name="State"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Instructor_Country">{{l("Country")}}</label>
+									<input type="text" id="Instructor_Country" class="form-control" [(ngModel)]="instructor.country" name="Country"    />
+								</div>
+					
+								<div class="form-group m-form__group">
+									<label for="DefaultOffice">{{l("DefaultOffice")}}</label>
+									<div class="input-group">
+										<input class="form-control" id="defaultOffice" name="defaultOffice" [(ngModel)]="defaultOffice" type="text" disabled>     
+										<div class="input-group-append">
+											<button class="btn btn-primary blue" (click)="openSelectOfficeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon" type="button" (click)="setOfficeNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<input class="form-control" name="instructor.defaultOfficeId" [(ngModel)]="instructor.defaultOfficeId" type="text"  hidden>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!instructorForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<officeLookupTableModal #officeLookupTableModal (modalSave)="getOffice()"></officeLookupTableModal>
+		 
+</div>

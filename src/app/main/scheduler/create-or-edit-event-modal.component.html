@@ -1,0 +1,138 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #drivingLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="event.id">{{l("EditEvent")}}</span>
+                        <span *ngIf="!event.id">{{l("CreateNewEvent")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div name="PersonSelection" *ngIf="!personSelected">
+
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" name="studentSelection" class="btn btn-default"
+                                    (click)="personTypeSelected(0)" [(ngModel)]="studentSelected" btnCheckbox>
+                                    {{l('SelectStudent')}}
+                                </button>
+                            </div>
+
+                            <div class="col">
+                                <button type="button" name="instructorSelection" class="btn btn-default"
+                                    (click)="personTypeSelected(1)" [(ngModel)]="instructorSelected" btnCheckbox>
+                                    {{l('SelectInstructor')}}
+                                </button>
+                            </div>
+
+                            <div class="col">
+                                <button type="button" name="userSelection" class="btn btn-default"
+                                    (click)="personTypeSelected(2)" [(ngModel)]="userSelected" btnCheckbox>
+                                    {{l('SelectUser')}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="m--margin-top-30" [hidden]="personSelected"> </div>
+                    <div [hidden]="disallowPersonSelection">
+                        <div class="form-group m-form__group" [hidden]="!instructorSelected">
+                            <label for="Instructor">{{l("Instructor")}}</label>
+                            <div class="input-group">
+                                <input class="form-control" id="currentInstructorFullName"
+                                    name="currentInstructorFullName" [(ngModel)]="currentInstructorFullName" type="text"
+                                    disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue" (click)="openSelectInstructorModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button"
+                                        (click)="setInstructorNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="instructorId" [(ngModel)]="instructorId" type="text" hidden>
+                        <div class="form-group m-form__group" [hidden]="!studentSelected">
+                            <label for="StudentFirstName">{{l("Student")}}</label>
+                            <div class="input-group">
+                                <input class="form-control" id="studentFullName" name="studentFullName"
+                                    [(ngModel)]="studentFullName" type="text" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue" (click)="openSelectStudentModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button"
+                                        (click)="setStudentIdNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="studentId" [(ngModel)]="studentId" type="text" hidden>
+                    </div>
+                    <div *ngIf="personSelected">
+                        <div class="form-group">
+                            <label for="Event_Topic">{{l("Topic")}}</label>
+                            <input type="text" id="Event_Topic" class="form-control" [(ngModel)]="event.subject"
+                                name="Event_Subject" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Event_StartTime">{{l("StartDate")}}</label>
+                            <input required class="form-control m-input" type="timepicker" bsDatepicker
+                                [(ngModel)]="startTime" id="Event_StartTime" name="Event_StartTime">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Event_StartTime">{{l("StartTime")}}</label>
+                            <timepicker [(ngModel)]="startTime" [showMeridian]="ismeridian" name="StartTime">
+                            </timepicker>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Event_EndTime">{{l("EndDate")}}</label>
+                            <input required class="form-control m-input" type="timepicker" bsDatepicker
+                                [(ngModel)]="endTime" id="Event_EndTime" name="Event_EndTime">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Event_EndTime">{{l("EndTime")}}</label>
+                            <timepicker [(ngModel)]="endTime" [showMeridian]="ismeridian" name="endTime"></timepicker>
+                        </div>
+
+                        <div class="m-checkbox-list">
+                            <label for="Paid" class="m-checkbox">
+                                <input id="Paid" type="checkbox" name="Paid"
+                                    [(ngModel)]="event.paid">
+                                {{l("PaidWork")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button *ngIf="event.id" [disabled]="!isGranted('Appointments.Delete') && !isGranted('OwnAppointments.Delete')" type="button"
+                        class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()"></studentLookupTableModal>
+    <instructorLookupTableModal #instructorLookupTableModal (modalSave)="getNewInstructorId()">
+    </instructorLookupTableModal>
+
+</div>

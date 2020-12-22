@@ -1,0 +1,54 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Name")}} :</h6>
+                        {{ item.course.name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("StartDate")}} :</h6>
+                        {{ item.course.startDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LastEnrollmentDate")}} :</h6>
+                        {{ item.course.lastEnrollmentDate | momentFormat:'YYYY-MM-DD HH:mm:ss'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CourseNumber")}} :</h6>
+                        {{ item.course.courseNumber }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("VisibleOnFrontPage")}} :</h6>
+                        {{ item.course.visibleOnFrontPage }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EnrollmentAvailable")}} :</h6>
+                        {{ item.course.enrollmentAvailable }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Office")}}) {{l("Name")}} :</h6>
+                        {{item.officeName}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,224 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="row align-items-center">
+            <div class="mr-auto col-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>Frequently Asked Questions</span>
+                </h3>    
+                <span class="m-section__sub">
+                    expand the tabs to find your specific question
+                </span>            
+            </div>
+
+        </div>
+    </div>
+
+    <!--
+    <div class="m-content">
+        <div class="m-portlet">
+            <div class="m-portlet__body">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Ask any Question
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8"> 
+                        
+                        <div class="row">                           
+                            <div class="col-sm-2">
+                            </div>
+                                                       
+                            <div class="col-sm-10" *ngIf='asked'>
+                                <div class="m-portlet">                                           
+                                    <div class="m-portlet__body">
+                                        {{queryQuestion}}
+                                    </div>
+                                </div>
+
+                                <div class="m-portlet">                                           
+                                    <div class="m-portlet__body">
+                                        {{foundDescription}}
+                                    </div>
+                                </div>
+                           
+                            </div>
+                        </div>                                                                                                                                                              
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                            Frequently asked
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m--space-10"></div>
+                        <span class="m-widget24__desc">
+                            <a href="#"> Question 1</a>                            
+                        </span>
+                        <hr class="ng-tns-c19-1">
+                        <span class="m-widget24__desc">
+                            <a href="#"> Question 2</a>
+                        </span>
+                        <hr class="ng-tns-c19-1">
+                        <span class="m-widget24__desc">
+                            <a href="#"> Question 3</a>
+                        </span>
+                        <div class="m--space-10"></div>
+
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <input name="filterText" [(ngModel)]='inputQuestion' autoFocus class="form-control m-input" placeholder="ask" type="text">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit" (click)='getAnswer()'><i>Ask Question</i></button>
+                    </span>
+                </div>
+            </div>
+        </div>      
+    </div>
+    
+    <div class="m-subheader">
+        <div class="row align-items-center">
+            <div class="mr-auto col-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>Main Features of Drima</span>
+                </h3>                
+            </div>   
+        </div>
+    </div>
+-->
+    
+    <div class="m-content">
+      
+        <div class="m-portlet">
+                <div class="m-portlet__body">
+               
+                    <div class="primeng-tabview-container">
+                        <p-tabView>
+                            <p-tabPanel header="Booking" leftIcon="flaticon-book">                                                                                                   
+                                <br>
+                                Book a driving lesson via the menu item on the left hand menu.
+                                 
+                                <p-accordion>
+                                    <p-accordionTab header="Preselection">
+                                        Preselect your desired driving lesson. There are four input fields to be considered. Choose your desired driving lesson in the Type field. Chose your desired vehicle in the Vehicle field. If you wish to drive several hours comined, select it in the Length field. Finally find your date in the Date field. 
+                                    </p-accordionTab>
+                                    <p-accordionTab header="Datepicker">
+                                        By hitting the pick button you see a scheduler for your current week. Red blocks are blocked timeslots for your desired driving lesson. White timeslots are outside of the common business hours for your driving school. By hitting an free timeslot, the date will be selected for your driving lesson. 
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </p-tabPanel>
+                            <p-tabPanel header="Chat" leftIcon="flaticon-speech-bubble ">
+                                <br>
+                                Communicate with other persons in Drima via the chat. You can find the chat bar by hitting the upper right chat symbol.
+                                <p-accordion>
+                                    <p-accordionTab header="Add a person">
+                                        When the chat bar is opened, you can add a friend via the displayed input field. Type in the name of a user. A list of found users appears. Find the right user and pick the button 'add' left to the users name.     
+                                    </p-accordionTab>
+                                    <p-accordionTab header="Block a person">
+                                        When the chat bar is opened you can add a friend to your blocked persons list by hitting his name in the list. The chat dialog appears. On the upper right there is a menu point. Choose 'block user'
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </p-tabPanel>
+                            <p-tabPanel header="Profile" leftIcon="flaticon-avatar">
+                                <br>
+                                Access your profile by hitting your name or avatar on the upper right in the Application. Due different topics you are able to manage your profile
+                                <p-accordion>
+                                    <p-accordionTab header="Change password">
+                                        To change your password, you need to type in your current password. Your new password and your current password wont be displayed. Type in your new password twice. If they agree you are able to save your new password.
+                                    </p-accordionTab>
+                                    <p-accordionTab header="Attempted Logins">
+                                        Shows a list with all attempted logins. The Ip-Adress, the browser and the time/date are displayed.
+                                    </p-accordionTab>
+                                    <p-accordionTab header="Change user image">
+                                        Use this link to change your picture displayed for your profile and seen by other users. You can choose a picture from you device by hitting the 'browse' button. Your picture needs to be JPEG and a maximal of 480x640 px and a maximum of 300 kb.     
+                                    </p-accordionTab>
+                                    <p-accordionTab header="My Properties">
+                                        Content 3    
+                                    </p-accordionTab>
+                                    <p-accordionTab header="Visual Properties">
+                                        Content 3    
+                                    </p-accordionTab>
+                                    <p-accordionTab header="Download Concluded Data">
+                                        Content 3    
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+
+                    <!--
+                    <div class="row">           
+                            <div class="col-sm-4">
+                                <div class="m-portlet m-portlet--full-height">
+                                    <div class="m-portlet__head">
+                                        <div class="m-portlet__head-caption">
+                                            <div class="m-portlet__head-title">
+                                                    <i class="flaticon-suitcase"></i>
+                                                <h3 class="m-portlet__head-text">
+                                                    First Task
+                                                </h3>                                           
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-portlet__body">
+                                        Very important task, give navigation to functionalities
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="col-sm-4 ">
+                                    <div class="m-portlet m-portlet--full-height">
+                                        <div class="m-portlet__head">
+                                            <div class="m-portlet__head-caption">
+                                                <div class="m-portlet__head-title">
+                                                    <i class="flaticon-home-2"></i>
+                                                    <h3 class="m-portlet__head-text">
+                                                        Second Task
+                                                    </h3>                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="m-portlet__body">
+                                            MORE important task, explain every task in detail
+                                        </div>
+                                    </div>
+                            </div>
+                
+                            <div class="col-sm-4">
+                                <div class="m-portlet m-portlet--full-height">
+                                    <div class="m-portlet__head">
+                                        <div class="m-portlet__head-caption">
+                                            <div class="m-portlet__head-title">
+                                                <i class="flaticon-tea-cup"></i>
+                                                <h3 class="m-portlet__head-text">
+                                                        &emsp; Third Task
+                                                </h3>                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-portlet__body">
+                                        Fu**** IMPORTANT TASK
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div> 
+                    -->
+
+                </div>
+            </div>
+    </div>
+
+</div>

@@ -1,0 +1,219 @@
+<div [@routerTransition]>
+
+
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("SimulatorLessons")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("SimulatorLessonsHeaderInfo")}}
+                </span>
+            </div>
+            <div class="col-md-6 text-right">
+
+                <button *ngIf="isGranted('Pages.SimulatorLessons.Create')" (click)="createSimulatorLesson()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewSimulatorLesson")}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+
+                <form class="horizontal-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getSimulatorLessons()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinStartTimeFilter">{{l("StartTimeRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinStartTimeFilter"
+                                            name="MinStartTimeFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minStartTimeFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxStartTimeFilter"
+                                            name="MaxStartTimeFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartTimeFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="TopicFilter">{{l("Topic")}}</label>
+                                    <input type="text" class="form-control" id="TopicFilter" name="topicFilter"
+                                        [(ngModel)]="topicFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="PersonLastNameFilter">({{l("Person")}}) {{l("LastName")}}</label>
+                                    <input type="text" class="form-control" id="PersonLastNameFilter"
+                                        name="personLastNameFilter" [(ngModel)]="personLastNameFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="SimulatorNameFilter">({{l("Simulator")}}) {{l("Name")}}</label>
+                                    <input type="text" class="form-control" id="SimulatorNameFilter"
+                                        name="simulatorNameFilter" [(ngModel)]="simulatorNameFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getSimulatorLessons($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.SimulatorLessons.Edit', 'Pages.SimulatorLessons.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="startTime">
+                                        {{l('StartTime')}}
+                                        <p-sortIcon field="simulatorLesson.startTime"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="studentFk.lastName">
+                                        {{l('Student')}}
+                                        <p-sortIcon field="personLastName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="simulatorFk.name">
+                                        {{l('Simulator')}}
+                                        <p-sortIcon field="simulatorName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="length">
+                                        {{l('Length')}}
+                                        <p-sortIcon field="simulatorLesson.length"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="length">
+                                        {{l('LessonState')}}
+                                        <p-sortIcon field="simulatorLesson.lessonState"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.SimulatorLessons.Edit', 'Pages.SimulatorLessons.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewSimulatorLessonModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="record.simulatorLesson.feedbackPdfAvailableToDownload"
+                                                        (click)="downloadFeedbackPdf(record.simulatorLesson.id)">{{l('DownloadFeedbackPdf')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.SimulatorLessons.Edit')"
+                                                        (click)="createOrEditSimulatorLessonModal.show(record.simulatorLesson.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.SimulatorLessons.Delete')"
+                                                        (click)="deleteSimulatorLesson(record.simulatorLesson)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('StartTime')}}</span>
+                                        <span *ngIf="record.simulatorLesson.startTime">
+                                            {{record.simulatorLesson.startTime | momentFormat:'llll'}}
+                                        </span>
+                                        <span *ngIf="!record.simulatorLesson.startTime">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('LastName')}}</span>
+                                        {{record.personLastName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Name')}}</span>
+                                        {{record.simulatorName}}
+                                    </td>
+                                  
+                                    <td style="width:100px">
+                                        <span class="ui-column-title"> {{l('Length')}}</span>
+                                        {{record.simulatorLesson.length}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('LessonState')}}</span>
+                                        {{l(lessonState[record.simulatorLesson.lessonState])}}
+                                    </td>
+                                 
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getSimulatorLessons($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="getSimulatorLessons()">
+    </createOrEditSimulatorLessonModal>
+    <viewSimulatorLessonModal #viewSimulatorLessonModal></viewSimulatorLessonModal>
+
+
+</div>

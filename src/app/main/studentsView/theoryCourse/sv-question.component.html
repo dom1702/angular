@@ -1,0 +1,18 @@
+<h5 class="m-portlet__head-text">
+    {{quest}}
+</h5>
+<div class="row align-items-center">
+    <div class="col-sm-8">
+        <div *ngIf="pictureUrl">
+            <img src={{pictureUrl}} style="width:128px;height:128px;"> 
+        </div>                                                                                  
+        
+        <div *ngFor="let answer of answerOptions; index as i"> 
+            <p-radioButton value={{i}}  label={{answer}} (click)="onClick(i)" [(ngModel)]="selectedValue"></p-radioButton>
+        </div>
+        <p-messages [(value)]="messages" [closable]="false"></p-messages>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+<hr class="ng-tns-c19-1">
+

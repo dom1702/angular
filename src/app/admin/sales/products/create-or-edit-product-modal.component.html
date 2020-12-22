@@ -1,0 +1,70 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #productForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="product.id">{{l("EditProduct")}}</span>
+                        <span *ngIf="!product.id">{{l("CreateNewProduct")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="Product_Name">{{l("Name")}} *</label>
+									<input type="text" id="Product_Name" class="form-control" [(ngModel)]="product.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Product_Price">{{l("Price")}}</label>
+									<input type="number" id="Product_Price" class="form-control" [(ngModel)]="product.price" name="Price"  />
+								</div>
+					
+								<!-- <div class="form-group">
+									<label for="Product_VAT">{{l("VAT")}}</label>
+									<input type="number" id="Product_VAT" class="form-control" [(ngModel)]="product.vat" name="VAT"  min="1"  max="2"/>
+                                </div>-->
+                                
+                                <div class="form-group">
+									<label for="Product_VAT">{{l("VAT")}}</label>
+									<select class="form-control" name="Product_VAT" id="Product_VAT" [(ngModel)]="vat">
+									<option value="0">{{fullVat}}</option>
+
+									<option value="1">{{reducedVat}}</option>
+
+									<option value="2">{{0}}</option>
+
+									</select>
+								</div> 
+					
+								<div class="form-group">
+									<label for="Product_ProductType">{{l("ProductType")}}</label>
+									<select class="form-control" name="ProductType" id="Product_ProductType" [(ngModel)]="product.productType">
+									<option value="0">{{l('Lesson')}}</option>
+
+									<option value="1">{{l('Fee')}}</option>
+
+									<option value="2">{{l('ExternalFee')}}</option>
+
+									<option value="3">{{l('Other')}}</option>
+
+
+									</select>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!productForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

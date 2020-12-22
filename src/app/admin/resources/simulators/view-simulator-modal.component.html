@@ -1,0 +1,63 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Name")}} :</h6>
+                        {{ item.simulator.name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Model")}} :</h6>
+                        {{ item.simulator.model }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SimulatorType")}} :</h6>
+                        {{ item.simulator.simulatorType }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("InUse")}} :</h6>
+                        {{ item.simulator.inUse }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Office")}}) {{l("Name")}} :</h6>
+                        {{item.officeName}}
+                    </div>
+                </div>
+                <div class="row">
+                    <h5 class="col-12 mb-3">
+                        {{l('InstalledModules')}}
+                    </h5>
+                    <div class="col-12" *ngFor="let m of item.simulator.simulatorModules">
+                    <h6>
+                        {{m.identifier}}
+                        <label *ngIf="m.description">({{m.description}})</label>
+                    </h6>
+                    <div *ngFor="let e of m.exerciseUnits">
+                        <label>
+                            {{e.identifier}}
+                        </label> 
+                        <label *ngIf="e.description"> ({{e.description}})</label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

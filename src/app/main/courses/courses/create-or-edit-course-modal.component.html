@@ -1,0 +1,198 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #courseForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="course.id">{{l("EditCourse")}}</span>
+						<span *ngIf="!course.id">{{l("CreateNewCourse")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="form-group m-form__group">
+						<label for="LicenseClassName">{{l("LicenseClass")}} *</label>
+						<div class="input-group">
+							<input class="form-control" id="LicenseClassName" name="licenseClassName"
+								[(ngModel)]="licenseClassSelected" type="text" disabled>
+							<div class="input-group-append">
+								<button *ngIf='licenseClassSelected == ""' class="btn btn-primary blue"
+									(click)="openSelectLicenseClassModal()" type="button"><i class="fa fa-search"></i>
+									{{l("Pick")}}</button>
+							</div>
+							<div class="input-group-prepend">
+								<button *ngIf='licenseClassSelected == ""' class="btn btn-danger btn-icon" type="button"
+									(click)="setLicenseClassIdNull()"><i class="fa fa-times"></i></button>
+							</div>
+						</div>
+					</div>
+					<input class="form-control" name="licenseClassSelected" [(ngModel)]="licenseClassSelected"
+						type="text" required hidden>
+
+					<div *ngIf='licenseClassSelected'>
+
+						<div class="form-group m-form__group">
+							<label for="OfficeName">{{l("Office")}}</label>
+							<div class="input-group">
+								<input class="form-control" id="OfficeName" name="officeName" [(ngModel)]="officeName"
+									type="text" disabled>
+								<div class="input-group-append">
+									<button class="btn btn-primary blue" (click)="openSelectOfficeModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon" type="button" (click)="setOfficeIdNull()"><i
+											class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<input class="form-control" name="course.officeId" [(ngModel)]="course.officeId" type="text"
+							hidden>
+
+
+						<div class="form-group">
+							<label for="Course_Name">{{l("Name")}} *</label>
+							<input type="text" id="Course_Name" class="form-control" [(ngModel)]="course.name"
+								name="Name" required />
+						</div>
+
+						<div class="form-group">
+							<label for="Course_StartDate">{{l("StartDate")}}</label>
+							<input required class="form-control m-input" type="datetime" bsDatepicker
+								[(ngModel)]="course.startDate._d" id="Course_StartDate" name="Course_StartDate">
+						</div>
+
+						<div class="form-group">
+							<label for="Course_LastEnrollmentDate">{{l("LastEnrollmentDate")}}</label>
+							<input required class="form-control m-input" type="datetime" bsDatepicker
+								[(ngModel)]="course.lastEnrollmentDate._d" id="Course_LastEnrollmentDate"
+								name="Course_LastEnrollmentDate">
+						</div>
+
+						<div class="form-group">
+							<label for="Course_CourseNumber">{{l("CourseNumber")}}</label>
+							<input type="text" id="Course_CourseNumber" class="form-control"
+								[(ngModel)]="course.courseNumber" name="CourseNumber" />
+						</div>
+
+
+
+						<div class="form-group">
+							<label for="Course_Description">{{l("Description")}}</label>
+							<input type="text" id="Course_Description" class="form-control"
+								[(ngModel)]="course.description" name="Description" />
+						</div>
+
+						<div class="form-group">
+							<label for="Course_PriceDescription">{{l("PriceDescription")}}</label>
+							<input type="text" id="Course_PriceDescription" class="form-control"
+								[(ngModel)]="course.priceDescription" name="PriceDescription" />
+						</div>
+						<br />
+						<h4>{{l("PricePackages")}}</h4>
+						<div class="form-group">
+							<div class="container-fluid">
+								<div class="row align-items-start">
+									<div class="col-2">
+										<div class="row">
+											<label>{{l("Highlighted")}}</label>
+										</div>
+									</div>
+									<div class="col-10">
+										<div class="row">
+											<label>{{l("PricePackageName")}}</label>
+										</div>
+									</div>
+								</div>
+
+								<div *ngFor="let pp of this.pricePackages">
+									<div class="row align-items-start">
+										<div class="col-2">
+											<div class="row">
+												<label class="m-radio">
+													<input type="radio" name="ppHighlightedOption_{{pp.dl}}"
+														[value]="pp"
+														[disabled]="!pp.checked"
+														[(ngModel)]="pricePackageSelectedAsHighlighted"
+														(change)='updateHighlightedPricePackage()'>
+
+													<span></span>
+
+												</label>
+											</div>
+										</div>
+										<div class="col-10">
+											<div class="row">
+												<label attr.for="PricePackage_{{pp.dl}}" class="m-checkbox">
+													<input id="PricePackage_{{pp.dl}}" type="checkbox" name="{{pp.dl}}" [(ngModel)]="pp.checked" (change)='pricePackagesChanged()'>
+													{{pp.dl}}
+													<span></span>
+
+												</label>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label>{{l("PricePackages")}}</label>
+							<ejs-multiselect #pp_multiselect id='multiselectelement' [dataSource]='pricePackages'
+								[fields]='fields' [placeholder]='placeholderPricePackageSelection'>
+							</ejs-multiselect>
+						</div> -->
+						<br />
+						<h4>Predefined lessons</h4>
+						<div class="form-group">
+							<label>{{l("PredefinedDrivingLessons")}}</label>
+							<ejs-multiselect #pdl_multiselect id='multiselectelement'
+								[dataSource]='predefinedDrivingLessons' [fields]='fields'
+								[placeholder]='placeholderPdlSelection'></ejs-multiselect>
+
+						</div>
+						<div class="form-group">
+							<label>{{l("PredefinedTheoryLessons")}}</label>
+							<ejs-multiselect #ptl_multiselect id='multiselectelement'
+								[dataSource]='predefinedTheoryLessons' [fields]='ptlFields'
+								[placeholder]='placeholderPtlSelection'></ejs-multiselect>
+
+						</div>
+						<br />
+						<h4>{{l("Privacy")}}</h4>
+						<div class="m-checkbox-list">
+							<label for="Course_VisibleOnFrontPage" class="m-checkbox">
+								<input id="Course_VisibleOnFrontPage" type="checkbox" name="VisibleOnFrontPage"
+									[(ngModel)]="course.visibleOnFrontPage">
+								{{l("VisibleOnFrontPage")}}
+								<span></span>
+							</label>
+
+							<label for="Course_EnrollmentAvailable" class="m-checkbox">
+								<input id="Course_EnrollmentAvailable" type="checkbox" name="EnrollmentAvailable"
+									[(ngModel)]="course.enrollmentAvailable">
+								{{l("EnrollmentAvailable")}}
+								<span></span>
+							</label>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!courseForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<officeLookupTableModal #officeLookupTableModal (modalSave)="getNewOfficeId()"></officeLookupTableModal>
+	<licenseClassLookupTableModal #licenseClassLookupTableModal (modalSave)="getNewLicenseClass()">
+	</licenseClassLookupTableModal>
+</div>

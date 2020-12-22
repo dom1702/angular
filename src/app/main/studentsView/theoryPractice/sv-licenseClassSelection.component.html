@@ -1,0 +1,56 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-12">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("TheoryExamPractice")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("ChooseDrivingClass")}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">         
+            <div class="m-portlet__body">
+                <div class="container">
+                    <div class="row justify-content-center">                        
+                            <h3 class="m-portlet__head-text">
+                                Welcome to Drima theory exam practice 
+                            </h3>                                                                           
+                    </div>
+                    <div class="row">
+                        <h5>
+                            Start by choosing driving class.
+                        </h5> 
+                    </div>
+    
+                    <hr class="ng-tns-c19-1">
+               
+                    <div class="row" *ngIf="licenseClasses">      
+                        <div class="col-sm-3 mb-2" *ngFor="let license of licenseClasses; index as i;">
+                            <div class="card">
+                                <img src={{license.pictureUrl}} class="card-image">
+                                <div class="card-header">
+                                    
+                                    <div class="text-uppercase" style="text-align:center;"><h2>{{license.token}}</h2></div>
+                                    <div style="text-align:center;">{{license.name}}</div>                 
+                                    
+                                    <button type="button"  class="btn btn-primary btn-block" 
+                                        (click)= "selectLicencseClass(i)"
+                                        routerLink="/app/main/studentsView/theoryPractice/licenseClassTasksOverview">  
+                                    Open                 
+                                    </button>                                                             
+                                </div>           
+                            </div>                                         
+                        </div>                                                 
+                    </div>
+                   
+                </div>                                                         
+            </div>
+        </div>
+
+      
+    </div>
+</div>

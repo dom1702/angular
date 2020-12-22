@@ -1,0 +1,122 @@
+<div *ngIf="student">
+    <div class="form-group">
+    <div class="card" *ngIf="student.payersSocialSecurityNo">
+        <div class="card-body">
+            <h4 class="card-title">{{l("Payers data")}}</h4>
+            <div class="row">
+               
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <h6>{{l("Name")}} :</h6>
+                    {{student.payersName}}
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <h6>{{l("EmailAddress")}} :</h6>
+                    {{student.payersEmail}}
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <h6>{{l("PhoneNumber")}} :</h6>
+                    {{student.payersPhone}}
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <h6>{{l("Address")}} :</h6>
+                    {{getPayersAddressString()}}
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <h6>{{l("SSN")}} :</h6>
+                    {{student.payersSocialSecurityNo}}
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-auto">
+                <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
+            [(ngModel)]="eventTypeFilter.otherEvents" btnCheckbox btnCheckboxTrue="true"
+            btnCheckboxFalse="false">
+            {{l("Appointments")}}
+        </button> -->
+                <label class="m-checkbox">
+                    <input [(ngModel)]="showInvoicesOfAllCourses" type="checkbox" name="showAll"
+                        (change)="updateInvoices()">
+                    {{l("ShowInvoicesOfAllCourses")}}
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="invoices && invoices.length > 0" class="form-group">
+        <p-table [value]="invoices">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>{{l("Date")}}</th>
+                    <th>{{l("DateDue")}}</th>
+                    <th>{{l("TotalAfterVat")}}</th>
+                    <th style="width:150px">{{l("PdfFileCreated")}}</th>
+                    <th>{{l("Action")}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-invoice>
+                <tr>
+                    <td>{{invoice.date  | momentFormat:'L'}}</td>
+                    <td>{{invoice.dateDue  | momentFormat:'L'}}</td>
+                    <td>{{invoice.totalAfterVat  | currency:'EUR'}}</td>
+                    <td style="width:150px">
+                        <div *ngIf="invoice.pdfFileCreated" class="text-center"><i
+                                class="fa fa-check-circle m--font-success" title="True"></i></div>
+                        <div *ngIf="!invoice.pdfFileCreated" class="text-center"><i class="fa fa-times-circle"
+                                title="False"></i></div>
+                    </td>
+                    <td>
+                        <div class="btn-group dropdown" dropdown container="body">
+                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                            </button>
+                            <ul class="dropdown-menu" *dropdownMenu>
+                                <!-- <li>
+                                    <a href="javascript:;" (click)="viewStudentModal.show(record)">{{l('View')}}</a>
+                                </li> -->
+                                <li *ngIf="invoice.pdfFileCreated">
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
+                                        (click)="getPdf(invoice)">{{l('GetPdf')}}</a>
+                                </li>
+                                <li *ngIf="!invoice.pdfFileCreated">
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
+                                        (click)="getPdf(invoice)">{{l('CreatePdf')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Students.Edit')"
+                                        (click)="editInvoice(invoice.id)">{{l('Edit')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Students.Delete')"
+                                        (click)="deleteInvoice(invoice.id)">{{l('Delete')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                        (click)="showHistory(record.student)">{{l('History')}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div *ngIf="invoices && invoices.length == 0" class="form-group">
+        <label>{{l("NoInvoicesCreatedYet")}}</label>
+    </div>
+
+    <div class="form-group">
+        <div class="m--margin-top-30">
+            <div class="m--align-right">
+                <button type="button" (click)="createNewInvoice()"
+                    class="btn btn-primary mr-5">{{l("CreateNewInvoice")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

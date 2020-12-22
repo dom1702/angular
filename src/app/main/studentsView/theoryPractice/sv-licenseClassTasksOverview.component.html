@@ -1,0 +1,336 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-12">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("TasksOverview")}}</span>
+                </h3>
+                <span *ngIf="currentLicenseClass" class="m-section__sub">
+                    {{currentLicenseClass.token}} - {{currentLicenseClass.name}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">             
+                <div class="container" *ngIf="currentLicenseClass">  
+                    <div class="row">   
+                        <div class="col-sm-1"></div>                     
+                        <div class="col-sm-10">                                                             
+                            <tabset>
+                                <tab id="home">                                  
+                                    <ng-template tabHeading>                                                                                                                                                
+                                        <h6 class="flaticon-buildings"></h6>                                                                                                                                                                                                                          
+                                    </ng-template>   
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-sm-2 mb-2">
+                                                <img src="https://image.flaticon.com/icons/svg/84/84380.svg" style="max-width:150px; height:auto; width:100%;">
+                                            </div>
+                                            
+                                            <div class="col-sm-10">
+                                                <div>
+                                                    <h5>Welcome to {{currentLicenseClass.name}} - exercises.</h5>
+                                                    <span>Choose your exercise by clicking the tabs above. You can choose your exercise in random order. Finished series are marked green.</span>
+                                                    <span *ngIf="!currentLicenseClass.includePictureTasks">This license class does not include picture tasks, only the literary questions</span>
+                                                </div>
+                                                <div *ngIf="currentLicenseClass.vehicleDimensions" class="mt-3">                                                     
+                                                   <dimensionInfo [dimension]=currentLicenseClass.vehicleDimensions [classToken]="currentLicenseClass.token"></dimensionInfo>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>                                                                                                                                                                                                       
+                                </tab>
+                                <tab id="trafficSituations">                                  
+                                    <ng-template tabHeading>                                                                                                                                                
+                                        <h6>Traffic Situations</h6>                                                                                                                                                                                                                      
+                                    </ng-template>   
+                                    <div class="container">                                                                                                        
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="alert alert-info" role="alert">
+                                                        <span>Choose a question serie by clicking the numbered buttons right to the topics.</span>
+                                                    </div>
+                                                </div>          
+                                            </div>
+                                                                                                                   
+                                            <div class="row mb-4 mt-1">
+                                                <div class="col-sm-4">
+                                                    I can drive straight on using this lane
+                                                </div>  
+                                                                    
+                                                <div class="col" *ngFor="let series of driveStraightSeries">  
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 1" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 1" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>         
+                                                </div> 
+                                                <div class="col-2"></div>                                 
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I can turn right using this lane
+                                                </div>
+                                                <div class="col" *ngFor="let series of turnRightSeries">                                            
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 2" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 2" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I can turn left using this lane
+                                                </div>
+                                                <div class="col" *ngFor="let series of turnLeftSeries"> 
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 3" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 3" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I am going on straight, I have to give way to one or more road users in the picture
+                                                </div>
+                                                <div class="col" *ngFor="let series of giveWayStraightSeries">      
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 4" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 4" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I am turning right, I have to give way to one or more road users in the picture
+                                                </div>
+                                                <div class="col" *ngFor="let series of giveWayRightSeries">              
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 5" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 5" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I am turning left, I have to give way to one or more road user seen in the picture
+                                                </div>
+                                                <div class="col" *ngFor="let series of giveWayLeftSeries">
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div>
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 6" type="button" class="btn btn-success btn-sm mb-1" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 6" type="button" class="btn btn-danger btn-sm mb-1" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>                        
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I can start passing the car driving ahead me
+                                                </div>
+                                                <div class="col" *ngFor="let series of passingSeries"> 
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 7" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 7" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I can change lane
+                                                </div>
+                                                <div class="col" *ngFor="let series of changeLaneSeries">    
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 8" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 8" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row mb-4 justify-content-center">
+                                                <div class="col-sm-4">
+                                                    I have to stop
+                                                </div>
+                                                <div class="col" *ngFor="let series of stopSeries"> 
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 9" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 9" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+
+                                            <div class="row justify-content-center">
+                                                <div class="col-sm-4">
+                                                    The car in the picture is parked correctly
+                                                </div>
+                                                <div class="col" *ngFor="let series of parkedSeries"> 
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
+                                                    <ng-template #successBtn>
+                                                        <button *ngIf="series.groupId == 10" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>
+                                                    <ng-template #dangerBtn>
+                                                        <button *ngIf="series.groupId == 10" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                    </ng-template>  
+                                                </div>
+                                                <div class="col-2"></div>
+                                            </div>
+                                    </div>                                                                                                                                                                                                       
+                                </tab>
+                                <tab id="classQuestions">                                  
+                                    <ng-template tabHeading>                                                                                                                                                
+                                        <h6>Class questions</h6>                                                                                                                                                                                                                      
+                                    </ng-template> 
+                                    <div *ngIf="classQuestionSeries" class="container">
+                                        <div class="row">                      
+                                            <div class="col-sm-12">
+                                                <div class="alert alert-info" role="alert">
+                                                    <span>Choose a question serie by clicking the buttons below. Each serie includes 10 questions.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div *ngFor="let series of classQuestionSeries; index as i;">
+                                                <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div>
+                                                <ng-template #successBtn>
+                                                    <button type="button" class="btn btn-success btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                </ng-template>
+                                                <ng-template #dangerBtn>
+                                                    <button type="button" class="btn btn-danger btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                </ng-template>
+                                            </div>  
+                                        </div>                                     
+                                    </div>                                                                                                                                                                                                           
+                                </tab>
+                                <tab id="trafficSigns">                                  
+                                    <ng-template tabHeading>                                                                                                                                                
+                                        <h6>Traffic signs</h6>                                                                                                                                                                                                                      
+                                    </ng-template> 
+                                    <div *ngIf="trafficSignQuestionSeries" class="container">
+                                        <div class="row justify-content-center">                      
+                                            <div class="col-sm-12">
+                                                <div class="alert alert-info" role="alert">
+                                                    <span>You are going to be presented 10 traffic sign questions. Give your answer by clicking left mouse button on the correct picture. Correct names are displayed after your answer. There are 10 questions which are presented randomly. Your score is displayed after the test. </span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div> 
+                                        <div class="row justify-content-center">
+                                            
+                                                <div *ngFor="let series of trafficSignQuestionSeries; index as i;">
+                                                    <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div>
+                                                    <div class="col">
+                                                        <ng-template #successBtn>
+                                                            <button type="button" class="btn btn-success btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                        </ng-template>
+                                                        <ng-template #dangerBtn>
+                                                            <button type="button" class="btn btn-danger btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                        </ng-template>
+                                                    </div>
+                                                </div> 
+                                        </div>
+                                    </div>                                                                                                                                                                                                                         
+                                </tab>
+                                <tab id="exam">                                  
+                                    <ng-template tabHeading>                                                                                                                                                
+                                        <h6><b>Theory exam</b></h6>  
+                                                                                                                                                                                                                                                            
+                                    </ng-template>  
+                                    <div class="container" *ngIf="previewReceived">
+                                        <div class="row justify-content-center">
+                                            <div class="col-sm-2 mb-2">
+                                                <img src="https://image.flaticon.com/icons/svg/84/84380.svg" style="max-width:150px; height:auto; width:100%;">
+                                            </div>
+                                            
+                                            <div class="col-sm-10">
+                                                <div>
+                                                    <h2 class="mb-4">Theory exam</h2>
+                                                    <div class="mb-2">
+                                                        <span >Welcome to theory exam pratice for class {{currentLicenseClass.token}}!</span>
+                                                    </div>
+                                                    
+                                                    <div class="mb-2">
+                                                        <span>This test consists class questions ( {{classQuestionCount}} pcs), risk identifying questions ({{riskIdentifyingQuestionCount}} pcs) and traffic situation questions ({{trafficSituationQuestionCount}} pcs).</span>
+                                                    </div>
+                                                    
+                                                    <div class="mb-2">
+                                                        <span>Traffic situation questions have ten different serie which each have five situation picture. These questions are answered by using buttons Yes and No.</span>
+                                                    </div>
+                                                    
+                                                    <div class="mb-2">
+                                                        <span>It is also possible to Mark a question and return to it after all the questions.</span>
+                                                        <span> There is totally {{duration}} minutes to do the test. After that all the questions not answered are marked as incorrect.</span>
+                                                    </div>
+                                                    
+                                                    <div class="mb-2">
+                                                        <span>After the test you will get a result and feedback. The test will be acknowledged, if there are max. {{errorsClassCount}} incorrect answers in class questions, max {{errorsRiskIdentifyingCount}} in risk identifying questions and max. {{errorsTrafficSituationCount}} incorrect answers in traffic situation questions.</span>
+                                                    </div>
+                                                    
+                                                    <div class="mb-2" *ngIf="!currentLicenseClass.includePictureTasks">
+                                                        <span >This license class does not include picture tasks, only the literary questions</span>
+                                                    </div>
+
+                                                    <div *ngIf="currentLicenseClass.vehicleDimensions" class="mb-2">                                                    
+                                                        <dimensionInfo [dimension]="currentLicenseClass.vehicleDimensions" [classToken]="currentLicenseClass.token"></dimensionInfo>
+                                                    </div>
+
+                                                    <div>
+                                                        <button type="button"  class="btn btn-primary mr-5" 
+                                                            (click)="startTheoryExamSimulation()">  
+                                                            Start                 
+                                                        </button>
+                                                    </div> 
+                                                </div>       
+                                            </div>
+                                        </div> 
+                                    </div>                                                                                                                                                                                                          
+                                </tab>                                                         
+                            </tabset>                           
+                        </div> 
+                        <div class="col-sm-1"></div>                          
+                    </div>                                         
+                </div> 
+            </div>
+        </div>      
+    </div>
+</div>

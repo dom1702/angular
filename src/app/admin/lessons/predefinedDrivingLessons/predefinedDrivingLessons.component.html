@@ -1,0 +1,175 @@
+﻿<div [@routerTransition]>
+
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("PredefinedDrivingLessons")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("PredefinedDrivingLessonsHeaderInfo")}}
+                </span>
+            </div>
+            <div class="col-md-6 text-right">
+                <button *ngIf="isGranted('Pages.Administration.PredefinedDrivingLessons.Create')" (click)="createPredefinedDrivingLesson()" 
+                class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewPredefinedDrivingLesson")}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+
+				<form class="horizontal-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getPredefinedDrivingLessons()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						        <div class="m-separator m-separator--dashed"></div>
+						     </div>
+
+
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getPredefinedDrivingLessons($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Administration.PredefinedDrivingLessons.Edit', 'Pages.Administration.PredefinedDrivingLessons.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="predefinedDrivingLesson.name"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="number">
+                                        {{l('Number')}}
+                                        <p-sortIcon field="predefinedDrivingLesson.number"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="lessonIdString">
+                                        {{l('LessonIdString')}}
+                                        <p-sortIcon field="predefinedDrivingLesson.lessonIdString"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="length">
+                                        {{l('Length')}}
+                                        <p-sortIcon field="predefinedDrivingLesson.length"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="requiredForClasses">
+                                        {{l('RequiredForClasses')}}
+                                        <p-sortIcon field="predefinedDrivingLesson.requiredForClasses"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="notRequiredIfClasses">
+                                        {{l('NotRequiredIfClasses')}}
+                                        <p-sortIcon field="predefinedDrivingLesson.notRequiredIfClasses"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.Administration.PredefinedDrivingLessons.Edit', 'Pages.Administration.PredefinedDrivingLessons.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewPredefinedDrivingLessonModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.PredefinedDrivingLessons.Edit')"
+														(click)="createOrEditPredefinedDrivingLessonModal.show(record.predefinedDrivingLesson.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.PredefinedDrivingLessons.Delete')"
+														(click)="deletePredefinedDrivingLesson(record.predefinedDrivingLesson)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Name')}}</span>
+											{{record.predefinedDrivingLesson.name}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Number')}}</span>
+											{{record.predefinedDrivingLesson.number}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('LessonIdString')}}</span>
+											{{record.predefinedDrivingLesson.lessonIdString}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Length')}}</span>
+											{{record.predefinedDrivingLesson.length}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('RequiredForClasses')}}</span>
+											{{record.predefinedDrivingLesson.requiredForClasses}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('NotRequiredIfClasses')}}</span>
+											{{record.predefinedDrivingLesson.notRequiredIfClasses}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getPredefinedDrivingLessons($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditPredefinedDrivingLessonModal #createOrEditPredefinedDrivingLessonModal (modalSave)="getPredefinedDrivingLessons()"></createOrEditPredefinedDrivingLessonModal>
+    <viewPredefinedDrivingLessonModal #viewPredefinedDrivingLessonModal></viewPredefinedDrivingLessonModal>
+    
+  
+</div>

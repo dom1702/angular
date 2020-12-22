@@ -1,0 +1,76 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-12">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("PersonalScheduler")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("PersonalSchedulerHeaderInfo")}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div *ngIf="allowedToSeeOwnDrivingLessons && allowedToSeeOwnAppointments" class="m-portlet__body">
+                <div >
+                <h5 class="m--margin-top-30">{{l("Filter")}}</h5>
+                <div class="m--margin-top-20">
+                    <!-- <div class="row">
+                        <div class="col">
+                            <label class="m-checkbox">
+                                <input id="DrivingLessonFilter" type="checkbox" name="DrivingLessonFilter"
+                                    [(ngModel)]="eventTypeFilter.drivingLessons">
+                                {{"DrivingLessons" | localize}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label class="m-checkbox">
+                                <input type="checkbox" name="TheoryLessonFilter"
+                                    [(ngModel)]="eventTypeFilter.theoryLessons">
+                                {{"TheoryLessons" | localize}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label class="m-checkbox" name="OtherEventsFilter"  [(ngModel)]="eventTypeFilter.otherEvents" (click)="updateCurrentView()">
+                                <input type="checkbox" 
+                                  >
+                                {{"Appointments" | localize}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div> -->
+                    <div class="btn-group">
+                        <label  class="btn btn-primary" [(ngModel)]="eventTypeFilter.drivingLessons"
+                            (click)="updateCurrentView()" btnCheckbox tabindex="0"
+                            role="button">{{l("DrivingLessons")}}</label>
+                     
+                        <label class="btn btn-primary" [(ngModel)]="eventTypeFilter.otherEvents"
+                            (click)="updateCurrentView()" btnCheckbox tabindex="0"
+                            role="button">{{l("Appointments")}}</label>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <ejs-schedule #scheduleObj [allowDragAndDrop]='false' [eventSettings]='eventSettings'
+            [currentView]='currentView' 
+            startHour='06:00' endHour='23:00' [firstDayOfWeek]='1' 
+            locale='en'
+            (popupOpen)='onPopupOpen($event)' (cellClick)='onCellClick($event)'
+            (eventClick)='onEventClick($event)' (recordDoubleClick)='Doubleclick($event)'
+            (navigating)='navigating($event)' (actionComplete)='actionComplete($event)'
+            (created)='schedulerCreated($event)' (eventRendered)="onEventRendered($event)"></ejs-schedule>
+    </div>
+
+    <createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="updateCurrentView()">
+    </createOrEditDrivingLessonModal>
+    <createEventTypeModal #createEventTypeModal></createEventTypeModal>
+    <createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="updateCurrentView()">
+    </createOrEditTheoryLessonModal>
+    <createOrEditEventModal #createOrEditEventModal (modalSave)="updateCurrentView()"></createOrEditEventModal>
+</div>

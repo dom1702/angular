@@ -1,0 +1,19 @@
+.background {
+    z-index: 0;
+    top: 35px; 
+    left: 300px;  
+    position: absolute;
+
+    /*text*/
+    color: grey;
+    text-transform: uppercase;
+    padding: 8px;
+    font-size: 180px;
+}
+
+.tabButton {      
+    font-size: 16px;
+  }
+
+.tabButton:hover {color: royalblue;}
+

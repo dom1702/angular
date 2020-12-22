@@ -1,0 +1,17 @@
+
+ <div class="row">                                              
+    <div class="col-md-auto">
+        <p-card styleClass="ui-card-shadow">                                                                     
+            <div>
+                <span class="flaticon-exclamation"> Vehicle - {{classToken}} Dimensions:</span>
+            </div>                                        
+            <div style="font-size: 12px;font-weight: bold;">
+                <span>Length: {{dimension.maxLength}} m;</span>                
+                <span> Weight: {{getWeightText()}};</span>
+                <span *ngIf="dimension.height"> Height: {{dimension.height}} m;</span>
+                <span *ngIf="dimension.width">Width: {{dimension.width}} m;</span>
+            </div>                                                                                            
+        </p-card>
+    </div> 
+    <div class="col-sm-7"></div>                                         
+</div>   

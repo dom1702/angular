@@ -1,0 +1,53 @@
+<div *ngIf="student">
+
+    <div *ngIf="pricePackage">
+
+        <div class="m--margin-top-30">
+            <h6>{{l("Name")}} :</h6>
+            {{pricePackage.name}}
+        </div>
+
+        <div class="m--margin-top-40">
+
+            <h6>{{l("Products")}} :</h6>
+            <div class="m--margin-top-20">
+                <p-table [value]="pricePackage.products">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{l("Name")}}</th>
+                            <th>{{l("Qty")}}</th>
+                            <th>{{l("ItemVat")}}</th>
+                            <th>{{l("PriceAfterVat")}}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td>{{product.productName}}</td>
+                            <td>{{product.quantity}}</td>
+                            <td>{{product.itemVat}}</td>
+                            <td>{{product.priceAfterVat}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+        <div class="m--margin-top-30">
+            <div class="m--align-right">
+
+
+                <button type="button" (click)="editPricePackage()" class="btn btn-primary mr-5">{{l("EditPricePackage")}}</button>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="!pricePackage">
+        <h6 style="color:red">{{l("NoPricePackageAssignedYet")}}!</h6>
+    </div>
+
+
+</div>
+
+<createOrEditPricePackageModal #createOrEditPricePackageModal (modalSave)="updatePricePackage()"></createOrEditPricePackageModal>

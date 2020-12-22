@@ -1,0 +1,51 @@
+.selectedTab {
+    color: rgb(0, 100, 255);
+    opacity: 0.75;  
+  }
+
+.finishedTab {
+    color: rgb(0, 100, 50);  
+}
+ 
+.closedTab {
+    color: rgb(124, 124, 124);
+    cursor: no-drop; 
+}
+
+.defaultTab {
+    color: rgb(124, 124, 124);
+}
+
+.cancelTab {
+    color: rgb(255, 50, 0);  
+}
+
+.defaultNavButton {
+  border: none;
+  background-color: white;
+  color: rgb(124, 124, 124);
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer; 
+}
+
+.cancelNavButton {
+    border: none;
+    background-color: white ;
+    color:  rgb(255, 50, 0);
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+.defaultTab:hover {color: rgb(0, 100, 255);}
+.defaultNavButton:hover{color: rgb(0, 100, 255);}
+.finishedTab:hover {opacity: 1;}
+.selectedTab:hover {opacity: 1;}
+.cancelTab:hover {opacity: 1;}

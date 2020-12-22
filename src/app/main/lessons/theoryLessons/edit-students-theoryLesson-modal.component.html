@@ -1,0 +1,122 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #theoryLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("EditStudentsList")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                     <!-- START -->
+                    <br/>
+                    <div  class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12"
+                            [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTableStudents
+                                        (onLazyLoad)="updateStudents($event)"
+                                        [value]="primengTableHelper.records"
+                                        rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                        [paginator]="false"
+                                        [lazy]="true"
+                                        [scrollable]="true"
+                                        ScrollWidth="100%"
+                                        [responsive]="primengTableHelper.isResponsive"
+                                        [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px" [hidden]="!isGrantedAny('Pages.TheoryLessons.Edit', 'Pages.TheoryLessons.Delete')">{{l('Actions')}}</th>
+                                        <th style="width: 100px" pSortableColumn="id">
+                                            {{l('Id')}}
+                                            <p-sortIcon field="id"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="firstName">
+                                            {{l('FirstName')}}
+                                            <p-sortIcon field="firstName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="lastName">
+                                            {{l('LastName')}}
+                                            <p-sortIcon field="lastName"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>                           
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.TheoryLessons.Edit', 'Pages.TheoryLessons.Delete')">
+                                            <!-- <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                </button>
+                                                    <ul class="dropdown-menu"  *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.TheoryLessons.Delete')"
+                                                            (click)="deleteStudentFromTheoryLesson(record.id)">{{l('Delete')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div> -->
+                                            <div class="input-group">
+                                                <div class="input-group-append">
+                                                    <button type="button"  class="btn btn-danger btn-icon" (click)="openStudentViewModal(record.id)" aria-label="Close"><i class="fa fa-user"></i></button>
+                                                </div> <div class="input-group-prepend">
+                                                    <button type="button"  class="btn btn-danger btn-icon" (click)="deleteStudentFromTheoryLesson(record.id)" aria-label="Close"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                            
+                                        </td>
+
+                                        <td style="width:100px">
+                                                <span class="ui-column-title"> {{l('Id')}}</span>
+                                                {{record.id}}
+                                            </td>
+                                        <td style="width:150px">
+                                                <span class="ui-column-title"> {{l('FirstName')}}</span>
+                                                {{record.firstName}}
+                                            </td>
+                                        <td style="width:150px">
+                                                <span class="ui-column-title"> {{l('LastName')}}</span>
+                                                {{record.lastName}}
+                                            </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                            #paginatorStudents
+                                            (onPageChange)="updateStudents($event)"
+                                            [totalRecords]="primengTableHelper.totalRecordsCount"
+                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                    <!--<Primeng-Datatable-End>-->
+                    </div>
+
+                    <br/>
+                    <div class="form-group">
+                        <button class="btn btn-primary blue" (click)="openSelectStudentModal()" type="button"><i class="fa fa-search"></i> {{l("AddStudent")}}</button>
+                    </div>
+                <!--END-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" (click)="close()">{{l("Ok")}}</button>
+                    <!-- <button type="submit" class="btn btn-primary blue" [disabled]="!theoryLessonForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <theoryLesson-studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()"></theoryLesson-studentLookupTableModal>
+    <viewStudentModal #viewStudentModal></viewStudentModal>
+</div>

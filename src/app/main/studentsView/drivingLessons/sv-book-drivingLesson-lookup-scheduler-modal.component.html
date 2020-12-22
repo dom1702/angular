@@ -1,0 +1,35 @@
+<div bsModal #schedulerModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog" aria-labelledby="schedulerModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #drivingLessonForm="ngForm" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span> Look for your preferred period </span>               
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                </div>
+                <div class="modal-body">
+                 
+                    <ejs-schedule #scheduleObj [allowDragAndDrop]='false' [eventSettings]='eventSettings'
+                    [currentView]='currentView' (popupOpen)='onPopupOpen($event)' 
+                    (cellClick)='onCellClick($event)'
+                    (navigating)='navigating($event)' (actionComplete)='actionComplete($event)'
+                    (eventRendered)="onEventRendered($event)">
+                        <e-views>                          
+                                <e-view option='Week' [showWeekNumber]="showWeekNumber"></e-view>                                                      
+                        </e-views>
+                    </ejs-schedule>
+					
+                </div>
+                <div class="modal-footer">                   
+                    <button type="submit" class="btn btn-primary blue">
+                        <i class="fa fa-save"></i> <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+   
+</div>

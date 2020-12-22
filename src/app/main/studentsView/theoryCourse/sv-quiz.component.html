@@ -1,0 +1,321 @@
+<div [@routerTransition]>
+    <div *ngIf="currentSession; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+        <div class="m-subheader">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto col-md-9">
+                    <h3 class="m-subheader__title m-subheader__title--separator">
+                        {{currentSession.quiz.quizTitle}}
+                    </h3>
+                    <span class="m-section__sub">
+                        Part {{currentSession.progress+1}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #elseBlock>
+        <div class="m-subheader">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto col-md-9">
+                    <h3 class="m-subheader__title m-subheader__title--separator">
+                        Lesson Room
+                    </h3>                   
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <tabset [justified]="true" #quizTabs>
+                            <!-- <tab id="start" disabled="true">
+                                <ng-template tabHeading>
+                                    <div class="defaultTab">
+                                        <button class="defaultNavButton" (click)="startTabSelected()">
+                                            <span class="flaticon-buildings"><h5>Start</h5></span>                                           
+                                        </button>
+                                    </div>                                 
+                                </ng-template>                                                               
+                            </tab> -->
+
+                            <div *ngIf="quizAborted || quizFinished; then emptyTabs else quizTabs"></div>
+                            <ng-template #emptyTabs>                
+                                <tab *ngFor="let tab of tabsData; index as i;" [disabled]="tab.disabled" [id]="tab.id" [active]="tab.active">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            
+                                            <div *ngIf="tab.video; then thenBlock else elseBlock"></div>
+                                            <ng-template #thenBlock>
+                                                <ng-template tabHeading>
+                                                    <div class={{tab.stylingClass}}>
+                                                        <h4>
+                                                            <span class="flaticon-medical"></span>
+                                                            {{tab.heading}}
+                                                            <span class="flaticon-lock customClass" *ngIf="tab.disabled"></span>
+                                                            <span class="flaticon-trophy" *ngIf="tab.finished"></span>
+                                                        </h4>  
+                                                    </div>
+                                                </ng-template>                                                   
+                                            </ng-template>
+
+                                            <ng-template #elseBlock>
+                                                <ng-template tabHeading>
+                                                    <div class={{tab.stylingClass}}>      
+                                                        <h4>
+                                                            <span class="flaticon-edit"></span>
+                                                            {{tab.heading}}
+                                                            <span class="flaticon-lock customClass" *ngIf="tab.disabled"></span>
+                                                            <span class="flaticon-trophy" *ngIf="tab.finished"></span>
+                                                        </h4>                                                   
+                                                    </div>
+                                                </ng-template>                     
+                                            </ng-template>                                                                          
+                                            
+                                        </div>
+                                    </div>
+                                </tab>
+
+                                <div *ngIf="quizFinished; then finishedPage else closedPage"></div>
+                                <ng-template  #finishedPage>
+                                    <finishedTab 
+                                        (loadQuiz) = onContinueLesson()
+                                        [currentLesson]= currentSession.predefindedQuizId></finishedTab>
+                                </ng-template>
+                                <ng-template #closedPage>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <closedTab                                
+                                                [aborted] = quizAborted
+                                                [quizParts] = sheetNumber
+                                                (quizMayStart) = onQuizStart($event)>
+                                            </closedTab>  
+                                        </div>
+                                    </div>
+                                </ng-template>                               
+                            </ng-template>
+
+                            <ng-template #quizTabs>
+                                <tab *ngFor="let tab of tabsData; index as i;" [disabled]="tab.disabled" [id]="tab.id"
+                                    [active]="tab.active" (selectTab)="onSelect($event)">
+                                                                     
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <span>Lesson room closes at {{closingTime.format("HH.mm")}} </span>
+                                        </div>
+                                        
+                                        <div class="col-sm-6">
+                                            <span>Mandatory minimum time for this part:
+                                                {{tab.mandatoryTime}} minutes </span>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <h3 class="m-portlet__head-text">
+                                                {{tab.title}}
+                                            </h3>  
+                                            <hr class="ng-tns-c19-1">           
+                                        </div>       
+                                    </div>
+                                    <div class="m--space-10"></div>
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            
+                                            <div *ngIf="tab.video; then thenBlock else elseBlock"></div>
+                                            <ng-template #thenBlock>
+                                                <ng-template tabHeading>
+                                                    <div class={{tab.stylingClass}}>
+                                                        <h4>
+                                                            <span class="flaticon-medical"></span>
+                                                            {{tab.heading}}
+                                                            <span class="flaticon-lock customClass" *ngIf="tab.disabled"></span>
+                                                            <span class="flaticon-trophy" *ngIf="tab.finished"></span>
+                                                        </h4>  
+                                                    </div>
+                                                </ng-template>          
+                                                        
+                                                <div class="embed-responsive embed-responsive-16by9">
+                                                    <iframe class="embed-responsive-item"
+                                                        [src]="tab.video | safeUrl"
+                                                        frameborder='0'
+                                                        allowfullscreen>
+                                                    </iframe>      
+                                                </div>                                                                                                                                                                                                                                                                                                                  
+                                            </ng-template>
+
+                                            <ng-template #elseBlock>
+                                                <ng-template tabHeading>
+                                                    <div class={{tab.stylingClass}}>      
+                                                        <h4>
+                                                            <span class="flaticon-edit"></span>
+                                                            {{tab.heading}}
+                                                            <span class="flaticon-lock customClass" *ngIf="tab.disabled"></span>
+                                                            <span class="flaticon-trophy" *ngIf="tab.finished"></span>
+                                                        </h4>                                                   
+                                                    </div>
+                                                </ng-template>   
+                                                    <question *ngFor="let question of tab.content" 
+                                                        #questions                         
+                                                        [quest]="question.quest"
+                                                        [nr]="question.nr" 
+                                                        [answerOptions]="question.answerOptions"
+                                                        [correctAnswer]="question.correctAnswer" 
+                                                        [pictureUrl]="question.pictureUrl"
+                                                        (valueSelected)="onValueSelected($event)">
+                                                    </question>                                                                                                  
+                                            </ng-template>
+                                                             
+                                            <p-messages [(value)]="messages" [closable]="true"></p-messages>
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-md-auto">
+                                            <button *ngIf="!quizAborted && !quizFinished" type="button"                                            
+                                                (click)="updateQuizProgress()"
+                                                class="btn btn-primary mr-5"> Save </button>                                                                        
+                                        </div>                                     
+                                    </div>
+                                </tab>
+                            </ng-template>
+
+                            <!-- <tab *ngFor="let tab of tabsData; index as i;" [disabled]="tab.disabled" [id]="tab.id"
+                                [active]="tab.active" (selectTab)="onSelect($event)">
+                                                                     
+                                <div class="row" *ngIf="!isClosed && !quizAborted && !quizFinished">
+                                    <div class="col-sm-6">
+                                        <span>Lesson room closes at {{closingTime.format("HH.ss")}} </span>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <span>Mandatory minimum time for this part:
+                                            {{getTimeInMinutes(tab.mandatoryTime)}} </span>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <h3 class="m-portlet__head-text">
+                                            {{tab.title}}
+                                        </h3>  
+                                        <hr class="ng-tns-c19-1">           
+                                    </div>       
+                                </div>
+                                <div class="m--space-10"></div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        
+                                        <div *ngIf="tab.video; then thenBlock else elseBlock"></div>
+                                        <ng-template #thenBlock>
+                                            <ng-template tabHeading>
+                                                <div class={{tab.stylingClass}}>
+                                                    <h4>
+                                                        <span class="flaticon-medical"></span>
+                                                        {{tab.heading}}
+                                                        <span class="flaticon-lock customClass" *ngIf="tab.disabled"></span>
+                                                        <span class="flaticon-trophy" *ngIf="tab.finished"></span>
+                                                    </h4>  
+                                                </div>
+                                            </ng-template>
+
+                                            <div *ngIf="isClosed || quizAborted; then closedBlock else quizBlock"></div>
+                                            <ng-template #closedBlock>
+                                                <closedTab                                
+                                                    [closed] = isClosed
+                                                    [closingTime] = closingTime
+                                                    [aborted] = quizAborted
+                                                    (abortedChanged) = onAbortedChanged($event)>
+                                                </closedTab>                                               
+                                            </ng-template>
+                                            <ng-template #quizBlock> 
+                                                <div *ngIf="quizFinished; then finishedPage else quizPage"></div> 
+                                                    <ng-template #finishedPage>
+                                                        <finishedTab (loadQuiz) = onContinueLesson()></finishedTab>
+                                                    </ng-template>
+                                                    <ng-template #quizPage>
+                                                        <div class="embed-responsive embed-responsive-16by9">
+                                                            <iframe class="embed-responsive-item"
+                                                                [src]="tab.video | safeUrl"
+                                                                frameborder='0'
+                                                                allowfullscreen>
+                                                            </iframe>      
+                                                        </div>     
+                                                    </ng-template>                                                                                                                                                                                                              
+                                            </ng-template>                  
+                                        </ng-template>
+
+                                        <ng-template #elseBlock>
+                                            <ng-template tabHeading>
+                                                <div class={{tab.stylingClass}}>      
+                                                    <h4>
+                                                        <span class="flaticon-edit"></span>
+                                                        {{tab.heading}}
+                                                        <span class="flaticon-lock customClass" *ngIf="tab.disabled"></span>
+                                                        <span class="flaticon-trophy" *ngIf="tab.finished"></span>
+                                                    </h4>                                                   
+                                                </div>
+                                            </ng-template>
+
+                                            <div *ngIf="isClosed || quizAborted; then closedBlock else quizBlock"></div>
+                                            <ng-template #closedBlock>
+                                                <closedTab                         
+                                                    [closed] = isClosed 
+                                                    [closingTime] = closingTime
+                                                    [aborted] = quizAborted
+                                                    (abortedChanged) = onAbortedChanged($event)>
+                                                </closedTab>                   
+                                            </ng-template>
+                                            <ng-template #quizBlock>
+                                                <div *ngIf="quizFinished; then finishedPage else quizPage"></div> 
+                                                <ng-template #finishedPage>
+                                                    <finishedTab (loadQuiz) = onContinueLesson()></finishedTab>
+                                                </ng-template>
+                                                <ng-template #quizPage>
+                                                    <question *ngFor="let question of tab.content" 
+                                                        #questions                         
+                                                        [quest]="question.quest"
+                                                        [nr]="question.nr" 
+                                                        [answerOptions]="question.answerOptions"
+                                                        [correctAnswer]="question.correctAnswer" 
+                                                        [pictureUrl]="question.pictureUrl"
+                                                        (valueSelected)="onValueSelected($event)">
+                                                    </question>
+                                                </ng-template>
+                                            </ng-template>
+                                        </ng-template>
+                                    
+                                        <button *ngIf="!quizAborted && !quizFinished" pButton type="button" 
+                                            label="Save" 
+                                            (click)="updateQuiz()"
+                                            class="ui-button-raised">
+                                        </button>
+                                        <p-messages [(value)]="messages" [closable]="true"></p-messages>
+                                    </div>
+                                </div>                               
+                            </tab> -->
+
+                            <tab id="cancel" disabled="true">                                  
+                                <ng-template tabHeading>                                                                
+                                    <div *ngIf="quizAborted; then homeBlock else cancelBlock"></div> 
+                                    <ng-template #homeBlock>                  
+                                    </ng-template>
+                                    <ng-template #cancelBlock>
+                                        <button class="cancelNavButton" (click)="cancelTabSelected()">
+                                            <span class="flaticon-cancel"></span>
+                                            <h6>Cancel</h6>
+                                        </button> 
+                                    </ng-template>                                                                                                           
+                                </ng-template>                                                                                                                                                                                                           
+                            </tab>
+
+                        </tabset>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

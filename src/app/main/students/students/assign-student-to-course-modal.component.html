@@ -1,0 +1,86 @@
+<div bsModal #assignToCourseModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="assignToCourseModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #studentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span>{{l("AssignToCourse")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="form-group">
+						<label>{{l("Name")}}: </label><br>
+						<label>{{student.firstName}} {{student.lastName}}</label>
+					</div>
+
+					<div class="form-group">
+						<label class="m-checkbox">
+							<input type="checkbox" name="showExpiredCourses" [(ngModel)]="showExpiredCourses" (change)="showExpiredCoursesChanged()">
+							{{l("ShowExpiredCourses")}}
+							<span></span>
+						</label>
+					</div>
+					<div class="form-group">
+						<label>Course: *</label><br>
+						<select required *ngIf="availableCourses" name="selectedCourse" class="form-control"
+							(change)="selectedPricePackage = null" [(ngModel)]="selectedCourse">
+							<option *ngFor="let course of availableCourses" [ngValue]="course">
+								{{course.courseName}}
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label *ngIf="selectedCourse">Price Package: *</label><br>
+						<select required *ngIf="selectedCourse" name="pricePackage" class="form-control"
+							[(ngModel)]="selectedPricePackage">
+							<option *ngFor="let pp of selectedCourse.availablePricePackages" [ngValue]="pp">
+								{{pp.name}}
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<div class="m-checkbox-list">
+							<label class="m-checkbox">
+								<input type="checkbox" name="EnrollmentMail" [(ngModel)]="sendEnrollmentMail">
+								{{l("SendEnrollmentEmail")}}
+								<span></span>
+							</label>
+						</div>
+					</div>
+					<!-- <div class="form-group m-form__group">
+						<label for="PricePackage">{{l("PricePackage")}}</label>
+						<div class="input-group">
+							<input class="form-control" id="pricePackageName" name="pricePackageName"
+								[(ngModel)]="pricePackageName" type="text" disabled>
+							<div class="input-group-append">
+								<button class="btn btn-primary blue" (click)="openSelectPricePackageModal()"
+									type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+							</div>
+							<div class="input-group-prepend">
+								<button class="btn btn-danger btn-icon" type="button"
+									(click)="setPricePackageIdNull()"><i class="fa fa-times"></i></button>
+							</div>
+						</div>
+					</div>
+					<input class="form-control" name="student.pricePackageId" [(ngModel)]="student.pricePackageId"
+						type="text" hidden> -->
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!studentForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- <pricePackageLookupTableModal #pricePackageLookupTableModal (modalSave)="getNewPricePackageId()"></pricePackageLookupTableModal> -->
+
+</div>

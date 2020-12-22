@@ -1,0 +1,133 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #enrollmentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="enrollment.id">{{l("EditEnrollment")}}</span>
+						<span *ngIf="!enrollment.id">{{l("CreateNewEnrollment")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+
+					<div class="form-group m-form__group">
+						<label for="CourseName">{{l("Course")}}</label>
+						<select name="enrollment.courseId" [(ngModel)]="enrollment.courseId" class="form-control"
+							required>
+					
+							<option *ngFor="let item of allCourses" value="{{item.id}}">{{item.displayName}}</option>
+						</select>
+					</div>
+
+					<div class="form-group m-form__group">
+						<label for="OfficeName">{{l("Office")}}</label>
+						<select name="enrollment.officeId" [(ngModel)]="enrollment.officeId" class="form-control">
+						
+							<option *ngFor="let item of allOffices" value="{{item.id}}">{{item.displayName}}</option>
+						</select>
+					</div>
+
+
+					<div class="form-group">
+						<label for="Enrollment_FirstName">{{l("FirstName")}}</label>
+						<input type="text" id="Enrollment_FirstName" class="form-control"
+							[(ngModel)]="enrollment.firstName" name="FirstName" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_LastName">{{l("LastName")}}</label>
+						<input type="text" id="Enrollment_LastName" class="form-control"
+							[(ngModel)]="enrollment.lastName" name="LastName" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_SocialSecurityNo">{{l("SocialSecurityNo")}}</label>
+						<input type="text" id="Enrollment_SocialSecurityNo" class="form-control"
+							[(ngModel)]="enrollment.socialSecurityNo" name="SocialSecurityNo" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_Street">{{l("Street")}}</label>
+						<input type="text" id="Enrollment_Street" class="form-control" [(ngModel)]="enrollment.street"
+							name="Street" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_ZipCode">{{l("ZipCode")}}</label>
+						<input type="text" id="Enrollment_ZipCode" class="form-control" [(ngModel)]="enrollment.zipCode"
+							name="ZipCode" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_Phone">{{l("Phone")}}</label>
+						<input type="text" id="Enrollment_Phone" class="form-control" [(ngModel)]="enrollment.phone"
+							name="Phone" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_Email">{{l("Email")}}</label>
+						<input type="text" id="Enrollment_Email" class="form-control" [(ngModel)]="enrollment.email"
+							name="Email" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersSocialSecurityNo">{{l("PayersSocialSecurityNo")}}</label>
+						<input type="text" id="Enrollment_PayersSocialSecurityNo" class="form-control"
+							[(ngModel)]="enrollment.payersSocialSecurityNo" name="PayersSocialSecurityNo" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersName">{{l("PayersName")}}</label>
+						<input type="text" id="Enrollment_PayersName" class="form-control"
+							[(ngModel)]="enrollment.payersName" name="PayersName" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersStreet">{{l("PayersStreet")}}</label>
+						<input type="text" id="Enrollment_PayersStreet" class="form-control"
+							[(ngModel)]="enrollment.payersStreet" name="PayersStreet" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersZipCode">{{l("PayersZipCode")}}</label>
+						<input type="text" id="Enrollment_PayersZipCode" class="form-control"
+							[(ngModel)]="enrollment.payersZipCode" name="PayersZipCode" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersCity">{{l("PayersCity")}}</label>
+						<input type="text" id="Enrollment_PayersCity" class="form-control"
+							[(ngModel)]="enrollment.payersCity" name="PayersCity" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersPhone">{{l("PayersPhone")}}</label>
+						<input type="text" id="Enrollment_PayersPhone" class="form-control"
+							[(ngModel)]="enrollment.payersPhone" name="PayersPhone" />
+					</div>
+
+					<div class="form-group">
+						<label for="Enrollment_PayersEmail">{{l("PayersEmail")}}</label>
+						<input type="text" id="Enrollment_PayersEmail" class="form-control"
+							[(ngModel)]="enrollment.payersEmail" name="PayersEmail" />
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!enrollmentForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

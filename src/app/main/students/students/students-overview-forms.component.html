@@ -1,0 +1,64 @@
+<div *ngIf="student">
+
+    <div class="form-group">
+        <div class="btn-group" dropdown>
+            <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                aria-controls="dropdown-animated">
+                {{l("ChooseForm")}} <span class="caret"></span>
+            </button>
+            <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu"
+                aria-labelledby="button-animated">
+                <li *ngFor="let form of availableForms" role="menuitem" (click)="formSelected(form)">
+                    <a class="dropdown-item">{{form.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div *ngIf="selectedForm" class="form-group">
+        <div class="col-6 alert alert-dark">
+
+            <div class="row">
+                <div class="col-md-6 my-auto">
+                    <label>{{l("SelectedForm")}}: </label><br>
+                    <p class="font-weight-bold">{{selectedForm.name}}</p>
+                </div>
+                <div class="col-md-6 my-auto">
+                    <button type="button" (click)="downloadForm()" class="btn btn-primary">{{l("DownloadForm")}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="createdForms && createdForms.length > 0" class="form-group">
+        <p-table [value]="createdForms">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>{{l("FormName")}}</th>
+                    <th>{{l("CreationTime")}}</th>
+                    <th>{{l("CreatedBy")}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-form>
+                <tr>
+                    <td>{{form.formName}}</td>
+                    <td>{{form.creationDate  | momentFormat:'lll'}}</td>
+                    <td>{{form.createdByName}}</td>
+
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div *ngIf="createdForms && createdForms.length == 0" class="form-group">
+        <label>{{l("NoFormsCreatedYet")}}</label>
+    </div>
+
+    <!-- <div class="form-group">
+        <div class="m--margin-top-30">
+            <div class="m--align-right">
+                <button type="button" (click)="createNewInvoice()" class="btn btn-primary mr-5">Create new
+                    invoice</button>
+            </div>
+        </div>
+    </div> -->
+</div>

@@ -1,0 +1,104 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #simulatorForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="simulator.id">{{l("EditSimulator")}}</span>
+                        <span *ngIf="!simulator.id">{{l("CreateNewSimulator")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group m-form__group">
+                        <label for="OfficeName">{{l("Office")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="OfficeName" name="officeName" [(ngModel)]="officeName"
+                                type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectOfficeModal()" type="button"><i
+                                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setOfficeIdNull()"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="simulator.officeId" [(ngModel)]="simulator.officeId" type="text"
+                        hidden>
+
+
+                    <div class="form-group">
+                        <label for="Simulator_Name">{{l("Name")}} *</label>
+                        <input type="text" id="Simulator_Name" class="form-control" [(ngModel)]="simulator.name"
+                            name="Name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Simulator_Model">{{l("Model")}}</label>
+                        <input type="text" id="Simulator_Model" class="form-control" [(ngModel)]="simulator.model"
+                            name="Model" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Simulator_Type">{{l("SimulatorType")}}</label>
+                        <select class="form-control" name="SimulatorType" id="Simulator_Type" [(ngModel)]="simulator.simulatorType">
+                        <option value="0">{{l('Edusim')}}</option>
+
+                        <option value="1">{{l('EdusimTruck')}}</option>
+
+
+                        </select>
+                    </div>
+
+                    <label for="Simulator_SimulatorCode">{{l("SimulatorCode")}} *</label>
+                    <div class="row justify-content-md-center">
+                        <div class="col">
+                            <div class="form-group">
+                                
+                                <input type="text" id="Simulator_SimulatorCode" class="form-control"
+                                    [(ngModel)]="simulatorCode" name="SimulatorCode" readonly required />
+                            </div>
+                        </div>
+                        <div class="col-md-auto">
+
+                            <button (click)="generateNewCode()" class="btn btn-primary blue" type="button">
+                                {{l("Generate")}}</button>
+                                <button (click)="copy()" class="btn btn-primary blue" type="button"><i class="fa fa-clipboard"></i>
+                                    {{l("Copy")}}</button>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Simulator_InUse" class="kt-checkbox">
+                            <input id="Simulator_InUse" type="checkbox" name="InUse" [(ngModel)]="simulator.inUse">
+                            {{l("InUse")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!simulatorForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <simulatorOfficeLookupTableModal #simulatorOfficeLookupTableModal (modalSave)="getNewOfficeId()">
+    </simulatorOfficeLookupTableModal>
+
+</div>

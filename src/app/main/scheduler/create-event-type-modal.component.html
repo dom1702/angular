@@ -1,0 +1,18 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+    
+                <button *ngIf="allowCreateDrivingLesson" [disabled]="saving" type="button" class="btn btn-default" (click)="openDrivingLessonModal()">{{l("DrivingLesson")}}</button>
+                <button *ngIf="allowCreateSimulatorLesson" [disabled]="saving" type="button" class="btn btn-default" (click)="openSimulatorLessonModal()">{{l("SimulatorLesson")}}</button>
+                <button *ngIf="allowCreateTheoryLesson" [disabled]="saving" type="button" class="btn btn-default" (click)="openTheoryLessonModal()">{{l("TheoryLesson")}}</button>
+                <button *ngIf="allowCreateEvent" [disabled]="saving" type="button" class="btn btn-default" (click)="openEventModal()">{{l("Event")}}</button>
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+
+        </div>
+    </div>
+
+    <!-- <drivingLessonTopicLookupTableModal #drivingLessonTopicLookupTableModal (modalSave)="getNewTopic()"></drivingLessonTopicLookupTableModal>
+    <studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()"></studentLookupTableModal>
+	<licenseClassLookupTableModal #licenseClassLookupTableModal (modalSave)="getNewLicenseClass()"></licenseClassLookupTableModal>
+         -->
+</div>

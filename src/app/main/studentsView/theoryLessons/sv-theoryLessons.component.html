@@ -1,0 +1,219 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-md-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    Theory Lessons
+                </h3>
+                <span class="m-section__sub">
+                    Review your past theory lessons
+                </span>
+            </div>
+            <div class="col-3">
+
+            </div>
+            <div *ngIf="selectedStudentCourse != null" class="col-3">
+
+                <label>Course: </label><br>
+                <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged()">
+                    <option *ngFor="let course of studentCourses" [ngValue]="course">
+                        {{course.name}}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <div *ngIf="selectedStudentCourse != null">
+                    <h5 class="text-md-center">{{l("TheoryLessons")}} </h5>
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 col-sm-12">
+                                <div class="m--margin-top-15">
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            {{('Legend')}}
+                                        </div>
+                                        <div class="card-body">
+                                            <div><i class="fa fa-times-circle" title="True"></i><label
+                                                    style="padding-left:10px">{{('NotStarted')}}</label></div>
+                                            <div><i class="fa fa-spinner" title="False"></i><label
+                                                    style="padding-left:10px">{{('Running')}}</label>
+                                            </div>
+                                            <div><i class="fa fa-check-circle m--font-success" title="False"></i><label
+                                                    style="padding-left:10px">{{('Completed')}}</label></div>
+                                            <div><i class="fa fa-times-circle m--font-danger" title="False"></i><label
+                                                    style="padding-left:10px">{{('Canceled')}}</label></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-sm-12">
+                                <div class="m--margin-top-20">
+                                    <div class="row">
+                                        <div class="col-6" *ngFor="let ptl of theoryLessons; index as i">
+                                            <div *ngIf="ptl.currentState === 0" class="text-center"><i
+                                                    class="fa fa-times-circle"
+                                                    title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                            <div *ngIf="ptl.currentState === 1" class="text-center"><i
+                                                    class="fa fa-spinner"
+                                                    title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                            <div *ngIf="ptl.currentState === 2" class="text-center"><i
+                                                    class="fa fa-check-circle m--font-success"
+                                                    title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                            <div *ngIf="ptl.currentState === 3" class="text-center"><i
+                                                    class="fa fa-times-circle m--font-danger"
+                                                    title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m--margin-top-50">
+                        <h5 class="text-md-center">{{l("Details")}} </h5>
+                    </div>
+                    <div class="m--margin-top-20">
+                        <!-- <p-table [value]="theoryLessonsList">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>{{l("StartTime")}}</th>
+                                <th>{{l("LessonLength")}}</th>
+                                <th>{{l("LicenseClass")}}</th>
+                                <th>{{l("Topic")}}</th>
+                                <th>{{l("Description")}}</th>
+                                <th>{{l("Office")}}</th>
+                                <th>{{l("Instructor")}}</th>
+                                <th>{{l("Status")}}</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-lesson>
+                            <tr>
+                                <td>{{lesson.startTime}}</td>
+                                <td>{{lesson.LessonLength}}</td>
+                                <td>{{lesson.licenseClass}}</td>
+                                <td>{{lesson.topic}}</td>
+                                <td>{{lesson.description}}</td>
+                                <td>{{lesson.office}}</td>
+                                <td>{{lesson.instructorNames}}</td>
+                                <td>
+                                    <div *ngIf="lesson.currentState === 0"><i class="fa fa-times-circle"
+                                            title="False"></i><label
+                                            style="padding-left:10px">{{('NotStarted')}}</label></div>
+                                    <div *ngIf="lesson.currentState === 1"><i class="fa fa-spinner"
+                                            title="True"></i><label style="padding-left:10px">{{('Running')}}</label>
+                                    </div>
+                                    <div *ngIf="lesson.currentState === 2"><i class="fa fa-check-circle m--font-success"
+                                            title="True"></i><label style="padding-left:10px">{{('Completed')}}</label>
+                                    </div>
+                                    <div *ngIf="lesson.currentState === 3"><i class="fa fa-times-circle m--font-danger"
+                                            title="True"></i><label style="padding-left:10px">{{('Canceled')}}</label>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </ng-template>
+                    </p-table> -->
+                        <div class="row align-items-center">
+                            <!--<Primeng-Datatable-Start>-->
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable [value]="primengTableHelper.records"
+                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="primengTableHelper.isResponsive" [resizableColumns]="false">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width: 150px">
+                                                {{l('StartTime')}}
+                                            </th>
+                                            <th style="width: 150px">
+                                                {{l('Topic')}}
+
+                                            </th>
+                                            <th style="width: 150px">
+                                                {{l('Instructors')}}
+
+                                            </th>
+
+                                            <th style="width: 50px">
+                                                {{l('Length')}}
+
+                                            </th>
+
+                                            <th style="width: 100px">
+                                                {{l('Completed')}}
+
+                                            </th>
+
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-record="$implicit">
+                                        <tr>
+                                            <td style="width:150px">
+                                                <span class="ui-column-title"> {{l('StartTime')}}</span>
+                                                <span *ngIf="record.startTime">
+                                                    {{record.startTime | momentFormat:'llll'}}
+                                                    <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
+                                                </span>
+                                                <span *ngIf="!record.startTime">-</span>
+                                            </td>
+                                            <td style="width:150px">
+                                                <span class="ui-column-title"> {{l('Topic')}}</span>
+                                                {{record.topic}}
+                                            </td>
+                                            <td style="width:150px">
+                                                <span class="ui-column-title"> {{l('Instructors')}}</span>
+                                                {{record.instructorNames}}
+                                            </td>
+                                            <td style="width:50px">
+                                                <span class="ui-column-title"> {{l('Length')}}</span>
+                                                {{record.lessonLength}}
+                                            </td>
+
+                                            <td style="width:100px">
+                                                <span class="ui-column-title"> {{l('Completed')}}</span>
+                                                <div *ngIf="record.currentState === 2" class="text-center"><i
+                                                        class="fa fa-check-circle m--font-success" title="True"></i>
+                                                </div>
+                                                <div *ngIf="record.currentState !== 2" class="text-center"><i
+                                                        class="fa fa-times-circle" title="False"></i></div>
+                                            </td>
+
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                    {{l('NoData')}}
+                                </div>
+
+                            </div>
+                            <!--<Primeng-Datatable-End>-->
+                        </div>
+                    </div>
+
+                    <div class="m--margin-top-20">
+                        <div class="text-md-center">
+                            <button type="button" class="btn btn-primary mr-5"
+                                routerLink="/app/main/studentsView/theoryCourse/quiz">{{l("PrepareLessonStart")}}
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div *ngIf="selectedStudentCourse == null">
+                    <alert type="danger">
+                        <strong>Oh snap!</strong> You are not yet assigned to a course. Please contact your school.
+                      </alert>
+                </div>
+            </div>
+        </div>
+
+    </div>
