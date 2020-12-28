@@ -1,7 +1,12 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
+import { TestResourcesComponent } from './resources/testResources/testResources.component';
+import { ViewTestResourceModalComponent } from './resources/testResources/view-testResource-modal.component';
+import { CreateOrEditTestResourceModalComponent } from './resources/testResources/create-or-edit-testResource-modal.component';
+import { TestResourceVehicleLookupTableModalComponent } from './resources/testResources/testResource-vehicle-lookup-table-modal.component';
+
 import { UtilsModule } from '@shared/utils/utils.module';
 import { CountoModule } from 'angular2-counto';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -15,8 +20,6 @@ import { MainRoutingModule } from './main-routing.module';
 import { BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
-import { LicenseClassLookupTableModalComponent } from '@app/admin/instructors/instructors/licenseClass-lookup-table-modal.component';
-import { OfficeLookupTableModalComponent } from '@app/admin/instructors/instructors/office-lookup-table-modal.component';
 import { CoursesComponent } from './courses/courses/courses.component';
 import { CreateOrEditCourseModalComponent } from './courses/courses/create-or-edit-course-modal.component';
 import { ViewCourseModalComponent } from './courses/courses/view-course-modal.component';
@@ -43,7 +46,6 @@ import { PersonalSchedulerComponent } from './personalScheduler/personalSchedule
 import { CreateStudentInvoiceComponent } from './sales/studentInvoices/create-studentInvoice.component';
 import { InvoiceProductLookupTableModalComponent } from './sales/studentInvoices/invoice-product-lookup-table-modal.component';
 import { InvoiceStudentLookupTableModalComponent } from './sales/studentInvoices/invoice-student-lookup-table-modal.component';
-import { SplitInvoiceModalComponent } from './sales/studentInvoices/splitInvoice-modal.component';
 import { StudentInvoicesComponent } from './sales/studentInvoices/studentInvoices.component';
 import { ViewStudentInvoiceModalComponent } from './sales/studentInvoices/view-studentInvoice-modal.component';
 import { CreateEventTypeModalComponent } from './scheduler/create-event-type-modal.component';
@@ -90,19 +92,34 @@ import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
+import {AccordionModule} from 'primeng/accordion';
+import { MessageModule } from 'primeng/message';
+import {CheckboxModule} from 'primeng/checkbox';
+import {CarouselModule} from 'primeng/carousel';
+import {SelectButtonModule} from 'primeng/selectbutton';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
+
+import {CardModule} from 'primeng/card';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ScheduleAllModule } from '@syncfusion/ej2-angular-schedule';
 import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { AccordionModule, MessageModule,  CheckboxModule, CarouselModule, CodeHighlighterModule, ButtonModule, CardModule, SelectButtonModule, MessageService, ScrollPanelModule} from 'primeng/primeng';
+
+
 import { RadioButtonModule} from 'primeng/radiobutton';
-import { MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
+import {MultiSelectModule} from '@syncfusion/ej2-angular-dropdowns';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import {ToastModule} from 'primeng/toast';
-import { PaginationModule } from 'ngx-bootstrap';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
+import { DLLicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/drivingLesson-licenseClass-lookup-table-modal.component';
+import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/instructor-lookup-table-modal.component';
+import { StudentLookupTableModalComponent } from '@app/shared/common/lookup/student-lookup-table-modal.component';
+import { VehicleLookupTableModalComponent } from '@app/shared/common/lookup/vehicle-lookup-table-modal.component';
+import { LicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/licenseClass-lookup-table-modal.component';
+import { OfficeLookupTableModalComponent } from '@app/shared/common/lookup/office-lookup-table-modal.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -120,7 +137,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         BsDatepickerModule.forRoot(),
         BsDropdownModule.forRoot(),
         PopoverModule.forRoot(),
-        
+
         FileUploadModule,
         AutoCompleteModule,
         PaginatorModule,
@@ -150,9 +167,14 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         SelectButtonModule,
         PaginationModule.forRoot(),
         ScrollPanelModule,
-        CheckBoxModule 
-    ],
+        CheckBoxModule  
+     ],
     declarations: [
+		TestResourcesComponent,
+
+		ViewTestResourceModalComponent,
+		CreateOrEditTestResourceModalComponent,
+    TestResourceVehicleLookupTableModalComponent,
         DashboardComponent,
         TheoryLessonsComponent,
       ViewTheoryLessonModalComponent,		
@@ -209,7 +231,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
       CoursesComponent,
       ViewCourseModalComponent,		
       CreateOrEditCourseModalComponent,
-      OfficeLookupTableModalComponent,
+      
       AssignStudentToCourseModalComponent,
       SVLicenseClassSelectionComponent,
       SVTheoryPracticeQuizComponent,
@@ -222,8 +244,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
       LicenseClassLookupTableModalComponent,
       SendMessageToStudentModalComponent,
       SVTheoryPracticeComponent,
-      SplitInvoiceModalComponent
-    ],
+      OfficeLookupTableModalComponent  ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },

@@ -1,3 +1,14 @@
+@import '../node_modules/@syncfusion/ej2-base/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-angular-schedule/styles/bootstrap4.css';
+@import '../node_modules/@syncfusion/ej2-angular-inputs/styles/bootstrap4.css';
+
 /* You can add global styles to this file, and also import other style files */
 .margin-left-5 {
     margin-left: 5px !important;

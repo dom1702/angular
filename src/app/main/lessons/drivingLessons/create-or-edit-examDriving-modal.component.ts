@@ -1,9 +1,8 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { DrivingLessonsServiceProxy, CreateOrEditDrivingLessonDto, InstructorDto, InstructorsOwnDrivingLessonsServiceProxy, CourseDto, PredefinedDrivingLessonDto, StudentCourseDto, StudentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { DrivingLessonTopicLookupTableModalComponent } from './drivingLessonTopic-lookup-table-modal.component';
 import { DLLicenseClassLookupTableModalComponent } from '../../../shared/common/lookup/drivingLesson-licenseClass-lookup-table-modal.component';
 import { DLStudentLookupTableModalComponent } from './drivingLesson-student-lookup-table-modal.component';
@@ -13,6 +12,8 @@ import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { MultiSelectComponent } from '@syncfusion/ej2-angular-dropdowns';
 import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/instructor-lookup-table-modal.component';
 import { Subscription } from 'rxjs';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'createOrEditExamDrivingModal',
@@ -20,11 +21,11 @@ import { Subscription } from 'rxjs';
 })
 export class CreateOrEditExamDrivingModalComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('drivingLessonTopicLookupTableModal') drivingLessonTopicLookupTableModal: DrivingLessonTopicLookupTableModalComponent;
-    @ViewChild('licenseClassLookupTableModal') licenseClassLookupTableModal: DLLicenseClassLookupTableModalComponent;
-    @ViewChild('studentLookupTableModal') studentLookupTableModal: DLStudentLookupTableModalComponent;
-    @ViewChild('vehicleLookupTableModal') vehicleLookupTableModal: VehicleLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('drivingLessonTopicLookupTableModal', { static: true }) drivingLessonTopicLookupTableModal: DrivingLessonTopicLookupTableModalComponent;
+    @ViewChild('licenseClassLookupTableModal', { static: true }) licenseClassLookupTableModal: DLLicenseClassLookupTableModalComponent;
+    @ViewChild('studentLookupTableModal', { static: true }) studentLookupTableModal: DLStudentLookupTableModalComponent;
+    @ViewChild('vehicleLookupTableModal', { static: true }) vehicleLookupTableModal: VehicleLookupTableModalComponent;
 
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
@@ -33,7 +34,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
     active = false;
     saving = false;
-    startTime: Date = new Date();
+    startTime: DateTime;
     drivingLesson: CreateOrEditDrivingLessonDto = new CreateOrEditDrivingLessonDto();
 
     drivingLessonTopic = '';
@@ -71,6 +72,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         private _drivingLessonsServiceProxy: DrivingLessonsServiceProxy,
         private _instructorsOwnDrivingLessonsServiceProxy: InstructorsOwnDrivingLessonsServiceProxy,
         private _studentsServiceProxy: StudentsServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
@@ -139,7 +141,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
             }
         
             this.drivingLesson.id = drivingLessonId;
-            this.drivingLesson.startTime = moment().startOf('day');
+            this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
             this.drivingLessonTopic = '';
             this.licenseClass = '';
            
@@ -163,7 +165,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                this.startTime = result.drivingLesson.startTime.toDate();
+                this.startTime = result.drivingLesson.startTime;//.toDate();
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -179,7 +181,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                this.startTime = result.drivingLesson.startTime.toDate();
+                this.startTime = result.drivingLesson.startTime;//.toDate();
 
                 this.showStudentSelection = false;
                 this.studentSelected = true;
@@ -222,9 +224,9 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.drivingLesson.instructors = [];
 
         //this.drivingLesson.startTime.date(this.startTime.getDay());
-        this.drivingLesson.startTime = moment(this.startTime);
-        this.drivingLesson.startTime.hours(this.startTime.getHours());
-        this.drivingLesson.startTime.minutes(this.startTime.getMinutes());
+        this.drivingLesson.startTime =  this._dateTimeService.toUtcDate(this.startTime);
+       // this.drivingLesson.startTime.hours(this.startTime.getHours());
+       // this.drivingLesson.startTime.minutes(this.startTime.getMinutes());
 
         this.drivingLesson.isExam = true;
 
@@ -406,6 +408,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
     delete(): void {
         this.message.confirm(
+            '',
             '',
             (isConfirmed) => {
                 if (isConfirmed) {

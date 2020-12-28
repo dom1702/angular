@@ -1,434 +1,422 @@
 ﻿<div [@routerTransition]>
 
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("NewEnrollments")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    Enrollments that have not been approved or denied yet
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.Enrollments.Create')" (click)="createEnrollment()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewEnrollment")}}</button> -->
-            </div>
-        </div>
-    </div>
 
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('NewEnrollments')" [description]="l('NewEnrollmentsHeaderInfo')">
 
 
-                <form class="horizontal-form" autocomplete="off">
-                    <div class="m-form m-form--label-align-right">
-                        <div class="row align-items-center">
-                            <!--<Primeng-Datatable-Start>-->
-                            <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
-                                <p-table #newDataTable [value]="newRecords" [paginator]="false" [lazy]="true"
-                                    [scrollable]="true" ScrollWidth="100%"
-                                    [responsive]="primengTableHelper.isResponsive"
-                                    [resizableColumns]="primengTableHelper.resizableColumns">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th style="width: 130px"
-                                                [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
-                                                {{l('Actions')}}</th>
-                                            <th style="width: 150px" pSortableColumn="enrollmentDate">
-                                                {{l('EnrollmentDate')}}
-                                                <p-sortIcon field="enrollment.enrollmentDate"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="firstName">
-                                                {{l('FirstName')}}
-                                                <p-sortIcon field="enrollment.firstName"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="lastName">
-                                                {{l('LastName')}}
-                                                <p-sortIcon field="enrollment.lastName"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="socialSecurityNo">
-                                                {{l('SocialSecurityNo')}}
-                                                <p-sortIcon field="enrollment.socialSecurityNo"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="courseFk.name">
-                                                {{l('CourseName')}}
-                                                <p-sortIcon field="courseName"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="officeFk.name">
-                                                {{l('OfficeName')}}
-                                                <p-sortIcon field="officeName"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="approved">
-                                                {{l('Status')}}
-                                                <p-sortIcon field="enrollment.approved"></p-sortIcon>
-                                            </th>
+
+        </sub-header>
 
 
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-record="$implicit">
-                                        <tr>
-                                            <td style="width: 130px"
-                                                [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
-                                                <div class="btn-group dropdown" dropdown container="body">
-                                                    <button class="dropdown-toggle btn btn-sm btn-primary"
-                                                        dropdownToggle>
-                                                        <i class="fa fa-cog"></i><span class="caret"></span>
-                                                        {{l("Actions")}}
-                                                    </button>
-                                                    <ul class="dropdown-menu" *dropdownMenu>
-                                                        <li>
-                                                            <a href="javascript:;"
-                                                                (click)="approveEnrollment(record)">{{l('Approve')}}</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"
-                                                                (click)="denyEnrollment(record)">{{l('Deny')}}</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"
-                                                                (click)="viewEnrollmentModal.show(record)">{{l('View')}}</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"
-                                                                *ngIf="permission.isGranted('Pages.Enrollments.Edit')"
-                                                                (click)="createOrEditEnrollmentModal.show(record.enrollment.id)">{{l('Edit')}}</a>
-                                                        </li>
-                                                        <!-- <li>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+
+                    <form class="horizontal-form" autocomplete="off">
+                        <div class="m-form m-form--label-align-right">
+                            <div class="row align-items-center">
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #newDataTable [value]="newRecords" [paginator]="false" [lazy]="true"
+                                        [scrollable]="true" ScrollWidth="100%"
+                                        [responsive]="primengTableHelper.isResponsive"
+                                        [resizableColumns]="primengTableHelper.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px"
+                                                    [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
+                                                    {{l('Actions')}}</th>
+                                                <th style="width: 150px" pSortableColumn="enrollmentDate">
+                                                    {{l('EnrollmentDate')}}
+                                                    <p-sortIcon field="enrollment.enrollmentDate"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="firstName">
+                                                    {{l('FirstName')}}
+                                                    <p-sortIcon field="enrollment.firstName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="lastName">
+                                                    {{l('LastName')}}
+                                                    <p-sortIcon field="enrollment.lastName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="socialSecurityNo">
+                                                    {{l('SocialSecurityNo')}}
+                                                    <p-sortIcon field="enrollment.socialSecurityNo"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="courseFk.name">
+                                                    {{l('CourseName')}}
+                                                    <p-sortIcon field="courseName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="officeFk.name">
+                                                    {{l('OfficeName')}}
+                                                    <p-sortIcon field="officeName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="approved">
+                                                    {{l('Status')}}
+                                                    <p-sortIcon field="enrollment.approved"></p-sortIcon>
+                                                </th>
+
+
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px"
+                                                    [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary"
+                                                            dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span>
+                                                            {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;" class="dropdown-item"
+                                                                    (click)="approveEnrollment(record)">{{l('Approve')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" class="dropdown-item"
+                                                                    (click)="denyEnrollment(record)">{{l('Deny')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" class="dropdown-item"
+                                                                    (click)="viewEnrollmentModal.show(record)">{{l('View')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" class="dropdown-item"
+                                                                    *ngIf="permission.isGranted('Pages.Enrollments.Edit')"
+                                                                    (click)="createOrEditEnrollmentModal.show(record.enrollment.id)">{{l('Edit')}}</a>
+                                                            </li>
+                                                            <!-- <li>
                                                             <a href="javascript:;"
                                                                 *ngIf="permission.isGranted('Pages.Enrollments.Delete')"
                                                                 (click)="deleteEnrollment(record.enrollment)">{{l('Delete')}}</a>
                                                         </li> -->
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('EnrollmentDate')}}</span>
-                                                <span *ngIf="record.enrollment.enrollmentDate">
-                                                    {{record.enrollment.enrollmentDate | momentFormat:'L'}}
-                                                </span>
-                                                <span *ngIf="!record.enrollment.enrollmentDate">-</span>
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('FirstName')}}</span>
-                                                {{record.enrollment.firstName}}
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('LastName')}}</span>
-                                                {{record.enrollment.lastName}}
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('SocialSecurityNo')}}</span>
-                                                {{record.enrollment.socialSecurityNo}}
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('CourseName')}}</span>
-                                                {{record.courseName}}
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('Office')}}</span>
-                                                {{record.officeName}}
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('Approved')}}</span>
-                                                <div *ngIf="record.enrollment.approved" class="text-success">Approved
-                                                </div>
-                                                <div *ngIf="record.enrollment.denied" class="text-danger">Denied</div>
-                                                <div *ngIf="!record.enrollment.denied && !record.enrollment.approved"
-                                                    class="text-warning">Undecided</div>
-                                            </td>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('EnrollmentDate')}}</span>
+                                                    <span *ngIf="record.enrollment.enrollmentDate">
+                                                        {{record.enrollment.enrollmentDate}}
+                                                    </span>
+                                                    <span *ngIf="!record.enrollment.enrollmentDate">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('FirstName')}}</span>
+                                                    {{record.enrollment.firstName}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('LastName')}}</span>
+                                                    {{record.enrollment.lastName}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('SocialSecurityNo')}}</span>
+                                                    {{record.enrollment.socialSecurityNo}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('CourseName')}}</span>
+                                                    {{record.courseName}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('Office')}}</span>
+                                                    {{record.officeName}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="p-column-title"> {{l('Approved')}}</span>
+                                                    <div *ngIf="record.enrollment.approved" class="text-success">
+                                                        Approved
+                                                    </div>
+                                                    <div *ngIf="record.enrollment.denied" class="text-danger">Denied
+                                                    </div>
+                                                    <div *ngIf="!record.enrollment.denied && !record.enrollment.approved"
+                                                        class="text-warning">Undecided</div>
+                                                </td>
 
 
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-                                <div class="primeng-no-data" *ngIf="newRecords != null && newRecords.length == 0">
-                                    {{l('NoData')}}
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="newRecords != null && newRecords.length == 0">
+                                        {{l('NoData')}}
+                                    </div>
+
                                 </div>
-
+                                <!--<Primeng-Datatable-End>-->
                             </div>
-                            <!--<Primeng-Datatable-End>-->
-                        </div>
 
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("AllEnrollments")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("EnrollmentsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.Enrollments.Create')" (click)="createEnrollment()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewEnrollment")}}</button> -->
-            </div>
-        </div>
-    </div>
-
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
-
-                <form class="horizontal-form" autocomplete="off">
-                    <div>
-                        <div class="row align-items-center">
-                            <div class="col-xl-12">
-                                <div class="form-group m-form__group align-items-center">
-                                    <div class="input-group">
-                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
-                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
-                                            type="text">
-                                        <span class="input-group-btn">
-                                            <button (click)="getEnrollments()" class="btn btn-primary" type="submit"><i
-                                                    class="flaticon-search-1"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" [hidden]="!advancedFiltersAreShown">
-                            <div class="col-md-12">
-                                <div class="m-separator m-separator--dashed"></div>
-                            </div>
+        <sub-header [title]="l('AllEnrollments')" [description]="l('EnrollmentsHeaderInfo')">
 
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="FirstNameFilter">{{l("FirstName")}}</label>
-                                    <input type="text" class="form-control" id="FirstNameFilter" name="firstNameFilter"
-                                        [(ngModel)]="firstNameFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="LastNameFilter">{{l("LastName")}}</label>
-                                    <input type="text" class="form-control" id="LastNameFilter" name="lastNameFilter"
-                                        [(ngModel)]="lastNameFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="SocialSecurityNoFilter">{{l("SocialSecurityNo")}}</label>
-                                    <input type="text" class="form-control" id="SocialSecurityNoFilter"
-                                        name="socialSecurityNoFilter" [(ngModel)]="socialSecurityNoFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="PayersSocialSecurityNoFilter">{{l("PayersSocialSecurityNo")}}</label>
-                                    <input type="text" class="form-control" id="PayersSocialSecurityNoFilter"
-                                        name="payersSocialSecurityNoFilter" [(ngModel)]="payersSocialSecurityNoFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="PayersNameFilter">{{l("PayersName")}}</label>
-                                    <input type="text" class="form-control" id="PayersNameFilter"
-                                        name="payersNameFilter" [(ngModel)]="payersNameFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="LicenseClassFilter">{{l("LicenseClass")}}</label>
-                                    <input type="text" class="form-control" id="LicenseClassFilter"
-                                        name="licenseClassFilter" [(ngModel)]="licenseClassFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="ApprovedFilterSelect">{{l("Approved")}}</label>
-                                <select class="form-control" name="ApprovedFilter" id="ApprovedFilterSelect"
-                                    [(ngModel)]="approvedFilter">
-                                    <option value="-1">{{l("All")}}</option>
-                                    <option value="0">{{l("False")}}</option>
-                                    <option value="1">{{l("True")}}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="MinEnrollmentDateFilter">{{l("EnrollmentDateRange")}}</label>
-                                    <div class="input-group">
-                                        <input class="form-control m-input" id="MinEnrollmentDateFilter"
-                                            name="MinEnrollmentDateFilter" type="datetime" bsDatepicker
-                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minEnrollmentDateFilter">
-                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
-                                        <input class="form-control m-input" id="MaxEnrollmentDateFilter"
-                                            name="MaxEnrollmentDateFilter" type="datetime" bsDatepicker
-                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxEnrollmentDateFilter">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="CourseNameFilter">({{l("Course")}}) {{l("Name")}}</label>
-                                    <input type="text" class="form-control" id="CourseNameFilter"
-                                        name="courseNameFilter" [(ngModel)]="courseNameFilter">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="OfficeNameFilter">({{l("Office")}}) {{l("Name")}}</label>
-                                    <input type="text" class="form-control" id="OfficeNameFilter"
-                                        name="officeNameFilter" [(ngModel)]="officeNameFilter">
-                                </div>
-                            </div>
 
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
-                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
-                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
-                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
-                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+        </sub-header>
 
-                <div class="row align-items-center">
-                    <!--<Primeng-Datatable-Start>-->
-                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable (onLazyLoad)="getEnrollments($event)" [value]="primengTableHelper.records"
-                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
-                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
-                            [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
-                                        {{l('Actions')}}</th>
-                                    <th style="width: 150px" pSortableColumn="enrollmentDate">
-                                        {{l('EnrollmentDate')}}
-                                        <p-sortIcon field="enrollment.enrollmentDate"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="firstName">
-                                        {{l('FirstName')}}
-                                        <p-sortIcon field="enrollment.firstName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="lastName">
-                                        {{l('LastName')}}
-                                        <p-sortIcon field="enrollment.lastName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="socialSecurityNo">
-                                        {{l('SocialSecurityNo')}}
-                                        <p-sortIcon field="enrollment.socialSecurityNo"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="courseFk.name">
-                                        {{l('CourseName')}}
-                                        <p-sortIcon field="courseName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="officeFk.name">
-                                        {{l('OfficeName')}}
-                                        <p-sortIcon field="officeName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="approved">
-                                        {{l('Status')}}
-                                        <p-sortIcon field="enrollment.approved"></p-sortIcon>
-                                    </th>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
 
-
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
-                                        <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-                                            <ul class="dropdown-menu" *dropdownMenu>
-                                                <li *ngIf="!record.enrollment.approved && !record.enrollment.denied">
-                                                    <a href="javascript:;"
-                                                        (click)="approveEnrollment(record)">{{l('Approve')}}</a>
-                                                </li>
-                                                <li *ngIf="!record.enrollment.approved && !record.enrollment.denied">
-                                                    <a href="javascript:;"
-                                                        (click)="denyEnrollment(record)">{{l('Deny')}}</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;"
-                                                        (click)="viewEnrollmentModal.show(record)">{{l('View')}}</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" 
-                                                        (click)="revertEnrollment(record.enrollment)">{{l('Revert')}}</a>
-                                                </li>
-                                            </ul>
+                    <form class="horizontal-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getEnrollments()" class="btn btn-primary"
+                                                    type="submit"><i class="flaticon-search-1"></i></button>
+                                            </span>
                                         </div>
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('EnrollmentDate')}}</span>
-                                        <span *ngIf="record.enrollment.enrollmentDate">
-                                            {{record.enrollment.enrollmentDate | momentFormat:'L'}}
-                                        </span>
-                                        <span *ngIf="!record.enrollment.enrollmentDate">-</span>
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('FirstName')}}</span>
-                                        {{record.enrollment.firstName}}
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('LastName')}}</span>
-                                        {{record.enrollment.lastName}}
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('SocialSecurityNo')}}</span>
-                                        {{record.enrollment.socialSecurityNo}}
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('Name')}}</span>
-                                        {{record.courseName}}
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('Name')}}</span>
-                                        {{record.officeName}}
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('Approved')}}</span>
-                                        <div *ngIf="record.enrollment.approved" class="text-success">Approved</div>
-                                        <div *ngIf="record.enrollment.denied" class="text-danger">Denied</div>
-                                        <div *ngIf="!record.enrollment.denied && !record.enrollment.approved"
-                                            class="text-warning">Undecided</div>
-                                    </td>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="m-separator m-separator--dashed"></div>
+                                </div>
 
 
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="FirstNameFilter">{{l("FirstName")}}</label>
+                                        <input type="text" class="form-control" id="FirstNameFilter"
+                                            name="firstNameFilter" [(ngModel)]="firstNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="LastNameFilter">{{l("LastName")}}</label>
+                                        <input type="text" class="form-control" id="LastNameFilter"
+                                            name="lastNameFilter" [(ngModel)]="lastNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="SocialSecurityNoFilter">{{l("SocialSecurityNo")}}</label>
+                                        <input type="text" class="form-control" id="SocialSecurityNoFilter"
+                                            name="socialSecurityNoFilter" [(ngModel)]="socialSecurityNoFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label
+                                            for="PayersSocialSecurityNoFilter">{{l("PayersSocialSecurityNo")}}</label>
+                                        <input type="text" class="form-control" id="PayersSocialSecurityNoFilter"
+                                            name="payersSocialSecurityNoFilter"
+                                            [(ngModel)]="payersSocialSecurityNoFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="PayersNameFilter">{{l("PayersName")}}</label>
+                                        <input type="text" class="form-control" id="PayersNameFilter"
+                                            name="payersNameFilter" [(ngModel)]="payersNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="LicenseClassFilter">{{l("LicenseClass")}}</label>
+                                        <input type="text" class="form-control" id="LicenseClassFilter"
+                                            name="licenseClassFilter" [(ngModel)]="licenseClassFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="ApprovedFilterSelect">{{l("Approved")}}</label>
+                                    <select class="form-control" name="ApprovedFilter" id="ApprovedFilterSelect"
+                                        [(ngModel)]="approvedFilter">
+                                        <option value="-1">{{l("All")}}</option>
+                                        <option value="0">{{l("False")}}</option>
+                                        <option value="1">{{l("True")}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinEnrollmentDateFilter">{{l("EnrollmentDateRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinEnrollmentDateFilter"
+                                                name="MinEnrollmentDateFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MinValue')}}" [(ngModel)]="minEnrollmentDateFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxEnrollmentDateFilter"
+                                                name="MaxEnrollmentDateFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MaxValue')}}" [(ngModel)]="maxEnrollmentDateFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="CourseNameFilter">({{l("Course")}}) {{l("Name")}}</label>
+                                        <input type="text" class="form-control" id="CourseNameFilter"
+                                            name="courseNameFilter" [(ngModel)]="courseNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="OfficeNameFilter">({{l("Office")}}) {{l("Name")}}</label>
+                                        <input type="text" class="form-control" id="OfficeNameFilter"
+                                            name="officeNameFilter" [(ngModel)]="officeNameFilter">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                (onPageChange)="getEnrollments($event)"
-                                [totalRecords]="primengTableHelper.totalRecordsCount"
-                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getEnrollments($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
+                                            {{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="enrollmentDate">
+                                            {{l('EnrollmentDate')}}
+                                            <p-sortIcon field="enrollment.enrollmentDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="firstName">
+                                            {{l('FirstName')}}
+                                            <p-sortIcon field="enrollment.firstName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="lastName">
+                                            {{l('LastName')}}
+                                            <p-sortIcon field="enrollment.lastName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="socialSecurityNo">
+                                            {{l('SocialSecurityNo')}}
+                                            <p-sortIcon field="enrollment.socialSecurityNo"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="courseFk.name">
+                                            {{l('CourseName')}}
+                                            <p-sortIcon field="courseName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="officeFk.name">
+                                            {{l('OfficeName')}}
+                                            <p-sortIcon field="officeName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="approved">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="enrollment.approved"></p-sortIcon>
+                                        </th>
+
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Enrollments.Edit', 'Pages.Enrollments.Delete')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li
+                                                        *ngIf="!record.enrollment.approved && !record.enrollment.denied">
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="approveEnrollment(record)">{{l('Approve')}}</a>
+                                                    </li>
+                                                    <li
+                                                        *ngIf="!record.enrollment.approved && !record.enrollment.denied">
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="denyEnrollment(record)">{{l('Deny')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="viewEnrollmentModal.show(record)">{{l('View')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="revertEnrollment(record.enrollment)">{{l('Revert')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('EnrollmentDate')}}</span>
+                                            <span *ngIf="record.enrollment.enrollmentDate">
+                                                {{record.enrollment.enrollmentDate}}
+                                            </span>
+                                            <span *ngIf="!record.enrollment.enrollmentDate">-</span>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('FirstName')}}</span>
+                                            {{record.enrollment.firstName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('LastName')}}</span>
+                                            {{record.enrollment.lastName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('SocialSecurityNo')}}</span>
+                                            {{record.enrollment.socialSecurityNo}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Name')}}</span>
+                                            {{record.courseName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Name')}}</span>
+                                            {{record.officeName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Approved')}}</span>
+                                            <div *ngIf="record.enrollment.approved" class="text-success">Approved</div>
+                                            <div *ngIf="record.enrollment.denied" class="text-danger">Denied</div>
+                                            <div *ngIf="!record.enrollment.denied && !record.enrollment.approved"
+                                                class="text-warning">Undecided</div>
+                                        </td>
+
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getEnrollments($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
                         </div>
+                        <!--<Primeng-Datatable-End>-->
                     </div>
-                    <!--<Primeng-Datatable-End>-->
                 </div>
             </div>
         </div>
     </div>
-
     <createOrEditEnrollmentModal #createOrEditEnrollmentModal (modalSave)="getEnrollments()">
     </createOrEditEnrollmentModal>
     <viewEnrollmentModal #viewEnrollmentModal></viewEnrollmentModal>

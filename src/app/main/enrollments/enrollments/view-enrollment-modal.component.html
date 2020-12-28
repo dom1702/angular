@@ -43,7 +43,7 @@
                         <div *ngIf="!item.enrollment.approved" class="text-left"><i class="fa fa-times-circle" title="False"></i></div>
                     </div>                    <div class="col-6 mb-3">
                         <h6>{{l("EnrollmentDate")}} :</h6>
-                        {{ item.enrollment.enrollmentDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                        {{ item.enrollment.enrollmentDate }}
                     </div>
 
                     <div class="col-6 mb-3">

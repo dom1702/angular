@@ -1,15 +1,16 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, ViewEncapsulation, QueryList, ViewChildren, ChangeDetectorRef} from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { TheoryLessonsServiceProxy, CreateOrEditTheoryLessonDto, InstructorDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { DLLicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/drivingLesson-licenseClass-lookup-table-modal.component';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { Table } from 'primeng/components/table/table';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import { PrimengTableHelper } from '@shared/helpers/PrimengTableHelper';
 import { Subscription } from 'rxjs';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'createOrEditTheoryLessonModal',
@@ -18,8 +19,8 @@ import { Subscription } from 'rxjs';
 })
 export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('licenseClassLookupTableModal') licenseClassLookupTableModal: DLLicenseClassLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('licenseClassLookupTableModal', { static: true }) licenseClassLookupTableModal: DLLicenseClassLookupTableModalComponent;
 
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
@@ -30,7 +31,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
     theoryLesson: CreateOrEditTheoryLessonDto = new CreateOrEditTheoryLessonDto();
 
     licenseClass = '';
-    startTime: Date = new Date();
+    startTime: DateTime;
 
     dropdownListIds = [];
     dropdownList = [];
@@ -44,7 +45,8 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
     constructor(
         injector: Injector,
-        private _theoryLessonsServiceProxy: TheoryLessonsServiceProxy
+        private _theoryLessonsServiceProxy: TheoryLessonsServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
@@ -64,7 +66,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
  
 
-    show(theoryLessonId?: number, event?: LazyLoadEvent, startTime? : Date): void {
+    show(theoryLessonId?: number, event?: LazyLoadEvent, startTime? : DateTime): void {
 
         this.theoryLessonId = theoryLessonId;
 
@@ -72,10 +74,10 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
             this.theoryLesson = new CreateOrEditTheoryLessonDto();
             this.theoryLesson.id = theoryLessonId;
 
-            if(startTime != null)
-                this.startTime = startTime;
-            else
-                this.startTime = new Date();
+            // if(startTime != null)
+            //     this.startTime = startTime;
+            // else
+            //     this.startTime = new DateTime();
 
             this.licenseClass = '';
 
@@ -88,7 +90,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
                 this.theoryLesson = result.theoryLesson;
 
                 this.licenseClass = result.theoryLesson.licenseClass;
-                this.startTime = result.theoryLesson.startTime.toDate();
+                this.startTime = result.theoryLesson.startTime; // wrong?
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -105,9 +107,9 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
             this.theoryLesson.instructors = [];
 
-            this.theoryLesson.startTime = moment(this.startTime);
-            this.theoryLesson.startTime.hours(this.startTime.getHours());
-            this.theoryLesson.startTime.minutes(this.startTime.getMinutes());
+            this.theoryLesson.startTime = this._dateTimeService.toUtcDate(this.startTime);
+           // this.theoryLesson.startTime.hours(this.startTime.getHours());
+          //  this.theoryLesson.startTime.minutes(this.startTime.getMinutes());
 
             for (var instructor of this.selectedItems)
             {

@@ -1,21 +1,20 @@
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Http } from '@angular/http';
 import { StudentsServiceProxy, StudentDto  } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditStudentModalComponent } from './create-or-edit-student-modal.component';
 import { ViewStudentModalComponent } from './view-student-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { Table } from 'primeng/components/table/table';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { AssignStudentToCourseModalComponent } from './assign-student-to-course-modal.component';
+import { DateTime } from 'luxon';
 
 @Component({
     templateUrl: './students.component.html',
@@ -24,12 +23,12 @@ import { AssignStudentToCourseModalComponent } from './assign-student-to-course-
 })
 export class StudentsComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditStudentModal') createOrEditStudentModal: CreateOrEditStudentModalComponent;
-    @ViewChild('viewStudentModalComponent') viewStudentModal: ViewStudentModalComponent;
-    @ViewChild('entityTypeHistoryModal') entityTypeHistoryModal: EntityTypeHistoryModalComponent;
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
-    @ViewChild('assignStudentToCourseModal') assignStudentToCourseModal: AssignStudentToCourseModalComponent;
+    @ViewChild('createOrEditStudentModal', { static: true }) createOrEditStudentModal: CreateOrEditStudentModalComponent;
+    @ViewChild('viewStudentModalComponent', { static: true }) viewStudentModal: ViewStudentModalComponent;
+    @ViewChild('entityTypeHistoryModal', { static: true }) entityTypeHistoryModal: EntityTypeHistoryModalComponent;
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
+    @ViewChild('assignStudentToCourseModal', { static: true }) assignStudentToCourseModal: AssignStudentToCourseModalComponent;
 
     advancedFiltersAreShown = false;
     filterText = '';
@@ -37,8 +36,8 @@ export class StudentsComponent extends AppComponentBase {
     lastNameFilter = '';
     emailFilter = '';
     phoneNumberFilter = '';
-    maxDateOfBirthFilter : moment.Moment;
-		minDateOfBirthFilter : moment.Moment;
+    maxDateOfBirthFilter : DateTime;
+		minDateOfBirthFilter : DateTime;
     cityFilter = '';
     zipCodeFilter = '';
     stateFilter = '';
@@ -52,7 +51,6 @@ export class StudentsComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
@@ -125,6 +123,7 @@ export class StudentsComponent extends AppComponentBase {
     deleteStudent(student: StudentDto): void {
         this.message.confirm(
             '',
+            '',
             (isConfirmed) => {
                 if (isConfirmed) {
                     this._studentsServiceProxy.delete(student.id)
@@ -181,7 +180,7 @@ export class StudentsComponent extends AppComponentBase {
         this.assignStudentToCourseModal.show(studentDto);
     }
 
-    // assignToCourse(): void {
+     assignToCourse(): void {
     //     if(this.assignStudentToCourseModal.selectedCourse != null)
     //     {
     //         this.selectedCourseName = this.assignStudentToCourseModal.selectedCourse.courseName;
@@ -190,7 +189,7 @@ export class StudentsComponent extends AppComponentBase {
     //     }
     //     else   
     //     this.selectedCourseName = "";
-    // }
+     }
 
     // setCourseToNull(): void
     // {

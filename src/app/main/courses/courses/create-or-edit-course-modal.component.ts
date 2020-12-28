@@ -1,25 +1,30 @@
-﻿import { Component, ViewChild, Injector, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+﻿import { Component, ViewChild, Injector, Output, EventEmitter, QueryList, ViewChildren, OnInit } from '@angular/core';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { CoursesServiceProxy, CreateOrEditCourseDto, PredefinedDrivingLessonDto, PredefinedDrivingLessonsServiceProxy, PricePackagesServiceProxy, PricePackageDto, PredefinedTheoryLessonDto, PredefinedTheoryLessonsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { OfficeLookupTableModalComponent } from '../../../shared/common/lookup/office-lookup-table-modal.component';
 import { MultiSelectComponent } from '@syncfusion/ej2-angular-dropdowns';
 import { Subscription } from 'rxjs';
 import { LicenseClassLookupTableModalComponent } from '../../../shared/common/lookup/licenseClass-lookup-table-modal.component';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+
+interface PredefinedLesson {
+    name: string,
+    id: number
+}
 
 @Component({
     selector: 'createOrEditCourseModal',
     templateUrl: './create-or-edit-course-modal.component.html'
 })
-export class CreateOrEditCourseModalComponent extends AppComponentBase {
+export class CreateOrEditCourseModalComponent extends AppComponentBase implements OnInit{
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('officeLookupTableModal') courseOfficeLookupTableModal: OfficeLookupTableModalComponent;
-    @ViewChild('licenseClassLookupTableModal') licenseClassLookupTableModal: LicenseClassLookupTableModalComponent;
-    @ViewChildren('pdl_multiselect') predefinedDL_Multiselect: QueryList<MultiSelectComponent>;
-    @ViewChildren('ptl_multiselect') predefinedTL_Multiselect: QueryList<MultiSelectComponent>;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('officeLookupTableModal', { static: true }) courseOfficeLookupTableModal: OfficeLookupTableModalComponent;
+    @ViewChild('licenseClassLookupTableModal', { static: true }) licenseClassLookupTableModal: LicenseClassLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -30,65 +35,69 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
 
     officeName = '';
 
-    predefinedDrivingLessons: Object[];
-    predefinedTheoryLessons: Object[];
+    predefinedDrivingLessons: PredefinedLesson[] = [];
+    predefinedTheoryLessons: PredefinedLesson[]= [];
+
+    selectedPredefinedDrivingLessons: PredefinedLesson[]= [];
+    selectedPredefinedTheoryLessons: PredefinedLesson[]= [];
+
+    // Multiselect dropdowns
+    pdlList = [];
+    pdlselectedItems = [];
+    ptlList = [];
+    ptlselectedItems = [];
+    dropdownSettings : IDropdownSettings;
+    placeholder = this.l('Select');
+
     pricePackages: any[];
 
     pricePackageSelectedAsHighlighted: PricePackageDto;
 
-    fields: Object = { text: 'dl', value: 'id' };
-    placeholderPdlSelection: string = 'Select predefined driving lessons';
-
-    ptlFields: Object = { text: 'tl', value: 'id' };
-    placeholderPtlSelection: string = 'Select predefined theory lessons';
-
     licenseClassId: number;
     licenseClassSelected: string = '';
-
-    private pdlMultiselectSubscription: Subscription;
-    private ptlMultiselectSubscription: Subscription;
 
     constructor(
         injector: Injector,
         private _coursesServiceProxy: CoursesServiceProxy,
         private _predefinedDrivingLessonsServiceProxy: PredefinedDrivingLessonsServiceProxy,
         private _predefinedTheoryLessonsServiceProxy: PredefinedTheoryLessonsServiceProxy,
-        private _pricePackagesServiceProxy: PricePackagesServiceProxy
+        private _pricePackagesServiceProxy: PricePackagesServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
 
-    UpdateMultiSelect() {
-        this.pdlMultiselectSubscription = this.predefinedDL_Multiselect.changes.subscribe((comps: QueryList<MultiSelectComponent>) => {
-            var selected: number[] = [];
+    ngOnInit()
+    {
+        this.dropdownSettings = 
+        {
+            singleSelection: false,
+            idField: 'item_id',
+            textField: 'item_text',
+            selectAllText: this.l('SelectAll'),
+            unSelectAllText: this.l('UnselectAll'),
+            allowSearchFilter: false,
+            noDataAvailablePlaceholderText: this.l('NoData')
+        };
+    }
 
-            if (this.course.predefinedDrivingLessons != null) {
+    onPdlItemSelect(item: any) {
+        console.log(item);
+    }
 
-                for (var i = 0; i < this.course.predefinedDrivingLessons.length; i++) {
-                    selected.push(this.course.predefinedDrivingLessons[i].id);
-                }
+    onPdlSelectAll(items: any) {
+        console.log(items);
+    }
 
-                this.predefinedDL_Multiselect.first.value = selected;
-            }
+    onPtlItemSelect(item: any) {
+        console.log(item);
+    }
 
-            this.pdlMultiselectSubscription.unsubscribe();
-        });
+    onPtlSelectAll(items: any) {
+        console.log(items);
+    }
 
-        this.ptlMultiselectSubscription = this.predefinedTL_Multiselect.changes.subscribe((comps: QueryList<MultiSelectComponent>) => {
-            var selected: number[] = [];
-
-            if (this.course.predefinedTheoryLessons != null) {
-
-                for (var i = 0; i < this.course.predefinedTheoryLessons.length; i++) {
-                    selected.push(this.course.predefinedTheoryLessons[i].id);
-                }
-
-                this.predefinedTL_Multiselect.first.value = selected;
-            }
-
-            this.ptlMultiselectSubscription.unsubscribe();
-        });
-
+    UpdatePricePackage() {
         this._pricePackagesServiceProxy.getAllForLookup().subscribe(result => {
 
             this.pricePackages = [];
@@ -139,40 +148,42 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
 
         this.pricePackageSelectedAsHighlighted = null;
 
-        // this._predefinedDrivingLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
+        this._predefinedDrivingLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
 
-        //     this.predefinedDrivingLessons = [];
+            console.log(result);
 
-        //     for (var i = 0; i < result.length; i++) {
-        //         this.predefinedDrivingLessons.push(
-        //             {
-        //                 id: result[i].id,
-        //                 dl: result[i].name
-        //             }
-        //         );
-        //     }
-        // });
+            this.pdlList = [];
+            this.pdlselectedItems = [];
 
-        // this._predefinedTheoryLessonsServiceProxy.getAllForLookup().subscribe(result => {
+            for (var i = 0; i < result.length; i++) {
+                this.pdlList.push(
+                    {
+                        item_id: result[i].id,
+                        item_text: result[i].name
+                    });
+            }
+        });
 
-        //     this.predefinedTheoryLessons = [];
+        this._predefinedTheoryLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
 
-        //     for (var i = 0; i < result.length; i++) {
-        //         this.predefinedTheoryLessons.push(
-        //             {
-        //                 id: result[i].id,
-        //                 tl: result[i].name
-        //             }
-        //         );
-        //     }
-        // });
+            this.ptlList = [];
+            this.ptlselectedItems = [];
+
+            for (var i = 0; i < result.length; i++) {
+                this.ptlList.push(
+                    {
+                        item_id: result[i].id,
+                        item_text: result[i].name
+                    });
+            }
+        });
 
         
         if (!courseId) {
             this.course = new CreateOrEditCourseDto();
             this.course.id = courseId;
-            this.course.startDate = moment().startOf('day');
-            this.course.lastEnrollmentDate = moment().startOf('day');
+            this.course.startDate = this._dateTimeService.getStartOfDay();
+            this.course.lastEnrollmentDate = this._dateTimeService.getStartOfDay();
             this.officeName = '';
 
             this.licenseClassId = null;
@@ -181,7 +192,7 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
             this.course.visibleOnFrontPage = true;
             this.course.enrollmentAvailable = true;
 
-            this.UpdateMultiSelect();
+            this.UpdatePricePackage();
 
             this.active = true;
             this.modal.show();
@@ -191,10 +202,36 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
 
                 this.officeName = result.officeName;
                 this.licenseClassSelected = result.course.licenseClass;
-                
-               
 
-                this.UpdateMultiSelect();
+                this.UpdatePricePackage();
+
+                console.log(result);
+
+                for (var item of this.pdlList) {
+                    for (var pdl of this.course.predefinedDrivingLessons) {
+                        if (item.item_text == pdl.name) {
+                            this.pdlselectedItems.push(
+                                {
+                                    item_id: item.item_id,
+                                    item_text: item.item_text
+                                }
+                            );
+                        }
+                    }
+                }
+
+                for (var item of this.ptlList) {
+                    for (var ptl of this.course.predefinedTheoryLessons) {
+                        if (item.item_text == ptl.name) {
+                            this.ptlselectedItems.push(
+                                {
+                                    item_id: item.item_id,
+                                    item_text: item.item_text
+                                }
+                            );
+                        }
+                    }
+                }
 
                 this.active = true;
                 this.modal.show();
@@ -207,24 +244,20 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
     save(): void {
         this.saving = true;
 
-        if (this.predefinedDL_Multiselect.first.value != null) {
-            this.course.predefinedDrivingLessons = [];
-            for (var i = 0; i < this.predefinedDL_Multiselect.first.value.length; i++) {
-                var pddl: PredefinedDrivingLessonDto = new PredefinedDrivingLessonDto()
-                pddl.id = Number(this.predefinedDL_Multiselect.first.value[i]);
-                this.course.predefinedDrivingLessons.push(pddl);
-            }
+        this.course.predefinedDrivingLessons = [];
+        this.course.predefinedTheoryLessons = [];
+
+        for (var pdlSelected of this.pdlselectedItems) {
+            var pddl: PredefinedDrivingLessonDto = new PredefinedDrivingLessonDto()
+            pddl.id = pdlSelected.item_id;
+            this.course.predefinedDrivingLessons.push(pddl);
         }
 
-        if (this.predefinedTL_Multiselect.first.value != null) {
-            this.course.predefinedTheoryLessons = [];
-            for (var i = 0; i < this.predefinedTL_Multiselect.first.value.length; i++) {
-                var pttl: PredefinedTheoryLessonDto = new PredefinedTheoryLessonDto()
-                pttl.id = Number(this.predefinedTL_Multiselect.first.value[i]);
-                this.course.predefinedTheoryLessons.push(pttl);
-            }
+        for (var ptlSelected of this.ptlselectedItems) {
+            var pdtl: PredefinedTheoryLessonDto = new PredefinedTheoryLessonDto()
+            pdtl.id = ptlSelected.item_id;
+            this.course.predefinedTheoryLessons.push(pdtl);
         }
-
 
         this.course.pricePackages = [];
         for (var i = 0; i < this.pricePackages.length; i++) {
@@ -294,7 +327,7 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
                 this.predefinedDrivingLessons.push(
                     {
                         id: result[i].id,
-                        dl: result[i].name
+                        name: result[i].name
                     }
                 );
             }
@@ -308,7 +341,7 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase {
                 this.predefinedTheoryLessons.push(
                     {
                         id: result[i].id,
-                        tl: result[i].name
+                        name: result[i].name
                     }
                 );
             }

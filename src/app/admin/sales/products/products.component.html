@@ -1,25 +1,18 @@
 <div [@routerTransition]>
-  
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Products")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("ProductsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.Administration.Products.Create')" (click)="createProduct()" 
-            class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewProduct")}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('Products')"
+            [description]="l('ProductsHeaderInfo')">
+    
+                <div role="actions">
+                    <button *ngIf="isGranted('Pages.Administration.Products.Create')" (click)="createProduct()" 
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewProduct")}}</button>
+    
+                </div>
+      
+        </sub-header>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
 
 				<form class="horizontal-form" autocomplete="off">
                     <div>
@@ -132,43 +125,43 @@
                                     <td style="width: 130px"
                                         [hidden]="!isGrantedAny('Pages.Administration.Products.Edit', 'Pages.Administration.Products.Delete')">
                                        <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                                 <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
                                             </button>
 												<ul class="dropdown-menu"  *dropdownMenu>
 												<li>
-													<a href="javascript:;"
+													<a href="javascript:;" class="dropdown-item"
 														(click)="viewProductModal.show(record)">{{l('View')}}</a>
 												</li>
 												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Products.Edit')"
+													<a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.Products.Edit')"
 														(click)="createOrEditProductModal.show(record.product.id)">{{l('Edit')}}</a>
 												</li>
 												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Products.Delete')"
+											        <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.Products.Delete')"
 														(click)="deleteProduct(record.product)">{{l('Delete')}}</a>
 												</li>
                                                 <li>
-                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                    <a href="javascript:;" class="dropdown-item" *ngIf="entityHistoryEnabled"
                                                        (click)="showHistory(record.product)">{{l('History')}}</a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Name')}}</span>
+											<span class="p-column-title"> {{l('Name')}}</span>
 											{{record.product.name}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Price')}}</span>
+											<span class="p-column-title"> {{l('Price')}}</span>
 											{{record.product.price}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('VAT')}}</span>
+											<span class="p-column-title"> {{l('VAT')}}</span>
 											{{record.product.vat}}
 										</td>
                                     <td style="width:150px">
-										<span class="ui-column-title"> {{l('ProductType')}}</span>
+										<span class="p-column-title"> {{l('ProductType')}}</span>
 										{{l( productType[record.product.productType])}}
                                     </td>
 

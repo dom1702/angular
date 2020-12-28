@@ -1,269 +1,298 @@
 <div [@routerTransition]>
 
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("StudentInvoices")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("StudentInvoicesHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-				<button *ngIf="isGranted('Pages.StudentInvoices.Create')" (click)="createStudentInvoice()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewStudentInvoice")}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
 
-				<form class="horizontal-form" autocomplete="off">
-                    <div>
-                        <div class="row align-items-center">
-                            <div class="col-xl-12">
-                                <div class="form-group m-form__group align-items-center">
-                                    <div class="input-group">
-                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
-                                        <span class="input-group-btn">
-                                            <button (click)="getStudentInvoices()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
-                                        </span>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('StudentInvoices')" [description]="l('StudentInvoicesHeaderInfo')">
+
+            <div role="actions">
+                 <div class="btn-group">
+                    <button *ngIf="isGranted('Pages.StudentInvoices.Create')" (click)="createStudentInvoice()"
+                        class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                        {{l("CreateNewStudentInvoice")}}</button>
+                </div>
+
+            </div>
+
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+                    <form class="horizontal-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getStudentInvoices()" class="btn btn-primary"
+                                                    type="submit"><i class="flaticon-search-1"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-						 <div class="row" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-						         <div class="kt-separator kt-separator--border-dashed"></div>
-						     </div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
 
 
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="RecipientFirstNameFilter">{{l("RecipientFirstName")}}</label>
-									<input type="text" class="form-control" id="RecipientFirstNameFilter" name="recipientFirstNameFilter" [(ngModel)]="recipientFirstNameFilter">
-								</div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RecipientFirstNameFilter">{{l("RecipientFirstName")}}</label>
+                                        <input type="text" class="form-control" id="RecipientFirstNameFilter"
+                                            name="recipientFirstNameFilter" [(ngModel)]="recipientFirstNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RecipientLastNameFilter">{{l("RecipientLastName")}}</label>
+                                        <input type="text" class="form-control" id="RecipientLastNameFilter"
+                                            name="recipientLastNameFilter" [(ngModel)]="recipientLastNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RecipientStreetFilter">{{l("RecipientStreet")}}</label>
+                                        <input type="text" class="form-control" id="RecipientStreetFilter"
+                                            name="recipientStreetFilter" [(ngModel)]="recipientStreetFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RecipientZipCodeFilter">{{l("RecipientZipCode")}}</label>
+                                        <input type="text" class="form-control" id="RecipientZipCodeFilter"
+                                            name="recipientZipCodeFilter" [(ngModel)]="recipientZipCodeFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RecipientCityFilter">{{l("RecipientCity")}}</label>
+                                        <input type="text" class="form-control" id="RecipientCityFilter"
+                                            name="recipientCityFilter" [(ngModel)]="recipientCityFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinDateFilter">{{l("DateRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinDateFilter" name="MinDateFilter"
+                                                type="datetime" bsDatepicker placeholder="{{l('MinValue')}}"
+                                                [(ngModel)]="minDateFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxDateFilter" name="MaxDateFilter"
+                                                type="datetime" bsDatepicker placeholder="{{l('MaxValue')}}"
+                                                [(ngModel)]="maxDateFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinTotalAfterVatFilter">{{l("MinMax")}}
+                                            {{l("TotalAfterVat")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinTotalAfterVatFilter"
+                                                [(ngModel)]="minTotalAfterVatFilter" placeholder="{{l('MinValue')}}"
+                                                name="minTotalAfterVatFilter" />
+                                            <input type="number" class="form-control"
+                                                [(ngModel)]="maxTotalAfterVatFilter" placeholder="{{l('MaxValue')}}"
+                                                name="maxTotalAfterVatFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinDateDueFilter">{{l("DateDueRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinDateDueFilter"
+                                                name="MinDateDueFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MinValue')}}" [(ngModel)]="minDateDueFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxDateDueFilter"
+                                                name="MaxDateDueFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDateDueFilter">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="RecipientLastNameFilter">{{l("RecipientLastName")}}</label>
-									<input type="text" class="form-control" id="RecipientLastNameFilter" name="recipientLastNameFilter" [(ngModel)]="recipientLastNameFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="RecipientStreetFilter">{{l("RecipientStreet")}}</label>
-									<input type="text" class="form-control" id="RecipientStreetFilter" name="recipientStreetFilter" [(ngModel)]="recipientStreetFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="RecipientZipCodeFilter">{{l("RecipientZipCode")}}</label>
-									<input type="text" class="form-control" id="RecipientZipCodeFilter" name="recipientZipCodeFilter" [(ngModel)]="recipientZipCodeFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="RecipientCityFilter">{{l("RecipientCity")}}</label>
-									<input type="text" class="form-control" id="RecipientCityFilter" name="recipientCityFilter" [(ngModel)]="recipientCityFilter">
-								</div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label  for="MinDateFilter">{{l("DateRange")}}</label>
-									<div class="input-group">
-                                        <input class="form-control m-input" id="MinDateFilter" name="MinDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minDateFilter">
-			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
-                                        <input class="form-control m-input" id="MaxDateFilter" name="MaxDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDateFilter">
-									</div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label for="MinTotalAfterVatFilter">{{l("MinMax")}} {{l("TotalAfterVat")}}</label>
-									<div class="input-group">
-                                        <input type="number" class="form-control" id="MinTotalAfterVatFilter" [(ngModel)]="minTotalAfterVatFilter" placeholder="{{l('MinValue')}}" name="minTotalAfterVatFilter" />
-                                        <input type="number" class="form-control" [(ngModel)]="maxTotalAfterVatFilter" placeholder="{{l('MaxValue')}}" name="maxTotalAfterVatFilter" />
-									</div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label  for="MinDateDueFilter">{{l("DateDueRange")}}</label>
-									<div class="input-group">
-                                        <input class="form-control m-input" id="MinDateDueFilter" name="MinDateDueFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minDateDueFilter">
-			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
-                                        <input class="form-control m-input" id="MaxDateDueFilter" name="MaxDateDueFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDateDueFilter">
-									</div>
-                                </div>
-                            </div>
-
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
 
-                <div class="row align-items-center">
-                    <!--<Primeng-Datatable-Start>-->
-                    <div class="primeng-datatable-container col-12"
-                         [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable
-                                     (onLazyLoad)="getStudentInvoices($event)"
-                                     [value]="primengTableHelper.records"
-                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                     [paginator]="false"
-                                     [lazy]="true"
-                                     [scrollable]="true"
-                                     ScrollWidth="100%"
-                                     [responsive]="primengTableHelper.isResponsive"
-                                     [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.StudentInvoices.Edit', 'Pages.StudentInvoices.Delete')">{{l('Actions')}}</th>
-                                    <th style="width: 150px" pSortableColumn="recipientFirstName">
-                                        {{l('RecipientFirstName')}}
-                                        <p-sortIcon field="studentInvoice.recipientFirstName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="recipientLastName">
-                                        {{l('RecipientLastName')}}
-                                        <p-sortIcon field="studentInvoice.recipientLastName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="recipientZipCode">
-                                        {{l('RecipientZipCode')}}
-                                        <p-sortIcon field="studentInvoice.recipientZipCode"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="recipientCity">
-                                        {{l('RecipientCity')}}
-                                        <p-sortIcon field="studentInvoice.recipientCity"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="date">
-                                        {{l('Date')}}
-                                        <p-sortIcon field="studentInvoice.date"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="totalAfterVat">
-                                        {{l('TotalAfterVat')}}
-                                        <p-sortIcon field="studentInvoice.totalAfterVat"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="dateDue">
-                                        {{l('DateDue')}}
-                                        <p-sortIcon field="studentInvoice.dateDue"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="pdfFileCreated">
-                                        {{l('PdfFileCreated')}}
-                                        <p-sortIcon field="studentInvoice.pdfFileCreated"></p-sortIcon>
-                                    </th>
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getStudentInvoices($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.StudentInvoices.Edit', 'Pages.StudentInvoices.Delete')">
+                                            {{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="recipientFirstName">
+                                            {{l('RecipientFirstName')}}
+                                            <p-sortIcon field="studentInvoice.recipientFirstName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="recipientLastName">
+                                            {{l('RecipientLastName')}}
+                                            <p-sortIcon field="studentInvoice.recipientLastName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="recipientZipCode">
+                                            {{l('RecipientZipCode')}}
+                                            <p-sortIcon field="studentInvoice.recipientZipCode"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="recipientCity">
+                                            {{l('RecipientCity')}}
+                                            <p-sortIcon field="studentInvoice.recipientCity"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="date">
+                                            {{l('Date')}}
+                                            <p-sortIcon field="studentInvoice.date"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="totalAfterVat">
+                                            {{l('TotalAfterVat')}}
+                                            <p-sortIcon field="studentInvoice.totalAfterVat"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="dateDue">
+                                            {{l('DateDue')}}
+                                            <p-sortIcon field="studentInvoice.dateDue"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="pdfFileCreated">
+                                            {{l('PdfFileCreated')}}
+                                            <p-sortIcon field="studentInvoice.pdfFileCreated"></p-sortIcon>
+                                        </th>
 
-                                </tr>
-                            </ng-template>                           
-							<ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.StudentInvoices.Edit', 'Pages.StudentInvoices.Delete')">
-                                       <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-												<ul class="dropdown-menu"  *dropdownMenu>
-												<!-- <li>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.StudentInvoices.Edit', 'Pages.StudentInvoices.Delete')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <!-- <li>
 													<a href="javascript:;"
 														(click)="viewStudentInvoiceModal.show(record)">{{l('View')}}</a>
                                                 </li> -->
-                                                <li *ngIf="record.studentInvoice.pdfFileCreated">
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
-														(click)="getPdf(record.studentInvoice)">{{l('GetPdf')}}</a>
-                                                </li>
-                                                <li *ngIf="!record.studentInvoice.pdfFileCreated">
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
-														(click)="getPdf(record.studentInvoice)">{{l('CreatePdf')}}</a>
-												</li>
-												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
-														(click)="editStudentInvoice(record.studentInvoice.id)">{{l('Edit')}}</a>
-												</li>
-												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Delete')"
-														(click)="deleteStudentInvoice(record.studentInvoice)">{{l('Delete')}}</a>
-												</li>
-                                                <li>
-                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
-                                                       (click)="showHistory(record.studentInvoice)">{{l('History')}}</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('RecipientFirstName')}}</span>
-											{{record.studentInvoice.recipientFirstName}}
-										</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('RecipientLastName')}}</span>
-											{{record.studentInvoice.recipientLastName}}
-										</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('RecipientZipCode')}}</span>
-											{{record.studentInvoice.recipientZipCode}}
-										</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('RecipientCity')}}</span>
-											{{record.studentInvoice.recipientCity}}
-										</td>
-                                    <td style="width:150px">
-										<span class="ui-column-title"> {{l('Date')}}</span>
-                                        <span *ngIf="record.studentInvoice.date">
-											{{record.studentInvoice.date | momentFormat:'L'}}
-                                        </span>
-                                        <span *ngIf="!record.studentInvoice.date">-</span>
-                                    </td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('TotalAfterVat')}}</span>
-											{{record.studentInvoice.totalAfterVat}}
-										</td>
-                                    <td style="width:150px">
-										<span class="ui-column-title"> {{l('DateDue')}}</span>
-                                        <span *ngIf="record.studentInvoice.dateDue">
-											{{record.studentInvoice.dateDue | momentFormat:'L'}}
-                                        </span>
-                                        <span *ngIf="!record.studentInvoice.dateDue">-</span>
-                                    </td>
-                                    <td style="width:100px">
-										<span class="ui-column-title"> {{l('PdfCreated')}}</span>
-                                        <div *ngIf="record.studentInvoice.pdfFileCreated" class="text-center"><i class="fa fa-check-circle m--font-success" title="True"></i></div>
-										<div *ngIf="!record.studentInvoice.pdfFileCreated" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
-                                    </td>
+                                                    <li *ngIf="record.studentInvoice.pdfFileCreated">
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
+                                                            (click)="getPdf(record.studentInvoice)">{{l('GetPdf')}}</a>
+                                                    </li>
+                                                    <li *ngIf="!record.studentInvoice.pdfFileCreated">
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
+                                                            (click)="getPdf(record.studentInvoice)">{{l('CreatePdf')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
+                                                            (click)="editStudentInvoice(record.studentInvoice.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.StudentInvoices.Delete')"
+                                                            (click)="deleteStudentInvoice(record.studentInvoice)">{{l('Delete')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="entityHistoryEnabled"
+                                                            (click)="showHistory(record.studentInvoice)">{{l('History')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('RecipientFirstName')}}</span>
+                                            {{record.studentInvoice.recipientFirstName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('RecipientLastName')}}</span>
+                                            {{record.studentInvoice.recipientLastName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('RecipientZipCode')}}</span>
+                                            {{record.studentInvoice.recipientZipCode}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('RecipientCity')}}</span>
+                                            {{record.studentInvoice.recipientCity}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Date')}}</span>
+                                            <span *ngIf="record.studentInvoice.date">
+                                                {{record.studentInvoice.date}}
+                                            </span>
+                                            <span *ngIf="!record.studentInvoice.date">-</span>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('TotalAfterVat')}}</span>
+                                            {{record.studentInvoice.totalAfterVat}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('DateDue')}}</span>
+                                            <span *ngIf="record.studentInvoice.dateDue">
+                                                {{record.studentInvoice.dateDue}}
+                                            </span>
+                                            <span *ngIf="!record.studentInvoice.dateDue">-</span>
+                                        </td>
+                                        <td style="width:100px">
+                                            <span class="p-column-title"> {{l('PdfCreated')}}</span>
+                                            <div *ngIf="record.studentInvoice.pdfFileCreated" class="text-center"><i
+                                                    class="fa fa-check-circle m--font-success" title="True"></i></div>
+                                            <div *ngIf="!record.studentInvoice.pdfFileCreated" class="text-center"><i
+                                                    class="fa fa-times-circle" title="False"></i></div>
+                                        </td>
 
-                                </tr>
-                            </ng-template>
-                        </p-table>
-						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getStudentInvoices($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
                         </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
-                                         #paginator
-                                         (onPageChange)="getStudentInvoices($event)"
-                                         [totalRecords]="primengTableHelper.totalRecordsCount"
-                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
-                        </div>
+                        <!--<Primeng-Datatable-End>-->
                     </div>
-                    <!--<Primeng-Datatable-End>-->
                 </div>
             </div>
         </div>
     </div>
 
-    
+
     <viewStudentInvoiceModal #viewStudentInvoiceModal></viewStudentInvoiceModal>
-     <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
-  
+    <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+
 </div>

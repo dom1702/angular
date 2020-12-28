@@ -98,6 +98,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     get studentPhoneNumberParsed() : string {
         return this.studentPhoneNumber.toString();
     }   
+    
         
     constructor(private injector: Injector, private messageService : MessageService, private _onlineTheoryService : OnlineTheoryServiceProxy) {       
         super(injector);             

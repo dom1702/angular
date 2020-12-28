@@ -33,9 +33,9 @@
             </div>
         </div>
     </div>
-    <div class="m-pricing-table-1 m-pricing-table-1--fixed">
-        <div class="m-portlet">
-            <div class="m-portlet__body">
+    <div class="kt-pricing-table-1 kt-pricing-table-1--fixed">
+        <div class="kt-portlet">
+            <div class="kt-portlet__body">
 
                 <div *ngIf="currentPageNumber == 0 && licenseClasses != undefined">
                     <h3 class="mb-5">What license do you want to acquire?</h3>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button
-                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            class="btn btn-success kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                                             (click)="classToAcquireSelected(licenseClass.licenseClass)">
                                             Select
                                         </button>
@@ -73,7 +73,7 @@
                     <h3 class="mb-5">Do you have any licenses completed before?</h3>
 
                     <button
-                        class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        class="btn btn-success kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                         (click)="classesAlreadyOwnedSelected()">
                         I don't have any license yet
                     </button>
@@ -98,7 +98,7 @@
 
                                     </div>
                                     <div class="card-footer">
-                                        <label class="m-checkbox mt-3">
+                                        <label class="kt-checkbox mt-3">
                                             <input type="checkbox" name="licenseClassOwned"
                                                 (change)="previousClassChecked(licenseClassOwned.licenseClass, $event)">
                                             I have this license
@@ -111,13 +111,13 @@
                     </div>
 
                     <button
-                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        class="btn btn-secondary kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                         (click)="goToPreviousPage()">
                         Back
                     </button>
 
                     <button *ngIf="previousClasses.length > 0"
-                        class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        class="btn btn-success kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                         (click)="classesAlreadyOwnedSelected()">
                         Next
                     </button>
@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button
-                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            class="btn btn-success kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                                             (click)="officeSelected(location.officeId)">
                                             Select
                                         </button>
@@ -156,7 +156,7 @@
                     </div>
 
                     <button
-                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        class="btn btn-secondary kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                         (click)="goToPreviousPage()">
                         Back
                     </button>
@@ -188,7 +188,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button
-                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            class="btn btn-success kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                                             (click)="courseSelected(course.courseId)">
                                             Select
                                         </button>
@@ -201,7 +201,7 @@
                     </div>
 
                     <button
-                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        class="btn btn-secondary kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                         (click)="goToPreviousPage()">
                         Back
                     </button>
@@ -241,7 +241,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button
-                                            class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                                            class="btn btn-success kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                                             (click)="pricePackageSelected(pp.pricePackageId)">
                                             Select
                                         </button>
@@ -253,7 +253,7 @@
                         </div>
                     </div>
                     <button
-                        class="btn btn-secondary m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
+                        class="btn btn-secondary kt-btn kt-btn--custom kt-btn--pill kt-btn--wide kt-btn--uppercase kt-btn--bolder kt-btn--sm"
                         (click)="goToPreviousPage()">
                         Back
                     </button>

@@ -1,18 +1,16 @@
 ﻿import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PredefinedDrivingLessonsServiceProxy, PredefinedDrivingLessonDto  } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditPredefinedDrivingLessonModalComponent } from './create-or-edit-predefinedDrivingLesson-modal.component';
 import { ViewPredefinedDrivingLessonModalComponent } from './view-predefinedDrivingLesson-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { Table } from 'primeng/components/table/table';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
     templateUrl: './predefinedDrivingLessons.component.html',
@@ -21,10 +19,10 @@ import * as moment from 'moment';
 })
 export class PredefinedDrivingLessonsComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditPredefinedDrivingLessonModal') createOrEditPredefinedDrivingLessonModal: CreateOrEditPredefinedDrivingLessonModalComponent;
-    @ViewChild('viewPredefinedDrivingLessonModalComponent') viewPredefinedDrivingLessonModal: ViewPredefinedDrivingLessonModalComponent;
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
+    @ViewChild('createOrEditPredefinedDrivingLessonModal', { static: true }) createOrEditPredefinedDrivingLessonModal: CreateOrEditPredefinedDrivingLessonModalComponent;
+    @ViewChild('viewPredefinedDrivingLessonModalComponent', { static: true }) viewPredefinedDrivingLessonModal: ViewPredefinedDrivingLessonModalComponent;
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     advancedFiltersAreShown = false;
     filterText = '';
@@ -35,7 +33,6 @@ export class PredefinedDrivingLessonsComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _predefinedDrivingLessonsServiceProxy: PredefinedDrivingLessonsServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService

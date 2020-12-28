@@ -1,6 +1,6 @@
 <div [@routerTransition]>
 
-    <div class="m-subheader">
+    <!-- <div class="m-subheader">
         <div class="d-flex align-items-center">
             <div class="mr-auto col-md-6">
                 <h3 class="m-subheader__title m-subheader__title--separator">
@@ -29,47 +29,79 @@
                 {{l("CourseCompletedMessageStudentOverview")}}!
             </alert>
         </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div *ngIf="overallActive" class="m-portlet__body">
+    </div> -->
 
-                <tabset>
-                    <tab heading={{overviewTabName}} id="tab1">
-                        <students-overview-overview [student]="student" [parentOverview]="this"
-                            [pricePackageName]="pricePackageName" [drivingLessons]="this.drivingLessons">
-                        </students-overview-overview>
-                    </tab>
-                    <tab heading={{lessonsTabName}} id="tab2" (selectTab)="onLessonsTabSelect($event)">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header *ngIf="overallActive" [title]="l('StudentOverview')" [description]="">
 
-                        <students-overview-lessons [student]="student" [parentOverview]="this">
-                        </students-overview-lessons>
-                    </tab>
-                    <tab heading={{pricePackageTabName}}>
+            <div *ngIf="overallActive" role="actions" style="width: 300px">
+                <div >
+                <label>Course: </label><br>
+                <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged.next()">
+                    <option *ngFor="let course of studentCourses" [ngValue]="course">
+                        {{course.course.name}}
+                    </option>
+                </select>
+            </div>
+            </div>
 
-                        <students-overview-pricePackage *ngIf="selectedStudentCourse" [parentOverview]="this"
-                            [student]="student" [selectedStudentCourse]="selectedStudentCourse">
-                        </students-overview-pricePackage>
+        </sub-header>
 
-                    </tab>
-                    <tab heading={{studentInvoicesTabName}}>
-                        <students-overview-invoices [parentOverview]="this" [student]="student">
-                        </students-overview-invoices>
-                    </tab>
-                    <tab heading={{studentFormsTabName}}>
-                        <students-overview-forms [student]="student"></students-overview-forms>
-                    </tab>
-                </tabset>
+        <div *ngIf="drivingLessons != null && drivingLessons.completedExam">
+            <alert type="success">
+                {{l("CourseCompletedMessageStudentOverview")}}!
+            </alert>
+        </div>
 
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div *ngIf="overallActive" class="card-body">
+
+                    <tabset>
+                        <tab heading={{overviewTabName}} id="tab1">
+                            <div [class]="containerClass">
+                                
+                            <students-overview-overview [student]="student" [parentOverview]="this"
+                                [pricePackageName]="pricePackageName" [drivingLessons]="this.drivingLessons">
+                            </students-overview-overview>
+                     
+                </div>
+                        </tab>
+                        <tab heading={{lessonsTabName}} id="tab2" (selectTab)="onLessonsTabSelect($event)">
+                            <div [class]="containerClass">
+                            <students-overview-lessons [student]="student" [parentOverview]="this">
+                            </students-overview-lessons>
+                        </div>
+                        </tab>
+                        <tab heading={{pricePackageTabName}}>
+                            <div [class]="containerClass">
+                            <students-overview-pricePackage *ngIf="selectedStudentCourse" [parentOverview]="this"
+                                [student]="student" [selectedStudentCourse]="selectedStudentCourse">
+                            </students-overview-pricePackage>
+                        </div>
+                        </tab>
+                        <tab heading={{studentInvoicesTabName}}>
+                            <div [class]="containerClass">
+                            <students-overview-invoices [parentOverview]="this" [student]="student">
+                            </students-overview-invoices>
+                        </div>
+                        </tab>
+                        <tab heading={{studentFormsTabName}}>
+                            <div [class]="containerClass">
+                            <students-overview-forms [student]="student"></students-overview-forms>
+                        </div>
+                        </tab>
+                    </tabset>
+
+                </div>
             </div>
         </div>
+
+
+        <div class="ml-10">
+
+            <button type="button" (click)="goBack()" class="btn btn-primary mr-5">{{l("Back")}}</button>
+
+        </div>
     </div>
-
-
-    <div class="m--margin-left-20">
-
-        <button type="button" (click)="goBack()" class="btn btn-primary mr-5">{{l("Back")}}</button>
-
-    </div>
-
 </div>

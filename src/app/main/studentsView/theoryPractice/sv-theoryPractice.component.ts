@@ -1,7 +1,6 @@
 import { Component, Injector, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import * as moment from 'moment';
 import { StudentViewHelper } from '../studentViewHelper.component';
 import { StudentsViewServiceProxy } from '@shared/service-proxies/service-proxies';
 

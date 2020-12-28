@@ -1,235 +1,251 @@
 ﻿<div [@routerTransition]>
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Courses")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("CoursesHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.Courses.Create')" (click)="createCourse()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewCourse")}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('Courses')" [description]="l('CoursesHeaderInfo')">
 
-				<form class="horizontal-form" autocomplete="off">
-                    <div>
-                        <div class="row align-items-center">
-                            <div class="col-xl-12">
-                                <div class="form-group m-form__group align-items-center">
-                                    <div class="input-group">
-                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
-                                        <span class="input-group-btn">
-                                            <button (click)="getCourses()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
-                                        </span>
+            <div role="actions">
+                 <div class="btn-group">
+                    <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                        {{l("ExportToExcel")}}</button>
+                    <button *ngIf="isGranted('Pages.Courses.Create')" (click)="createCourse()"
+                        class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewCourse")}}</button>
+                </div>
+
+            </div>
+
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+                    <form class="horizontal-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getCourses()" class="btn btn-primary" type="submit"><i
+                                                        class="flaticon-search-1"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-						 <div class="row" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-                                <div class="m-separator m-separator--dashed"></div>
-						     </div>
-
-
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="NameFilter">{{l("Name")}}</label>
-									<input type="text" class="form-control" id="NameFilter" name="nameFilter" [(ngModel)]="nameFilter">
-								</div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label  for="MinStartDateFilter">{{l("StartDateRange")}}</label>
-									<div class="input-group">
-                                        <input class="form-control m-input" id="MinStartDateFilter" name="MinStartDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minStartDateFilter">
-			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
-                                        <input class="form-control m-input" id="MaxStartDateFilter" name="MaxStartDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartDateFilter">
-									</div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="m-separator m-separator--dashed"></div>
                                 </div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="CourseNumberFilter">{{l("CourseNumber")}}</label>
-									<input type="text" class="form-control" id="CourseNumberFilter" name="courseNumberFilter" [(ngModel)]="courseNumberFilter">
-								</div>
-                            </div>	
-							<div class="col-md-3">
-								<label for="VisibleOnFrontPageFilterSelect">{{l("VisibleOnFrontPage")}}</label>
-								<select class="form-control" name="VisibleOnFrontPageFilter" id="VisibleOnFrontPageFilterSelect" [(ngModel)]="visibleOnFrontPageFilter">
-								<option value="-1">{{l("All")}}</option>
-								<option value="0">{{l("False")}}</option>
-								<option value="1">{{l("True")}}</option>
-								</select>
-                            </div>	
-							<div class="col-md-3">
-								<label for="EnrollmentAvailableFilterSelect">{{l("EnrollmentAvailable")}}</label>
-								<select class="form-control" name="EnrollmentAvailableFilter" id="EnrollmentAvailableFilterSelect" [(ngModel)]="enrollmentAvailableFilter">
-								<option value="-1">{{l("All")}}</option>
-								<option value="0">{{l("False")}}</option>
-								<option value="1">{{l("True")}}</option>
-								</select>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="OfficeNameFilter">({{l("Office")}}) {{l("Name")}}</label>
-									<input type="text" class="form-control" id="OfficeNameFilter" name="officeNameFilter" [(ngModel)]="officeNameFilter">
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="NameFilter">{{l("Name")}}</label>
+                                        <input type="text" class="form-control" id="NameFilter" name="nameFilter"
+                                            [(ngModel)]="nameFilter">
+                                    </div>
                                 </div>
-                            </div>
-
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <div class="row align-items-center">
-                    <!--<Primeng-Datatable-Start>-->
-                    <div class="primeng-datatable-container col-12"
-                         [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable
-                                     (onLazyLoad)="getCourses($event)"
-                                     [value]="primengTableHelper.records"
-                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                     [paginator]="false"
-                                     [lazy]="true"
-                                     [scrollable]="true"
-                                     ScrollWidth="100%"
-                                     [responsive]="primengTableHelper.isResponsive"
-                                     [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Courses.Edit', 'Pages.Courses.Delete')">{{l('Actions')}}</th>
-                                    <th style="width: 150px" pSortableColumn="officeFk.name">
-                                        {{l('Office')}}
-                                        <p-sortIcon field="officeName"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="name">
-                                        {{l('Name')}}
-                                        <p-sortIcon field="course.name"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="startDate">
-                                        {{l('StartDate')}}
-                                        <p-sortIcon field="course.startDate"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="lastEnrollmentDate">
-                                        {{l('LastEnrollmentDate')}}
-                                        <p-sortIcon field="course.lastEnrollmentDate"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="courseNumber">
-                                        {{l('CourseNumber')}}
-                                        <p-sortIcon field="course.courseNumber"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="visibleOnFrontPage">
-                                        {{l('VisibleOnFrontPage')}}
-                                        <p-sortIcon field="course.visibleOnFrontPage"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="enrollmentAvailable">
-                                        {{l('EnrollmentAvailable')}}
-                                        <p-sortIcon field="course.enrollmentAvailable"></p-sortIcon>
-                                    </th>
-
-                                </tr>
-                            </ng-template>                           
-							<ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.Courses.Edit', 'Pages.Courses.Delete')">
-                                       <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-												<ul class="dropdown-menu"  *dropdownMenu>
-												<li>
-													<a href="javascript:;"
-														(click)="viewCourseModal.show(record)">{{l('View')}}</a>
-												</li>
-												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Courses.Edit')"
-														(click)="createOrEditCourseModal.show(record.course.id)">{{l('Edit')}}</a>
-												</li>
-												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Courses.Delete')"
-														(click)="deleteCourse(record.course)">{{l('Delete')}}</a>
-												</li>
-                                            </ul>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinStartDateFilter">{{l("StartDateRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinStartDateFilter"
+                                                name="MinStartDateFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MinValue')}}" [(ngModel)]="minStartDateFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxStartDateFilter"
+                                                name="MaxStartDateFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartDateFilter">
                                         </div>
-                                    </td>
-                                    <td style="width:150px">
-												<span class="ui-column-title"> {{l('Office')}}</span>
-												{{record.officeName}}
-											</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('Name')}}</span>
-											{{record.course.name}}
-										</td>
-                                    <td style="width:150px">
-										<span class="ui-column-title"> {{l('StartDate')}}</span>
-                                        <span *ngIf="record.course.startDate">
-											{{record.course.startDate | momentFormat:'L'}}
-                                        </span>
-                                        <span *ngIf="!record.course.startDate">-</span>
-                                    </td>
-                                    <td style="width:150px">
-                                            <span class="ui-column-title"> {{l('LastEnrollmentDate')}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="CourseNumberFilter">{{l("CourseNumber")}}</label>
+                                        <input type="text" class="form-control" id="CourseNumberFilter"
+                                            name="courseNumberFilter" [(ngModel)]="courseNumberFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="VisibleOnFrontPageFilterSelect">{{l("VisibleOnFrontPage")}}</label>
+                                    <select class="form-control" name="VisibleOnFrontPageFilter"
+                                        id="VisibleOnFrontPageFilterSelect" [(ngModel)]="visibleOnFrontPageFilter">
+                                        <option value="-1">{{l("All")}}</option>
+                                        <option value="0">{{l("False")}}</option>
+                                        <option value="1">{{l("True")}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="EnrollmentAvailableFilterSelect">{{l("EnrollmentAvailable")}}</label>
+                                    <select class="form-control" name="EnrollmentAvailableFilter"
+                                        id="EnrollmentAvailableFilterSelect" [(ngModel)]="enrollmentAvailableFilter">
+                                        <option value="-1">{{l("All")}}</option>
+                                        <option value="0">{{l("False")}}</option>
+                                        <option value="1">{{l("True")}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="OfficeNameFilter">({{l("Office")}}) {{l("Name")}}</label>
+                                        <input type="text" class="form-control" id="OfficeNameFilter"
+                                            name="officeNameFilter" [(ngModel)]="officeNameFilter">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getCourses($event)" [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Courses.Edit', 'Pages.Courses.Delete')">
+                                            {{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="officeFk.name">
+                                            {{l('Office')}}
+                                            <p-sortIcon field="officeName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="name">
+                                            {{l('Name')}}
+                                            <p-sortIcon field="course.name"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="startDate">
+                                            {{l('StartDate')}}
+                                            <p-sortIcon field="course.startDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="lastEnrollmentDate">
+                                            {{l('LastEnrollmentDate')}}
+                                            <p-sortIcon field="course.lastEnrollmentDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="courseNumber">
+                                            {{l('CourseNumber')}}
+                                            <p-sortIcon field="course.courseNumber"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="visibleOnFrontPage">
+                                            {{l('VisibleOnFrontPage')}}
+                                            <p-sortIcon field="course.visibleOnFrontPage"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="enrollmentAvailable">
+                                            {{l('EnrollmentAvailable')}}
+                                            <p-sortIcon field="course.enrollmentAvailable"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Courses.Edit', 'Pages.Courses.Delete')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="viewCourseModal.show(record)">{{l('View')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.Courses.Edit')"
+                                                            (click)="createOrEditCourseModal.show(record.course.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.Courses.Delete')"
+                                                            (click)="deleteCourse(record.course)">{{l('Delete')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Office')}}</span>
+                                            {{record.officeName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Name')}}</span>
+                                            {{record.course.name}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('StartDate')}}</span>
+                                            <span *ngIf="record.course.startDate">
+                                                {{record.course.startDate}}
+                                            </span>
+                                            <span *ngIf="!record.course.startDate">-</span>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('LastEnrollmentDate')}}</span>
                                             <span *ngIf="record.course.lastEnrollmentDate">
-                                                {{record.course.lastEnrollmentDate | momentFormat:'L'}}
+                                                {{record.course.lastEnrollmentDate}}
                                             </span>
                                             <span *ngIf="!record.course.lastEnrollmentDate">-</span>
-										</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('CourseNumber')}}</span>
-											{{record.course.courseNumber}}
-										</td>
-                                    <td style="width:150px">
-										<span class="ui-column-title"> {{l('VisibleOnFrontPage')}}</span>
-                                        <div *ngIf="record.course.visibleOnFrontPage" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
-										<div *ngIf="!record.course.visibleOnFrontPage" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
-                                    </td>
-                                    <td style="width:150px">
-										<span class="ui-column-title"> {{l('EnrollmentAvailable')}}</span>
-                                        <div *ngIf="record.course.enrollmentAvailable" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
-										<div *ngIf="!record.course.enrollmentAvailable" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
-                                    </td>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('CourseNumber')}}</span>
+                                            {{record.course.courseNumber}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('VisibleOnFrontPage')}}</span>
+                                            <div *ngIf="record.course.visibleOnFrontPage" class="text-center"><i
+                                                    class="fa fa-check-circle kt--font-success" title="True"></i></div>
+                                            <div *ngIf="!record.course.visibleOnFrontPage" class="text-center"><i
+                                                    class="fa fa-times-circle" title="False"></i></div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('EnrollmentAvailable')}}</span>
+                                            <div *ngIf="record.course.enrollmentAvailable" class="text-center"><i
+                                                    class="fa fa-check-circle kt--font-success" title="True"></i></div>
+                                            <div *ngIf="!record.course.enrollmentAvailable" class="text-center"><i
+                                                    class="fa fa-times-circle" title="False"></i></div>
+                                        </td>
 
-                                </tr>
-                            </ng-template>
-                        </p-table>
-						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getCourses($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
                         </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
-                                         #paginator
-                                         (onPageChange)="getCourses($event)"
-                                         [totalRecords]="primengTableHelper.totalRecordsCount"
-                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
-                        </div>
+                        <!--<Primeng-Datatable-End>-->
                     </div>
-                    <!--<Primeng-Datatable-End>-->
                 </div>
             </div>
         </div>
     </div>
-
     <createOrEditCourseModal #createOrEditCourseModal (modalSave)="getCourses()"></createOrEditCourseModal>
     <viewCourseModal #viewCourseModal></viewCourseModal>
-    
-  
+
+
 </div>

@@ -1,8 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Http } from '@angular/http';
 import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, StudentInvoiceDto, StudentInvoicesServiceProxy, StudentFormsServiceProxy, CreatedFormDto, FormDto, FormsServiceProxy, DownloadStudentFormInput, StudentCourseDrivingLessonsDto, DrivingLessonOfCourseDto, DrivingLessonsServiceProxy, SimulatorLessonsServiceProxy } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -44,7 +42,6 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
         private _studentsServiceProxy: StudentsServiceProxy,
         private _drivingLessonServiceProxy: DrivingLessonsServiceProxy,
         private _simulatorLessonServiceProxy: SimulatorLessonsServiceProxy,
-        private _notifyService: NotifyService,
         private _router: Router,
         private _fileDownloadService: FileDownloadService
     ) {
@@ -143,6 +140,7 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
         {
             this.message.confirm(
                 '',
+                '',
                 (isConfirmed) => {
                     if (isConfirmed) {
                         this._simulatorLessonServiceProxy.delete(record.id)
@@ -157,6 +155,7 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
         else
         {
             this.message.confirm(
+                '',
                 '',
                 (isConfirmed) => {
                     if (isConfirmed) {

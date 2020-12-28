@@ -1,21 +1,20 @@
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Http } from '@angular/http';
 import { InstructorsServiceProxy, InstructorDto  } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditInstructorModalComponent } from './create-or-edit-instructor-modal.component';
 import { ViewInstructorModalComponent } from './view-instructor-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { Table } from 'primeng/components/table/table';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { CreateOrEditInstructorUserModalComponent } from './create-or-edit-instructor-user-modal.component';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { DateTime } from 'luxon';
 
 @Component({
     templateUrl: './instructors.component.html',
@@ -24,11 +23,11 @@ import { CreateOrEditInstructorUserModalComponent } from './create-or-edit-instr
 })
 export class InstructorsComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditInstructorModal') createOrEditInstructorModal: CreateOrEditInstructorModalComponent;
-    @ViewChild('viewInstructorModalComponent') viewInstructorModal: ViewInstructorModalComponent;
-    @ViewChild('entityTypeHistoryModal') entityTypeHistoryModal: EntityTypeHistoryModalComponent;
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
+    @ViewChild('createOrEditInstructorModal', { static: true }) createOrEditInstructorModal: CreateOrEditInstructorModalComponent;
+    @ViewChild('viewInstructorModalComponent', { static: true }) viewInstructorModal: ViewInstructorModalComponent;
+    @ViewChild('entityTypeHistoryModal', { static: true }) entityTypeHistoryModal: EntityTypeHistoryModalComponent;
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     @ViewChild('createOrEditInstructorUserModal') createOrEditInstructorUserModal: CreateOrEditInstructorUserModalComponent;
 
@@ -36,8 +35,8 @@ export class InstructorsComponent extends AppComponentBase {
     filterText = '';
     firstNameFilter = '';
     lastNameFilter = '';
-    maxDateOfBirthFilter : moment.Moment;
-		minDateOfBirthFilter : moment.Moment;
+    maxDateOfBirthFilter : DateTime;
+		minDateOfBirthFilter : DateTime;
     cityFilter = '';
     zipCodeFilter = '';
     stateFilter = '';
@@ -51,10 +50,10 @@ export class InstructorsComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _instructorsServiceProxy: InstructorsServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _dateTimeService: DateTimeService,
     ) {
         super(injector);
     }
@@ -115,6 +114,7 @@ export class InstructorsComponent extends AppComponentBase {
 
     deleteInstructor(instructor: InstructorDto): void {
         this.message.confirm(
+            '',
             '',
             (isConfirmed) => {
                 if (isConfirmed) {

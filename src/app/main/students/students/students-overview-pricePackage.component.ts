@@ -1,8 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Http } from '@angular/http';
 import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentCourseDto } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -23,9 +21,9 @@ import { StudentsOverviewComponent } from './students-overview.component';
 })
 export class StudentsOverviewPricePackageComponent extends AppComponentBase {
 
-    @ViewChild('pricePackageLookupTableModal') pricePackageLookupTableModal: PricePackageLookupTableModalComponent;
+    @ViewChild('pricePackageLookupTableModal', { static: true }) pricePackageLookupTableModal: PricePackageLookupTableModalComponent;
     // This component is shared between this class and the price package admin part, maybe moving it into a shared folder?
-    @ViewChild('createOrEditPricePackageModal') createOrEditPricePackageModal: CreateOrEditPricePackageModalComponent;
+    @ViewChild('createOrEditPricePackageModal', { static: true }) createOrEditPricePackageModal: CreateOrEditPricePackageModalComponent;
 
     @Input() student: StudentDto;
     @Input() selectedStudentCourse: StudentCourseDto;
@@ -38,7 +36,6 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,

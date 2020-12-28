@@ -1,10 +1,10 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import {DrivingLessonsServiceProxy, DrivingLessonLicenseClassLookupTableDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { Table } from 'primeng/components/table/table';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 
 @Component({
     selector: 'drivingLesson-licenseClassLookupTableModal',

@@ -32,7 +32,7 @@
 						>
 						</ng-multiselect-dropdown>
                     </div>
-                    <input class="form-control" name="instructor.allowedClassesToTeach" [(ngModel)]="instructor.allowedClassesToTeach" type="text"  hidden>
+                    <input class="form-control" name="instructor.licenseClasses" [(ngModel)]="instructor.licenseClasses" type="text"  hidden>
 		 
 
 								<div class="form-group">
@@ -55,11 +55,12 @@
 									<input type="text" id="Instructor_PhoneNumber" class="form-control" [(ngModel)]="instructor.phoneNumber" name="PhoneNumber"    />
 								</div>
 					
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label for="Instructor_DateOfBirth">{{l("DateOfBirth")}}</label>
 									 <input required class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="instructor.dateOfBirth._d" id="Instructor_DateOfBirth" name="Instructor_DateOfBirth">
-								</div>
-					
+								</div> -->
+
+
 								<div class="form-group">
 									<label for="Instructor_Street">{{l("Street")}}</label>
 									<input type="text" id="Instructor_Street" class="form-control" [(ngModel)]="instructor.street" name="Street"    />

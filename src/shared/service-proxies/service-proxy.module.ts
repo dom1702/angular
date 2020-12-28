@@ -1,4 +1,4 @@
-import { AbpHttpInterceptor, RefreshTokenService, AbpHttpConfigurationService } from 'abp-ng2-module';
+﻿import { AbpHttpInterceptor, RefreshTokenService, AbpHttpConfigurationService } from 'abp-ng2-module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import * as ApiServiceProxies from './service-proxies';
@@ -7,6 +7,42 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
 
 @NgModule({
     providers: [
+        ApiServiceProxies.TestResourcesServiceProxy,        
+        ApiServiceProxies.EnrollmentsServiceProxy,        
+        ApiServiceProxies.PredefinedTheoryLessonsServiceProxy,        
+        ApiServiceProxies.CoursesServiceProxy,        
+        ApiServiceProxies.PredefinedDrivingLessonsServiceProxy,        
+        ApiServiceProxies.SimulatorLessonsServiceProxy,        
+        ApiServiceProxies.FormsServiceProxy,        
+        ApiServiceProxies.PricePackagesServiceProxy,        
+        ApiServiceProxies.StudentInvoicesServiceProxy,        
+        ApiServiceProxies.ProductsServiceProxy,        
+        ApiServiceProxies.SimulatorsServiceProxy,        
+        ApiServiceProxies.OfficesServiceProxy,        
+        ApiServiceProxies.VehiclesServiceProxy,        
+        ApiServiceProxies.DrivingLessonTopicsServiceProxy,        
+        ApiServiceProxies.InstructorsServiceProxy,        
+        ApiServiceProxies.TheoryLessonTopicsServiceProxy,        
+        ApiServiceProxies.DrivingLessonsServiceProxy,        
+        ApiServiceProxies.StudentsServiceProxy,        
+        ApiServiceProxies.LicenseClassesServiceProxy,      
+        ApiServiceProxies.TheoryLessonsServiceProxy,
+        ApiServiceProxies.TheoryLessonTopicsServiceProxy,
+        ApiServiceProxies.LicenseClassesServiceProxy,
+        ApiServiceProxies.DrivingLessonsServiceProxy,
+        ApiServiceProxies.DrivingLessonTopicsServiceProxy,
+        ApiServiceProxies.StudentsServiceProxy,
+        ApiServiceProxies.InstructorsServiceProxy,
+        ApiServiceProxies.AppointmentsServiceProxy,
+        ApiServiceProxies.SchedulerServiceProxy,
+        ApiServiceProxies.PersonalSchedulerServiceProxy,
+        ApiServiceProxies.InstructorsOwnDrivingLessonsServiceProxy,
+        ApiServiceProxies.StudentsViewServiceProxy,
+        ApiServiceProxies.OwnAppointmentsServiceProxy,
+        ApiServiceProxies.StudentFormsServiceProxy,
+        ApiServiceProxies.OnlineTheoryServiceProxy,
+        ApiServiceProxies.TestResourcesServiceProxy,
+
         ApiServiceProxies.AuditLogServiceProxy,
         ApiServiceProxies.CachingServiceProxy,
         ApiServiceProxies.ChatServiceProxy,

@@ -1,112 +1,113 @@
 <div [@routerTransition]>
 
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("TheoryLessons")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                        {{l("TheoryLessonsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="createTheoryLesson()" 
-            class="btn btn-primary blue"><i class="fa fa-plus"></i>  {{l("CreateNewTheoryLesson")}}</button>
-            </div>
-        </div>
-    </div> 
 
-    <!-- <div class="kt-subheader kt-grid__item">
-        <div class="kt-subheader__main">
-            <h3 class="kt-subheader__title">
-                <span>{{l("TheoryLessons")}}</span>
-            </h3>
-            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-            <span class="kt-subheader__desc">
-                {{l("TheoryLessonsHeaderInfo")}}
-            </span>
-        </div>
-        <div class="kt-subheader__toolbar">
-            <div class="kt-subheader__wrapper">
-				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="createTheoryLesson()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewTheoryLesson")}}</button>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('TheoryLessons')" [description]="l('TheoryLessonsHeaderInfo')">
+
+            <div role="actions">
+                 <div class="btn-group">
+                    <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                        {{l("ExportToExcel")}}</button>
+                    <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="createTheoryLesson()"
+                        class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewTheoryLesson")}}</button>
+                </div>
+
             </div>
-        </div>
-    </div> -->
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
-    
-                <form class="horizontal-form" autocomplete="off">
-                 
+
+        </sub-header>
+
+
+
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+                    <form class="horizontal-form" autocomplete="off">
+
                         <div class="row align-items-center mb-4">
                             <div class="col-xl-12">
                                 <div class="form-group m-form__group align-items-center">
                                     <div class="input-group">
-                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
                                         <span class="input-group-btn">
-                                            <button (click)="getTheoryLessons()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                            <button (click)="getTheoryLessons()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-						 <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-						         <div class="m-separator m-separator--dashed"></div>
-						     </div>
+                        <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="m-separator m-separator--dashed"></div>
+                            </div>
 
 
                             <div class="col-md-3">
                                 <div class="form-group">
-									<label for="MinLessonLengthFilter">{{l("MinMax")}} {{l("LessonLength")}}</label>
-									<div class="input-group">
-                                        <input type="number" class="form-control" id="MinLessonLengthFilter" [(ngModel)]="minLessonLengthFilter" placeholder="{{l('MinValue')}}" name="minLessonLengthFilter" />
-                                        <input type="number" class="form-control" [(ngModel)]="maxLessonLengthFilter" placeholder="{{l('MaxValue')}}" name="maxLessonLengthFilter" />
-									</div>
+                                    <label for="MinLessonLengthFilter">{{l("MinMax")}} {{l("LessonLength")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinLessonLengthFilter"
+                                            [(ngModel)]="minLessonLengthFilter" placeholder="{{l('MinValue')}}"
+                                            name="minLessonLengthFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLessonLengthFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxLessonLengthFilter" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-									<label  for="MinStartTimeFilter">{{l("StartTimeRange")}}</label>
-									<div class="input-group">
-                                        <input class="form-control m-input" id="MinStartTimeFilter" name="MinStartTimeFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minStartTimeFilter">
-			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
-                                        <input class="form-control m-input" id="MaxStartTimeFilter" name="MaxStartTimeFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartTimeFilter">
-									</div>
+                                    <label for="MinStartTimeFilter">{{l("StartTimeRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinStartTimeFilter"
+                                            name="MinStartTimeFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minStartTimeFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxStartTimeFilter"
+                                            name="MaxStartTimeFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartTimeFilter">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-									<label for="MinAddingMinutesAfterFilter">{{l("MinMax")}} {{l("AddingMinutesAfter")}}</label>
-									<div class="input-group">
-                                        <input type="number" class="form-control" id="MinAddingMinutesAfterFilter" [(ngModel)]="minAddingMinutesAfterFilter" placeholder="{{l('MinValue')}}" name="minAddingMinutesAfterFilter" />
-                                        <input type="number" class="form-control" [(ngModel)]="maxAddingMinutesAfterFilter" placeholder="{{l('MaxValue')}}" name="maxAddingMinutesAfterFilter" />
-									</div>
+                                    <label for="MinAddingMinutesAfterFilter">{{l("MinMax")}}
+                                        {{l("AddingMinutesAfter")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinAddingMinutesAfterFilter"
+                                            [(ngModel)]="minAddingMinutesAfterFilter" placeholder="{{l('MinValue')}}"
+                                            name="minAddingMinutesAfterFilter" />
+                                        <input type="number" class="form-control"
+                                            [(ngModel)]="maxAddingMinutesAfterFilter" placeholder="{{l('MaxValue')}}"
+                                            name="maxAddingMinutesAfterFilter" />
+                                    </div>
                                 </div>
                             </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="InstructorFilter">{{l("Instructor")}}</label>
-									<input type="text" class="form-control" id="InstructorFilter" name="instructorFilter" [(ngModel)]="instructorFilter">
-								</div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="InstructorFilter">{{l("Instructor")}}</label>
+                                    <input type="text" class="form-control" id="InstructorFilter"
+                                        name="instructorFilter" [(ngModel)]="instructorFilter">
+                                </div>
                             </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="OfficeFilter">{{l("Office")}}</label>
-									<input type="text" class="form-control" id="OfficeFilter" name="officeFilter" [(ngModel)]="officeFilter">
-								</div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="OfficeFilter">{{l("Office")}}</label>
+                                    <input type="text" class="form-control" id="OfficeFilter" name="officeFilter"
+                                        [(ngModel)]="officeFilter">
+                                </div>
                             </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="TopicFilter">{{l("Topic")}}</label>
-									<input type="text" class="form-control" id="TopicFilter" name="topicFilter" [(ngModel)]="topicFilter">
-								</div>
-                            </div>	
-							<!-- <div class="col-md-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="TopicFilter">{{l("Topic")}}</label>
+                                    <input type="text" class="form-control" id="TopicFilter" name="topicFilter"
+                                        [(ngModel)]="topicFilter">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
 								<label for="CompletedFilterSelect">{{l("Completed")}}</label>
 								<select class="form-control" name="CompletedFilter" id="CompletedFilterSelect" [(ngModel)]="completedFilter">
 								<option value="-1">{{l("All")}}</option>
@@ -114,176 +115,191 @@
 								<option value="1">{{l("True")}}</option>
 								</select>
                             </div> -->
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="LicenseClassClassFilter">({{l("LicenseClass")}}) {{l("Class")}}</label>
-									<input type="text" class="form-control" id="LicenseClassClassFilter" name="licenseClassClassFilter" [(ngModel)]="licenseClassClassFilter">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="LicenseClassClassFilter">({{l("LicenseClass")}}) {{l("Class")}}</label>
+                                    <input type="text" class="form-control" id="LicenseClassClassFilter"
+                                        name="licenseClassClassFilter" [(ngModel)]="licenseClassClassFilter">
                                 </div>
                             </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="StudentFirstNameFilter">{{l("Student")}}</label>
-									<input type="text" class="form-control" id="StudentFirstNameFilter" name="studentFirstNameFilter" [(ngModel)]="studentFirstNameFilter">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="StudentFirstNameFilter">{{l("Student")}}</label>
+                                    <input type="text" class="form-control" id="StudentFirstNameFilter"
+                                        name="studentFirstNameFilter" [(ngModel)]="studentFirstNameFilter">
                                 </div>
                             </div>
 
                         </div>
                         <div class="row margin-bottom-10">
                             <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
                             </div>
                         </div>
-                  
-                </form>
 
-                <div class="row align-items-center">
-                    <!--<Primeng-Datatable-Start>-->
-                    <div class="primeng-datatable-container col-12"
-                         [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable
-                                     (onLazyLoad)="getTheoryLessons($event)"
-                                     [value]="primengTableHelper.records"
-                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                     [paginator]="false"
-                                     [lazy]="true"
-                                     [scrollable]="true"
-                                     ScrollWidth="100%"
-                                     [responsive]="primengTableHelper.isResponsive"
-                                     [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.TheoryLessons.Edit', 'Pages.TheoryLessons.Delete')">{{l('Actions')}}</th>
-                                    <th style="width: 150px" pSortableColumn="theoryLesson.startTime">
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getTheoryLessons($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.TheoryLessons.Edit', 'Pages.TheoryLessons.Delete')">
+                                            {{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="theoryLesson.startTime">
                                             {{l('StartTime')}}
                                             <p-sortIcon field="theoryLesson.startTime"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 70px" pSortableColumn="licenseClassClass">
-                                        {{l('Class')}}
-                                        <p-sortIcon field="licenseClassClass"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 100px" pSortableColumn="theoryLesson.lessonLength">
-                                        {{l('LessonLength')}}
-                                        <p-sortIcon field="theoryLesson.lessonLength"></p-sortIcon>
-                                    </th>
-                                    
-                                    <!-- <th style="width: 150px" pSortableColumn="theoryLesson.addingMinutesAfter">
+                                        </th>
+                                        <th style="width: 70px" pSortableColumn="licenseClassClass">
+                                            {{l('Class')}}
+                                            <p-sortIcon field="licenseClassClass"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 100px" pSortableColumn="theoryLesson.lessonLength">
+                                            {{l('LessonLength')}}
+                                            <p-sortIcon field="theoryLesson.lessonLength"></p-sortIcon>
+                                        </th>
+
+                                        <!-- <th style="width: 150px" pSortableColumn="theoryLesson.addingMinutesAfter">
                                         {{l('AddingMinutesAfter')}}
                                         <p-sortIcon field="theoryLesson.addingMinutesAfter"></p-sortIcon>
                                     </th> -->
-                                    <th style="width: 150px" pSortableColumn="instructorNames">
-                                        {{l('Instructor')}}
-                                        <p-sortIcon field="instructorNames"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="theoryLesson.office">
-                                        {{l('Office')}}
-                                        <p-sortIcon field="theoryLesson.office"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="theoryLesson.topic">
-                                        {{l('Topic')}}
-                                        <p-sortIcon field="theoryLesson.topic"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 100px" pSortableColumn="theoryLesson.currentState">
-                                        {{l('State')}}
-                                        <p-sortIcon field="theoryLesson.currentState"></p-sortIcon>
-                                    </th>
+                                        <th style="width: 150px" pSortableColumn="instructorNames">
+                                            {{l('Instructor')}}
+                                            <p-sortIcon field="instructorNames"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="theoryLesson.office">
+                                            {{l('Office')}}
+                                            <p-sortIcon field="theoryLesson.office"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="theoryLesson.topic">
+                                            {{l('Topic')}}
+                                            <p-sortIcon field="theoryLesson.topic"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 100px" pSortableColumn="theoryLesson.currentState">
+                                            {{l('State')}}
+                                            <p-sortIcon field="theoryLesson.currentState"></p-sortIcon>
+                                        </th>
 
-                                </tr>
-                            </ng-template>                           
-							<ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.TheoryLessons.Edit', 'Pages.TheoryLessons.Delete')">
-                                       <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-												<ul class="dropdown-menu"  *dropdownMenu>
-												<li>
-													<a href="javascript:;"
-														(click)="viewTheoryLessonModal.show(record)">{{l('View')}}</a>
-												</li>
-												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.TheoryLessons.Edit')"
-														(click)="createOrEditTheoryLessonModal.show(record.theoryLesson.id)">{{l('Edit')}}</a>
-                                                </li>
-                                                <li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.TheoryLessons.Edit')"
-														(click)="editStudentsList(record.theoryLesson)">{{l('Students')}}</a>
-												</li>
-												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.TheoryLessons.Delete')"
-														(click)="deleteTheoryLesson(record.theoryLesson)">{{l('Delete')}}</a>
-												</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td style="width:150px">
-                                            <span class="ui-column-title"> {{l('StartTime')}}</span>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.TheoryLessons.Edit', 'Pages.TheoryLessons.Delete')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="viewTheoryLessonModal.show(record)">{{l('View')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.TheoryLessons.Edit')"
+                                                            (click)="createOrEditTheoryLessonModal.show(record.theoryLesson.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.TheoryLessons.Edit')"
+                                                            (click)="editStudentsList(record.theoryLesson)">{{l('Students')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.TheoryLessons.Delete')"
+                                                            (click)="deleteTheoryLesson(record.theoryLesson)">{{l('Delete')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('StartTime')}}</span>
                                             <span *ngIf="record.theoryLesson.startTime">
-                                                {{record.theoryLesson.startTime | momentFormat:'llll'}}
+                                                {{record.theoryLesson.startTime}}
                                             </span>
                                             <span *ngIf="!record.theoryLesson.startTime">-</span>
                                         </td>
-                                    <td style="width:70px">
-												<span class="ui-column-title"> {{l('Class')}}</span>
-												{{record.theoryLesson.licenseClass}}
-											</td>
-                                    <td style="width:100px">
-											<span class="ui-column-title"> {{l('LessonLength')}}</span>
-											{{record.theoryLesson.lessonLength}}
-										</td>
-<!--                                     
+                                        <td style="width:70px">
+                                            <span class="p-column-title"> {{l('Class')}}</span>
+                                            {{record.theoryLesson.licenseClass}}
+                                        </td>
+                                        <td style="width:100px">
+                                            <span class="p-column-title"> {{l('LessonLength')}}</span>
+                                            {{record.theoryLesson.lessonLength}}
+                                        </td>
+                                        <!--                                     
                                     <td style="width:150px">
 											<span class="ui-column-title"> {{l('AddingMinutesAfter')}}</span>
 											{{record.theoryLesson.addingMinutesAfter}}
 										</td> -->
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('Instructors')}}</span>
-											{{record.instructorNames}}
-										</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('Office')}}</span>
-											{{record.theoryLesson.office}}
-										</td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('Topic')}}</span>
-											{{record.theoryLesson.topic}}
-										</td>
-                                    <td style="width:100px">
-										<span class="ui-column-title"> {{l('State')}}</span>
-                                        <div *ngIf="record.theoryLesson.currentState === 0"><i class="fa fa-times-circle" title="False"></i><label style="padding-left:10px">{{('NotStarted')}}</label></div>
-                                        <div *ngIf="record.theoryLesson.currentState === 1"><i  class="fa fa-spinner" title="True"></i><label style="padding-left:10px">{{('Running')}}</label></div>
-                                        <div *ngIf="record.theoryLesson.currentState === 2"><i class="fa fa-check-circle m--font-success" title="True"></i><label style="padding-left:10px">{{('Completed')}}</label></div>
-                                        <div *ngIf="record.theoryLesson.currentState === 3"><i class="fa fa-times-circle m--font-danger" title="True"></i><label style="padding-left:10px">{{('Canceled')}}</label></div>
-                                    </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Instructors')}}</span>
+                                            {{record.instructorNames}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Office')}}</span>
+                                            {{record.theoryLesson.office}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Topic')}}</span>
+                                            {{record.theoryLesson.topic}}
+                                        </td>
+                                        <td style="width:100px">
+                                            <span class="p-column-title"> {{l('State')}}</span>
+                                            <div *ngIf="record.theoryLesson.currentState === 0"><i
+                                                    class="fa fa-times-circle" title="False"></i><label
+                                                    style="padding-left:10px">{{('NotStarted')}}</label></div>
+                                            <div *ngIf="record.theoryLesson.currentState === 1"><i class="fa fa-spinner"
+                                                    title="True"></i><label
+                                                    style="padding-left:10px">{{('Running')}}</label></div>
+                                            <div *ngIf="record.theoryLesson.currentState === 2"><i
+                                                    class="fa fa-check-circle m--font-success" title="True"></i><label
+                                                    style="padding-left:10px">{{('Completed')}}</label></div>
+                                            <div *ngIf="record.theoryLesson.currentState === 3"><i
+                                                    class="fa fa-times-circle m--font-danger" title="True"></i><label
+                                                    style="padding-left:10px">{{('Canceled')}}</label></div>
+                                        </td>
 
-                                </tr>
-                            </ng-template>
-                        </p-table>
-						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                    (onPageChange)="getTheoryLessons($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
                         </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                         #paginator
-                                         (onPageChange)="getTheoryLessons($event)"
-                                         [totalRecords]="primengTableHelper.totalRecordsCount"
-                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
-                        </div>
+                        <!--<Primeng-Datatable-End>-->
                     </div>
-                    <!--<Primeng-Datatable-End>-->
                 </div>
             </div>
         </div>
     </div>
-
-    <createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="getTheoryLessons()"></createOrEditTheoryLessonModal>
+    <createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="getTheoryLessons()">
+    </createOrEditTheoryLessonModal>
     <viewTheoryLessonModal #viewTheoryLessonModal></viewTheoryLessonModal>
     <editStudentsTheoryLessonModal #editStudentsTableModal></editStudentsTheoryLessonModal>
-    
+
 </div>

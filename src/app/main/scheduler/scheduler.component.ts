@@ -209,25 +209,25 @@ export class SchedulerComponent extends AppComponentBase implements IScheduler, 
 
     openDrivingLessonModal(): void {
         this.createEventTypeModal.close();
-        this.createOrEditDrivingLessonModal.startTime = this.startTime;
+        //this.createOrEditDrivingLessonModal.startTime = this.startTime;
         this.createOrEditDrivingLessonModal.show();
     }
 
     openTheoryLessonModal(): void {
         this.createEventTypeModal.close();
-        //this.createOrEditTheoryLessonModal.startTime = this.startTime;
-        this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
+  
+       // this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
     }
 
     openEventModal(): void {
         this.createEventTypeModal.close();
-        this.createOrEditEventModal.startTime = this.startTime;
+        //this.createOrEditEventModal.startTime = this.startTime;
         this.createOrEditEventModal.show();
     }
     
     openSimulatorLessonModal(): void {
         this.createEventTypeModal.close();
-        this.createOrEditSimulatorLessonModal.startTime = this.startTime;
+      //  this.createOrEditSimulatorLessonModal.startTime = this.startTime;
         this.createOrEditSimulatorLessonModal.show();
     }
 
@@ -246,38 +246,39 @@ export class SchedulerComponent extends AppComponentBase implements IScheduler, 
         //console.log(moment(from).startOf('day'));
         //console.log(moment(to).startOf('day'));
 
-        this._schedulerServiceProxy.getAllAppointments(
-            moment(from),
-            moment(to),
-            (this.studentId == null) ? -1 : this.studentId,
-            (this.instructorId == null) ? -1 : this.instructorId,
-            //this.vehicles.vehicles.map<number>(v => (v.id)),
-            this.eventTypeFilter.drivingLessons,
-            this.eventTypeFilter.theoryLessons,
-            this.eventTypeFilter.otherEvents,
-            this.eventTypeFilter.simulatorLessons).subscribe(result => {
+        // uncommented ....
+        // this._schedulerServiceProxy.getAllAppointments(
+        //     moment(from),
+        //     moment(to),
+        //     (this.studentId == null) ? -1 : this.studentId,
+        //     (this.instructorId == null) ? -1 : this.instructorId,
+        //     //this.vehicles.vehicles.map<number>(v => (v.id)),
+        //     this.eventTypeFilter.drivingLessons,
+        //     this.eventTypeFilter.theoryLessons,
+        //     this.eventTypeFilter.otherEvents,
+        //     this.eventTypeFilter.simulatorLessons).subscribe(result => {
 
-                //console.log(result);
+        //         //console.log(result);
 
-                for (var item of result) {
-                    this.data.push(
-                        {
-                            Id: item.id,
-                            Subject: item.subject,
-                            StartTime: item.startTime.toDate(),
-                            EndTime: item.endTime.toDate(),
-                            AppointmentType: item.appointmentType.toString(),
-                           // VehicleID: 1
-                        });
-                }
+        //         for (var item of result) {
+        //             this.data.push(
+        //                 {
+        //                     Id: item.id,
+        //                     Subject: item.subject,
+        //                     StartTime: item.startTime.toDate(),
+        //                     EndTime: item.endTime.toDate(),
+        //                     AppointmentType: item.appointmentType.toString(),
+        //                    // VehicleID: 1
+        //                 });
+        //         }
 
-                //console.log( this.data);
+        //         //console.log( this.data);
 
-                this.scheduleObj.refresh();
+        //         this.scheduleObj.refresh();
 
-                this.scheduleObj.hideSpinner();
+        //         this.scheduleObj.hideSpinner();
 
-            });
+        //     });
 
     }
 

@@ -1,7 +1,7 @@
 import { Component, ViewChild, Injector, OnInit, ViewEncapsulation, AfterViewInit, Output, OnChanges, Sanitizer, SecurityContext, Pipe, PipeTransform, ViewChildren, QueryList, OnDestroy, Input } from "@angular/core";
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { appModuleAnimation } from "@shared/animations/routerTransition";
-import { TabsetComponent, TabDirective } from "ngx-bootstrap";
+import { TabsetComponent, TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable, Subject } from "rxjs";
 import { UserLoginInfoDto, OnlineTheoryServiceProxy, PrepareOnlineTheoryLessonDto, OnlineTheoryOpeningHoursDto, StartNextOnlineTheoryLessonInput, CourseDto, OnlineTheoryLessonDto, OTSingleChoiceDto, FinishOnlineTheoryLessonInput } from "@shared/service-proxies/service-proxies";
 import * as moment from 'moment';
@@ -10,11 +10,10 @@ import { Message } from "primeng/api";
 import { Router} from "@angular/router";
 import { ICanComponentDeactivate } from "./sv-quiz.guard";
 import { SVQuestionComponent } from "./sv-question.component";
-import { debug } from "util";
+
 import { List } from "lodash";
-import { template } from "@angular/core/src/render3";
+
 import { StudentViewHelper } from "../studentViewHelper.component";
-import { controlNameBinding } from "@angular/forms/src/directives/reactive_directives/form_control_name";
 
 class QuizContent {
     id : number;
@@ -216,6 +215,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
         }
         else {
             this.message.confirm('Discard answers from this sheet?',
+            '',
                 (isConfirmed) => {
                     if (isConfirmed) {
                         this.finishQuiz(true);

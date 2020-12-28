@@ -2,15 +2,15 @@
 
     <div *ngIf="pricePackage">
 
-        <div class="m--margin-top-30">
+        <div class="mt-10">
             <h6>{{l("Name")}} :</h6>
             {{pricePackage.name}}
         </div>
 
-        <div class="m--margin-top-40">
+        <div class="mt-10">
 
             <h6>{{l("Products")}} :</h6>
-            <div class="m--margin-top-20">
+     
                 <p-table [value]="pricePackage.products">
                     <ng-template pTemplate="header">
                         <tr>
@@ -29,9 +29,9 @@
                         </tr>
                     </ng-template>
                 </p-table>
-            </div>
+          
         </div>
-        <div class="m--margin-top-30">
+        <div class="mt-10">
             <div class="m--align-right">
 
 

@@ -45,7 +45,7 @@
                                     <tr>
                                         <td
                                             [hidden]="!((['Pages.Administration.Roles.Edit', 'Pages.Administration.Roles.Delete'] | permissionAny) || entityHistoryEnabled)">
-                                            <div class="btn-group dropdown" dropdown>
+                                            <div *ngIf="!isStudentRole(record) && !isInstructorRole(record)" class="btn-group dropdown" dropdown>
                                                 <button dropdownToggle
                                                     class="dropdown-toggle btn btn-primary btn-sm dropdown-toggle">
                                                     <i class="fa fa-cog"></i><span class="caret"></span>

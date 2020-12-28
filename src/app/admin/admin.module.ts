@@ -111,8 +111,6 @@ import { FormsComponent } from './forms/forms/forms.component';
 import { CreateOrEditInstructorModalComponent } from './instructors/instructors/create-or-edit-instructor-modal.component';
 import { CreateOrEditInstructorUserModalComponent } from './instructors/instructors/create-or-edit-instructor-user-modal.component';
 import { InstructorsComponent } from './instructors/instructors/instructors.component';
-import { LicenseClassLookupTableModalComponent } from './instructors/instructors/licenseClass-lookup-table-modal.component';
-import { OfficeLookupTableModalComponent } from './instructors/instructors/office-lookup-table-modal.component';
 import { ViewInstructorModalComponent } from './instructors/instructors/view-instructor-modal.component';
 import { CreateOrEditPredefinedDrivingLessonModalComponent } from './lessons/predefinedDrivingLessons/create-or-edit-predefinedDrivingLesson-modal.component';
 import { PredefinedDrivingLessonsComponent } from './lessons/predefinedDrivingLessons/predefinedDrivingLessons.component';
@@ -144,6 +142,9 @@ import { ViewLicenseClassModalComponent } from './templates/licenseClasses/view-
 import { CreateOrEditTheoryLessonTopicModalComponent } from './templates/theoryLessonTopics/create-or-edit-theoryLessonTopic-modal.component';
 import { TheoryLessonTopicsComponent } from './templates/theoryLessonTopics/theoryLessonTopics.component';
 import { ViewTheoryLessonTopicModalComponent } from './templates/theoryLessonTopics/view-theoryLessonTopic-modal.component';
+import { OfficeLookupTableModalComponent } from './instructors/instructors/office-lookup-table-modal.component';
+import { LicenseClassLookupTableModalComponent } from './instructors/instructors/licenseClass-lookup-table-modal.component';
+
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -184,34 +185,34 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         NgxChartsModule
     ],
     declarations: [
-        PredefinedTheoryLessonsComponent,
-        ViewPredefinedTheoryLessonModalComponent, CreateOrEditPredefinedTheoryLessonModalComponent,
-        PredefinedDrivingLessonsComponent,
-        ViewPredefinedDrivingLessonModalComponent, CreateOrEditPredefinedDrivingLessonModalComponent,
-        FormsComponent,
-        CreateOrEditInstructorUserModalComponent,
-        PricePackagesComponent,
 
-        ProductsComponent,
-        CreateOrEditProductModalComponent,
-        SimulatorsComponent,
-        ViewSimulatorModalComponent, CreateOrEditSimulatorModalComponent,
-        SimulatorOfficeLookupTableModalComponent,
-        OfficesComponent,
-        ViewOfficeModalComponent, CreateOrEditOfficeModalComponent,
-        VehiclesComponent,
-        ViewVehicleModalComponent, CreateOrEditVehicleModalComponent,
-        VehicleLicenseClassLookupTableModalComponent, VehicleInstructorLookupTableModalComponent,
-        DrivingLessonTopicsComponent,
-        ViewDrivingLessonTopicModalComponent, CreateOrEditDrivingLessonTopicModalComponent,
-        InstructorsComponent,
-        ViewInstructorModalComponent, CreateOrEditInstructorModalComponent,
-        LicenseClassLookupTableModalComponent, OfficeLookupTableModalComponent,
-        TheoryLessonTopicsComponent,
-        ViewTheoryLessonTopicModalComponent, CreateOrEditTheoryLessonTopicModalComponent,
-        LicenseClassesComponent,
-        ViewLicenseClassModalComponent, CreateOrEditLicenseClassModalComponent,
-        UsersComponent,
+      OfficeLookupTableModalComponent, LicenseClassLookupTableModalComponent,
+		PredefinedTheoryLessonsComponent,
+		ViewPredefinedTheoryLessonModalComponent,		CreateOrEditPredefinedTheoryLessonModalComponent,
+		PredefinedDrivingLessonsComponent,
+		ViewPredefinedDrivingLessonModalComponent,		CreateOrEditPredefinedDrivingLessonModalComponent,
+		FormsComponent,
+      CreateOrEditInstructorUserModalComponent,
+		PricePackagesComponent,
+
+		ProductsComponent,
+		CreateOrEditProductModalComponent,
+		SimulatorsComponent,
+		ViewSimulatorModalComponent,		CreateOrEditSimulatorModalComponent,
+    SimulatorOfficeLookupTableModalComponent,
+		OfficesComponent,
+		ViewOfficeModalComponent,		CreateOrEditOfficeModalComponent,
+		VehiclesComponent,
+		ViewVehicleModalComponent,		CreateOrEditVehicleModalComponent,
+    VehicleLicenseClassLookupTableModalComponent, VehicleInstructorLookupTableModalComponent,
+		DrivingLessonTopicsComponent,
+		ViewDrivingLessonTopicModalComponent,		CreateOrEditDrivingLessonTopicModalComponent,
+		InstructorsComponent,
+		ViewInstructorModalComponent,		CreateOrEditInstructorModalComponent,
+		TheoryLessonTopicsComponent,
+		ViewTheoryLessonTopicModalComponent,		CreateOrEditTheoryLessonTopicModalComponent,
+		LicenseClassesComponent,
+    ViewLicenseClassModalComponent,		CreateOrEditLicenseClassModalComponent,     UsersComponent,
         PermissionComboComponent,
         RoleComboComponent,
         CreateOrEditUserModalComponent,

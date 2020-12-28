@@ -1,5 +1,5 @@
 ﻿import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GetPredefinedTheoryLessonForViewDto, PredefinedTheoryLessonDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
@@ -9,7 +9,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 })
 export class ViewPredefinedTheoryLessonModalComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     active = false;

@@ -2,7 +2,7 @@ import { AfterViewChecked, Component, ElementRef, EventEmitter, Injector, Output
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateOrUpdateUserInput, OrganizationUnitDto, PasswordComplexitySetting, ProfileServiceProxy, UserEditDto, UserRoleDto, UserServiceProxy, StudentsServiceProxy, CreateStudentUserInput, StudentDto, UpdateStudentUserInput } from '@shared/service-proxies/service-proxies';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as _ from 'lodash';
 import { finalize } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -36,6 +36,7 @@ export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
     userLastName: string;
     userFirstName: string;
     userEmail: string;
+    userPasswordRepeat = '';
 
     student: StudentDto;
 
@@ -105,7 +106,7 @@ export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
             }
         }
 
-        this.getProfilePicture(userResult.profilePictureId);
+        this.getProfilePicture(student.userId);
 
             this._profileService.getPasswordComplexitySetting().subscribe(passwordComplexityResult => {
                 this.passwordComplexitySetting = passwordComplexityResult.setting;
@@ -142,19 +143,19 @@ export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
         this.passwordComplexityInfo += '</ul>';
     }
 
-    getProfilePicture(profilePictureId: string): void {
-        if (!profilePictureId) {
+    getProfilePicture(userId: number): void {
+        if (!userId) {
             this.profilePicture = this.appRootUrl() + 'assets/common/images/default-profile-picture.png';
-        } else {
-            this._profileService.getProfilePictureById(profilePictureId).subscribe(result => {
-
-                if (result && result.profilePicture) {
-                    this.profilePicture = 'data:image/jpeg;base64,' + result.profilePicture;
-                } else {
-                    this.profilePicture = this.appRootUrl() + 'assets/common/images/default-profile-picture.png';
-                }
-            });
+            return;
         }
+
+        this._profileService.getProfilePictureByUser(userId).subscribe(result => {
+            if (result && result.profilePicture) {
+                this.profilePicture = 'data:image/jpeg;base64,' + result.profilePicture;
+            } else {
+                this.profilePicture = this.appRootUrl() + 'assets/common/images/default-profile-picture.png';
+            }
+        });
     }
 
     onShown(): void {
@@ -178,7 +179,7 @@ export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
             input.student = this.student;
 
             this.saving = true;
-            this._studentService.createUserAsync(input)
+            this._studentService.createUser(input)
                 .pipe(finalize(() => { this.saving = false; }))
                 .subscribe(() => {
                     this.notify.info(this.l('SavedSuccessfully'));
@@ -192,7 +193,7 @@ export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
             input.setRandomPassword = this.setRandomPassword;
             input.sendActivationEmail = this.sendActivationEmail;
 
-            this._studentService.updateStudentUserAsync(input)
+            this._studentService.updateStudentUser(input)
                 .pipe(finalize(() => { this.saving = false; }))
                 .subscribe(() => {
                     this.notify.info(this.l('SavedSuccessfully'));
@@ -205,6 +206,6 @@ export class CreateOrEditStudentUserModalComponent extends AppComponentBase {
     close(): void {
         this.active = false;
         this.modal.hide();
-        console.log("Called close");
+        this.userPasswordRepeat = '';
     }
 }

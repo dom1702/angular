@@ -1,24 +1,24 @@
 <div [@routerTransition]>
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Offices")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("OfficesHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.Administration.Offices.Create')" (click)="createOffice()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewOffice")}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('Offices')"
+            [description]="l('OfficesHeaderInfo')">
+    
+                <div role="actions">
+                     <div class="btn-group">
+                        <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                        <button *ngIf="isGranted('Pages.Administration.Offices.Create')" (click)="createOffice()" 
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewOffice")}}</button>
+                    </div>
+                </div>
+      
+        </sub-header>
+
+        
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
 
 				<form class="horizontal-form" autocomplete="off">
                     <div>
@@ -156,62 +156,61 @@
                                     <td style="width: 130px"
                                         [hidden]="!isGrantedAny('Pages.Administration.Offices.Edit', 'Pages.Administration.Offices.Delete')">
                                        <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                        <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
                                                 <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
                                             </button>
 												<ul class="dropdown-menu"  *dropdownMenu>
 												<li>
-													<a href="javascript:;"
+													<a href="javascript:;" class="dropdown-item"
 														(click)="viewOfficeModal.show(record)">{{l('View')}}</a>
 												</li>
 												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Offices.Edit')"
+													<a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.Offices.Edit')"
 														(click)="createOrEditOfficeModal.show(record.office.id)">{{l('Edit')}}</a>
 												</li>
 												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Offices.Delete')"
+											        <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.Offices.Delete')"
 														(click)="deleteOffice(record.office)">{{l('Delete')}}</a>
 												</li>
                                                 <li>
-                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                    <a href="javascript:;" class="dropdown-item" *ngIf="entityHistoryEnabled"
                                                        (click)="showHistory(record.office)">{{l('History')}}</a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Name')}}</span>
+											<span class="p-column-title"> {{l('Name')}}</span>
 											{{record.office.name}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Street')}}</span>
+											<span class="p-column-title"> {{l('Street')}}</span>
 											{{record.office.street}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('City')}}</span>
+											<span class="p-column-title"> {{l('City')}}</span>
 											{{record.office.city}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('ZipCode')}}</span>
+											<span class="p-column-title"> {{l('ZipCode')}}</span>
 											{{record.office.zipCode}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('State')}}</span>
+											<span class="p-column-title"> {{l('State')}}</span>
 											{{record.office.state}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Country')}}</span>
+											<span class="p-column-title"> {{l('Country')}}</span>
 											{{record.office.country}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('PhoneNumber')}}</span>
+											<span class="p-column-title"> {{l('PhoneNumber')}}</span>
 											{{record.office.phoneNumber}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Email')}}</span>
+											<span class="p-column-title"> {{l('Email')}}</span>
 											{{record.office.email}}
 										</td>
-
                                 </tr>
                             </ng-template>
                         </p-table>

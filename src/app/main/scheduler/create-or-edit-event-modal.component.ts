@@ -1,12 +1,13 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { AppointmentsServiceProxy, CreateOrEditAppointmentDto, OwnAppointmentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { TimepickerComponent } from 'ngx-bootstrap/timepicker';
 import { StudentLookupTableModalComponent } from '@app/shared/common/lookup/student-lookup-table-modal.component';
 import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/instructor-lookup-table-modal.component';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'createOrEditEventModal',
@@ -24,8 +25,8 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
 
     active = false;
     saving = false;
-    startTime: Date = new Date();
-    endTime: Date = new Date();
+    startTime: DateTime = new DateTime();
+    endTime: DateTime = new DateTime();
     event: CreateOrEditAppointmentDto = new CreateOrEditAppointmentDto();
 
     currentInstructorFullName: string = '';
@@ -46,7 +47,8 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
     constructor(
         injector: Injector,
         private _appointmentsServiceProxy: AppointmentsServiceProxy,
-        private _ownAppointmentsServiceProxy: OwnAppointmentsServiceProxy
+        private _ownAppointmentsServiceProxy: OwnAppointmentsServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
@@ -77,11 +79,11 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
                 this.event = new CreateOrEditAppointmentDto();
                 this.event.id = eventId;
 
-                this.endTime = new Date(this.startTime);
-                this.endTime.setHours(this.endTime.getHours() + 1);
+                //this.endTime = new DateTime(this.startTime);
+                //this.endTime.setHours(this.endTime.getHours() + 1);
 
-                this.event.startTime = moment().startOf('day');
-                this.event.endTime = moment().startOf('day').add(60); '';
+                this.event.startTime = this._dateTimeService.getStartOfDay();
+                this.event.endTime = this._dateTimeService.getStartOfDay().plus({ minutes: 60 });
 
                 this.active = true;
 
@@ -89,8 +91,8 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
             } else {
                 this._ownAppointmentsServiceProxy.getAppointmentForEdit(eventId).subscribe(result => {
                     this.event = result.appointment;
-                    this.startTime = result.appointment.startTime.toDate();
-                    this.endTime = result.appointment.endTime.toDate();
+                   // this.startTime = result.appointment.startTime.toDate();
+                   // this.endTime = result.appointment.endTime.toDate();
                     this.personId = result.appointment.personId;
 
                     this.active = true;
@@ -110,11 +112,11 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
                 this.event = new CreateOrEditAppointmentDto();
                 this.event.id = eventId;
 
-                this.endTime = new Date(this.startTime);
-                this.endTime.setHours(this.endTime.getHours() + 1);
+              //  this.endTime = new Date(this.startTime);
+               // this.endTime.setHours(this.endTime.getHours() + 1);
 
-                this.event.startTime = moment().startOf('day');
-                this.event.endTime = moment().startOf('day').add(60); '';
+               // this.event.startTime = moment().startOf('day');
+                //this.event.endTime = moment().startOf('day').add(60); '';
 
                 this.active = true;
 
@@ -122,8 +124,8 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
             } else {
                 this._appointmentsServiceProxy.getAppointmentForEdit(eventId).subscribe(result => {
                     this.event = result.appointment;
-                    this.startTime = result.appointment.startTime.toDate();
-                    this.endTime = result.appointment.endTime.toDate();
+                  //  this.startTime = result.appointment.startTime.toDate();
+                  //  this.endTime = result.appointment.endTime.toDate();
                     this.personId = result.appointment.personId;
                     this.personSelected = true;
                     this.disallowPersonSelection = true;
@@ -138,13 +140,13 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
     save(): void {
         this.saving = true;
 
-        this.event.startTime = moment(this.startTime);
-        this.event.endTime = moment(this.endTime);
+       // this.event.startTime = moment(this.startTime);
+       // this.event.endTime = moment(this.endTime);
 
-        this.event.startTime.hours(this.startTime.getHours());
-        this.event.startTime.minutes(this.startTime.getMinutes());
-        this.event.endTime.hours(this.endTime.getHours());
-        this.event.endTime.minutes(this.endTime.getMinutes());
+       // this.event.startTime.hours(this.startTime.getHours());
+       // this.event.startTime.minutes(this.startTime.getMinutes());
+       // this.event.endTime.hours(this.endTime.getHours());
+       // this.event.endTime.minutes(this.endTime.getMinutes());
 
         this.event.personId = this.personId;
 
@@ -170,6 +172,7 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
 
     delete(): void {
         this.message.confirm(
+            '',
             '',
             (isConfirmed) => {
                 if (isConfirmed) {

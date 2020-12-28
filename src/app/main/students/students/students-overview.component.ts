@@ -1,15 +1,13 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Http } from '@angular/http';
+
 import { StudentsServiceProxy, StudentDto, StudentCourseDto, StudentCourseDrivingLessonsDto } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { Subscription, Observable, Observer } from 'rxjs';
 import { TabDirective, TabsModule } from 'ngx-bootstrap/tabs';
 import { StudentsOverviewPricePackageComponent } from './students-overview-pricePackage.component';
@@ -46,7 +44,6 @@ export class StudentsOverviewComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
@@ -146,6 +143,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
     removeFromSelectedCourse() : void{
         this.message.confirm(
             'Do you really want to remove this student from the currently selected course?',
+            '',
             (isConfirmed) => {
                 if (isConfirmed) {
                     this._studentsServiceProxy.removeFromCourse(this.student.id, this.selectedStudentCourse.course.id, true).subscribe(() => {

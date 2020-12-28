@@ -1,11 +1,11 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit} from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { InstructorsServiceProxy, CreateOrEditInstructorDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
-import { LicenseClassLookupTableModalComponent } from './licenseClass-lookup-table-modal.component';
-import { OfficeLookupTableModalComponent } from './office-lookup-table-modal.component';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { LicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/licenseClass-lookup-table-modal.component';
+import { OfficeLookupTableModalComponent } from '@app/shared/common/lookup/office-lookup-table-modal.component';
 
 
 @Component({
@@ -14,9 +14,9 @@ import { OfficeLookupTableModalComponent } from './office-lookup-table-modal.com
 })
 export class CreateOrEditInstructorModalComponent extends AppComponentBase implements OnInit{
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('licenseClassLookupTableModal') licenseClassLookupTableModal: LicenseClassLookupTableModalComponent;
-    @ViewChild('officeLookupTableModal') officeLookupTableModal: OfficeLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('licenseClassLookupTableModal', { static: true }) licenseClassLookupTableModal: LicenseClassLookupTableModalComponent;
+    @ViewChild('officeLookupTableModal', { static: true }) officeLookupTableModal: OfficeLookupTableModalComponent;
 
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
@@ -36,7 +36,8 @@ export class CreateOrEditInstructorModalComponent extends AppComponentBase imple
 
     constructor(
         injector: Injector,
-        private _instructorsServiceProxy: InstructorsServiceProxy
+        private _instructorsServiceProxy: InstructorsServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
@@ -57,7 +58,7 @@ export class CreateOrEditInstructorModalComponent extends AppComponentBase imple
         if (!instructorId) {
             this.instructor = new CreateOrEditInstructorDto();
             this.instructor.id = instructorId;
-            this.instructor.dateOfBirth = moment().startOf('day');
+            this.instructor.dateOfBirth = this._dateTimeService.getStartOfDay();
             this.defaultOffice = '';
 
             this.active = true;
@@ -167,7 +168,7 @@ export class CreateOrEditInstructorModalComponent extends AppComponentBase imple
 
         getOffice() {
         this.instructor.defaultOfficeId = this.officeLookupTableModal.id;
-        this.defaultOffice = this.officeLookupTableModal.name;
+        this.defaultOffice = this.officeLookupTableModal.displayName;
         }
 
     

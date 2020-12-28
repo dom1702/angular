@@ -1,0 +1,91 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #pricePackageForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="pricePackage.id">{{l("EditPricePackage")}}</span>
+                        <span *ngIf="!pricePackage.id">{{l("CreateNewPricePackage")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="PricePackage_Name">{{l("Name")}} *</label>
+                        <input *ngIf="nameEditable" type="text" id="PricePackage_Name" class="form-control" [(ngModel)]="pricePackage.name"
+                            name="Name" required />
+                            <input *ngIf="!nameEditable" type="text" id="PricePackage_Name" class="form-control" [(ngModel)]="pricePackage.name"
+                            name="Name" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PricePackage_Description">{{l("Description")}}</label>
+                        <input *ngIf="descriptionEditable" type="text" id="PricePackage_Description" class="form-control" [(ngModel)]="pricePackage.description"
+                            name="Description" />
+                            <input *ngIf="!descriptionEditable" type="text" id="PricePackage_Description" class="form-control" [(ngModel)]="pricePackage.description"
+                            name="Description" readonly />
+                    </div>
+
+                    <label for="Products">{{l("Products")}}</label>
+                    <form [formGroup]="itemForm">
+                        <table class="table">
+                            <thead>
+                                <th>{{l("ProductName")}}</th>
+                                <th>{{l("Qty")}}</th>
+                                <th>{{l("PriceAfterVat")}}</th>
+                                <th>{{l("Sum")}}</th>
+                                <th>{{l("Action")}}</th>
+                            </thead>
+                            <tbody formArrayName="items" *ngFor="let group of getFormData.controls; let i=index">
+                                <tr [formGroupName]="i">
+                                    <td class="form-group">
+                                        <label>{{getItemControlLabel(i, 'productName')}}</label>
+                                    </td>
+                                    <td class="form-group">
+                                        <ejs-numerictextbox [showSpinButton]='false' locale='de' decimals='2' format='n'
+                                            formControlName="qty" placeholder="qty"></ejs-numerictextbox>
+                                    </td>
+                                    <td *ngIf="!priceEditable" class="form-group">
+                                        <label>{{getItemControlLabel(i, 'priceAfterVat') | currency:'EUR'}}</label>
+                                    </td>
+                                    <td *ngIf="priceEditable" class="form-group">
+                                        <ejs-numerictextbox [showSpinButton]='false' locale='DE-de' currency='EUR' decimals='2' format='c2' 
+                                        formControlName="priceAfterVat" placeholder="priceAfterVat"></ejs-numerictextbox>
+                                    </td>
+                                    <td class="form-group">
+                                        <label>{{getItemControlLabel(i, 'sum') | currency:'EUR'}}</label>
+                                    </td>
+                                    <td>
+                                        <button type="button" (click)="remove(i)" class="btn btn-primary mr-5">{{l("Remove")}}</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                    <div class="form-group">
+                       
+                            <button type="button" (click)="openSelectProductModal()" class="btn btn-primary mr-5">{{l("AddProduct")}}</button>
+                       
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!pricePackageForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <viewProductModal #viewProductModal></viewProductModal>
+    <pricePackage-productLookupTableModal #productLookupTableModal (modalSave)="getNewProductId()">
+    </pricePackage-productLookupTableModal>
+</div>

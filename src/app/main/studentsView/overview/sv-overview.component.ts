@@ -4,7 +4,6 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import * as moment from 'moment';
 import { CourseDto, StudentsViewServiceProxy, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto } from '@shared/service-proxies/service-proxies';
 import { StudentViewHelper } from '../studentViewHelper.component';
-import { ISubscribable, ISignalHandler } from 'strongly-typed-events';
 
 
 @Component({

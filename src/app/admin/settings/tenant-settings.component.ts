@@ -13,6 +13,7 @@ import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 import { finalize } from 'rxjs/operators';
 import { KeyValueListManagerComponent } from '@app/shared/common/key-value-list-manager/key-value-list-manager.component';
 import { FormControl } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     templateUrl: './tenant-settings.component.html',
@@ -37,6 +38,10 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     logoUploader: FileUploader;
     customCssUploader: FileUploader;
 
+    invoiceLogoUploader: FileUploader;
+
+    invoiceLogo: any;
+
     remoteServiceBaseUrl = AppConsts.remoteServiceBaseUrl;
 
     defaultTimezoneScope: SettingScopes = SettingScopes.Tenant;
@@ -57,7 +62,8 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     constructor(
         injector: Injector,
         private _tenantSettingsService: TenantSettingsServiceProxy,
-        private _tokenService: TokenService
+        private _tokenService: TokenService,
+        private sanitizer: DomSanitizer
     ) {
         super(injector);
     }
@@ -67,6 +73,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.getSettings();
         this.initUploaders();
         this.loadSocialLoginSettings();
+        this.updateInvoiceLogoThumbnail();
     }
 
     getSettings(): void {
@@ -114,6 +121,15 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
             result => {
                 this.appSession.tenant.logoFileType = result.fileType;
                 this.appSession.tenant.logoId = result.id;
+            }
+        );
+
+        this.invoiceLogoUploader = this.createUploader(
+            '/TenantCustomization/UploadInvoiceLogo',
+            result => {
+                this._tenantSettingsService.updateInvoiceLogoId(result.id);
+                this._tenantSettingsService.updateInvoiceLogoFileType(result.fileType);
+                this.updateInvoiceLogoThumbnail();
             }
         );
 
@@ -166,8 +182,27 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.logoUploader.uploadAll();
     }
 
+    uploadInvoiceLogo(): void {
+        this.invoiceLogoUploader.uploadAll();
+    }
+
     uploadCustomCss(): void {
         this.customCssUploader.uploadAll();
+    }
+
+    updateInvoiceLogoThumbnail()
+    {
+        this._tenantSettingsService.getInvoiceLogo().subscribe((result: any) => {
+            if(result == null)
+            {
+                this.invoiceLogo = null;
+            }
+            else
+            {
+               let objectURL = 'data:image/jpeg;base64,' + result;
+                this.invoiceLogo = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            }
+        });
     }
 
     clearLogo(): void {
@@ -187,6 +222,13 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
                 oldTenantCustomCss.remove();
             }
 
+            this.notify.info(this.l('ClearedSuccessfully'));
+        });
+    }
+
+    clearInvoiceLogo(): void {
+        this._tenantSettingsService.clearInvoiceLogo().subscribe(() => {
+            this.updateInvoiceLogoThumbnail();
             this.notify.info(this.l('ClearedSuccessfully'));
         });
     }

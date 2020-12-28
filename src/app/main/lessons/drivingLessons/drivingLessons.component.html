@@ -1,242 +1,263 @@
 <div [@routerTransition]>
 
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("DrivingLessons")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("DrivingLessonsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createDrivingLesson()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewDrivingLesson")}}</button>
-            </div>
-        </div>
-    </div>
-    
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('DrivingLessons')" [description]="l('DrivingLessonsHeaderInfo')">
 
-				<form class="horizontal-form" autocomplete="off">
-                    <div class="m-form m-form--label-align-right">
-                        <div class="row align-items-center m--margin-bottom-10">
-                            <div class="col-xl-12">
-                                <div class="form-group m-form__group align-items-center">
-                                    <div class="input-group">
-                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
-                                        <span class="input-group-btn">
-                                            <button (click)="getDrivingLessons()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
-                                        </span>
+            <div role="actions">
+                 <div class="btn-group">
+                    <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                        {{l("ExportToExcel")}}</button>
+                    <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createDrivingLesson()"
+                        class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewDrivingLesson")}}</button>
+                </div>
+
+            </div>
+
+        </sub-header>
+
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+                    <form class="horizontal-form" autocomplete="off">
+                        <div class="m-form m-form--label-align-right">
+                            <div class="row align-items-center m--margin-bottom-10">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getDrivingLessons()" class="btn btn-primary"
+                                                    type="submit"><i class="flaticon-search-1"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-						 <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-						         <div class="m-separator m-separator--dashed"></div>
-						     </div>
+                            <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="m-separator m-separator--dashed"></div>
+                                </div>
 
-                             <div class="col-md-3">
-								<div class="form-group">
-									<label for="InstructorFilter">{{l("Instructor")}}</label>
-									<input type="text" class="form-control" id="InstructorFilter" name="instructorFilter" [(ngModel)]="instructorFilter">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="InstructorFilter">{{l("Instructor")}}</label>
+                                        <input type="text" class="form-control" id="InstructorFilter"
+                                            name="instructorFilter" [(ngModel)]="instructorFilter">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label for="MinLengthFilter">{{l("MinMax")}} {{l("Length")}}</label>
-									<div class="input-group">
-                                        <input type="number" class="form-control" id="MinLengthFilter" [(ngModel)]="minLengthFilter" placeholder="{{l('MinValue')}}" name="minLengthFilter" />
-                                        <input type="number" class="form-control" [(ngModel)]="maxLengthFilter" placeholder="{{l('MaxValue')}}" name="maxLengthFilter" />
-									</div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinLengthFilter">{{l("MinMax")}} {{l("Length")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinLengthFilter"
+                                                [(ngModel)]="minLengthFilter" placeholder="{{l('MinValue')}}"
+                                                name="minLengthFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxLengthFilter"
+                                                placeholder="{{l('MaxValue')}}" name="maxLengthFilter" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label  for="MinStartTimeFilter">{{l("MinMax")}} {{l("StartTime")}}</label>
-									<div class="input-group">
-                                        <input class="form-control m-input" id="MinStartTimeFilter" name="MinStartTimeFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minStartTimeFilter">
-                                        <input class="form-control m-input" id="MaxStartTimeFilter" name="MaxStartTimeFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartTimeFilter">
-									</div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinStartTimeFilter">{{l("MinMax")}} {{l("StartTime")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinStartTimeFilter"
+                                                name="MinStartTimeFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MinValue')}}" [(ngModel)]="minStartTimeFilter">
+                                            <input class="form-control m-input" id="MaxStartTimeFilter"
+                                                name="MaxStartTimeFilter" type="datetime" bsDatepicker
+                                                placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartTimeFilter">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>	
-							<div class="col-md-3">
-								<label for="CompletedFilterSelect">{{l("Completed")}}</label>
-								<select class="form-control" name="CompletedFilter" id="CompletedFilterSelect" [(ngModel)]="completedFilter">
-								<option value="-1">{{l("All")}}</option>
-								<option value="0">{{l("False")}}</option>
-								<option value="1">{{l("True")}}</option>
-								</select>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="DrivingLessonTopicTopicFilter">{{l("DrivingLessonTopic")}}</label>
-									<input type="text" class="form-control" id="DrivingLessonTopicTopicFilter" name="drivingLessonTopicTopicFilter" [(ngModel)]="drivingLessonTopicTopicFilter">
+                                <div class="col-md-3">
+                                    <label for="CompletedFilterSelect">{{l("Completed")}}</label>
+                                    <select class="form-control" name="CompletedFilter" id="CompletedFilterSelect"
+                                        [(ngModel)]="completedFilter">
+                                        <option value="-1">{{l("All")}}</option>
+                                        <option value="0">{{l("False")}}</option>
+                                        <option value="1">{{l("True")}}</option>
+                                    </select>
                                 </div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="LicenseClassClassFilter">{{l("LicenseClass")}}</label>
-									<input type="text" class="form-control" id="LicenseClassClassFilter" name="licenseClassClassFilter" [(ngModel)]="licenseClassClassFilter">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="DrivingLessonTopicTopicFilter">{{l("DrivingLessonTopic")}}</label>
+                                        <input type="text" class="form-control" id="DrivingLessonTopicTopicFilter"
+                                            name="drivingLessonTopicTopicFilter"
+                                            [(ngModel)]="drivingLessonTopicTopicFilter">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="LicenseClassClassFilter">{{l("LicenseClass")}}</label>
+                                        <input type="text" class="form-control" id="LicenseClassClassFilter"
+                                            name="licenseClassClassFilter" [(ngModel)]="licenseClassClassFilter">
+                                    </div>
+                                </div>
 
-                        </div>
-                        <div class="row margin-bottom-10">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                            <div class="row margin-bottom-10">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
 
-                <div class="row align-items-center">
-                    <!--<Primeng-Datatable-Start>-->
-                    <div class="primeng-datatable-container"
-                         [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable
-                                     (onLazyLoad)="getDrivingLessons($event)"
-                                     [value]="primengTableHelper.records"
-                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                     [paginator]="false"
-                                     [lazy]="true"
-                                     [scrollable]="true"
-                                     ScrollWidth="100%"
-                                     [responsive]="primengTableHelper.isResponsive"
-                                     [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">{{l('Actions')}}</th>
-                                    <th style="width: 150px" pSortableColumn="drivingLesson.startTime">
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getDrivingLessons($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
+                                            {{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="drivingLesson.startTime">
                                             {{l('StartTime')}}
                                             <p-sortIcon field="drivingLesson.startTime"></p-sortIcon>
                                         </th>
                                         <th style="width: 80px" pSortableColumn="licenseClassClass">
-                                                {{l('Class')}}
-                                                <p-sortIcon field="licenseClassClass"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="instructorNames">
-                                                {{l('Instructors')}}
-                                                <p-sortIcon field="instructorNames"></p-sortIcon>
-                                            </th>
-                                    <th style="width: 150px" pSortableColumn="studentFullName">
+                                            {{l('Class')}}
+                                            <p-sortIcon field="licenseClassClass"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="instructorNames">
+                                            {{l('Instructors')}}
+                                            <p-sortIcon field="instructorNames"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="studentFullName">
                                             {{l('Student')}}
                                             <p-sortIcon field="studentFullName"></p-sortIcon>
                                         </th>
-                                        
-                                    <th style="width: 150px" pSortableColumn="vehicle">
-                                        {{l('Vehicle')}}
-                                        <p-sortIcon field="vehicle"></p-sortIcon>
-                                    </th>
-                                   
-                                    <th style="width: 50px" pSortableColumn="drivingLesson.length">
-                                        {{l('Length')}}
-                                        <p-sortIcon field="drivingLesson.length"></p-sortIcon>
-                                    </th>
-                                    
-                                    <th style="width: 100px" pSortableColumn="drivingLesson.completed">
-                                        {{l('Completed')}}
-                                        <p-sortIcon field="drivingLesson.completed"></p-sortIcon>
-                                    </th>
 
-                                </tr>
-                            </ng-template>                           
-							<ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
-                                       <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-												<ul class="dropdown-menu"  *dropdownMenu>
-												<li>
-													<a href="javascript:;"
-														(click)="viewDrivingLessonModal.show(record)">{{l('View')}}</a>
-												</li>
-												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.DrivingLessons.Edit')"
-														(click)="createOrEditDrivingLessonModal.show(record.drivingLesson.id)">{{l('Edit')}}</a>
-												</li>
-												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.DrivingLessons.Delete')"
-														(click)="deleteDrivingLesson(record.drivingLesson)">{{l('Delete')}}</a>
-												</li>
-                                                <li>
-                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
-                                                       (click)="showHistory(record.drivingLesson)">{{l('History')}}</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td style="width:150px">
-                                            <span class="ui-column-title"> {{l('StartTime')}}</span>
+                                        <th style="width: 150px" pSortableColumn="vehicle">
+                                            {{l('Vehicle')}}
+                                            <p-sortIcon field="vehicle"></p-sortIcon>
+                                        </th>
+
+                                        <th style="width: 50px" pSortableColumn="drivingLesson.length">
+                                            {{l('Length')}}
+                                            <p-sortIcon field="drivingLesson.length"></p-sortIcon>
+                                        </th>
+
+                                        <th style="width: 100px" pSortableColumn="drivingLesson.completed">
+                                            {{l('Completed')}}
+                                            <p-sortIcon field="drivingLesson.completed"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="viewDrivingLessonModal.show(record)">{{l('View')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.DrivingLessons.Edit')"
+                                                            (click)="createOrEditDrivingLessonModal.show(record.drivingLesson.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="permission.isGranted('Pages.DrivingLessons.Delete')"
+                                                            (click)="deleteDrivingLesson(record.drivingLesson)">{{l('Delete')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="entityHistoryEnabled"
+                                                            (click)="showHistory(record.drivingLesson)">{{l('History')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('StartTime')}}</span>
                                             <span *ngIf="record.drivingLesson.startTime">
-                                                {{record.drivingLesson.startTime | momentFormat:'llll'}} <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
+                                                {{record.drivingLesson.startTime }}
+                                                <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
                                             </span>
                                             <span *ngIf="!record.drivingLesson.startTime">-</span>
                                         </td>
                                         <td style="width:80px">
-												<span class="ui-column-title"> {{l('Class')}}</span>
-												{{record.drivingLesson.licenseClass}}
-                                            </td>
-                                            <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('Instructors')}}</span>
-                                                {{record.instructorNames}}
-                                            </td>
-                                            <td style="width:150px">
-                                                    <span class="ui-column-title"> {{l('Student')}}</span>
-                                                    {{record.studentFullName}}
-                                                </td>
+                                            <span class="p-column-title"> {{l('Class')}}</span>
+                                            {{record.drivingLesson.licenseClass}}
+                                        </td>
                                         <td style="width:150px">
-												<span class="ui-column-title"> {{l('DrivingLessonTopic')}}</span>
-												{{record.vehicleNameBrandModel}}
-											</td>
-                                   
-                              
-                                  
-                                    <td style="width:50px">
-											<span class="ui-column-title"> {{l('Length')}}</span>
-											{{record.drivingLesson.length}}
-										</td>
-                                   
-                                    <td style="width:100px">
-										<span class="ui-column-title"> {{l('Completed')}}</span>
-                                        <div *ngIf="record.drivingLesson.completed" class="text-center"><i class="fa fa-check-circle m--font-success" title="True"></i></div>
-										<div *ngIf="!record.drivingLesson.completed" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
-                                    </td>
+                                            <span class="p-column-title"> {{l('Instructors')}}</span>
+                                            {{record.instructorNames}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('Student')}}</span>
+                                            {{record.studentFullName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="p-column-title"> {{l('DrivingLessonTopic')}}</span>
+                                            {{record.vehicleNameBrandModel}}
+                                        </td>
 
-                                </tr>
-                            </ng-template>
-                        </p-table>
-						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
+
+
+                                        <td style="width:50px">
+                                            <span class="p-column-title"> {{l('Length')}}</span>
+                                            {{record.drivingLesson.length}}
+                                        </td>
+
+                                        <td style="width:100px">
+                                            <span class="p-column-title"> {{l('Completed')}}</span>
+                                            <div *ngIf="record.drivingLesson.completed" class="text-center"><i
+                                                    class="fa fa-check-circle m--font-success" title="True"></i></div>
+                                            <div *ngIf="!record.drivingLesson.completed" class="text-center"><i
+                                                    class="fa fa-times-circle" title="False"></i></div>
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                    (onPageChange)="getDrivingLessons($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
                         </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                         #paginator
-                                         (onPageChange)="getDrivingLessons($event)"
-                                         [totalRecords]="primengTableHelper.totalRecordsCount"
-                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
-                        </div>
+                        <!--<Primeng-Datatable-End>-->
                     </div>
-                    <!--<Primeng-Datatable-End>-->
                 </div>
             </div>
         </div>
     </div>
-
-    <createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="getDrivingLessons()"></createOrEditDrivingLessonModal>
+    <createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="getDrivingLessons()">
+    </createOrEditDrivingLessonModal>
     <viewDrivingLessonModal #viewDrivingLessonModal></viewDrivingLessonModal>
-     <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+    <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
 </div>

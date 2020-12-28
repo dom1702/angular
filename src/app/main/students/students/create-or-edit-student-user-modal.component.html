@@ -43,11 +43,12 @@
                                 <validation-messages [formCtrl]="userNameInput"></validation-messages>
                             </div>
 
-                            <div class="m-checkbox-list">
-                                <label for="EditUser_SetRandomPassword" class="m-checkbox">
+                            <div class="checkbox-inline">
+                                <label for="EditUser_SetRandomPassword" class="checkbox">
                                     <input id="EditUser_SetRandomPassword" type="checkbox" name="SetRandomPassword" [(ngModel)]="setRandomPassword">
-                                    {{"SetRandomPassword" | localize}}
                                     <span></span>
+                                    {{"SetRandomPassword" | localize}}
+                                   
                                 </label>
                             </div>
                             <div class="form-group" *ngIf="!setRandomPassword">
@@ -71,7 +72,7 @@
                             <div class="form-group" *ngIf="!setRandomPassword">
                                 <div class="right">
                                     <label for="PasswordRepeat">{{"PasswordRepeat" | localize}}</label>
-                                    <input id="PasswordRepeat" type="password" name="PasswordRepeat" #PasswordRepeat="ngModel" class="form-control" [(ngModel)]="user.passwordRepeat" [required]="!user.id && !setRandomPassword" maxlength="32"
+                                    <input id="PasswordRepeat" type="password" name="PasswordRepeat" #PasswordRepeat="ngModel" class="form-control" [(ngModel)]="userPasswordRepeat" [required]="!user.id && !setRandomPassword" maxlength="32"
                                            [requireDigit]="passwordComplexitySetting.requireDigit" [requireLowercase]="passwordComplexitySetting.requireLowercase"
                                            [requireUppercase]="passwordComplexitySetting.requireUppercase" [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric" [requiredLength]="passwordComplexitySetting.requiredLength"
                                            validateEqual="Password" reverse="false">
@@ -87,35 +88,40 @@
                                     <li [hidden]="userForm.controls['PasswordRepeat'].valid">{{"PasswordsDontMatch" | localize}}</li>
                                 </ul>
                             </div>
-                            <div class="m-checkbox-list">
-                                <label for="EditUser_ShouldChangePasswordOnNextLogin" class="m-checkbox">
+                            <div class="checkbox-list">
+                                <label for="EditUser_ShouldChangePasswordOnNextLogin" class="checkbox">
                                     <input id="EditUser_ShouldChangePasswordOnNextLogin" type="checkbox" name="ShouldChangePasswordOnNextLogin" [(ngModel)]="user.shouldChangePasswordOnNextLogin">
+                                    <span></span>
                                     {{"ShouldChangePasswordOnNextLogin" | localize}}
-                                    <span></span>
+                                   
                                 </label>
 
-                                <label for="EditUser_SendActivationEmail" class="m-checkbox">
+                                <label for="EditUser_SendActivationEmail" class="checkbox">
                                     <input id="EditUser_SendActivationEmail" type="checkbox" name="SendActivationEmail" [(ngModel)]="sendActivationEmail">
+                                    <span></span>
                                     {{"SendActivationEmail" | localize}}
-                                    <span></span>
+                                   
                                 </label>
 
-                                <label for="EditUser_IsActive" class="m-checkbox">
+                                <label for="EditUser_IsActive" class="checkbox">
                                     <input id="EditUser_IsActive" type="checkbox" name="IsActive" [(ngModel)]="user.isActive">
+                                    <span></span>
                                     {{"Active" | localize}}
-                                    <span></span>
+                                  
                                 </label>
 
-                                <label *ngIf="isTwoFactorEnabled" for="EditUser_IsTwoFactorEnabled" class="m-checkbox">
+                                <label *ngIf="isTwoFactorEnabled" for="EditUser_IsTwoFactorEnabled" class="checkbox">
                                     <input id="EditUser_IsTwoFactorEnabled" type="checkbox" name="IsTwoFactorEnabled" [(ngModel)]="user.isTwoFactorEnabled">
-                                    {{"IsTwoFactorEnabled" | localize}}
                                     <span></span>
+                                    {{"IsTwoFactorEnabled" | localize}}
+                              
                                 </label>
 
-                                <label *ngIf="isLockoutEnabled" for="EditUser_IsLockoutEnabled" class="m-checkbox">
+                                <label *ngIf="isLockoutEnabled" for="EditUser_IsLockoutEnabled" class="checkbox">
                                     <input id="EditUser_IsLockoutEnabled" type="checkbox" name="IsLockoutEnabled" [(ngModel)]="user.isLockoutEnabled">
-                                    {{"IsLockoutEnabled" | localize}}
                                     <span></span>
+                                    {{"IsLockoutEnabled" | localize}}
+                                   
                                 </label>
                             </div>
                         <!-- </tab> -->

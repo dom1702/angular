@@ -15,6 +15,7 @@ import { InvoiceStudentLookupTableModalComponent } from './invoice-student-looku
 import { InvoiceProductLookupTableModalComponent } from './invoice-product-lookup-table-modal.component';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ArrayValidators } from '@app/shared/common/formValidator/Array.validator';
+import { DateTime } from 'luxon';
 
 
 @Component({
@@ -23,8 +24,8 @@ import { ArrayValidators } from '@app/shared/common/formValidator/Array.validato
 })
 export class CreateStudentInvoiceComponent extends AppComponentBase implements OnInit, OnDestroy {
 
-  @ViewChild('studentLookupTableModal') studentLookupTableModal: InvoiceStudentLookupTableModalComponent;
-  @ViewChild('productLookupTableModal') productLookupTableModal: InvoiceProductLookupTableModalComponent;
+  @ViewChild('studentLookupTableModal', { static: true }) studentLookupTableModal: InvoiceStudentLookupTableModalComponent;
+  @ViewChild('productLookupTableModal', { static: true }) productLookupTableModal: InvoiceProductLookupTableModalComponent;
 
   subscription: Subscription;
 
@@ -54,6 +55,12 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
   form: FormGroup;
 
   itemForm: FormGroup;
+
+  get itemFormItems() {
+    // Typecast, because: reasons
+    // https://github.com/angular/angular-cli/issues/6099
+    return <FormArray>this.itemForm.get('items');
+  }
 
   previousItemForm: FormGroup;
 
@@ -503,8 +510,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
     if (id != null)
       input.id = id;
 
-    input.date = moment(this.form.get('date').value);
-    input.dateDue = moment(this.form.get('date_due').value);
+    input.date = DateTime.utc(this.form.get('date').value);
+    input.dateDue = DateTime.utc(this.form.get('date_due').value);
 
     input.recipientFirstName = this.form.get('recipientFirstName').value;
     input.recipientLastName = this.form.get('recipientLastName').value;
@@ -655,6 +662,9 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
 
   getNewStudentId() {
 
+    if(this.studentLookupTableModal.id == null)
+    return;
+
     this.insertStudentData(this.studentLookupTableModal.id, null);
   }
 
@@ -730,5 +740,7 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
   {
     console.log("Split and saved");
   }
+
+  
 }
 

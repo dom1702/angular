@@ -1,9 +1,8 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit} from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { VehiclesServiceProxy, CreateOrEditVehicleDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { VehicleLicenseClassLookupTableModalComponent } from './vehicle-licenseClass-lookup-table-modal.component';
 import { VehicleInstructorLookupTableModalComponent } from './vehicle-instructor-lookup-table-modal.component';
 
@@ -14,9 +13,9 @@ import { VehicleInstructorLookupTableModalComponent } from './vehicle-instructor
 })
 export class CreateOrEditVehicleModalComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('vehicleLicenseClassLookupTableModal') vehicleLicenseClassLookupTableModal: VehicleLicenseClassLookupTableModalComponent;
-    @ViewChild('instructorLookupTableModal') instructorLookupTableModal: VehicleInstructorLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('vehicleLicenseClassLookupTableModal', { static: true }) vehicleLicenseClassLookupTableModal: VehicleLicenseClassLookupTableModalComponent;
+    @ViewChild('instructorLookupTableModal', { static: true }) instructorLookupTableModal: VehicleInstructorLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 

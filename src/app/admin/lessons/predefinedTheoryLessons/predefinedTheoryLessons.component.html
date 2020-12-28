@@ -1,24 +1,20 @@
 ﻿<div [@routerTransition]>
-  
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("PredefinedTheoryLessons")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("PredefinedTheoryLessonsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-                <button *ngIf="isGranted('Pages.Administration.PredefinedTheoryLessons.Create')" (click)="createPredefinedTheoryLesson()" 
-                class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewPredefinedTheoryLesson")}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('PredefinedTheoryLessons')"
+            [description]="l('PredefinedTheoryLessonsHeaderInfo')">
+    
+                <div role="actions">
+    
+                    <button *ngIf="isGranted('Pages.Administration.PredefinedTheoryLessons.Create')" (click)="createPredefinedTheoryLesson()" 
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewPredefinedTheoryLesson")}}</button>
+    
+                </div>
+      
+        </sub-header>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
 
                 <form class="kt-form" autocomplete="off">
                     <div>
@@ -34,35 +30,10 @@
                                 </div>
                             </div>
                         </div>
-						 <div class="row" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-                                <div class="m-separator m-separator--dashed"></div>
-						     </div>
+						
 
-
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="NameFilter">{{l("Name")}}</label>
-									<input type="text" class="form-control" id="NameFilter" name="nameFilter" [(ngModel)]="nameFilter">
-								</div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-									<label for="MinLengthFilter">{{l("MinMax")}} {{l("Length")}}</label>
-									<div class="input-group">
-                                        <input type="number" class="form-control" id="MinLengthFilter" [(ngModel)]="minLengthFilter" placeholder="{{l('MinValue')}}" name="minLengthFilter" />
-                                        <input type="number" class="form-control" [(ngModel)]="maxLengthFilter" placeholder="{{l('MaxValue')}}" name="maxLengthFilter" />
-									</div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
-                            </div>
-                        </div>
+                     
+                        
                     </div>
                 </form>
 
@@ -115,51 +86,51 @@
                                     <td style="width: 130px"
                                         [hidden]="!isGrantedAny('Pages.Administration.PredefinedTheoryLessons.Edit', 'Pages.Administration.PredefinedTheoryLessons.Delete')">
                                        <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                        <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
                                                 <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
                                             </button>
 												<ul class="dropdown-menu"  *dropdownMenu>
 												<li>
-													<a href="javascript:;"
+													<a href="javascript:;" class="dropdown-item"
 														(click)="viewPredefinedTheoryLessonModal.show(record)">{{l('View')}}</a>
 												</li>
 												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.PredefinedTheoryLessons.Edit')"
+													<a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.PredefinedTheoryLessons.Edit')"
 														(click)="createOrEditPredefinedTheoryLessonModal.show(record.predefinedTheoryLesson.id)">{{l('Edit')}}</a>
 												</li>
 												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.PredefinedTheoryLessons.Delete')"
+											        <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.PredefinedTheoryLessons.Delete')"
 														(click)="deletePredefinedTheoryLesson(record.predefinedTheoryLesson)">{{l('Delete')}}</a>
 												</li>
                                                 <li>
-                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                    <a href="javascript:;" class="dropdown-item" *ngIf="entityHistoryEnabled"
                                                        (click)="showHistory(record.predefinedTheoryLesson)">{{l('History')}}</a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Name')}}</span>
+											<span class="p-column-title"> {{l('Name')}}</span>
 											{{record.predefinedTheoryLesson.name}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Number')}}</span>
+											<span class="p-column-title"> {{l('Number')}}</span>
 											{{record.predefinedTheoryLesson.number}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('LessonIdString')}}</span>
+											<span class="p-column-title"> {{l('LessonIdString')}}</span>
 											{{record.predefinedTheoryLesson.lessonIdString}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Length')}}</span>
+											<span class="p-column-title"> {{l('Length')}}</span>
 											{{record.predefinedTheoryLesson.length}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('RequiredForClasses')}}</span>
+											<span class="p-column-title"> {{l('RequiredForClasses')}}</span>
 											{{record.predefinedTheoryLesson.requiredForClasses}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('NotRequiredIfClasses')}}</span>
+											<span class="p-column-title"> {{l('NotRequiredIfClasses')}}</span>
 											{{record.predefinedTheoryLesson.notRequiredIfClasses}}
 										</td>
 

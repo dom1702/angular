@@ -61,8 +61,8 @@
             </ng-template>
             <ng-template pTemplate="body" let-invoice>
                 <tr>
-                    <td>{{invoice.date  | momentFormat:'L'}}</td>
-                    <td>{{invoice.dateDue  | momentFormat:'L'}}</td>
+                    <td>{{invoice.date  }}</td>
+                    <td>{{invoice.dateDue }}</td>
                     <td>{{invoice.totalAfterVat  | currency:'EUR'}}</td>
                     <td style="width:150px">
                         <div *ngIf="invoice.pdfFileCreated" class="text-center"><i
@@ -95,10 +95,6 @@
                                     <a href="javascript:;" *ngIf="permission.isGranted('Pages.Students.Delete')"
                                         (click)="deleteInvoice(invoice.id)">{{l('Delete')}}</a>
                                 </li>
-                                <li>
-                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
-                                        (click)="showHistory(record.student)">{{l('History')}}</a>
-                                </li>
                             </ul>
                         </div>
                     </td>
@@ -108,7 +104,9 @@
     </div>
 
     <div *ngIf="invoices && invoices.length == 0" class="form-group">
-        <label>{{l("NoInvoicesCreatedYet")}}</label>
+        <alert type="info">
+            <strong>Info!</strong> {{l("NoInvoicesCreatedYet")}}!
+        </alert>
     </div>
 
     <div class="form-group">

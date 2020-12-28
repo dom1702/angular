@@ -1,11 +1,12 @@
 import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { SimulatorLessonsServiceProxy, CreateOrEditSimulatorLessonDto, SimulatorLessonState } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { SimulatorLessonPersonLookupTableModalComponent } from './simulatorLesson-person-lookup-table-modal.component';
 import { SimulatorLessonSimulatorLookupTableModalComponent } from './simulatorLesson-simulator-lookup-table-modal.component';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { DateTime } from 'luxon';
 
 
 @Component({
@@ -14,9 +15,9 @@ import { SimulatorLessonSimulatorLookupTableModalComponent } from './simulatorLe
 })
 export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('simulatorLessonPersonLookupTableModal') simulatorLessonPersonLookupTableModal: SimulatorLessonPersonLookupTableModalComponent;
-    @ViewChild('simulatorLessonSimulatorLookupTableModal') simulatorLessonSimulatorLookupTableModal: SimulatorLessonSimulatorLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('simulatorLessonPersonLookupTableModal', { static: true }) simulatorLessonPersonLookupTableModal: SimulatorLessonPersonLookupTableModalComponent;
+    @ViewChild('simulatorLessonSimulatorLookupTableModal', { static: true }) simulatorLessonSimulatorLookupTableModal: SimulatorLessonSimulatorLookupTableModalComponent;
 
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
@@ -34,13 +35,14 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
     manuallyMarkCompleted: boolean = false;
 
-    startTime: Date = new Date();
+    startTime: DateTime;
 
     setTopicNameAutomatically: boolean = true;
 
     constructor(
         injector: Injector,
-        private _simulatorLessonsServiceProxy: SimulatorLessonsServiceProxy
+        private _simulatorLessonsServiceProxy: SimulatorLessonsServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
 
@@ -68,7 +70,7 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
             }
 
             this.simulatorLesson.id = simulatorLessonId;
-            this.simulatorLesson.startTime = moment().startOf('day');
+            this.simulatorLesson.startTime = this._dateTimeService.getStartOfDay();
           
             this.simulatorName = '';
             this.simulatorLesson.length = 1;
@@ -96,7 +98,7 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
                 this.studentCompleteName = result.studentName;
                 this.simulatorName = result.simulatorName;
-                this.startTime = result.simulatorLesson.startTime.toDate();
+                this.startTime = result.simulatorLesson.startTime; // wrong?
 
                 this.active = true;
                 this.modal.show();
@@ -107,9 +109,9 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
     save(): void {
         this.saving = true;
 
-        this.simulatorLesson.startTime = moment(this.startTime);
-        this.simulatorLesson.startTime.hours(this.startTime.getHours());
-        this.simulatorLesson.startTime.minutes(this.startTime.getMinutes());
+        this.simulatorLesson.startTime = this._dateTimeService.toUtcDate(this.startTime);
+        //this.simulatorLesson.startTime.hours(this.startTime.getHours());
+       // this.simulatorLesson.startTime.minutes(this.startTime.getMinutes());
         this.simulatorLesson.exerciseUnitIdentifier = this.selectedExerciseUnit.identifier;
 
         if(this.setTopicNameAutomatically)
@@ -160,6 +162,13 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
         this.simulatorName = this.simulatorLessonSimulatorLookupTableModal.displayName;
 
         this._simulatorLessonsServiceProxy.getAvailableModulesOnSimulator(this.simulatorLesson.simulatorId).subscribe(result => {
+            if(result.availableModulesOnSim.length == 0)
+            {
+                this.message.error(this.l("SimHasNoModulesYetErrorMessage"));
+                this.close();
+                return;
+            }
+
             this.simulatorModules = result;
         })
     }

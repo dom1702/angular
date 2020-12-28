@@ -1,11 +1,12 @@
 ﻿import { Component, ViewChild, Injector, Output, EventEmitter} from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { EnrollmentsServiceProxy, CreateOrEditEnrollmentDto ,EnrollmentCourseLookupTableDto
 					,EnrollmentOfficeLookupTableDto
 					} from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as moment from 'moment';
+import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 
 @Component({
     selector: 'createOrEditEnrollmentModal',
@@ -13,7 +14,7 @@ import * as moment from 'moment';
 })
 export class CreateOrEditEnrollmentModalComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -30,7 +31,8 @@ export class CreateOrEditEnrollmentModalComponent extends AppComponentBase {
 					
     constructor(
         injector: Injector,
-        private _enrollmentsServiceProxy: EnrollmentsServiceProxy
+        private _enrollmentsServiceProxy: EnrollmentsServiceProxy,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
@@ -40,7 +42,7 @@ export class CreateOrEditEnrollmentModalComponent extends AppComponentBase {
         if (!enrollmentId) {
             this.enrollment = new CreateOrEditEnrollmentDto();
             this.enrollment.id = enrollmentId;
-            this.enrollment.enrollmentDate = moment().startOf('day');
+            this.enrollment.enrollmentDate = this._dateTimeService.getStartOfDay();
             this.courseName = '';
             this.officeName = '';
 

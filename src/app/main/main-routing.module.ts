@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TestResourcesComponent } from './resources/testResources/testResources.component';
 import { CoursesComponent } from './courses/courses/courses.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EnrollmentsComponent } from './enrollments/enrollments/enrollments.component';
@@ -29,6 +30,7 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
             {
                 path: '',
                 children: [
+                    { path: 'resources/testResources', component: TestResourcesComponent, data: { permission: 'Pages.TestResources' }  },
                     { path: 'enrollments/enrollments', component: EnrollmentsComponent, data: { permission: 'Pages.Enrollments' }  },
                     { path: 'courses/courses', component: CoursesComponent, data: { permission: 'Pages.Courses' }  },
                     { path: 'lessons/simulatorLessons', component: SimulatorLessonsComponent, data: { permission: 'Pages.SimulatorLessons' }  },
@@ -58,7 +60,7 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
                        component: SVTheoryPracticeQuizComponent, 
                        data: { permission: 'StudentView'},
                        canDeactivate: [SVQuizGuard]       
-                    }
+                    },
                     { path: 'dashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' } },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'dashboard' }

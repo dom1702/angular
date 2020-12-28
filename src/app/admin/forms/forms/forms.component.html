@@ -1,23 +1,15 @@
 <div [@routerTransition]>
   
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Forms")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("FormsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-              
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('Forms')"
+            [description]="l('FormsHeaderInfo')">
+    
+                
+      
+        </sub-header>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
 
 				<form class="horizontal-form" autocomplete="off">
                     <div>
@@ -33,38 +25,7 @@
                                 </div>
                             </div>
                         </div>
-						 <div class="row" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-						         <div class="m-separator m-separator--border-dashed"></div>
-						     </div>
-
-
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="NameFilter">{{l("Name")}}</label>
-									<input type="text" class="form-control" id="NameFilter" name="nameFilter" [(ngModel)]="nameFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="CountryFilter">{{l("Country")}}</label>
-									<input type="text" class="form-control" id="CountryFilter" name="countryFilter" [(ngModel)]="countryFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="DocumentTypeFilter">{{l("DocumentType")}}</label>
-									<input type="text" class="form-control" id="DocumentTypeFilter" name="documentTypeFilter" [(ngModel)]="documentTypeFilter">
-								</div>
-                            </div>
-
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
-                            </div>
-                        </div>
+						
                     </div>
                 </form>
 
@@ -109,15 +70,15 @@
                                      
                                     </td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Name')}}</span>
+											<span class="p-column-title"> {{l('Name')}}</span>
 											{{record.form.name}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Country')}}</span>
+											<span class="p-column-title"> {{l('Country')}}</span>
 											{{record.form.country}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('DocumentType')}}</span>
+											<span class="p-column-title"> {{l('DocumentType')}}</span>
 											{{record.form.documentType}}
 										</td>
 

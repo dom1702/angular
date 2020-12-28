@@ -60,23 +60,26 @@
                             <div class="row">
                                 <div class="col-6 border-right">
                                     <div class="form-group">
-                                        <label class="m-radio">
+                                        <label class="radio">
                                             <input type="radio" name="pdl_option" [value]="null"
                                                 [(ngModel)]="selectedPdl" (change)='updateCheck()'>
-                                            {{l('Basic Lesson')}}
-                                            <span></span>
+                                                <span></span>
+                                                {{l('Basic Lesson')}}
+                                           
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div *ngIf="selectedStudentCourse">
+                                     
                                         <div class="col-md-auto"
                                             *ngFor="let pdl of selectedStudentCourse.predefinedDrivingLessons">
-                                            <label class="m-radio">
+                                            <label class="radio">
                                                 <input type="radio" name="pdl_option" [value]="pdl"
                                                     [(ngModel)]="selectedPdl" (change)='updateCheck()'>
-                                                {{pdl.name}}
-                                                <span></span>
+                                                    <span></span>
+                                                    {{pdl.name}}
+                                         
 
                                             </label>
                                         </div>
@@ -85,12 +88,13 @@
                             </div>
                         </div>
 
-                        <div class="m-checkbox-list">
-                            <label for="SetTopicAutomatically" class="m-checkbox">
+                        <div class="checkbox-list">
+                            <label for="SetTopicAutomatically" class="checkbox">
                                 <input id="SetTopicAutomatically" type="checkbox" name="SetTopicAutomatically"
                                     [(ngModel)]="setTopicNameAutomatically">
+                                    <span></span>
                                 {{l("SetTopicAutomatically")}}
-                                <span></span>
+               
                             </label>
                         </div>
 
@@ -206,12 +210,13 @@
                             </div>
 
                             <br />
-                            <div class="m-checkbox-list">
-                                <label for="DrivingLesson_Completed" class="m-checkbox">
+                            <div class="checkbox-list">
+                                <label for="DrivingLesson_Completed" class="checkbox">
                                     <input id="DrivingLesson_Completed" type="checkbox" name="Completed"
                                         [(ngModel)]="drivingLesson.completed">
-                                    {{l("Completed")}}
-                                    <span></span>
+                                        <span></span>
+                                        {{l("Completed")}}
+                                   
                                 </label>
                             </div>
                         </div>

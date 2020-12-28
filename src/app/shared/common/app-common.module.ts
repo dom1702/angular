@@ -50,7 +50,11 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PasswordInputWithShowButtonComponent } from './password-input-with-show-button/password-input-with-show-button.component';
 import { KeyValueListManagerComponent } from './key-value-list-manager/key-value-list-manager.component';
 import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.component';
-//import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { ViewProductModalComponent } from '@app/admin/sales/products/view-product-modal.component';
+import { CreateOrEditPricePackageModalComponent } from './sales/pricePackages/create-or-edit-pricePackage-modal.component';
+import { PricePackageProductLookupTableModalComponent } from './sales/pricePackages/pricePackage-product-lookup-table-modal.component';
+import { ViewPricePackageModalComponent } from './sales/pricePackages/view-pricePackage-modal.component';
+import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 
 @NgModule({
     imports: [
@@ -74,7 +78,7 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
         CountoModule,
         AppBsModalModule,
         AutoCompleteModule,
-        //NumericTextBoxModule
+        NumericTextBoxModule,
     ],
     declarations: [
         TimeZoneComboComponent,
@@ -105,10 +109,10 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
         PasswordInputWithShowButtonComponent,
         KeyValueListManagerComponent,
         SubHeaderComponent,
-        // PricePackageProductLookupTableModalComponent,
-        // ViewPricePackageModalComponent,		
-        // CreateOrEditPricePackageModalComponent,
-        // ViewProductModalComponent
+        PricePackageProductLookupTableModalComponent,
+        ViewPricePackageModalComponent,		
+        CreateOrEditPricePackageModalComponent,
+        ViewProductModalComponent
     ],
     exports: [
         TimeZoneComboComponent,
@@ -121,10 +125,10 @@ import { SubHeaderComponent } from '@app/shared/common/sub-header/sub-header.com
         PasswordInputWithShowButtonComponent,
         KeyValueListManagerComponent,
         SubHeaderComponent,
-        // PricePackageProductLookupTableModalComponent,
-        // ViewPricePackageModalComponent,		
-        // CreateOrEditPricePackageModalComponent,
-        // ViewProductModalComponent
+        PricePackageProductLookupTableModalComponent,
+        ViewPricePackageModalComponent,		
+        CreateOrEditPricePackageModalComponent,
+        ViewProductModalComponent
     ],
     providers: [
         DateTimeService,

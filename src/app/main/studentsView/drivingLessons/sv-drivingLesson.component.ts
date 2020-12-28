@@ -8,9 +8,9 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import { SVBookDrivingLessonLookupSchedulerModalComponent } from './sv-book-drivingLesson-lookup-scheduler-modal.component';
 import { StudentViewHelper } from '../studentViewHelper.component';
-import { LazyLoadEvent } from 'primeng/api';
-import { Table } from 'primeng/table';
-import { Paginator } from 'primeng/primeng';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 
 @Component({
     templateUrl: './sv-drivingLesson.component.html',

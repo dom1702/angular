@@ -1,4 +1,4 @@
-import {FeatureCheckerService, PermissionCheckerService} from 'abp-ng2-module';
+﻿import {FeatureCheckerService, PermissionCheckerService} from 'abp-ng2-module';
 import {AppSessionService} from '@shared/common/session/app-session.service';
 
 import {Injectable} from '@angular/core';
@@ -56,7 +56,9 @@ export class AppNavigationService {
 
             new AppMenuItem('Courses', 'Pages.Courses', 'flaticon-tabs', '/app/main/courses/courses'),
 
-            new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
+           
+            new AppMenuItem('TestResources', 'Pages.TestResources', 'flaticon-more', '/app/main/resources/testResources'),
+             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),

@@ -2,10 +2,10 @@ import { Component, Injector, OnInit, ViewChild, OnDestroy, AfterViewInit } from
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import * as moment from 'moment';
-import { threadId } from 'worker_threads';
 import { TheoryExamsServiceProxy, GetTopicsForViewDto, GetTheoryExamPreparationForViewDto } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { SVTheoryPracticeHelperService } from './sv-theoryPracticeHelper.service';
+import { DateTime } from 'luxon';
 
 export enum QuestionDisplayType {
     SingleChoice,
@@ -91,8 +91,8 @@ export class QuizSession {
     quiz : TheoryExamQuestion[];
     selectedQuestion: number;
     duration: number; // in minutes
-    startTime: moment.Moment;
-    endTime: moment.Moment;
+    startTime: DateTime;
+    endTime: DateTime;
     predefindedQuizId : string;
     isMarkable: boolean;
     classInformations : LicenseClass;

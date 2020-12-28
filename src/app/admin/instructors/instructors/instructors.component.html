@@ -1,24 +1,23 @@
 <div [@routerTransition]>
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-6">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Instructors")}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{l("InstructorsHeaderInfo")}}
-                </span>
-            </div>
-            <div class="col-md-6 text-right">
-				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
-                <button *ngIf="isGranted('Pages.Administration.Instructors.Create')" (click)="createInstructor()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewInstructor")}}</button>
-            </div>
-        </div>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('Instructors')"
+            [description]="l('InstructorsHeaderInfo')">
+    
+                <div role="actions">
+     <div class="btn-group">
+        <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+        <button *ngIf="isGranted('Pages.Administration.Instructors.Create')" (click)="createInstructor()" 
+    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewInstructor")}}</button>
     </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">
-            <div class="m-portlet__body">
+    
+                </div>
+      
+        </sub-header>
+    
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
 
 				<form class="horizontal-form" autocomplete="off">
                     <div class="m-form m-form--label-align-right">
@@ -151,38 +150,38 @@
                                             </button>
 												<ul class="dropdown-menu"  *dropdownMenu>
 												<li>
-													<a href="javascript:;"
+													<a href="javascript:;" class="dropdown-item"
 														(click)="viewInstructorModal.show(record)">{{l('View')}}</a>
 												</li>
 												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Instructors.Edit')"
+													<a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.Instructors.Edit')"
 														(click)="createOrEditInstructorModal.show(record.instructor.id)">{{l('Edit')}}</a>
 												</li>
 												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Instructors.Delete')"
+											        <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Administration.Instructors.Delete')"
 														(click)="deleteInstructor(record.instructor)">{{l('Delete')}}</a>
                                                 </li>
                                                 <li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.Instructors.Edit') && !record.userExists"
+											        <a href="javascript:;" class="dropdown-item"*ngIf="permission.isGranted('Pages.Administration.Instructors.Edit') && !record.userExists"
 														(click)="createUserAccount(record.instructor)">{{l('CreateUser')}}</a>
                                                 </li>
                                                 <li>
-                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                    <a href="javascript:;" class="dropdown-item" *ngIf="entityHistoryEnabled"
                                                        (click)="showHistory(record.instructor)">{{l('History')}}</a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('FirstName')}}</span>
+											<span class="p-column-title"> {{l('FirstName')}}</span>
 											{{record.instructor.firstName}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('LastName')}}</span>
+											<span class="p-column-title"> {{l('LastName')}}</span>
 											{{record.instructor.lastName}}
 										</td>
                                     <td style="width:150px">
-											<span class="ui-column-title"> {{l('Email')}}</span>
+											<span class="p-column-title"> {{l('Email')}}</span>
 											{{record.instructor.email}}
 										</td>
                                         <td style="width:80px">
@@ -190,7 +189,7 @@
                                             <div *ngIf="!record.userExists" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
                                         </td>
                                         <td style="width:150px">
-											<span class="ui-column-title"> {{l('UserName')}}</span>
+											<span class="p-column-title"> {{l('UserName')}}</span>
 											{{record.userName}}
 										</td>
 
@@ -217,7 +216,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <createOrEditInstructorModal #createOrEditInstructorModal (modalSave)="getInstructors()"></createOrEditInstructorModal>
     <viewInstructorModal #viewInstructorModal></viewInstructorModal>
      <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>

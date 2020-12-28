@@ -1,9 +1,8 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { StudentsServiceProxy, CreateOrEditStudentDto, StudentDto, GetFreeCoursesForStudentDto, PricePackageDto, AssignToCourseInput } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 
 @Component({
     selector: 'assignStudentToCourseModal',
@@ -11,7 +10,7 @@ import * as moment from 'moment';
 })
 export class AssignStudentToCourseModalComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('assignToCourseModal') modal: ModalDirective;
+    @ViewChild('assignToCourseModal', { static: true }) modal: ModalDirective;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 

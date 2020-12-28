@@ -85,4 +85,18 @@ export class RolesComponent extends AppComponentBase implements OnInit {
             }
         );
     }
+
+    isStudentRole(role: RoleListDto) : boolean{
+        if(role.name == "Student")
+        return true;
+
+        return false;
+    }
+
+    isInstructorRole(role: RoleListDto) : boolean{
+        if(role.name == "Instructor")
+        return true;
+
+        return false;
+    }
 }

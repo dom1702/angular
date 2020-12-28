@@ -60,18 +60,18 @@
 								name="Name" required />
 						</div>
 
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label for="Course_StartDate">{{l("StartDate")}}</label>
 							<input required class="form-control m-input" type="datetime" bsDatepicker
 								[(ngModel)]="course.startDate._d" id="Course_StartDate" name="Course_StartDate">
-						</div>
+						</div> -->
 
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label for="Course_LastEnrollmentDate">{{l("LastEnrollmentDate")}}</label>
 							<input required class="form-control m-input" type="datetime" bsDatepicker
 								[(ngModel)]="course.lastEnrollmentDate._d" id="Course_LastEnrollmentDate"
 								name="Course_LastEnrollmentDate">
-						</div>
+						</div> -->
 
 						<div class="form-group">
 							<label for="Course_CourseNumber">{{l("CourseNumber")}}</label>
@@ -93,7 +93,7 @@
 								[(ngModel)]="course.priceDescription" name="PriceDescription" />
 						</div>
 						<br />
-						<h4>{{l("PricePackages")}}</h4>
+						<h4>{{l("PricePackages")}} *</h4>
 						<div class="form-group">
 							<div class="container-fluid">
 								<div class="row align-items-start">
@@ -113,12 +113,12 @@
 									<div class="row align-items-start">
 										<div class="col-2">
 											<div class="row">
-												<label class="m-radio">
+												<label class="radio">
 													<input type="radio" name="ppHighlightedOption_{{pp.dl}}"
 														[value]="pp"
 														[disabled]="!pp.checked"
 														[(ngModel)]="pricePackageSelectedAsHighlighted"
-														(change)='updateHighlightedPricePackage()'>
+														(change)='updateHighlightedPricePackage()' required>
 
 													<span></span>
 
@@ -127,10 +127,11 @@
 										</div>
 										<div class="col-10">
 											<div class="row">
-												<label attr.for="PricePackage_{{pp.dl}}" class="m-checkbox">
-													<input id="PricePackage_{{pp.dl}}" type="checkbox" name="{{pp.dl}}" [(ngModel)]="pp.checked" (change)='pricePackagesChanged()'>
-													{{pp.dl}}
+												<label attr.for="PricePackage_{{pp.dl}}" class="checkbox">
+													<input id="PricePackage_{{pp.dl}}" type="checkbox" name="{{pp.dl}}" [(ngModel)]="pp.checked" (change)='pricePackagesChanged()' required>
 													<span></span>
+													{{pp.dl}}
+												
 
 												</label>
 											</div>
@@ -150,33 +151,41 @@
 						<h4>Predefined lessons</h4>
 						<div class="form-group">
 							<label>{{l("PredefinedDrivingLessons")}}</label>
-							<ejs-multiselect #pdl_multiselect id='multiselectelement'
-								[dataSource]='predefinedDrivingLessons' [fields]='fields'
-								[placeholder]='placeholderPdlSelection'></ejs-multiselect>
+							<ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"  [data]="pdlList"
+							[(ngModel)]="pdlselectedItems" [ngModelOptions]="{standalone: true}"
+							 (onSelect)="onPdlItemSelect($event)"
+							(onSelectAll)="onPdlSelectAll($event)">
+						</ng-multiselect-dropdown>
+								<!-- <p-multiSelect id="predefinedDrivingLessons" name="predefinedDrivingLessons" [options]="predefinedDrivingLessons" [(ngModel)]="selectedPredefinedDrivingLessons" optionLabel="name" styleClass="dark-panel"></p-multiSelect> -->
 
 						</div>
 						<div class="form-group">
 							<label>{{l("PredefinedTheoryLessons")}}</label>
-							<ejs-multiselect #ptl_multiselect id='multiselectelement'
-								[dataSource]='predefinedTheoryLessons' [fields]='ptlFields'
-								[placeholder]='placeholderPtlSelection'></ejs-multiselect>
+							<ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"  [data]="ptlList"
+							[(ngModel)]="ptlselectedItems" [ngModelOptions]="{standalone: true}"
+							(onSelect)="onPtlItemSelect($event)"
+							(onSelectAll)="onPtlSelectAll($event)">
+						</ng-multiselect-dropdown>
+								<!-- <p-multiSelect id="predefinedTheoryLessons"  name="predefinedTheoryLessons"  [options]="predefinedTheoryLessons" [(ngModel)]="selectedPredefinedTheoryLessons" optionLabel="name"></p-multiSelect> -->
 
 						</div>
 						<br />
 						<h4>{{l("Privacy")}}</h4>
-						<div class="m-checkbox-list">
-							<label for="Course_VisibleOnFrontPage" class="m-checkbox">
+						<div class="checkbox-list">
+							<label for="Course_VisibleOnFrontPage" class="checkbox">
 								<input id="Course_VisibleOnFrontPage" type="checkbox" name="VisibleOnFrontPage"
 									[(ngModel)]="course.visibleOnFrontPage">
-								{{l("VisibleOnFrontPage")}}
-								<span></span>
+									<span></span>
+									{{l("VisibleOnFrontPage")}}
+							
 							</label>
 
-							<label for="Course_EnrollmentAvailable" class="m-checkbox">
+							<label for="Course_EnrollmentAvailable" class="checkbox">
 								<input id="Course_EnrollmentAvailable" type="checkbox" name="EnrollmentAvailable"
 									[(ngModel)]="course.enrollmentAvailable">
-								{{l("EnrollmentAvailable")}}
-								<span></span>
+									<span></span>
+									{{l("EnrollmentAvailable")}}
+							
 							</label>
 						</div>
 					</div>

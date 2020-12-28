@@ -63,10 +63,10 @@
                                                 <div class="col" *ngFor="let series of driveStraightSeries">  
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 1" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 1" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 1" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 1" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>         
                                                 </div> 
                                                 <div class="col-2"></div>                                 
@@ -79,10 +79,10 @@
                                                 <div class="col" *ngFor="let series of turnRightSeries">                                            
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 2" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 2" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 2" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 2" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -95,10 +95,10 @@
                                                 <div class="col" *ngFor="let series of turnLeftSeries"> 
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 3" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 3" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 3" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 3" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -111,10 +111,10 @@
                                                 <div class="col" *ngFor="let series of giveWayStraightSeries">      
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 4" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 4" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 4" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 4" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -127,10 +127,10 @@
                                                 <div class="col" *ngFor="let series of giveWayRightSeries">              
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 5" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 5" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 5" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 5" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -143,10 +143,10 @@
                                                 <div class="col" *ngFor="let series of giveWayLeftSeries">
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div>
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 6" type="button" class="btn btn-success btn-sm mb-1" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 6" type="button" class="btn btn-success btn-sm mb-1" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 6" type="button" class="btn btn-danger btn-sm mb-1" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 6" type="button" class="btn btn-danger btn-sm mb-1" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>                        
                                                 </div>
                                                 <div class="col-2"></div>
@@ -159,10 +159,10 @@
                                                 <div class="col" *ngFor="let series of passingSeries"> 
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 7" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 7" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 7" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 7" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -175,10 +175,10 @@
                                                 <div class="col" *ngFor="let series of changeLaneSeries">    
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 8" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 8" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 8" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 8" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -191,10 +191,10 @@
                                                 <div class="col" *ngFor="let series of stopSeries"> 
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 9" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 9" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 9" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 9" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -207,10 +207,10 @@
                                                 <div class="col" *ngFor="let series of parkedSeries"> 
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div> 
                                                     <ng-template #successBtn>
-                                                        <button *ngIf="series.groupId == 10" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 10" type="button" class="btn btn-success btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>
                                                     <ng-template #dangerBtn>
-                                                        <button *ngIf="series.groupId == 10" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id, false)">{{series.groupName}}</button> 
+                                                        <button *ngIf="series.groupId == 10" type="button" class="btn btn-danger btn-sm" (click)="startSelectedQuiz(series.id)">{{series.groupName}}</button> 
                                                     </ng-template>  
                                                 </div>
                                                 <div class="col-2"></div>
@@ -233,10 +233,10 @@
                                             <div *ngFor="let series of classQuestionSeries; index as i;">
                                                 <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div>
                                                 <ng-template #successBtn>
-                                                    <button type="button" class="btn btn-success btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                    <button type="button" class="btn btn-success btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id)">{{i+1}}</button>                                            
                                                 </ng-template>
                                                 <ng-template #dangerBtn>
-                                                    <button type="button" class="btn btn-danger btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                    <button type="button" class="btn btn-danger btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id)">{{i+1}}</button>                                            
                                                 </ng-template>
                                             </div>  
                                         </div>                                     
@@ -261,10 +261,10 @@
                                                     <div *ngIf="series.finishedOnce; then successBtn else dangerBtn"></div>
                                                     <div class="col">
                                                         <ng-template #successBtn>
-                                                            <button type="button" class="btn btn-success btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                            <button type="button" class="btn btn-success btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id)">{{i+1}}</button>                                            
                                                         </ng-template>
                                                         <ng-template #dangerBtn>
-                                                            <button type="button" class="btn btn-danger btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id, false)">{{i+1}}</button>                                            
+                                                            <button type="button" class="btn btn-danger btn-sm mr-2 ml-2 mt-1 mb-1" (click)="startSelectedQuiz(series.id)">{{i+1}}</button>                                            
                                                         </ng-template>
                                                     </div>
                                                 </div> 

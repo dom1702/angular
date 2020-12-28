@@ -5,10 +5,10 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { StudentViewHelper } from '../studentViewHelper.component';
-import { Table } from 'primeng/table';
-import { LazyLoadEvent, Paginator } from 'primeng/primeng';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 
 @Component({
     templateUrl: './sv-theoryLessons.component.html',

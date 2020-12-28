@@ -1,12 +1,11 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, ViewEncapsulation, AfterViewInit, QueryList, ViewChildren, ChangeDetectorRef} from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { TheoryLessonsServiceProxy, CreateOrEditTheoryLessonDto, InstructorDto, StudentTheoryLessonInput, GetStudentsOfTheoryLessonDto, TheoryLessonDto, GetStudentForViewDto, StudentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { Table } from 'primeng/components/table/table';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import { PrimengTableHelper } from '@shared/helpers/PrimengTableHelper';
 import { Subscription } from 'rxjs';
 import { TLStudentLookupTableModalComponent } from './theoryLesson-student-lookup-table-modal.component';
@@ -19,9 +18,9 @@ import { ViewStudentModalComponent } from '@app/main/students/students/view-stud
 })
 export class EditStudentsTheoryLessonModalComponent extends AppComponentBase implements AfterViewInit {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('studentLookupTableModal') studentLookupTableModal: TLStudentLookupTableModalComponent;
-    @ViewChild('viewStudentModal') viewStudentModal: ViewStudentModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('studentLookupTableModal', { static: true }) studentLookupTableModal: TLStudentLookupTableModalComponent;
+    @ViewChild('viewStudentModal', { static: true }) viewStudentModal: ViewStudentModalComponent;
     @ViewChildren('dataTableStudents') dataTableList: QueryList<Table>;
     @ViewChildren('paginatorStudents') paginatorList: QueryList<Paginator>;
 
@@ -102,6 +101,7 @@ export class EditStudentsTheoryLessonModalComponent extends AppComponentBase imp
         // input.theoryLessonId = this.theoryLessonId;
         console.log("delete");
         this.message.confirm(
+            '',
             '',
             (isConfirmed) => {
                 if (isConfirmed) {

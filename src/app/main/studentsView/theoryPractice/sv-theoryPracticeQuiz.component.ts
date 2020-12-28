@@ -9,6 +9,7 @@ import { MessageService, SelectItem } from 'primeng/api';
 import { SVTheoryPracticeHelperService } from './sv-theoryPracticeHelper.service';
 import { TheoryExamsServiceProxy, QuestionDto, QuestionSeriesDto, GetNextTheoryExamQuestionSeriesInput, FinishTheoryExamQuestionSeriesInput, TESingleChoiceDto, TESingleChoiceResultDto, FinishTopicQuestionSeriesInput } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
+import { DateTime } from 'luxon';
 
 @Component({
     templateUrl: './sv-theoryPracticeQuiz.component.html',
@@ -139,7 +140,7 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
 
     constructor(injector: Injector, 
         private messageService: MessageService,
-        private theoryPracticeHelperService: SVTheoryPracticeHelperService,
+        public theoryPracticeHelperService: SVTheoryPracticeHelperService,
         private theoryExamService: TheoryExamsServiceProxy,
         private router: Router) {        
         super(injector);
@@ -149,7 +150,7 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
         //console.log("check can Deactivate");
         if(!this.quizFinished && this.currentQuizSession != null)
         {
-            this.message.confirm('Discard answers from this sheet?', (isConfirmed) => {
+            this.message.confirm('Discard answers from this sheet?', '', (isConfirmed) => {
                 if (isConfirmed) {
                     console.log("navigated away from TheoryPracticeQuiz");                   
                     this.navigateAwaySelection.next(isConfirmed);                       
@@ -270,7 +271,7 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
             }
 
             this.currentQuizSession.selectedQuestion = 1;
-            this.currentQuizSession.startTime = moment().locale(moment.defaultFormat);
+            this.currentQuizSession.startTime = DateTime.local();
             this.startTimer(this.currentQuizSession.duration); 
         }  
         else {

@@ -17,25 +17,25 @@
 
 					<div class="form-group m-form__group">
 						<label>{{l("LicenseClass")}}</label>
-						<ng-multiselect-dropdown [placeholder]="placeholder" [data]="dropdownList"
+						<ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings" [data]="dropdownList"
 							[(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
-							[settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+							 (onSelect)="onItemSelect($event)"
 							(onSelectAll)="onSelectAll($event)">
 						</ng-multiselect-dropdown>
 					</div>
 
 					<div class="form-group m-form__group">
 						<label>{{l("LicenseClassesAlreadyOwned")}}</label>
-						<ng-multiselect-dropdown [placeholder]="placeholderLicenseClassesOwned"
+						<ng-multiselect-dropdown [placeholder]="placeholderLicenseClassesOwned" [settings]="dropdownSettingsLicenseClassesOwned"
 							[data]="dropdownListLicenseClassesOwned" [(ngModel)]="selectedItemsLicenseClassesOwned"
-							[ngModelOptions]="{standalone: true}" [settings]="dropdownSettingsLicenseClassesOwned"
+							[ngModelOptions]="{standalone: true}" 
 							(onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
 						</ng-multiselect-dropdown>
 					</div>
 
 
-					<input class="form-control" name="student.licenseClassesToAcquire"
-						[(ngModel)]="student.licenseClassesToAcquire" type="text" hidden>
+					<input class="form-control" name="student.licenseClasses"
+						[(ngModel)]="student.licenseClasses" type="text" hidden>
 
 
 					<div class="form-group">

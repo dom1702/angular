@@ -1,5 +1,5 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { StudentsServiceProxy, CreateOrEditStudentDto, StudentDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -17,8 +17,8 @@ import { isValid } from "finnish-personal-identity-code-validator";
 })
 export class CreateOrEditStudentModalComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('pricePackageLookupTableModal') pricePackageLookupTableModal: PricePackageLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('pricePackageLookupTableModal', { static: true }) pricePackageLookupTableModal: PricePackageLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -146,7 +146,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
                 this.instructorFullName = result.defaultInstructorFullName;
 
                 if (this.student.dateOfBirth) {
-                    this.dateOfBirth = this.student.dateOfBirth.toDate();
+                  //  this.dateOfBirth = this.student.dateOfBirth.toDate();
                 }
 
                 if (this.student.birthCountry != null)
@@ -293,10 +293,10 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
 
         if (this.dateOfBirth) {
             if (!this.student.dateOfBirth) {
-                this.student.dateOfBirth = moment(this.dateOfBirth).startOf('day');
+          //      this.student.dateOfBirth = moment(this.dateOfBirth).startOf('day');
             }
             else {
-                this.student.dateOfBirth = moment(this.dateOfBirth);
+           //     this.student.dateOfBirth = moment(this.dateOfBirth);
             }
         }
         else {

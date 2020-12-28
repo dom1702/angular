@@ -3,13 +3,13 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { View, EventSettingsModel, DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, ScheduleComponent, PopupOpenEventArgs, CellClickEventArgs, EventClickArgs, NavigatingEventArgs, ActionEventArgs, EventRenderedArgs } from '@syncfusion/ej2-angular-schedule';
 import { PersonalSchedulerServiceProxy } from '@shared/service-proxies/service-proxies';
-import * as moment from 'moment';
 import { CreateOrEditDrivingLessonModalComponent } from '../lessons/drivingLessons/create-or-edit-drivingLesson-modal.component';
 import { CreateEventTypeModalComponent } from '../scheduler/create-event-type-modal.component';
 import { CreateOrEditTheoryLessonModalComponent } from '../lessons/theoryLessons/create-or-edit-theoryLesson-modal.component';
 import { CreateOrEditEventModalComponent } from '../scheduler/create-or-edit-event-modal.component';
 import { IScheduler } from '../scheduler/scheduler-interface';
 import { CreateOrEditSimulatorLessonModalComponent } from '../lessons/simulatorLessons/create-or-edit-simulatorLesson-modal.component';
+import { DateTime } from 'luxon';
 
 
 @Component({
@@ -45,7 +45,7 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
     studentLastName = '';
     studentId: number;
 
-    startTime: Date;
+    startTime: DateTime;
 
     allowedToSeeOwnAppointments : boolean;
     allowedToSeeOwnDrivingLessons : boolean;
@@ -56,8 +56,8 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
     public data: object[] = [{
         Id: 2,
         Subject: 'Meeting',
-        StartTime: new Date(2019, 7, 2, 10, 0),
-        EndTime: new Date(2019, 7, 2, 12, 30),
+        StartTime: new DateTime(),
+        EndTime: new DateTime(),
         IsAllDay: false,
         AppointmentType: -1
     }];
@@ -93,7 +93,7 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
     }
 
     onCellClick(args: CellClickEventArgs): void {
-        this.startTime = args.startTime;
+        //this.startTime = args.startTime;
 
         if(!this.isGranted('Pages.InstructorsOwnDrivingLessons.Create') 
         && !this.isGranted('OwnAppointments.Create'))
@@ -222,34 +222,35 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
 
         this.scheduleObj.showSpinner();
 
-        this._personalSchedulerServiceProxy.getAllEventsOfCurrentPerson(
-            moment(from),
-            moment(to),
-            this.eventTypeFilter.drivingLessons,
-            this.eventTypeFilter.theoryLessons,
-            this.eventTypeFilter.otherEvents,
-            false).subscribe(result => {
+        // uncomment ...
+        // this._personalSchedulerServiceProxy.getAllEventsOfCurrentPerson(
+        //     moment(from),
+        //     moment(to),
+        //     this.eventTypeFilter.drivingLessons,
+        //     this.eventTypeFilter.theoryLessons,
+        //     this.eventTypeFilter.otherEvents,
+        //     false).subscribe(result => {
 
-                //console.log(result);
+        //         //console.log(result);
 
-                for (var item of result) {
-                    this.data.push(
-                        {
-                            Id: item.id,
-                            Subject: item.subject,
-                            StartTime: item.startTime.toDate(),
-                            EndTime: item.endTime.toDate(),
-                            AppointmentType: item.appointmentType.toString()
-                        });
-                }
+        //         for (var item of result) {
+        //             this.data.push(
+        //                 {
+        //                     Id: item.id,
+        //                     Subject: item.subject,
+        //                     StartTime: item.startTime.toDate(),
+        //                     EndTime: item.endTime.toDate(),
+        //                     AppointmentType: item.appointmentType.toString()
+        //                 });
+        //         }
 
-                //console.log( this.data);
+        //         //console.log( this.data);
 
-                this.scheduleObj.refresh();
+        //         this.scheduleObj.refresh();
 
-                this.scheduleObj.hideSpinner();
+        //         this.scheduleObj.hideSpinner();
 
-            });
+        //     });
 
     }
 

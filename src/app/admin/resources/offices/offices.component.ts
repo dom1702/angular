@@ -1,19 +1,17 @@
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OfficesServiceProxy, OfficeDto  } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditOfficeModalComponent } from './create-or-edit-office-modal.component';
 import { ViewOfficeModalComponent } from './view-office-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { Table } from 'primeng/components/table/table';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import {LazyLoadEvent} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
     templateUrl: './offices.component.html',
@@ -22,11 +20,11 @@ import * as moment from 'moment';
 })
 export class OfficesComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditOfficeModal') createOrEditOfficeModal: CreateOrEditOfficeModalComponent;
-    @ViewChild('viewOfficeModalComponent') viewOfficeModal: ViewOfficeModalComponent;
-    @ViewChild('entityTypeHistoryModal') entityTypeHistoryModal: EntityTypeHistoryModalComponent;
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
+    @ViewChild('createOrEditOfficeModal', { static: true }) createOrEditOfficeModal: CreateOrEditOfficeModalComponent;
+    @ViewChild('viewOfficeModalComponent', { static: true }) viewOfficeModal: ViewOfficeModalComponent;
+    @ViewChild('entityTypeHistoryModal', { static: true }) entityTypeHistoryModal: EntityTypeHistoryModalComponent;
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     advancedFiltersAreShown = false;
     filterText = '';
@@ -46,7 +44,6 @@ export class OfficesComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _officesServiceProxy: OfficesServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService
@@ -109,6 +106,7 @@ export class OfficesComponent extends AppComponentBase {
 
     deleteOffice(office: OfficeDto): void {
         this.message.confirm(
+            '',
             '',
             (isConfirmed) => {
                 if (isConfirmed) {

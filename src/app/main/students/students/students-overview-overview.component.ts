@@ -1,8 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Http } from '@angular/http';
 import { StudentsServiceProxy, StudentDto, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto, TheoryLessonState } from '@shared/service-proxies/service-proxies';
-import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -28,10 +26,10 @@ import { ImpersonationService } from '@app/admin/users/impersonation.service';
 })
 export class StudentsOverviewOverviewComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditStudentModal') createOrEditStudentModal: CreateOrEditStudentModalComponent;
-    @ViewChild('createOrEditStudentUserModal') createOrEditStudentUserModal: CreateOrEditStudentUserModalComponent;
-    @ViewChild('assignStudentToCourseModal') assignStudentToCourseModal: AssignStudentToCourseModalComponent;
-    @ViewChild('sendMessageToStudentModal') sendMessageToStudentModal: SendMessageToStudentModalComponent;
+    @ViewChild('createOrEditStudentModal', { static: true }) createOrEditStudentModal: CreateOrEditStudentModalComponent;
+    @ViewChild('createOrEditStudentUserModal', { static: true }) createOrEditStudentUserModal: CreateOrEditStudentUserModalComponent;
+    @ViewChild('assignStudentToCourseModal', { static: true }) assignStudentToCourseModal: AssignStudentToCourseModalComponent;
+    @ViewChild('sendMessageToStudentModal', { static: true }) sendMessageToStudentModal: SendMessageToStudentModalComponent;
 
     @Input() student: StudentDto;
     @Input() pricePackageName: string;
@@ -51,7 +49,6 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,

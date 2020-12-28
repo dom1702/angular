@@ -1,9 +1,8 @@
 import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { SimulatorsServiceProxy, CreateOrEditSimulatorDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { SimulatorOfficeLookupTableModalComponent } from './simulator-office-lookup-table-modal.component';
 
 
@@ -13,7 +12,7 @@ import { SimulatorOfficeLookupTableModalComponent } from './simulator-office-loo
 })
 export class CreateOrEditSimulatorModalComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @ViewChild('simulatorOfficeLookupTableModal') simulatorOfficeLookupTableModal: SimulatorOfficeLookupTableModalComponent;
 
 
@@ -101,6 +100,7 @@ export class CreateOrEditSimulatorModalComponent extends AppComponentBase {
         if (this.simulator.id) {
             this.message.confirm(
                 'This will overwrite the existing API key. You will have to change it in the simulators configuration.',
+                '',
                 (isConfirmed) => {
                     if (isConfirmed) {
                         this._simulatorsServiceProxy.createApiKey().subscribe(result => {

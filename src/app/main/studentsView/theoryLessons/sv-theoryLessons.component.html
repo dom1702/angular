@@ -159,7 +159,7 @@
                                             <td style="width:150px">
                                                 <span class="ui-column-title"> {{l('StartTime')}}</span>
                                                 <span *ngIf="record.startTime">
-                                                    {{record.startTime | momentFormat:'llll'}}
+                                                    {{record.startTime}}
                                                     <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
                                                 </span>
                                                 <span *ngIf="!record.startTime">-</span>

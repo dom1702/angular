@@ -2,7 +2,7 @@ import { Component, ViewChild, Injector } from "@angular/core";
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { EventSettingsModel, View, PopupOpenEventArgs, CellClickEventArgs, NavigatingEventArgs, EventRenderedArgs, ActionEventArgs } from "@syncfusion/ej2-schedule";
 import * as moment from 'moment';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ScheduleComponent, WeekService, TimelineViewsService, TimelineMonthService } from "@syncfusion/ej2-angular-schedule";
 
 @Component({
