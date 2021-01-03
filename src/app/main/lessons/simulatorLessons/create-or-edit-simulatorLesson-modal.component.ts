@@ -35,7 +35,8 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
     manuallyMarkCompleted: boolean = false;
 
-    startTime: DateTime;
+    startTime: Date;
+    startTimeTime : Date;
 
     setTopicNameAutomatically: boolean = true;
 
@@ -71,6 +72,7 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
             this.simulatorLesson.id = simulatorLessonId;
             this.simulatorLesson.startTime = this._dateTimeService.getStartOfDay();
+            this.startTimeTime = new Date();
           
             this.simulatorName = '';
             this.simulatorLesson.length = 1;
@@ -98,7 +100,9 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
                 this.studentCompleteName = result.studentName;
                 this.simulatorName = result.simulatorName;
-                this.startTime = result.simulatorLesson.startTime; // wrong?
+
+                this.startTime = result.simulatorLesson.startTime.toJSDate();
+                this.startTimeTime = result.simulatorLesson.startTime.toJSDate();
 
                 this.active = true;
                 this.modal.show();
@@ -121,6 +125,10 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
         if (this.manuallyMarkCompleted)
             this.simulatorLesson.lessonState = SimulatorLessonState.Completed;
+
+        this.startTime.setHours(this.startTimeTime.getHours());
+        this.startTime.setMinutes(this.startTimeTime.getMinutes());
+        this.simulatorLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
         this._simulatorLessonsServiceProxy.createOrEdit(this.simulatorLesson)
             .pipe(finalize(() => { this.saving = false; }))

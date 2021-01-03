@@ -37,6 +37,8 @@ export class AppComponent extends AppComponentBase implements OnInit {
     isQuickThemeSelectEnabled: boolean = this.setting.getBoolean('App.UserManagement.IsQuickThemeSelectEnabled');
     IsSessionTimeOutEnabled: boolean = this.setting.getBoolean('App.UserManagement.SessionTimeOut.IsEnabled') && this.appSession.userId != null;
 
+    
+
     public constructor(
         injector: Injector,
         private _chatSignalrService: ChatSignalrService,

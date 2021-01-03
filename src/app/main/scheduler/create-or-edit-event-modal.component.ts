@@ -15,9 +15,9 @@ import { DateTime } from 'luxon';
 })
 export class CreateOrEditEventModalComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('studentLookupTableModal') studentLookupTableModal: StudentLookupTableModalComponent;
-    @ViewChild('instructorLookupTableModal') instructorLookupTableModal: InstructorLookupTableModalComponent;
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('studentLookupTableModal', { static: true }) studentLookupTableModal: StudentLookupTableModalComponent;
+    @ViewChild('instructorLookupTableModal', { static: true }) instructorLookupTableModal: InstructorLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -25,8 +25,8 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
 
     active = false;
     saving = false;
-    startTime: DateTime = new DateTime();
-    endTime: DateTime = new DateTime();
+    startTime: Date = new Date();
+    endTime: Date = new Date();
     event: CreateOrEditAppointmentDto = new CreateOrEditAppointmentDto();
 
     currentInstructorFullName: string = '';

@@ -88,12 +88,13 @@
 
                         <div class="form-group">
                             <label for="SimulatorLesson_StartTime">{{l("StartDate")}}</label>
-                            <input required class="form-control m-input" type="datetime" bsDatepicker
-                                [(ngModel)]="startTime" id="SimulatorLesson_StartTime" name="SimulatorLesson_StartTime">
+                            <input required class="form-control m-input" type="datetime" bsDatepicker datePickerLuxonModifier
+                                [(date)]="startTime" id="SimulatorLesson_StartTime" name="SimulatorLesson_StartTime"
+                                [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                         </div>
                         <div class="form-group">
                             <label for="SimulatorLesson_StartTime">{{l("StartTime")}}</label>
-                            <timepicker [(ngModel)]="startTime" name="StartTime">
+                            <timepicker [(ngModel)]="startTimeTime" name="StartTime" [showMeridian]="false">
                             </timepicker>
                         </div>
 

@@ -18,8 +18,7 @@ import {Table} from 'primeng/table';
 
 export class SVTheoryLessonsComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
     
     selectedStudentCourse: CourseDto;
     studentCourses: CourseDto[];
@@ -71,10 +70,8 @@ export class SVTheoryLessonsComponent extends AppComponentBase implements OnInit
         if(this.selectedStudentCourse == null)
             return;
 
-        abp.ui.setBusy(undefined, '', 1);
         this._studentViewService.getPredefinedTheoryLessonsOfCourse(this.selectedStudentCourse.id).subscribe((result) => 
         {
-            abp.ui.clearBusy();
             this.theoryLessons = result;
         });
 
@@ -96,7 +93,6 @@ export class SVTheoryLessonsComponent extends AppComponentBase implements OnInit
             console.log(result.items);
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
-            abp.ui.clearBusy();
         });
     }
 

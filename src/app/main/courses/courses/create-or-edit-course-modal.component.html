@@ -60,18 +60,20 @@
 								name="Name" required />
 						</div>
 
-						<!-- <div class="form-group">
+						 <div class="form-group">
 							<label for="Course_StartDate">{{l("StartDate")}}</label>
-							<input required class="form-control m-input" type="datetime" bsDatepicker
-								[(ngModel)]="course.startDate._d" id="Course_StartDate" name="Course_StartDate">
-						</div> -->
+							<input required class="form-control m-input" type="datetime" bsDatepicker    datePickerLuxonModifier
+								[(date)]="course.startDate" id="Course_StartDate" name="Course_StartDate"  
+								[bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}"
+								>
+						</div> 
 
-						<!-- <div class="form-group">
+						 <div class="form-group">
 							<label for="Course_LastEnrollmentDate">{{l("LastEnrollmentDate")}}</label>
-							<input required class="form-control m-input" type="datetime" bsDatepicker
-								[(ngModel)]="course.lastEnrollmentDate._d" id="Course_LastEnrollmentDate"
-								name="Course_LastEnrollmentDate">
-						</div> -->
+							<input required class="form-control m-input" type="datetime" bsDatepicker    datePickerLuxonModifier
+								[(date)]="course.lastEnrollmentDate" id="Course_LastEnrollmentDate"
+								name="Course_LastEnrollmentDate"  [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY' }">
+						</div> 
 
 						<div class="form-group">
 							<label for="Course_CourseNumber">{{l("CourseNumber")}}</label>

@@ -188,7 +188,7 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
 
     openDrivingLessonModal(): void {
         this.createEventTypeModal.close();
-        this.createOrEditDrivingLessonModal.startTime = this.startTime;
+        this.createOrEditDrivingLessonModal.startTime = this.startTime.toJSDate();
         this.createOrEditDrivingLessonModal.show(null, true);
     }
 
@@ -200,13 +200,13 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
 
     openEventModal(): void {
         this.createEventTypeModal.close();
-        this.createOrEditEventModal.startTime = this.startTime;
+        this.createOrEditEventModal.startTime = this.startTime.toJSDate();
         this.createOrEditEventModal.show(null, true);
     }
 
     openSimulatorLessonModal(): void {
         this.createEventTypeModal.close();
-        this.createOrEditSimulatorLessonModal.startTime = this.startTime;
+        this.createOrEditSimulatorLessonModal.startTime = this.startTime.toJSDate();
         this.createOrEditSimulatorLessonModal.show();
     }
 

@@ -1,19 +1,13 @@
 <div [@routerTransition]>
-    <div class="m-subheader">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto col-md-12">
-                <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{quizMainTitle}}</span>
-                </h3>
-                <span class="m-section__sub">
-                    {{quizSubtitle}}
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class="m-content">
-        <div class="m-portlet m-portlet--mobile">         
-            <div class="m-portlet__body">                
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="quizMainTitle" [description]="quizSubtitle">
+
+         
+
+        </sub-header>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">            
                 <div class="container" *ngIf="currentQuizSession">                   
                     <div class="row justify-content-center">                   
                                                 
@@ -214,4 +208,5 @@
             </div>                             
         </div>
     </div>
+</div>
 </div>

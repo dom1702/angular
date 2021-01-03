@@ -34,7 +34,8 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
     active = false;
     saving = false;
-    startTime: DateTime;
+    startTime: Date;
+    startTimeTime : Date;
     drivingLesson: CreateOrEditDrivingLessonDto = new CreateOrEditDrivingLessonDto();
 
     drivingLessonTopic = '';
@@ -142,6 +143,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         
             this.drivingLesson.id = drivingLessonId;
             this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
+            this.startTimeTime = new Date();
             this.drivingLessonTopic = '';
             this.licenseClass = '';
            
@@ -165,7 +167,9 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                this.startTime = result.drivingLesson.startTime;//.toDate();
+                
+                this.startTime = result.drivingLesson.startTime.toJSDate();
+                this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -181,7 +185,9 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                this.startTime = result.drivingLesson.startTime;//.toDate();
+                
+                this.startTime = result.drivingLesson.startTime.toJSDate();
+                this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
                 this.showStudentSelection = false;
                 this.studentSelected = true;
@@ -223,10 +229,9 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
         this.drivingLesson.instructors = [];
 
-        //this.drivingLesson.startTime.date(this.startTime.getDay());
-        this.drivingLesson.startTime =  this._dateTimeService.toUtcDate(this.startTime);
-       // this.drivingLesson.startTime.hours(this.startTime.getHours());
-       // this.drivingLesson.startTime.minutes(this.startTime.getMinutes());
+       this.startTime.setHours(this.startTimeTime.getHours());
+       this.startTime.setMinutes(this.startTimeTime.getMinutes());
+       this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
         this.drivingLesson.isExam = true;
 

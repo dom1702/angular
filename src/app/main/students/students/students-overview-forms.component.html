@@ -41,7 +41,7 @@
             <ng-template pTemplate="body" let-form>
                 <tr>
                     <td>{{form.formName}}</td>
-                    <td>{{form.creationDate.DATETIME_MED}}</td>
+                    <td>{{form.creationDate  | luxonFormat:'F'}}</td>
                     <td>{{form.createdByName}}</td>
 
                 </tr>

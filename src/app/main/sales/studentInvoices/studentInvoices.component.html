@@ -244,7 +244,7 @@
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('Date')}}</span>
                                             <span *ngIf="record.studentInvoice.date">
-                                                {{record.studentInvoice.date}}
+                                                {{record.studentInvoice.date  | luxonFormat:'D' }}
                                             </span>
                                             <span *ngIf="!record.studentInvoice.date">-</span>
                                         </td>
@@ -255,7 +255,7 @@
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('DateDue')}}</span>
                                             <span *ngIf="record.studentInvoice.dateDue">
-                                                {{record.studentInvoice.dateDue}}
+                                                {{record.studentInvoice.dateDue  | luxonFormat:'D' }}
                                             </span>
                                             <span *ngIf="!record.studentInvoice.dateDue">-</span>
                                         </td>

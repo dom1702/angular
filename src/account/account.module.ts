@@ -41,6 +41,7 @@ import { PaymentCompletedComponent } from './payment/payment-completed.component
 import { SessionLockScreenComponent } from './login/session-lock-screen.component';
 import { AppBsModalModule } from '@shared/common/appBsModal/app-bs-modal.module';
 import { EnrollmentComponent } from './enrollment/enrollment.component';
+import { InlineSVGModule } from 'ng-inline-svg';
 
 export function getRecaptchaLanguage(): string {
     return new LocaleMappingService().map('recaptcha', abp.localization.currentLanguage.name);
@@ -60,7 +61,8 @@ export function getRecaptchaLanguage(): string {
         AccountRoutingModule,
         OAuthModule.forRoot(),
         PasswordModule,
-        AppBsModalModule
+        AppBsModalModule,
+        InlineSVGModule
     ],
     declarations: [
         AccountComponent,

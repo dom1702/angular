@@ -20526,25 +20526,12 @@ export class StudentsViewServiceProxy {
 
     /**
      * @param courseId (optional) 
-     * @param sorting (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllDrivingLessonsOfStudent(courseId: number | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfSVDrivingLessonDto> {
+    getAllDrivingLessonsOfStudent(courseId: number | null | undefined): Observable<PagedResultDtoOfSVDrivingLessonDto> {
         let url_ = this.baseUrl + "/api/services/app/StudentsView/GetAllDrivingLessonsOfStudent?";
         if (courseId !== undefined && courseId !== null)
             url_ += "CourseId=" + encodeURIComponent("" + courseId) + "&";
-        if (sorting !== undefined && sorting !== null)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -50499,7 +50486,7 @@ export interface IQuestionSeriesDto {
 
 export class TheoryExamTopicDto implements ITheoryExamTopicDto {
     name!: string | undefined;
-    licenseClasses!: string[] | undefined;
+    licenseClasses!: string | undefined;
     questionSeries!: QuestionSeriesDto[] | undefined;
     id!: number;
 
@@ -50515,11 +50502,7 @@ export class TheoryExamTopicDto implements ITheoryExamTopicDto {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
-            if (Array.isArray(_data["licenseClasses"])) {
-                this.licenseClasses = [] as any;
-                for (let item of _data["licenseClasses"])
-                    this.licenseClasses!.push(item);
-            }
+            this.licenseClasses = _data["licenseClasses"];
             if (Array.isArray(_data["questionSeries"])) {
                 this.questionSeries = [] as any;
                 for (let item of _data["questionSeries"])
@@ -50539,11 +50522,7 @@ export class TheoryExamTopicDto implements ITheoryExamTopicDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        if (Array.isArray(this.licenseClasses)) {
-            data["licenseClasses"] = [];
-            for (let item of this.licenseClasses)
-                data["licenseClasses"].push(item);
-        }
+        data["licenseClasses"] = this.licenseClasses;
         if (Array.isArray(this.questionSeries)) {
             data["questionSeries"] = [];
             for (let item of this.questionSeries)
@@ -50556,7 +50535,7 @@ export class TheoryExamTopicDto implements ITheoryExamTopicDto {
 
 export interface ITheoryExamTopicDto {
     name: string | undefined;
-    licenseClasses: string[] | undefined;
+    licenseClasses: string | undefined;
     questionSeries: QuestionSeriesDto[] | undefined;
     id: number;
 }

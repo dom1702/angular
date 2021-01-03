@@ -31,7 +31,9 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
     theoryLesson: CreateOrEditTheoryLessonDto = new CreateOrEditTheoryLessonDto();
 
     licenseClass = '';
-    startTime: DateTime;
+    startTime: Date;
+
+    startTimeTime : Date;
 
     dropdownListIds = [];
     dropdownList = [];
@@ -74,10 +76,12 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
             this.theoryLesson = new CreateOrEditTheoryLessonDto();
             this.theoryLesson.id = theoryLessonId;
 
-            // if(startTime != null)
-            //     this.startTime = startTime;
-            // else
-            //     this.startTime = new DateTime();
+             if(startTime != null)
+                 this.startTime = startTime.toJSDate();
+             else
+                 this.startTime = new Date();
+
+            this.startTimeTime = new Date();
 
             this.licenseClass = '';
 
@@ -90,7 +94,9 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
                 this.theoryLesson = result.theoryLesson;
 
                 this.licenseClass = result.theoryLesson.licenseClass;
-                this.startTime = result.theoryLesson.startTime; // wrong?
+                this.startTime = result.theoryLesson.startTime.toJSDate(); 
+
+                this.startTimeTime = result.theoryLesson.startTime.toJSDate(); 
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -107,9 +113,12 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
             this.theoryLesson.instructors = [];
 
-            this.theoryLesson.startTime = this._dateTimeService.toUtcDate(this.startTime);
-           // this.theoryLesson.startTime.hours(this.startTime.getHours());
-          //  this.theoryLesson.startTime.minutes(this.startTime.getMinutes());
+            this.startTime.setHours(this.startTimeTime.getHours());
+            this.startTime.setMinutes(this.startTimeTime.getMinutes());
+            this.theoryLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
+  
+            //this.theoryLesson.startTime.minute = this.startTimeTime.getMinutes();
+            console.log(this.theoryLesson.startTime);
 
             for (var instructor of this.selectedItems)
             {

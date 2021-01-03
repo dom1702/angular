@@ -60,12 +60,13 @@
                             
                         </div>
 
-                        <div class="m-checkbox-list">
-                            <label for="SetTopicAutomatically" class="m-checkbox">
+                        <div class="checkbox-list">
+                            <label for="SetTopicAutomatically" class="checkbox">
                                 <input id="SetTopicAutomatically" type="checkbox" name="SetTopicAutomatically"
                                     [(ngModel)]="setTopicNameAutomatically">
+                                    <span></span>
                                 {{l("SetTopicAutomatically")}}
-                                <span></span>
+                               
                             </label>
                         </div>
 
@@ -97,9 +98,9 @@
                             <h5>{{l("Resources")}}</h5>
                             <div [hidden]="instructorPersonalLesson" class="form-group m-form__group">
                                 <label for="LicenseClassClass">{{l("Instructors")}}</label>
-                                <!-- <ejs-multiselect #instructor_multiselect id='multiselectelement'
+                                <ejs-multiselect #instructor_multiselect id='multiselectelement'
                                 [dataSource]='instructors' [fields]='fields'
-                                [placeholder]='placeholderInstructorSelection'></ejs-multiselect> -->
+                                [placeholder]='placeholderInstructorSelection'></ejs-multiselect>
                             </div>
 
                             <div class="form-group m-form__group">
@@ -132,14 +133,14 @@
 
                                     <div class="form-group">
                                         <label for="DrivingLesson_StartTime">{{l("StartDate")}}</label>
-                                        <input required class="form-control m-input" type="timepicker" bsDatepicker
-                                            [(ngModel)]="startTime" id="DrivingLesson_StartTime"
-                                            name="DrivingLesson_StartTime">
+                                        <input required class="form-control m-input" type="timepicker" bsDatepicker bsDatepicker datePickerLuxonModifier
+                                            [(date)]="startTime" id="DrivingLesson_StartTime"
+                                            name="DrivingLesson_StartTime" [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="DrivingLesson_StartTime">{{l("StartTime")}}</label>
-                                        <timepicker [(ngModel)]="startTime" [showMeridian]="ismeridian"
+                                        <timepicker [(ngModel)]="startTimeTime" [showMeridian]="false"
                                             name="StartTime">
                                         </timepicker>
                                         <!-- <input required class="form-control m-input" type="time" timepicker [(ngModel)]="drivingLesson.startTime.time" id="DrivingLesson_StartTime" name="DrivingLesson_StartTime"> -->

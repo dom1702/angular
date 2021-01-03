@@ -120,8 +120,27 @@ import { StudentLookupTableModalComponent } from '@app/shared/common/lookup/stud
 import { VehicleLookupTableModalComponent } from '@app/shared/common/lookup/vehicle-lookup-table-modal.component';
 import { LicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/licenseClass-lookup-table-modal.component';
 import { OfficeLookupTableModalComponent } from '@app/shared/common/lookup/office-lookup-table-modal.component';
+import {FullCalendarModule} from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  bootstrapPlugin,
+  dayGridPlugin,
+  interactionPlugin,
+  timeGridPlugin,
+  listPlugin ,
+  resourceTimelinePlugin ,
+  resourceTimeGridPlugin 
+]);
 
 @NgModule({
     imports: [
@@ -167,7 +186,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         SelectButtonModule,
         PaginationModule.forRoot(),
         ScrollPanelModule,
-        CheckBoxModule  
+        CheckBoxModule  ,
+        FullCalendarModule
      ],
     declarations: [
 		TestResourcesComponent,

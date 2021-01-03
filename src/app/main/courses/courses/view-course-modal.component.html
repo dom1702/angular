@@ -18,11 +18,11 @@
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("StartDate")}} :</h6>
-                        {{ item.course.startDate }}
+                        {{ item.course.startDate  | luxonFormat:'D'}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("LastEnrollmentDate")}} :</h6>
-                        {{ item.course.lastEnrollmentDate}}
+                        {{ item.course.lastEnrollmentDate  | luxonFormat:'D'}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("CourseNumber")}} :</h6>

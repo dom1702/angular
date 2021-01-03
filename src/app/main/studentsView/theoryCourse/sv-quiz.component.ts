@@ -234,7 +234,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     startNextOnlineTheoryLesson(input: StartNextOnlineTheoryLessonInput)
     {    
         this._onlineTheoryService.startNextOnlineTheoryLesson(input).subscribe((result) => {
-            console.log("get result from server: " + result);
+            console.log(result);
             this.nextOnlineLesson = result;
         });
     }

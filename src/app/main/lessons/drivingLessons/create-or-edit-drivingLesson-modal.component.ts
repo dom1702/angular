@@ -34,7 +34,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
     active = false;
     saving = false;
-    startTime: DateTime;
+    startTime: Date;
+    startTimeTime : Date;
+
     drivingLesson: CreateOrEditDrivingLessonDto = new CreateOrEditDrivingLessonDto();
 
     drivingLessonTopic = '';
@@ -142,6 +144,8 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         
             this.drivingLesson.id = drivingLessonId;
             this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
+            this.startTime = this._dateTimeService.getStartOfDay().toJSDate();
+            this.startTimeTime =  this._dateTimeService.getStartOfDay().toJSDate();
             this.drivingLessonTopic = '';
             this.licenseClass = '';
            
@@ -165,7 +169,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                this.startTime = result.drivingLesson.startTime;//.toDate();
+
+                this.startTime = result.drivingLesson.startTime.toJSDate();
+                this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -181,8 +187,10 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                this.startTime = result.drivingLesson.startTime;//.toDate();
-
+   
+                this.startTime = result.drivingLesson.startTime.toJSDate();
+                this.startTimeTime = result.drivingLesson.startTime.toJSDate();
+                
                 this.showStudentSelection = false;
                 this.studentSelected = true;
                 this.selectedStudentCourse = null;
@@ -223,10 +231,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
         this.drivingLesson.instructors = [];
 
-        //this.drivingLesson.startTime.date(this.startTime.getDay());
-        this.drivingLesson.startTime = this._dateTimeService.toUtcDate(this.startTime);
-        //this.drivingLesson.startTime.hour = this.startTime.getHours();
-        //this.drivingLesson.startTime.minute = this.startTime.getMinutes();
+        this.startTime.setHours(this.startTimeTime.getHours());
+        this.startTime.setMinutes(this.startTimeTime.getMinutes());
+        this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
         if (this.selectedPdl) {
             this.drivingLesson.predefinedDrivingLessonId = this.selectedPdl.lessonIdString;
@@ -396,6 +403,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
     }
 
     getNewVehicle() {
+        if(this.vehicleLookupTableModal.id == null)
+        return;
+
         this.drivingLesson.vehicleId = this.vehicleLookupTableModal.id;
         this.vehicleName = this.vehicleLookupTableModal.name + ' ( ' + this.vehicleLookupTableModal.brand + ' ' + this.vehicleLookupTableModal.model + ')';
     }

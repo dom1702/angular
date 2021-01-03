@@ -59,37 +59,37 @@
 
                     <tabset>
                         <tab heading={{overviewTabName}} id="tab1">
-                            <div [class]="containerClass">
+                         
                                 
                             <students-overview-overview [student]="student" [parentOverview]="this"
                                 [pricePackageName]="pricePackageName" [drivingLessons]="this.drivingLessons">
                             </students-overview-overview>
                      
-                </div>
+            
                         </tab>
                         <tab heading={{lessonsTabName}} id="tab2" (selectTab)="onLessonsTabSelect($event)">
-                            <div [class]="containerClass">
+                        
                             <students-overview-lessons [student]="student" [parentOverview]="this">
                             </students-overview-lessons>
-                        </div>
+                   
                         </tab>
                         <tab heading={{pricePackageTabName}}>
-                            <div [class]="containerClass">
+                           
                             <students-overview-pricePackage *ngIf="selectedStudentCourse" [parentOverview]="this"
                                 [student]="student" [selectedStudentCourse]="selectedStudentCourse">
                             </students-overview-pricePackage>
-                        </div>
+                     
                         </tab>
                         <tab heading={{studentInvoicesTabName}}>
-                            <div [class]="containerClass">
+                        
                             <students-overview-invoices [parentOverview]="this" [student]="student">
                             </students-overview-invoices>
-                        </div>
+                     
                         </tab>
                         <tab heading={{studentFormsTabName}}>
-                            <div [class]="containerClass">
+                   
                             <students-overview-forms [student]="student"></students-overview-forms>
-                        </div>
+                     
                         </tab>
                     </tabset>
 

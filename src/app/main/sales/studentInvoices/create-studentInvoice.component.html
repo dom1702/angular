@@ -11,7 +11,7 @@
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div *ngIf="!isEdit" class="form-group m-form__group">
-                        <label for="StudentFirstName">{{l("Student")}}</label>
+                        <label for="StudentFirstName">{{l("Student")}} *</label>
                         <div class="input-group">
                             <input class="form-control" id="studentFullName" name="studentFullName"
                                 [(ngModel)]="studentFullName" type="text" disabled>
@@ -35,32 +35,33 @@
 
                         <label for="StudentInvoice_Course">{{l("Course")}} *</label>
                         <div class="form-group" *ngFor="let course of courses">
-                            <label class="m-radio">
+                            <label class="radio">
                                 <input type="radio" [value]="course" formControlName="selectedCourse"
                                     (change)='updateCourse()'>
+                                    <span></span>
                                 {{course.courseName}}
-                                <span></span>
+                            
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label for="StudentInvoice_Date">{{l("InvoiceDate")}} *</label>
-                            <input required class="form-control m-input" type="timepicker" bsDatepicker
-                                formControlName="date">
+                            <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier
+                                formControlName="date"  [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                         </div>
 
                         <div class="form-group">
                             <label>{{l("Installments")}}</label>
-                            <div class="m-radio-inline">
-                                <label class="m-radio">
+                            <div class="radio-inline">
+                                <label class="radio">
                                     <input type="radio" formControlName="installmentActive" [value]='false'>
+                                    <span></span>
                                     {{l('No')}}
-                                    <span></span>
                                 </label>
-                                <label class="m-radio">
+                                <label class="radio">
                                     <input type="radio" formControlName="installmentActive" [value]='true'>
-                                    {{l('Yes')}}
                                     <span></span>
+                                    {{l('Yes')}}
                                 </label>
                             </div>
                         </div>
@@ -68,8 +69,8 @@
                         <div *ngIf="hasInstallments() == false">
                             <div class="form-group">
                                 <label for="StudentInvoice_DueDate">{{l("InvoiceDueDate")}} *</label>
-                                <input required class="form-control m-input" type="timepicker" bsDatepicker
-                                    formControlName="date_due">
+                                <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier
+                                    formControlName="date_due" [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -213,25 +214,25 @@
                                         </td>
                                         <td>
                                             <button type="button" (click)="remove(i)"
-                                                class="btn mr-5">{{l("Remove")}}</button>
+                                                class="btn btn-primary btn-sm">{{l("Remove")}}</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </form>
 
-                        <div class="m--margin-left-20">
+                        <div class="ml-5">
                             <div class="row">
                                 <button type="button" (click)="addItemManually()"
-                                    class="btn btn-primary mr-5">{{l("AddNewItemManually")}}</button>
+                                    class="btn btn-primary btn-sm">{{l("AddNewItemManually")}}</button>
                                 <button *ngIf="studentPricePackageId" type="button" (click)="addPricePackage()"
-                                    class="btn btn-primary mr-5">{{l("AddPricePackage")}}</button>
+                                    class="btn btn-primary btn-sm">{{l("AddPricePackage")}}</button>
                                 <button type="button" (click)="addProduct()"
-                                    class="btn btn-primary mr-5">{{l("AddProduct")}}</button>
+                                    class="btn btn-primary btn-sm">{{l("AddProduct")}}</button>
                             </div>
                         </div>
 
-                        <div class="m--margin-top-40">
+                        <div class="mt-10">
                             <div class="m--margin-left-40">
                                 <hr>
                                 <div class="form-group">
@@ -250,11 +251,12 @@
                             </div>
                         </div>
 
-                        <div class="m--margin-top-40">
-                            <label class="m-checkbox">
+                        <div class="my-10">
+                            <label class="checkbox">
                                 <input type="checkbox" name="CreatePdfOnSave" formControlName="createPdfOnSave">
-                                {{l("CreatePdfOnSave")}}
                                 <span></span>
+                                {{l("CreatePdfOnSave")}}
+                              
                             </label>
                         </div>
 
@@ -264,10 +266,7 @@
                             [disabled]="!studentInvoiceForm.form.valid  || itemFormItems.length == 0"
                             [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                             <span>{{l("Save")}}</span></button>
-                        <button type="button" (click)="splitAndSave()" class="btn btn-primary blue"
-                            [disabled]="!studentInvoiceForm.form.valid || itemFormItems.length < 2"><i
-                                class="fa fa-save"></i>
-                            <span>{{l("SplitAndSave")}}</span></button>
+                       
                         <!-- <button type="button" class="btn btn-default" [buttonBusy]="currentlyCreatingPdf" [busyText]="l('CreatingPdfFile')" (click)="createPdfFile()"><span>{{l("CreatePDF")}}</span></button> -->
 
                     </form>

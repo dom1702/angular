@@ -3,7 +3,6 @@ import { finalize } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { StudentInvoicesServiceProxy, CreateOrEditStudentInvoiceDto, StudentsServiceProxy, ProductsServiceProxy, StudentInvoiceItemDto, PricePackagesServiceProxy, GetEmptyStudentInvoiceForViewDtoCourseDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import * as moment from 'moment';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormsModule, ReactiveFormsModule, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -15,7 +14,7 @@ import { InvoiceStudentLookupTableModalComponent } from './invoice-student-looku
 import { InvoiceProductLookupTableModalComponent } from './invoice-product-lookup-table-modal.component';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ArrayValidators } from '@app/shared/common/formValidator/Array.validator';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 
 @Component({
@@ -90,12 +89,16 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
   }
 
   buildForm(fb: FormBuilder): void {
+
+    var time = DateTime.local();
+    console.log(time);
+
     this.form = fb.group({
 
       index: [''],
       selectedCourse: [''],
-      date: [moment().toDate()],
-      date_due: [moment().add(abp.setting.get("App.Invoice.DefaultDaysToPay"), 'day').toDate()],
+      date: [time.toJSDate()],
+      date_due: [time.plus(Duration.fromObject({days: Number(abp.setting.get("App.Invoice.DefaultDaysToPay"))})).toJSDate()],
       installmentActive: [false],
       installmentCount: [3],
       installmentInterval: [30],
@@ -220,8 +223,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
           //this.selectedCourse = this.courses.find(i => i.courseId == this.studentInvoice.courseId);
 
           this.form.get('selectedCourse').setValue(this.courses.find(i => i.courseId == this.studentInvoice.courseId));
-          this.form.get('date').setValue(moment(result.studentInvoice.date).toDate());
-          this.form.get('date_due').setValue(moment(result.studentInvoice.dateDue).toDate());
+          this.form.get('date').setValue(result.studentInvoice.date.toJSDate());
+          this.form.get('date_due').setValue(result.studentInvoice.dateDue.toJSDate());
           this.form.get('recipientFirstName').setValue(result.studentInvoice.recipientFirstName);
           this.form.get('recipientLastName').setValue(result.studentInvoice.recipientLastName);
           this.form.get('recipientStreet').setValue(result.studentInvoice.recipientStreet);
@@ -510,8 +513,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
     if (id != null)
       input.id = id;
 
-    input.date = DateTime.utc(this.form.get('date').value);
-    input.dateDue = DateTime.utc(this.form.get('date_due').value);
+    input.date = DateTime.fromJSDate(this.form.get('date').value);
+    input.dateDue = DateTime.fromJSDate(this.form.get('date_due').value);
 
     input.recipientFirstName = this.form.get('recipientFirstName').value;
     input.recipientLastName = this.form.get('recipientLastName').value;
@@ -734,13 +737,6 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
     this.courses.push(new GetEmptyStudentInvoiceForViewDtoCourseDto(
       {courseId: null, courseName: this.l("NotCourseRelated"), pricePackageId: null}
       ));
-  }
-
-  splitAndSave()
-  {
-    console.log("Split and saved");
-  }
-
-  
+  }  
 }
 

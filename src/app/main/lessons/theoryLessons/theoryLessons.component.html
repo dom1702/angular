@@ -229,7 +229,7 @@
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('StartTime')}}</span>
                                             <span *ngIf="record.theoryLesson.startTime">
-                                                {{record.theoryLesson.startTime}}
+                                                {{record.theoryLesson.startTime | luxonFormat:'F'}}
                                             </span>
                                             <span *ngIf="!record.theoryLesson.startTime">-</span>
                                         </td>

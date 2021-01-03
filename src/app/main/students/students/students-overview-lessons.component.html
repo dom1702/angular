@@ -19,7 +19,7 @@
                 [responsive]="primengTableHelper.isResponsive" [resizableColumns]="primengTableHelper.resizableColumns">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 130px"
+                        <th style="width: 150px"
                             [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
                             {{l('Actions')}}</th>
                         <th style="width: 150px" pSortableColumn="lessonType">
@@ -57,9 +57,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-record="$implicit">
                     <tr>
-                        <td style="width: 130px"
+                        <td style="width: 150px"
                             [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
-                            <div class="btn-group dropdown" dropdown container="body">
+                            <!-- <div class="btn-group dropdown" dropdown container="body">
                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                     <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
                                 </button>
@@ -84,7 +84,25 @@
                                             (click)="deleteDrivingLesson(record)">{{l('Delete')}}</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
+                    
+                                <div class="btn-group mr-2" role="group" aria-label="...">
+                                    <button *ngIf="record.feedbackPdfFileGuid != null" type="button" 
+                                    class="btn btn-outline-secondary btn-icon"
+                                    (click)="downloadFeedbackPdf(record)"><i class="fa fa-file"></i></button>
+
+                                    <button type="button" class="btn btn-outline-secondary btn-icon"
+                                    (click)="showView(record)"><i class="fa fa-eye"></i></button>
+
+                                    <button type="button" class="btn btn-outline-secondary btn-icon"
+                                    *ngIf="permission.isGranted('Pages.DrivingLessons.Edit')"
+                                    (click)="createOrEdit(record)"><i class="fa fa-edit"></i></button>
+
+                                    <button type="button" class="btn btn-outline-secondary btn-icon"
+                                    *ngIf="permission.isGranted('Pages.DrivingLessons.Delete')"
+                                    (click)="deleteDrivingLesson(record)"><i class="fa fa-trash"></i></button>
+                                </div>
+                           
                         </td>
                         <td style="width:150px">
                             <span class="p-column-title"> {{l('LessonType')}}</span>
@@ -98,7 +116,7 @@
                         <td style="width:150px">
                             <span class="p-column-title"> {{l('StartTime')}}</span>
                             <span *ngIf="record.startTime">
-                                {{record.startTime}}
+                                {{record.startTime  | luxonFormat:'F'}}
                             </span>
                             <span *ngIf="!record.startTime">-</span>
                         </td>

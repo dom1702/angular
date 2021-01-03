@@ -14,6 +14,7 @@ declare var KTToggle: any; // Related to Metronic
 declare var KTUtil: any; // Related to Metronic
 declare var KTHeader: any; // Related to Metronic
 declare var KTScrolltop: any; // Related to Metronic
+declare var KTWizard: any; // Related to Metronic
 declare var StripeCheckout: any;
 
 declare namespace abp {

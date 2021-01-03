@@ -25,6 +25,8 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
       
     }
 
+    loading;
+
     ngOnInit(): void {
         this.getAvailableLicenceClasses();         
     }
@@ -37,8 +39,13 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
     }
 
     getAvailableLicenceClasses() {
+        this.loading = true;
         this._theoryExamService.getAvailableLicenseClasses().subscribe(
-            (result) => this.generateLicenceClasses(result)
+            (result) => 
+            {
+                this.loading = false;
+                this.generateLicenceClasses(result);
+            }
         );
     }
 

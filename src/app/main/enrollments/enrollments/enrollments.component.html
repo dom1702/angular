@@ -99,7 +99,7 @@
                                                 <td style="width:150px">
                                                     <span class="p-column-title"> {{l('EnrollmentDate')}}</span>
                                                     <span *ngIf="record.enrollment.enrollmentDate">
-                                                        {{record.enrollment.enrollmentDate}}
+                                                        {{record.enrollment.enrollmentDate  | luxonFormat:'F'}}
                                                     </span>
                                                     <span *ngIf="!record.enrollment.enrollmentDate">-</span>
                                                 </td>
@@ -361,7 +361,7 @@
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('EnrollmentDate')}}</span>
                                             <span *ngIf="record.enrollment.enrollmentDate">
-                                                {{record.enrollment.enrollmentDate}}
+                                                {{record.enrollment.enrollmentDate  | luxonFormat:'F'}}
                                             </span>
                                             <span *ngIf="!record.enrollment.enrollmentDate">-</span>
                                         </td>

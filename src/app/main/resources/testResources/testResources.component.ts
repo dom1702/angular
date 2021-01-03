@@ -1,4 +1,4 @@
-﻿import { Component, Injector, ViewEncapsulation, ViewChild } from "@angular/core";
+﻿import { Component, Injector, ViewEncapsulation, ViewChild, AfterViewInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TestResourcesServiceProxy, TestResourceDto } from "@shared/service-proxies/service-proxies";
 import { NotifyService } from "abp-ng2-module";
@@ -35,6 +35,8 @@ export class TestResourcesComponent extends AppComponentBase {
     vehicleNameFilter = "";
     officeNameFilter = "";
 
+
+
     constructor(
         injector: Injector,
         private _testResourcesServiceProxy: TestResourcesServiceProxy,
@@ -46,6 +48,7 @@ export class TestResourcesComponent extends AppComponentBase {
     ) {
         super(injector);
     }
+
 
     getTestResources(event?: LazyLoadEvent) {
         if (this.primengTableHelper.shouldResetPaging(event)) {

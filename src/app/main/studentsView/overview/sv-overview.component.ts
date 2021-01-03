@@ -66,12 +66,10 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
         if(this.selectedStudentCourse == null)
             return;
 
-        abp.ui.setBusy(undefined, '', 1);
         this._studentViewService.getPredefinedTheoryLessonsOfCourse(this.selectedStudentCourse.id).subscribe((result) => 
         {
-            abp.ui.clearBusy();
             this.theoryLessons = result;
-            console.log(this.theoryLessons);
+            //console.log(this.theoryLessons);
         });
     }
 
@@ -80,12 +78,10 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
         if(this.selectedStudentCourse == null)
             return;
 
-        abp.ui.setBusy(undefined, '', 1);
         this._studentViewService.getPredefinedDrivingLessonsOfCourse(this.selectedStudentCourse.id).subscribe((result) => 
         {
-            abp.ui.clearBusy();
             this.drivingLessons = result;
-            console.log(result);
+            //console.log(result);
         });
     }
 

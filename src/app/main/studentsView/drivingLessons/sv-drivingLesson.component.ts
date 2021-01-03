@@ -20,8 +20,7 @@ import {Table} from 'primeng/table';
 
 export class SVDrivingLessonComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
+    @ViewChild('dataTable', { static: false }) dataTable: Table;
 
     selectedStudentCourse: CourseDto;
     studentCourses: CourseDto[];
@@ -72,11 +71,10 @@ export class SVDrivingLessonComponent extends AppComponentBase implements OnInit
         if(this.selectedStudentCourse == null)
         return;
 
-        abp.ui.setBusy(undefined, '', 1);
         this._studentViewService.getPredefinedDrivingLessonsOfCourse(this.selectedStudentCourse.id).subscribe((result) => 
         {
-            abp.ui.clearBusy();
             this.drivingLessons = result;
+      
         });
 
         this.getDrivingLessons();
@@ -88,19 +86,17 @@ export class SVDrivingLessonComponent extends AppComponentBase implements OnInit
         return;
 
         this.primengTableHelper.showLoadingIndicator();
-        console.log(this.primengTableHelper.defaultRecordsCountPerPage);
 
         this._studentViewService.getAllDrivingLessonsOfStudent(
             this.selectedStudentCourse.id,
-            this.primengTableHelper.getSorting(this.dataTable),
-            0,
-            999
+            //this.primengTableHelper.getSorting(this.dataTable),
+            // 0,
+            // 999
         ).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             console.log(result.items);
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
-            abp.ui.clearBusy();
         });
     }
 

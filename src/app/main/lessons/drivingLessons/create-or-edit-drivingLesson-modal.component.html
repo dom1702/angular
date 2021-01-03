@@ -161,14 +161,14 @@
 
                                     <div class="form-group">
                                         <label for="DrivingLesson_StartTime">{{l("StartDate")}}</label>
-                                        <input required class="form-control m-input" type="timepicker" bsDatepicker
-                                            [(ngModel)]="startTime" id="DrivingLesson_StartTime"
-                                            name="DrivingLesson_StartTime">
+                                        <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier
+                                            [(date)]="startTime" id="DrivingLesson_StartTime"
+                                            name="DrivingLesson_StartTime"   [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="DrivingLesson_StartTime">{{l("StartTime")}}</label>
-                                        <timepicker [(ngModel)]="startTime" [showMeridian]="ismeridian"
+                                        <timepicker [(ngModel)]="startTimeTime" [showMeridian]="ismeridian"
                                             name="StartTime">
                                         </timepicker>
                                         <!-- <input required class="form-control m-input" type="time" timepicker [(ngModel)]="drivingLesson.startTime.time" id="DrivingLesson_StartTime" name="DrivingLesson_StartTime"> -->

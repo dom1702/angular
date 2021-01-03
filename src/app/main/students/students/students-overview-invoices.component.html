@@ -61,8 +61,8 @@
             </ng-template>
             <ng-template pTemplate="body" let-invoice>
                 <tr>
-                    <td>{{invoice.date  }}</td>
-                    <td>{{invoice.dateDue }}</td>
+                    <td>{{invoice.date  | luxonFormat:'D' }}</td>
+                    <td>{{invoice.dateDue  | luxonFormat:'D'}}</td>
                     <td>{{invoice.totalAfterVat  | currency:'EUR'}}</td>
                     <td style="width:150px">
                         <div *ngIf="invoice.pdfFileCreated" class="text-center"><i
@@ -79,20 +79,20 @@
                                 <!-- <li>
                                     <a href="javascript:;" (click)="viewStudentModal.show(record)">{{l('View')}}</a>
                                 </li> -->
-                                <li *ngIf="invoice.pdfFileCreated">
+                                <li *ngIf="invoice.pdfFileCreated" class="dropdown-item">
                                     <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
                                         (click)="getPdf(invoice)">{{l('GetPdf')}}</a>
                                 </li>
-                                <li *ngIf="!invoice.pdfFileCreated">
+                                <li *ngIf="!invoice.pdfFileCreated" class="dropdown-item">
                                     <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
                                         (click)="getPdf(invoice)">{{l('CreatePdf')}}</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Students.Edit')"
+                                    <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Students.Edit')"
                                         (click)="editInvoice(invoice.id)">{{l('Edit')}}</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Students.Delete')"
+                                    <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Students.Delete')"
                                         (click)="deleteInvoice(invoice.id)">{{l('Delete')}}</a>
                                 </li>
                             </ul>

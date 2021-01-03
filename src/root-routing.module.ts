@@ -1,3 +1,4 @@
+import { EnrollmentComponent } from '@account/enrollment/enrollment.component';
 import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
 import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customization.service';
@@ -9,7 +10,8 @@ const routes: Routes = [
         loadChildren: () => import('account/account.module').then(m => m.AccountModule), //Lazy load account module
         data: { preload: true }
     },
-    { path: '**', redirectTo: '/app/main/dashboard' }
+    { path: 'enrollment',  component: EnrollmentComponent },
+    { path: '**', redirectTo: '/app/main/dashboard' },
 ];
 
 @NgModule({

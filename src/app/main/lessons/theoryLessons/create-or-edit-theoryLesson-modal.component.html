@@ -15,10 +15,10 @@
                     <div class="form-group m-form__group">
                         <label for="LicenseClassClass">{{l("Instructors")}}</label>
 						<ng-multiselect-dropdown
-						[placeholder]="placeholder"
+                        [placeholder]="placeholder"
+                        [settings]="dropdownSettings"
 						[data]="dropdownList"
 						[(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
-						[settings]="dropdownSettings"
 						>
 						</ng-multiselect-dropdown>
 					</div> 
@@ -43,13 +43,14 @@
         
                     <div class="form-group">
                         <label for="TheoryLesson_StartTime">{{l("StartDate")}}</label>
-                            <input required class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="startTime" id="TheoryLesson_StartTime" name="TheoryLesson_StartTime">
+                            <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier 
+                            [(date)]="startTime" id="TheoryLesson_StartTime" name="TheoryLesson_StartTime"
+                            [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                     </div>
                     
                     <div class="form-group">
                         <label for="TheoryLesson_StartTime">{{l("StartTime")}}</label>
-                        <timepicker [(ngModel)]="startTime" name="StartTime"></timepicker>
-                            <!-- <input required class="form-control m-input" type="time" timepicker [(ngModel)]="drivingLesson.startTime.time" id="DrivingLesson_StartTime" name="DrivingLesson_StartTime"> -->
+                        <timepicker [(ngModel)]="startTimeTime" name="StartTime" [showMeridian]="false"></timepicker>
                     </div>
         
                     <div class="form-group">

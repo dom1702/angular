@@ -191,14 +191,14 @@
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('StartDate')}}</span>
                                             <span *ngIf="record.course.startDate">
-                                                {{record.course.startDate}}
+                                                {{record.course.startDate | luxonFormat:'D'}}
                                             </span>
                                             <span *ngIf="!record.course.startDate">-</span>
                                         </td>
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('LastEnrollmentDate')}}</span>
                                             <span *ngIf="record.course.lastEnrollmentDate">
-                                                {{record.course.lastEnrollmentDate}}
+                                                {{record.course.lastEnrollmentDate | luxonFormat:'D'}}
                                             </span>
                                             <span *ngIf="!record.course.lastEnrollmentDate">-</span>
                                         </td>

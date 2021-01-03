@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("StartTime")}} :</h6>
-                        {{item.drivingLesson.startTime}}
+                        {{item.drivingLesson.startTime | luxonFormat:'F'}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Completed")}} :</h6>
