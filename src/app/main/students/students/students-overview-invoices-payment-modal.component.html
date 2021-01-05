@@ -1,0 +1,57 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l("Details") }}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card" *ngFor="let item of items; index as i">
+                    <div class="card-header">
+                        Payment {{i+1}}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <h6>{{ l("Date") }} :</h6>
+                                {{ item.date | luxonFormat: "D" }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{ l("Payer") }} :</h6>
+                                {{ item.payer }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{ l("Reference") }} :</h6>
+                                {{ item.reference }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{ l("Amount") }} :</h6>
+                                {{ item.amount }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{ l("PaymentMethod") }} :</h6>
+                                {{ l(paymentMethod[item.paymentMethod]) }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <button *ngIf="isGranted('Pages.Payments.Edit')" (click)="editPayment(item.id)" class="btn btn-primary blue">
+                                    <i class="fa fa-edit"></i> {{ l("Edit") }}
+                                </button>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{ l("Close")
+                    }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<createOrEditPaymentModal #createOrEditPaymentModal (modalSave)="updatePayments()"></createOrEditPaymentModal>

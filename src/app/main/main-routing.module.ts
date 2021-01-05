@@ -1,5 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { PaymentsComponent } from './sales/payments/payments.component';
 import { TestResourcesComponent } from './resources/testResources/testResources.component';
 import { CoursesComponent } from './courses/courses/courses.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -30,6 +31,7 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
             {
                 path: '',
                 children: [
+                    { path: 'sales/payments', component: PaymentsComponent, data: { permission: 'Pages.Payments' }  },
                     { path: 'resources/testResources', component: TestResourcesComponent, data: { permission: 'Pages.TestResources' }  },
                     { path: 'enrollments/enrollments', component: EnrollmentsComponent, data: { permission: 'Pages.Enrollments' }  },
                     { path: 'courses/courses', component: CoursesComponent, data: { permission: 'Pages.Courses' }  },

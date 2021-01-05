@@ -38,7 +38,6 @@ export class CreateEventTypeModalComponent extends AppComponentBase implements O
     }
 
     ngOnInit() {
-
     }
 
     show(scheduler : IScheduler, allowCreateDrivingLesson : boolean, allowCreateTheoryLesson : boolean, allowCreateEvent : boolean, allowCreateSimulatorLesson : boolean): void 

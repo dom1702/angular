@@ -88,6 +88,10 @@
                                         (click)="getPdf(invoice)">{{l('CreatePdf')}}</a>
                                 </li>
                                 <li>
+                                    <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Payments.Edit')"
+                                        (click)="openPaymentModal(invoice)">{{l('Payments')}}</a>
+                                </li>
+                                <li>
                                     <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Students.Edit')"
                                         (click)="editInvoice(invoice.id)">{{l('Edit')}}</a>
                                 </li>
@@ -118,3 +122,5 @@
         </div>
     </div>
 </div>
+
+<studentsOverviewViewPaymentModal #studentsOverviewViewPaymentModal (modalSave)="updateInvoices()"></studentsOverviewViewPaymentModal>

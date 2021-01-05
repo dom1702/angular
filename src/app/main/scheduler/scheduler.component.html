@@ -100,7 +100,7 @@
 
                                     <label class="checkbox">
                                         <input type="checkbox" name="showDrivingLessons"
-                                            [(ngModel)]="eventTypeFilter.drivingLessons" (change)="updateCurrentView()">
+                                            [(ngModel)]="eventTypeFilter.drivingLessons" (change)="refetchEvents()">
                                         <span></span>
                                         {{l("DrivingLessons")}}
 
@@ -114,8 +114,7 @@
                             </button> -->
                                     <label class="checkbox">
                                         <input type="checkbox" name="showSimulatorLessons"
-                                            [(ngModel)]="eventTypeFilter.simulatorLessons"
-                                            (change)="updateCurrentView()">
+                                            [(ngModel)]="eventTypeFilter.simulatorLessons" (change)="refetchEvents()">
                                         <span></span>
                                         {{l("SimulatorLessons")}}
 
@@ -129,7 +128,7 @@
                             </button> -->
                                     <label class="checkbox">
                                         <input type="checkbox" name="showTheoryLessons"
-                                            [(ngModel)]="eventTypeFilter.theoryLessons" (change)="updateCurrentView()">
+                                            [(ngModel)]="eventTypeFilter.theoryLessons" (change)="refetchEvents()">
                                         <span></span>
                                         {{l("TheoryLessons")}}
 
@@ -143,7 +142,7 @@
                             </button> -->
                                     <label class="checkbox">
                                         <input [(ngModel)]="eventTypeFilter.otherEvents" type="checkbox"
-                                            name="showOther" (change)="updateCurrentView()">
+                                            name="showOther" (change)="refetchEvents()">
                                         <span></span>
                                         {{l("Appointments")}}
 
@@ -177,12 +176,57 @@
                             </button> -->
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="toggleWeekends"
-                                            [(ngModel)]="showWeekends" (change)="toggleWeekendView()">
+                                        <input type="checkbox" name="toggleWeekends" [(ngModel)]="showWeekends"
+                                            (change)="toggleWeekendView()">
                                         <span></span>
-                                        {{l("Show weekend")}}
+                                        {{l("Skip weekend")}}
 
                                     </label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <h5 class="m--margin-top-20">Filter Resources (relevant for resource view)</h5>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-auto">
+                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
+                                [(ngModel)]="eventTypeFilter.drivingLessons" btnCheckbox btnCheckboxTrue="true"
+                                btnCheckboxFalse="false">
+                                {{l("DrivingLessons")}}
+                            </button> -->
+
+                                    <div *ngFor="let veh of vehiclesResources">
+
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="veh.name" [(ngModel)]="veh.checked"
+                                                (change)="updateResourcesList()">
+                                            <span></span>
+                                            {{veh.name}}
+
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-auto">
+
+                                    <div *ngFor="let instr of instructorsResources">
+
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="instr.name" [(ngModel)]="instr.checked"
+                                                (change)="updateResourcesList()">
+                                            <span></span>
+                                            {{instr.name}}
+
+                                        </label>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -197,14 +241,14 @@
 
             </div>
         </div>
-        <createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="updateCurrentView()">
+        <createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="refetchEvents()">
         </createOrEditDrivingLessonModal>
         <createEventTypeModal #createEventTypeModal></createEventTypeModal>
-        <createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="updateCurrentView()">
+        <createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="refetchEvents()">
         </createOrEditTheoryLessonModal>
-        <createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="updateCurrentView()">
+        <createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="refetchEvents()">
         </createOrEditSimulatorLessonModal>
-        <createOrEditEventModal #createOrEditEventModal (modalSave)="updateCurrentView()"></createOrEditEventModal>
+        <createOrEditEventModal #createOrEditEventModal (modalSave)="refetchEvents()"></createOrEditEventModal>
         <instructorLookupTableModal #instructorLookupTableModal (modalSave)="getNewInstructorId()">
         </instructorLookupTableModal>
         <studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()"></studentLookupTableModal>

@@ -195,7 +195,7 @@ export class PersonalSchedulerComponent extends AppComponentBase implements ISch
     openTheoryLessonModal(): void {
         this.createEventTypeModal.close();
         //this.createOrEditTheoryLessonModal.startTime = this.startTime;
-        this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
+       // this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
     }
 
     openEventModal(): void {

@@ -68,7 +68,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
  
 
-    show(theoryLessonId?: number, event?: LazyLoadEvent, startTime? : DateTime): void {
+    show(theoryLessonId?: number, event?: LazyLoadEvent, startTime? : Date): void {
 
         this.theoryLessonId = theoryLessonId;
 
@@ -77,7 +77,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
             this.theoryLesson.id = theoryLessonId;
 
              if(startTime != null)
-                 this.startTime = startTime.toJSDate();
+                 this.startTime = startTime;
              else
                  this.startTime = new Date();
 

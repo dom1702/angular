@@ -43,6 +43,7 @@ export class StudentsComponent extends AppComponentBase {
     stateFilter = '';
     countryFilter = '';
         licenseClassClassFilter = '';
+        ssnFilter = '';
 
 
     _entityTypeFullName = 'Drima.Students.Student';
@@ -84,6 +85,7 @@ export class StudentsComponent extends AppComponentBase {
             this.phoneNumberFilter,
             this.maxDateOfBirthFilter,
             this.minDateOfBirthFilter,
+            this.ssnFilter,
             this.cityFilter,
             this.zipCodeFilter,
             this.stateFilter,

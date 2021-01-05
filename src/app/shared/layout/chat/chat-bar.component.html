@@ -15,8 +15,8 @@
     </div>
     <div class="flex-row-auto">
         <div class="card card-custom" [hidden]="selectedUser.friendUserId">
-            <div class="card-body">
-                <div class="input-group input-group-solid">
+            <div class="card-body" >
+                <div class="input-group input-group-solid" *ngIf="isGranted('Chat.AddFriends')"> 
                     <input type="text" id="ChatUserSearchUserName" class="form-control input-sm"
                         [(ngModel)]="userNameFilter" placeholder="{{'FilterOrAddUser' | localize}}">
                     <div class="input-group-append">
@@ -40,7 +40,7 @@
                     <p id="EmptyFriendListInfo" *ngIf="getFilteredFriendsCount(friendDtoState.Accepted) == 0">
                         {{'YouDontHaveAnyFriend' | localize}}</p>
                 </div>
-                <div class="mt-20">
+                <div class="mt-20" *ngIf="isGranted('Chat.AddFriends')">
                     <h5>{{"BlockedUsers" | localize}}</h5>
                     <div id="friendListBlockeds">
                         <div *ngFor="let friend of getFilteredFriends(friendDtoState.Blocked, userNameFilter)">
@@ -74,8 +74,8 @@
                                 *ngIf="!selectedUser.isOnline">{{'Offline' | localize}}</span>
                         </div>
                     </div>
-                    <div class="text-right flex-grow-1">
-                        <div class="dropdown dropdown-inline" dropdown>
+                    <div class="text-right flex-grow-1" >
+                        <div class="dropdown dropdown-inline" dropdown *ngIf="isGranted('Chat.AddFriends')">
                             <button dropdownToggle type="button" class="btn btn-clean btn-sm btn-icon btn-icon-md"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="flaticon-more-1"></i>

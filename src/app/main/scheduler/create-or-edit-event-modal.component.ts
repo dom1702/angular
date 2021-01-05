@@ -26,7 +26,9 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
     active = false;
     saving = false;
     startTime: Date = new Date();
+    startTimeTime : Date = new Date();
     endTime: Date = new Date();
+    endTimeTime: Date = new Date();
     event: CreateOrEditAppointmentDto = new CreateOrEditAppointmentDto();
 
     currentInstructorFullName: string = '';
@@ -54,7 +56,7 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
     }
 
     ngOnInit() {
-        this.ismeridian = false;
+      
     }
 
     onItemSelect(item: any) {
@@ -67,6 +69,12 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
 
     show(eventId?: number, isPersonalAppointment: boolean = false): void {
 
+        this.ismeridian = false;
+        this.studentFullName = "";
+        this.studentFirstName = "";
+        this.studentLastName = "";
+        this.currentInstructorFullName = "";
+
         this.isPersonalAppointment = isPersonalAppointment;
 
         if (isPersonalAppointment) {
@@ -78,12 +86,14 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
             if (!eventId) {
                 this.event = new CreateOrEditAppointmentDto();
                 this.event.id = eventId;
-
-                //this.endTime = new DateTime(this.startTime);
-                //this.endTime.setHours(this.endTime.getHours() + 1);
-
-                this.event.startTime = this._dateTimeService.getStartOfDay();
-                this.event.endTime = this._dateTimeService.getStartOfDay().plus({ minutes: 60 });
+                
+                this.startTimeTime.setDate(this.startTime.getDate());
+                this.startTimeTime.setTime(this.startTime.getTime());
+                this.endTime.setDate(this.startTime.getDate());
+                this.endTime.setTime(this.startTime.getTime());
+                this.endTimeTime.setDate(this.startTime.getDate());
+                this.endTimeTime.setTime(this.startTime.getTime());
+                this.endTimeTime.setHours(this.endTimeTime.getHours() + 1);
 
                 this.active = true;
 
@@ -91,8 +101,12 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
             } else {
                 this._ownAppointmentsServiceProxy.getAppointmentForEdit(eventId).subscribe(result => {
                     this.event = result.appointment;
-                   // this.startTime = result.appointment.startTime.toDate();
-                   // this.endTime = result.appointment.endTime.toDate();
+
+                    this.startTime = result.appointment.startTime.toJSDate();
+                    this.endTime = result.appointment.endTime.toJSDate();
+                    this.startTimeTime = result.appointment.startTime.toJSDate();
+                    this.endTimeTime = result.appointment.endTime.toJSDate();
+
                     this.personId = result.appointment.personId;
 
                     this.active = true;
@@ -112,22 +126,30 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
                 this.event = new CreateOrEditAppointmentDto();
                 this.event.id = eventId;
 
-              //  this.endTime = new Date(this.startTime);
-               // this.endTime.setHours(this.endTime.getHours() + 1);
-
-               // this.event.startTime = moment().startOf('day');
-                //this.event.endTime = moment().startOf('day').add(60); '';
+                this.startTimeTime.setDate(this.startTime.getDate());
+                this.startTimeTime.setTime(this.startTime.getTime());
+                this.endTime.setDate(this.startTime.getDate());
+                this.endTime.setTime(this.startTime.getTime());
+                this.endTimeTime.setDate(this.startTime.getDate());
+                this.endTimeTime.setTime(this.startTime.getTime());
+                this.endTimeTime.setHours(this.endTimeTime.getHours() + 1);
 
                 this.active = true;
 
                 this.modal.show();
             } else {
                 this._appointmentsServiceProxy.getAppointmentForEdit(eventId).subscribe(result => {
+
                     this.event = result.appointment;
-                  //  this.startTime = result.appointment.startTime.toDate();
-                  //  this.endTime = result.appointment.endTime.toDate();
+               
+                    this.startTime = result.appointment.startTime.toJSDate();
+                    this.endTime = result.appointment.endTime.toJSDate();
+                    this.startTimeTime = result.appointment.startTime.toJSDate();
+                    this.endTimeTime = result.appointment.endTime.toJSDate();
+
                     this.personId = result.appointment.personId;
                     this.personSelected = true;
+                    this.studentSelected = result.isStudent;
                     this.disallowPersonSelection = true;
 
                     this.active = true;
@@ -147,6 +169,12 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
        // this.event.startTime.minutes(this.startTime.getMinutes());
        // this.event.endTime.hours(this.endTime.getHours());
        // this.event.endTime.minutes(this.endTime.getMinutes());
+       this.startTime.setHours(this.startTimeTime.getHours());
+       this.startTime.setMinutes(this.startTimeTime.getMinutes());
+       this.endTime.setHours(this.endTimeTime.getHours());
+       this.endTime.setMinutes(this.endTimeTime.getMinutes());
+       this.event.startTime = DateTime.fromJSDate(this.startTime);
+       this.event.endTime = DateTime.fromJSDate(this.endTime);
 
         this.event.personId = this.personId;
 

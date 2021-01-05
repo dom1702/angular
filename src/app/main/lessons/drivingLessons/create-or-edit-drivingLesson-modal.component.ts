@@ -117,7 +117,7 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
     }
 
     show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null, 
-        studentFirstName:string = "", studentLastName:string = ""): void {
+        studentFirstName:string = "", studentLastName:string = "", startTime : Date = null): void {
 
         this.instructorPersonalLesson = instructorPersonalLesson;
         this.selectedPdl = null;
@@ -144,8 +144,17 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         
             this.drivingLesson.id = drivingLessonId;
             this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
-            this.startTime = this._dateTimeService.getStartOfDay().toJSDate();
-            this.startTimeTime =  this._dateTimeService.getStartOfDay().toJSDate();
+            if(startTime != null)
+            {
+                this.startTime = startTime;
+                this.startTimeTime = startTime;
+            }
+            else
+            {
+                this.startTime = this._dateTimeService.getDate().toJSDate();
+                this.startTimeTime =  this._dateTimeService.getDate().toJSDate();
+            }
+          
             this.drivingLessonTopic = '';
             this.licenseClass = '';
            

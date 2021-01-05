@@ -13102,6 +13102,470 @@ export class PaymentServiceProxy {
 }
 
 @Injectable()
+export class PaymentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param maxDateFilter (optional) 
+     * @param minDateFilter (optional) 
+     * @param payerFilter (optional) 
+     * @param referenceFilter (optional) 
+     * @param maxAmountFilter (optional) 
+     * @param minAmountFilter (optional) 
+     * @param paymentMethodFilter (optional) 
+     * @param studentInvoiceUserFriendlyInvoiceIdFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | null | undefined, maxDateFilter: DateTime | null | undefined, minDateFilter: DateTime | null | undefined, payerFilter: string | null | undefined, referenceFilter: string | null | undefined, maxAmountFilter: number | null | undefined, minAmountFilter: number | null | undefined, paymentMethodFilter: number | null | undefined, studentInvoiceUserFriendlyInvoiceIdFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetPaymentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/GetAll?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (maxDateFilter !== undefined && maxDateFilter !== null)
+            url_ += "MaxDateFilter=" + encodeURIComponent(maxDateFilter ? "" + maxDateFilter.toJSON() : "") + "&";
+        if (minDateFilter !== undefined && minDateFilter !== null)
+            url_ += "MinDateFilter=" + encodeURIComponent(minDateFilter ? "" + minDateFilter.toJSON() : "") + "&";
+        if (payerFilter !== undefined && payerFilter !== null)
+            url_ += "PayerFilter=" + encodeURIComponent("" + payerFilter) + "&";
+        if (referenceFilter !== undefined && referenceFilter !== null)
+            url_ += "ReferenceFilter=" + encodeURIComponent("" + referenceFilter) + "&";
+        if (maxAmountFilter !== undefined && maxAmountFilter !== null)
+            url_ += "MaxAmountFilter=" + encodeURIComponent("" + maxAmountFilter) + "&";
+        if (minAmountFilter !== undefined && minAmountFilter !== null)
+            url_ += "MinAmountFilter=" + encodeURIComponent("" + minAmountFilter) + "&";
+        if (paymentMethodFilter !== undefined && paymentMethodFilter !== null)
+            url_ += "PaymentMethodFilter=" + encodeURIComponent("" + paymentMethodFilter) + "&";
+        if (studentInvoiceUserFriendlyInvoiceIdFilter !== undefined && studentInvoiceUserFriendlyInvoiceIdFilter !== null)
+            url_ += "StudentInvoiceUserFriendlyInvoiceIdFilter=" + encodeURIComponent("" + studentInvoiceUserFriendlyInvoiceIdFilter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetPaymentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetPaymentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetPaymentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetPaymentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetPaymentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPaymentForView(id: number | undefined): Observable<GetPaymentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/GetPaymentForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPaymentForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPaymentForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetPaymentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetPaymentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPaymentForView(response: HttpResponseBase): Observable<GetPaymentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPaymentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPaymentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPaymentForEdit(id: number | undefined): Observable<GetPaymentForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/GetPaymentForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPaymentForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPaymentForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetPaymentForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetPaymentForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPaymentForEdit(response: HttpResponseBase): Observable<GetPaymentForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPaymentForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPaymentForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditPaymentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param maxDateFilter (optional) 
+     * @param minDateFilter (optional) 
+     * @param payerFilter (optional) 
+     * @param referenceFilter (optional) 
+     * @param maxAmountFilter (optional) 
+     * @param minAmountFilter (optional) 
+     * @param paymentMethodFilter (optional) 
+     * @param studentInvoiceUserFriendlyInvoiceIdFilter (optional) 
+     * @return Success
+     */
+    getPaymentsToExcel(filter: string | null | undefined, maxDateFilter: DateTime | null | undefined, minDateFilter: DateTime | null | undefined, payerFilter: string | null | undefined, referenceFilter: string | null | undefined, maxAmountFilter: number | null | undefined, minAmountFilter: number | null | undefined, paymentMethodFilter: number | null | undefined, studentInvoiceUserFriendlyInvoiceIdFilter: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/GetPaymentsToExcel?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (maxDateFilter !== undefined && maxDateFilter !== null)
+            url_ += "MaxDateFilter=" + encodeURIComponent(maxDateFilter ? "" + maxDateFilter.toJSON() : "") + "&";
+        if (minDateFilter !== undefined && minDateFilter !== null)
+            url_ += "MinDateFilter=" + encodeURIComponent(minDateFilter ? "" + minDateFilter.toJSON() : "") + "&";
+        if (payerFilter !== undefined && payerFilter !== null)
+            url_ += "PayerFilter=" + encodeURIComponent("" + payerFilter) + "&";
+        if (referenceFilter !== undefined && referenceFilter !== null)
+            url_ += "ReferenceFilter=" + encodeURIComponent("" + referenceFilter) + "&";
+        if (maxAmountFilter !== undefined && maxAmountFilter !== null)
+            url_ += "MaxAmountFilter=" + encodeURIComponent("" + maxAmountFilter) + "&";
+        if (minAmountFilter !== undefined && minAmountFilter !== null)
+            url_ += "MinAmountFilter=" + encodeURIComponent("" + minAmountFilter) + "&";
+        if (paymentMethodFilter !== undefined && paymentMethodFilter !== null)
+            url_ += "PaymentMethodFilter=" + encodeURIComponent("" + paymentMethodFilter) + "&";
+        if (studentInvoiceUserFriendlyInvoiceIdFilter !== undefined && studentInvoiceUserFriendlyInvoiceIdFilter !== null)
+            url_ += "StudentInvoiceUserFriendlyInvoiceIdFilter=" + encodeURIComponent("" + studentInvoiceUserFriendlyInvoiceIdFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPaymentsToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPaymentsToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPaymentsToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllStudentInvoiceForLookupTable(filter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfPaymentStudentInvoiceLookupTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/Payments/GetAllStudentInvoiceForLookupTable?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllStudentInvoiceForLookupTable(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllStudentInvoiceForLookupTable(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfPaymentStudentInvoiceLookupTableDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfPaymentStudentInvoiceLookupTableDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllStudentInvoiceForLookupTable(response: HttpResponseBase): Observable<PagedResultDtoOfPaymentStudentInvoiceLookupTableDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfPaymentStudentInvoiceLookupTableDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfPaymentStudentInvoiceLookupTableDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class PayPalPaymentServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -18744,6 +19208,7 @@ export class StudentsServiceProxy {
      * @param phoneNumberFilter (optional) 
      * @param maxDateOfBirthFilter (optional) 
      * @param minDateOfBirthFilter (optional) 
+     * @param socialSecurityNumberFilter (optional) 
      * @param cityFilter (optional) 
      * @param zipCodeFilter (optional) 
      * @param stateFilter (optional) 
@@ -18754,7 +19219,7 @@ export class StudentsServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | null | undefined, firstNameFilter: string | null | undefined, lastNameFilter: string | null | undefined, emailFilter: string | null | undefined, phoneNumberFilter: string | null | undefined, maxDateOfBirthFilter: DateTime | null | undefined, minDateOfBirthFilter: DateTime | null | undefined, cityFilter: string | null | undefined, zipCodeFilter: string | null | undefined, stateFilter: string | null | undefined, countryFilter: string | null | undefined, licenseClassFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetStudentForViewDto> {
+    getAll(filter: string | null | undefined, firstNameFilter: string | null | undefined, lastNameFilter: string | null | undefined, emailFilter: string | null | undefined, phoneNumberFilter: string | null | undefined, maxDateOfBirthFilter: DateTime | null | undefined, minDateOfBirthFilter: DateTime | null | undefined, socialSecurityNumberFilter: string | null | undefined, cityFilter: string | null | undefined, zipCodeFilter: string | null | undefined, stateFilter: string | null | undefined, countryFilter: string | null | undefined, licenseClassFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetStudentForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/Students/GetAll?";
         if (filter !== undefined && filter !== null)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
@@ -18770,6 +19235,8 @@ export class StudentsServiceProxy {
             url_ += "MaxDateOfBirthFilter=" + encodeURIComponent(maxDateOfBirthFilter ? "" + maxDateOfBirthFilter.toJSON() : "") + "&";
         if (minDateOfBirthFilter !== undefined && minDateOfBirthFilter !== null)
             url_ += "MinDateOfBirthFilter=" + encodeURIComponent(minDateOfBirthFilter ? "" + minDateOfBirthFilter.toJSON() : "") + "&";
+        if (socialSecurityNumberFilter !== undefined && socialSecurityNumberFilter !== null)
+            url_ += "SocialSecurityNumberFilter=" + encodeURIComponent("" + socialSecurityNumberFilter) + "&";
         if (cityFilter !== undefined && cityFilter !== null)
             url_ += "CityFilter=" + encodeURIComponent("" + cityFilter) + "&";
         if (zipCodeFilter !== undefined && zipCodeFilter !== null)
@@ -28796,6 +29263,7 @@ export interface ICreateOrEditAppointmentDto {
 
 export class GetAppointmentForEditOutput implements IGetAppointmentForEditOutput {
     appointment!: CreateOrEditAppointmentDto;
+    isStudent!: boolean;
 
     constructor(data?: IGetAppointmentForEditOutput) {
         if (data) {
@@ -28809,6 +29277,7 @@ export class GetAppointmentForEditOutput implements IGetAppointmentForEditOutput
     init(_data?: any) {
         if (_data) {
             this.appointment = _data["appointment"] ? CreateOrEditAppointmentDto.fromJS(_data["appointment"]) : <any>undefined;
+            this.isStudent = _data["isStudent"];
         }
     }
 
@@ -28822,12 +29291,14 @@ export class GetAppointmentForEditOutput implements IGetAppointmentForEditOutput
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["appointment"] = this.appointment ? this.appointment.toJSON() : <any>undefined;
+        data["isStudent"] = this.isStudent;
         return data; 
     }
 }
 
 export interface IGetAppointmentForEditOutput {
     appointment: CreateOrEditAppointmentDto;
+    isStudent: boolean;
 }
 
 export class AuditLogListDto implements IAuditLogListDto {
@@ -40955,6 +41426,350 @@ export interface ISubscriptionPaymentDto {
     id: number;
 }
 
+export enum PaymentMethod {
+    Cash = 0,
+    BankTransfer = 1,
+    DirectDebit = 2,
+    CreditCard = 3,
+    Paypal = 4,
+}
+
+export class PaymentDto implements IPaymentDto {
+    date!: DateTime;
+    payer!: string | undefined;
+    reference!: string | undefined;
+    amount!: number;
+    paymentMethod!: PaymentMethod;
+    studentInvoiceId!: number | undefined;
+    id!: number;
+
+    constructor(data?: IPaymentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : <any>undefined;
+            this.payer = _data["payer"];
+            this.reference = _data["reference"];
+            this.amount = _data["amount"];
+            this.paymentMethod = _data["paymentMethod"];
+            this.studentInvoiceId = _data["studentInvoiceId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): PaymentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toString() : <any>undefined;
+        data["payer"] = this.payer;
+        data["reference"] = this.reference;
+        data["amount"] = this.amount;
+        data["paymentMethod"] = this.paymentMethod;
+        data["studentInvoiceId"] = this.studentInvoiceId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IPaymentDto {
+    date: DateTime;
+    payer: string | undefined;
+    reference: string | undefined;
+    amount: number;
+    paymentMethod: PaymentMethod;
+    studentInvoiceId: number | undefined;
+    id: number;
+}
+
+export class GetPaymentForViewDto implements IGetPaymentForViewDto {
+    payment!: PaymentDto;
+    studentInvoiceUserFriendlyInvoiceId!: string | undefined;
+
+    constructor(data?: IGetPaymentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payment = _data["payment"] ? PaymentDto.fromJS(_data["payment"]) : <any>undefined;
+            this.studentInvoiceUserFriendlyInvoiceId = _data["studentInvoiceUserFriendlyInvoiceId"];
+        }
+    }
+
+    static fromJS(data: any): GetPaymentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPaymentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payment"] = this.payment ? this.payment.toJSON() : <any>undefined;
+        data["studentInvoiceUserFriendlyInvoiceId"] = this.studentInvoiceUserFriendlyInvoiceId;
+        return data; 
+    }
+}
+
+export interface IGetPaymentForViewDto {
+    payment: PaymentDto;
+    studentInvoiceUserFriendlyInvoiceId: string | undefined;
+}
+
+export class PagedResultDtoOfGetPaymentForViewDto implements IPagedResultDtoOfGetPaymentForViewDto {
+    totalCount!: number;
+    items!: GetPaymentForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetPaymentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetPaymentForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetPaymentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetPaymentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetPaymentForViewDto {
+    totalCount: number;
+    items: GetPaymentForViewDto[] | undefined;
+}
+
+export class CreateOrEditPaymentDto implements ICreateOrEditPaymentDto {
+    date!: DateTime;
+    payer!: string | undefined;
+    reference!: string | undefined;
+    amount!: number;
+    paymentMethod!: PaymentMethod;
+    studentInvoiceId!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditPaymentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.date = _data["date"] ? DateTime.fromISO(_data["date"].toString()) : <any>undefined;
+            this.payer = _data["payer"];
+            this.reference = _data["reference"];
+            this.amount = _data["amount"];
+            this.paymentMethod = _data["paymentMethod"];
+            this.studentInvoiceId = _data["studentInvoiceId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditPaymentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditPaymentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toString() : <any>undefined;
+        data["payer"] = this.payer;
+        data["reference"] = this.reference;
+        data["amount"] = this.amount;
+        data["paymentMethod"] = this.paymentMethod;
+        data["studentInvoiceId"] = this.studentInvoiceId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditPaymentDto {
+    date: DateTime;
+    payer: string | undefined;
+    reference: string | undefined;
+    amount: number;
+    paymentMethod: PaymentMethod;
+    studentInvoiceId: number | undefined;
+    id: number | undefined;
+}
+
+export class GetPaymentForEditOutput implements IGetPaymentForEditOutput {
+    payment!: CreateOrEditPaymentDto;
+    studentInvoiceUserFriendlyInvoiceId!: string | undefined;
+
+    constructor(data?: IGetPaymentForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payment = _data["payment"] ? CreateOrEditPaymentDto.fromJS(_data["payment"]) : <any>undefined;
+            this.studentInvoiceUserFriendlyInvoiceId = _data["studentInvoiceUserFriendlyInvoiceId"];
+        }
+    }
+
+    static fromJS(data: any): GetPaymentForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPaymentForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payment"] = this.payment ? this.payment.toJSON() : <any>undefined;
+        data["studentInvoiceUserFriendlyInvoiceId"] = this.studentInvoiceUserFriendlyInvoiceId;
+        return data; 
+    }
+}
+
+export interface IGetPaymentForEditOutput {
+    payment: CreateOrEditPaymentDto;
+    studentInvoiceUserFriendlyInvoiceId: string | undefined;
+}
+
+export class PaymentStudentInvoiceLookupTableDto implements IPaymentStudentInvoiceLookupTableDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: IPaymentStudentInvoiceLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): PaymentStudentInvoiceLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStudentInvoiceLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data; 
+    }
+}
+
+export interface IPaymentStudentInvoiceLookupTableDto {
+    id: number;
+    displayName: string | undefined;
+}
+
+export class PagedResultDtoOfPaymentStudentInvoiceLookupTableDto implements IPagedResultDtoOfPaymentStudentInvoiceLookupTableDto {
+    totalCount!: number;
+    items!: PaymentStudentInvoiceLookupTableDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfPaymentStudentInvoiceLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PaymentStudentInvoiceLookupTableDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfPaymentStudentInvoiceLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfPaymentStudentInvoiceLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfPaymentStudentInvoiceLookupTableDto {
+    totalCount: number;
+    items: PaymentStudentInvoiceLookupTableDto[] | undefined;
+}
+
 export class PayPalConfigurationDto implements IPayPalConfigurationDto {
     clientId!: string | undefined;
     demoUsername!: string | undefined;
@@ -41117,6 +41932,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
     location!: string | undefined;
     isBlocked!: boolean;
     vehicleId!: number | undefined;
+    instructorIds!: number[] | undefined;
     id!: number;
 
     constructor(data?: ISchedulerEventDto) {
@@ -41139,6 +41955,11 @@ export class SchedulerEventDto implements ISchedulerEventDto {
             this.location = _data["location"];
             this.isBlocked = _data["isBlocked"];
             this.vehicleId = _data["vehicleId"];
+            if (Array.isArray(_data["instructorIds"])) {
+                this.instructorIds = [] as any;
+                for (let item of _data["instructorIds"])
+                    this.instructorIds!.push(item);
+            }
             this.id = _data["id"];
         }
     }
@@ -41161,6 +41982,11 @@ export class SchedulerEventDto implements ISchedulerEventDto {
         data["location"] = this.location;
         data["isBlocked"] = this.isBlocked;
         data["vehicleId"] = this.vehicleId;
+        if (Array.isArray(this.instructorIds)) {
+            data["instructorIds"] = [];
+            for (let item of this.instructorIds)
+                data["instructorIds"].push(item);
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -41176,6 +42002,7 @@ export interface ISchedulerEventDto {
     location: string | undefined;
     isBlocked: boolean;
     vehicleId: number | undefined;
+    instructorIds: number[] | undefined;
     id: number;
 }
 
@@ -45364,6 +46191,7 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
     studentId!: number | undefined;
     courseId!: number | undefined;
     items!: StudentInvoiceItemDto[] | undefined;
+    payments!: PaymentDto[] | undefined;
     id!: number;
 
     constructor(data?: IStudentInvoiceDto) {
@@ -45391,6 +46219,11 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
                 this.items = [] as any;
                 for (let item of _data["items"])
                     this.items!.push(StudentInvoiceItemDto.fromJS(item));
+            }
+            if (Array.isArray(_data["payments"])) {
+                this.payments = [] as any;
+                for (let item of _data["payments"])
+                    this.payments!.push(PaymentDto.fromJS(item));
             }
             this.id = _data["id"];
         }
@@ -45420,6 +46253,11 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
+        if (Array.isArray(this.payments)) {
+            data["payments"] = [];
+            for (let item of this.payments)
+                data["payments"].push(item.toJSON());
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -45437,6 +46275,7 @@ export interface IStudentInvoiceDto {
     studentId: number | undefined;
     courseId: number | undefined;
     items: StudentInvoiceItemDto[] | undefined;
+    payments: PaymentDto[] | undefined;
     id: number;
 }
 

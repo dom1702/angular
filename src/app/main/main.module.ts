@@ -2,6 +2,12 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
+import { PaymentStudentInvoiceLookupTableModalComponent } from './sales/payments/payment-studentInvoice-lookup-table-modal.component';
+
+import { PaymentsComponent } from './sales/payments/payments.component';
+import { ViewPaymentModalComponent } from './sales/payments/view-payment-modal.component';
+import { CreateOrEditPaymentModalComponent } from './sales/payments/create-or-edit-payment-modal.component';
+
 import { TestResourcesComponent } from './resources/testResources/testResources.component';
 import { ViewTestResourceModalComponent } from './resources/testResources/view-testResource-modal.component';
 import { CreateOrEditTestResourceModalComponent } from './resources/testResources/create-or-edit-testResource-modal.component';
@@ -128,6 +134,7 @@ import listPlugin from '@fullcalendar/list';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
+import { StudentsOverviewViewPaymentModalComponent } from './students/students/students-overview-invoices-payment-modal.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -190,6 +197,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         FullCalendarModule
      ],
     declarations: [
+    PaymentStudentInvoiceLookupTableModalComponent,
+		PaymentsComponent,
+
+		ViewPaymentModalComponent,
+		CreateOrEditPaymentModalComponent,
 		TestResourcesComponent,
 
 		ViewTestResourceModalComponent,
@@ -251,6 +263,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       CoursesComponent,
       ViewCourseModalComponent,		
       CreateOrEditCourseModalComponent,
+      StudentsOverviewViewPaymentModalComponent,
       
       AssignStudentToCourseModalComponent,
       SVLicenseClassSelectionComponent,

@@ -1,6 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentInvoiceDto, StudentInvoicesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentInvoiceDto, StudentInvoicesServiceProxy, PaymentDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { PricePackageLookupTableModalComponent } from './pricePackage-lookup-table-modal.component';
 import { StudentsOverviewComponent } from './students-overview.component';
+import { StudentsOverviewViewPaymentModalComponent } from './students-overview-invoices-payment-modal.component';
 
 @Component({
     selector: 'students-overview-invoices',
@@ -20,6 +21,8 @@ export class StudentsOverviewInvoicesComponent extends AppComponentBase {
 
     @Input() student: StudentDto;
     @Input() parentOverview : StudentsOverviewComponent;
+
+    @ViewChild('studentsOverviewViewPaymentModal', { static: true }) studentsOverviewViewPaymentModal: StudentsOverviewViewPaymentModalComponent;
 
     invoices: StudentInvoiceDto[];
 
@@ -43,6 +46,7 @@ export class StudentsOverviewInvoicesComponent extends AppComponentBase {
         this.parentOverview.courseChanged.subscribe(() => {
             this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
                 (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
+                    //console.log(result);
                 this.invoices = result;
             });
         });
@@ -105,10 +109,27 @@ export class StudentsOverviewInvoicesComponent extends AppComponentBase {
         });
     }
 
+    updateInvoicesAndOpenModalAgain(invoiceId : number)
+    {
+        this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
+            (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
+            this.invoices = result;
+            console.log(this.invoices);
+            console.log(invoiceId);
+            var item = this.invoices.find(x => x.id === invoiceId);
+            console.log(item);
+            this.openPaymentModal(item);
+        });
+    }
+
     getPayersAddressString() {
         if (this.student == null)
             return '';
 
         return this.student.payersStreet + ", " + this.student.payersZipCode + ", " + this.student.payersCity;
+    }
+
+    openPaymentModal(invoice) {
+        this.studentsOverviewViewPaymentModal.show(invoice.payments, invoice.id, this);
     }
 }
