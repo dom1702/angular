@@ -156,6 +156,8 @@
                 class="fa fa-envelope"></i><span>{{l("SendEmail")}}</span></button>
         <button type="button" (click)="openAssignToCourseModal()"
             class="btn btn-primary mr-5">{{l("AssignToCourse")}}</button>
+            <button type="button" (click)="openMoveToAnotherCourseModal()"
+            class="btn btn-primary mr-5">{{l("MoveToAnotherCourse")}}</button>
         <button type="button" (click)="editStudent()" class="btn btn-primary mr-5">{{l("EditStudentData")}}</button>
         <button *ngIf="this.parentOverview.selectedStudentCourse != null" type="button"
             (click)="this.parentOverview.removeFromSelectedCourse()"
@@ -169,3 +171,4 @@
 </createOrEditStudentUserModal>
 <assignStudentToCourseModal #assignStudentToCourseModal (modalSave)="assignToCourse()"></assignStudentToCourseModal>
 <sendMessageToStudentModal #sendMessageToStudentModal (modalSave)="sendMail()"></sendMessageToStudentModal>
+<moveToAnotherCourseModal #moveToAnotherCourseModal (modalSave)="movedToAnotherCourse()"></moveToAnotherCourseModal>

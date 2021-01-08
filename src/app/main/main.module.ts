@@ -135,6 +135,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { StudentsOverviewViewPaymentModalComponent } from './students/students/students-overview-invoices-payment-modal.component';
+import { MoveToAnotherCourseModalComponent } from './students/students/move-to-another-course-modal.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -264,6 +265,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       ViewCourseModalComponent,		
       CreateOrEditCourseModalComponent,
       StudentsOverviewViewPaymentModalComponent,
+      MoveToAnotherCourseModalComponent,
       
       AssignStudentToCourseModalComponent,
       SVLicenseClassSelectionComponent,

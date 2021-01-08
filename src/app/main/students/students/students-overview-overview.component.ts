@@ -17,6 +17,7 @@ import { LanguagesService } from '@app/shared/common/services/languages.service'
 import { AssignStudentToCourseModalComponent } from './assign-student-to-course-modal.component';
 import { SendMessageToStudentModalComponent } from './send-message-to-student-modal.component';
 import { ImpersonationService } from '@app/admin/users/impersonation.service';
+import { MoveToAnotherCourseModalComponent } from './move-to-another-course-modal.component';
 
 @Component({
     selector: 'students-overview-overview',
@@ -30,6 +31,7 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
     @ViewChild('createOrEditStudentUserModal', { static: true }) createOrEditStudentUserModal: CreateOrEditStudentUserModalComponent;
     @ViewChild('assignStudentToCourseModal', { static: true }) assignStudentToCourseModal: AssignStudentToCourseModalComponent;
     @ViewChild('sendMessageToStudentModal', { static: true }) sendMessageToStudentModal: SendMessageToStudentModalComponent;
+    @ViewChild('moveToAnotherCourseModal', { static: true }) moveToAnotherCourseModal: MoveToAnotherCourseModalComponent;
 
     @Input() student: StudentDto;
     @Input() pricePackageName: string;
@@ -158,6 +160,11 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
         // })
     }
 
+    openMoveToAnotherCourseModal() : void
+    {
+        this.moveToAnotherCourseModal.show(this.student.id);
+    }
+
     assignToCourse(): void {
         this.parentOverview.UpdateStudentView().subscribe();
 
@@ -171,6 +178,12 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
     }
 
     sendMail() : void
+    {
+
+    }
+
+
+    movedToAnotherCourse()
     {
 
     }

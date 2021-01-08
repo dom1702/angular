@@ -206,7 +206,7 @@ export class EnrollmentComponent extends AppComponentBase implements OnInit ,Aft
         this._enrollmentService.submitEnrollment(input).subscribe(result => {
 
             //this.submitting = false;
-            this._router.navigate(['account']);
+            this._router.navigate(['account/login']);
             abp.message.success('Success', 'You just enrolled in a new course. Please read the confirmation email for further information!');
         })
     }
