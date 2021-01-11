@@ -89,6 +89,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
             });
         });
     }
+    
 
     public CallCourseChanged() : void 
     {

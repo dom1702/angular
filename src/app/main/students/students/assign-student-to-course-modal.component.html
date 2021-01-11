@@ -19,10 +19,11 @@
 					</div>
 
 					<div class="form-group">
-						<label class="m-checkbox">
+						<label class="checkbox">
 							<input type="checkbox" name="showExpiredCourses" [(ngModel)]="showExpiredCourses" (change)="showExpiredCoursesChanged()">
-							{{l("ShowExpiredCourses")}}
 							<span></span>
+							{{l("ShowExpiredCourses")}}
+					
 						</label>
 					</div>
 					<div class="form-group">
@@ -44,11 +45,11 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<div class="m-checkbox-list">
-							<label class="m-checkbox">
+						<div class="checkbox-list">
+							<label class="checkbox">
 								<input type="checkbox" name="EnrollmentMail" [(ngModel)]="sendEnrollmentMail">
-								{{l("SendEnrollmentEmail")}}
 								<span></span>
+								{{l("SendEnrollmentEmail")}}
 							</label>
 						</div>
 					</div>

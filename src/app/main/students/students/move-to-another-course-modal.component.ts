@@ -1,6 +1,6 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { CoursesServiceProxy, MoveToAnotherCourseInput, StudentsServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CoursesServiceProxy, GetFreeCoursesForStudentDto, MoveToAnotherCourseInput, PricePackageDto, StudentCourseDto, StudentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { result } from 'lodash-es';
 
@@ -20,16 +20,19 @@ export class MoveToAnotherCourseModalComponent extends AppComponentBase implemen
 
     studentId;
 
-    studentsCourses;
-    possibleTargetCourses;
+    studentsCourses : StudentCourseDto[];
+    possibleTargetCourses : GetFreeCoursesForStudentDto[];
+    selectedPricePackage: PricePackageDto;
 
     selectedStudentCourse;
     selectedTargetCourse;
 
+    showExpiredCourses : boolean;
+    sendEnrollmentMail : boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _coursesServiceProxy: CoursesServiceProxy,
     ) {
         super(injector);
     }
@@ -38,31 +41,57 @@ export class MoveToAnotherCourseModalComponent extends AppComponentBase implemen
        
     }
 
-    show(studentId : number): void {
+    show(studentId : number, studentsCourses : StudentCourseDto[]): void {
+        this.showExpiredCourses = false;
         this.studentId = studentId;
+        this.studentsCourses = studentsCourses;
+        this.possibleTargetCourses = null;
+        this.selectedTargetCourse = null;
         this.active = true;
         this.saving = false;
 
-        this._coursesServiceProxy.getMoveToAnotherCourseView(this.studentId).subscribe((result) =>
+        // this._studentsServiceProxy.getMoveToAnotherCourseView(this.studentId).subscribe((result) =>
+        //     {
+        //         this.studentsCourses = result.studentsCourses;
+        //         this.possibleTargetCourses = result.possibleTargetCourses;
+        //     })
+
+        this._studentsServiceProxy.getFreeCoursesForStudent(this.studentId, this.showExpiredCourses).subscribe(result =>
             {
-                this.studentsCourses = result.studentsCourses;
-                this.possibleTargetCourses = result.possibleTargetCourses;
-            })
+                this.possibleTargetCourses = result;
+            });
 
         this.modal.show();
     }
 
-    move(): void {
-        var input = new MoveToAnotherCourseInput();
-        input.sourceCourseId = this.selectedStudentCourse.courseId;
-        input.targetCourseId = this.selectedTargetCourse.courseId;
+    showExpiredCoursesChanged() : void
+    {
+        this.possibleTargetCourses = null;
+        this.selectedTargetCourse = null;
 
-        this._coursesServiceProxy.moveToAnotherCourse(input).subscribe(result =>
+        this._studentsServiceProxy.getFreeCoursesForStudent(this.studentId, this.showExpiredCourses).subscribe(result =>
+            {
+                this.possibleTargetCourses = result;
+                this.selectedPricePackage = null;
+                this.sendEnrollmentMail = false;
+            });
+    }
+
+    save(): void {
+        var input = new MoveToAnotherCourseInput();
+        input.studentId = this.studentId;
+        input.sourceCourseId = this.selectedStudentCourse.course.id;
+        input.targetCourseId = this.selectedTargetCourse.courseId;
+        input.targetPricePackageId = this.selectedPricePackage.id;
+
+        this._studentsServiceProxy.moveToAnotherCourse(input).subscribe(result =>
         {
             if(result.success)
             {
                 this.notify.info(this.l('SavedSuccessfully'));
+                this.modalSave.emit(null);
                 this.close();
+             
             }
         });
 

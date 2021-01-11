@@ -162,7 +162,7 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
 
     openMoveToAnotherCourseModal() : void
     {
-        this.moveToAnotherCourseModal.show(this.student.id);
+        this.moveToAnotherCourseModal.show(this.student.id, this.parentOverview.studentCourses);
     }
 
     assignToCourse(): void {
@@ -185,11 +185,16 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
 
     movedToAnotherCourse()
     {
+        this.parentOverview.UpdateStudentView().subscribe();
 
+        setTimeout(() => {
+            this.parentOverview.CallCourseChanged();
+        }, 1000);
     }
 
     userAccountCreated() {
         this.updateStudent();
+
     }
 
     getAddressString() {
