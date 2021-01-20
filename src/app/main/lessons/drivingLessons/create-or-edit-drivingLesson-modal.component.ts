@@ -235,8 +235,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
         if (!this.setTopicNameAutomatically)
             this.drivingLesson.topic = this.drivingLessonTopic;
-        else
+        else if(this.selectedStudentCourse != null)
             this.drivingLesson.topic = this.selectedStudentCourse.licenseClass + " - " + this.studentFirstName + " " + this.studentLastName;
+
 
         this.drivingLesson.instructors = [];
 
