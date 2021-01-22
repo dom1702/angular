@@ -32,6 +32,8 @@ export class ViewStudentModalComponent extends AppComponentBase {
         this.updateLicenseClass();
         this.active = true;
         this.modal.show();
+
+        console.log(this.item);
     }
 
     close(): void {

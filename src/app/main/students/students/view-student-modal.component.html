@@ -33,7 +33,14 @@
                         <h6>{{l("Class")}} :</h6>
                         {{licenseClasses}}
                     </div>
-
+                    <div *ngIf="item.student.lastLogin != null" class="col-6 mb-3">
+                        <h6>{{l("LastLogin")}} :</h6>
+                        {{item.student.lastLogin  | luxonFormat:'F'}}
+                    </div>
+                    <div *ngIf="item.student.lastLogin == null" class="col-6 mb-3">
+                        <h6>{{l("LastLogin")}} :</h6>
+                        {{l("NeverLoggedIn")}}
+                    </div>
                 </div>
 
             </div>

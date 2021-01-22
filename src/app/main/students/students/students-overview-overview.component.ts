@@ -1,6 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StudentsServiceProxy, StudentDto, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto, TheoryLessonState } from '@shared/service-proxies/service-proxies';
+import { StudentsServiceProxy, StudentDto, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto, TheoryLessonState, UpdateAdditionalInformationInput } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -43,6 +43,11 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
     birthCountry = '';
     nativeLanguage = '';
 
+    additionalInformationStudent = '';
+    additionalInformationStudentIsReadyOnly = true;
+    additionalInformationInternal = '';
+    additionalInformationInternalIsReadyOnly = true;
+
     theoryLessons: StudentCoursePredefinedTheoryLessonDto[];
     @Input() drivingLessons: StudentCourseDrivingLessonsDto;
 
@@ -69,6 +74,9 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
         this.updateLicenseClassesAlreadyOwned();
         this.updateBirthCountry();
         this.updateNativeLanguage();
+
+        this.additionalInformationInternal = this.student.additionalInformationInternal;
+        this.additionalInformationStudent = this.student.additionalInformation;
 
         this.parentOverview.courseChanged.subscribe(() => {
             this._studentsServiceProxy.getPredefinedTheoryLessonsOfCourse(this.parentOverview.selectedStudentCourse.course.id, this.student.id).subscribe(result => {
@@ -207,5 +215,39 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
     impersonate()
     {
         this._impersonationService.impersonate(this.student.userId, this.appSession.tenantId);
+    }
+
+    editAdditionalInformation()
+    {
+        this.additionalInformationStudentIsReadyOnly = false;
+    }
+
+    saveAdditionalInformation()
+    {
+        this.additionalInformationStudentIsReadyOnly = true;
+        this.updateStudentAdditionalInformation();
+    }
+
+    editInternalAdditionalInformation()
+    {
+        this.additionalInformationInternalIsReadyOnly = false;
+    }
+
+    saveInternalAdditionalInformation()
+    {
+        this.additionalInformationInternalIsReadyOnly = true;
+       this.updateStudentAdditionalInformation();
+    }
+
+    updateStudentAdditionalInformation()
+    {
+        var input : UpdateAdditionalInformationInput = new UpdateAdditionalInformationInput();
+        input.studentId = this.student.id;
+        input.additionalInformationStudent = this.additionalInformationStudent;
+        input.additionalInformationInternal = this.additionalInformationInternal;
+        this._studentsServiceProxy.updateAdditionalInformation(input).subscribe( result => 
+            {
+                this.notify.info(this.l('SavedSuccessfully'));
+            })
     }
 }

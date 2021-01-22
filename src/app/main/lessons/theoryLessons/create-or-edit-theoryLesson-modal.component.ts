@@ -1,16 +1,17 @@
-import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, ViewEncapsulation, QueryList, ViewChildren, ChangeDetectorRef} from '@angular/core';
+import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, ViewEncapsulation, QueryList, ViewChildren, ChangeDetectorRef } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
-import { TheoryLessonsServiceProxy, CreateOrEditTheoryLessonDto, InstructorDto } from '@shared/service-proxies/service-proxies';
+import { TheoryLessonsServiceProxy, CreateOrEditTheoryLessonDto, InstructorDto, PredefinedTheoryLessonDto, TheoryLessonState } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DLLicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/drivingLesson-licenseClass-lookup-table-modal.component';
-import {LazyLoadEvent} from 'primeng/api';
-import {Paginator} from 'primeng/paginator';
-import {Table} from 'primeng/table';
+import { LazyLoadEvent } from 'primeng/api';
+import { Paginator } from 'primeng/paginator';
+import { Table } from 'primeng/table';
 import { PrimengTableHelper } from '@shared/helpers/PrimengTableHelper';
 import { Subscription } from 'rxjs';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { DateTime } from 'luxon';
+import { OfficeLookupTableModalComponent } from '@app/shared/common/lookup/office-lookup-table-modal.component';
 
 @Component({
     selector: 'createOrEditTheoryLessonModal',
@@ -21,7 +22,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @ViewChild('licenseClassLookupTableModal', { static: true }) licenseClassLookupTableModal: DLLicenseClassLookupTableModalComponent;
-
+    @ViewChild('officeLookupTableModal') officeLookupTableModal: OfficeLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,9 +32,10 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
     theoryLesson: CreateOrEditTheoryLessonDto = new CreateOrEditTheoryLessonDto();
 
     licenseClass = '';
+    officeName = '';
     startTime: Date;
 
-    startTimeTime : Date;
+    startTimeTime: Date;
 
     dropdownListIds = [];
     dropdownList = [];
@@ -42,6 +44,14 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
     placeholder = this.l('Select');
 
     theoryLessonId;
+
+    predefinedTheoryLessons: PredefinedTheoryLessonDto[];
+    selectedPtl;
+    otherPtl;
+
+    completed : boolean;
+
+    numberOfLessonsAddition: string = "(á -- minutes)";
 
     primengTableHelper = new PrimengTableHelper();
 
@@ -53,8 +63,11 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
         super(injector);
     }
 
-    ngOnInit() 
-    {
+    ngOnInit() {
+        var minutesPerLesson = abp.setting.get("App.CoreData.DurationTheoryLesson");
+        this.numberOfLessonsAddition = "(á " + minutesPerLesson + " minutes)";
+
+        this.licenseClass = '';
         this.dropdownSettings = {
             singleSelection: false,
             idField: 'item_id',
@@ -66,24 +79,30 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
         };
     }
 
- 
 
-    show(theoryLessonId?: number, event?: LazyLoadEvent, startTime? : Date): void {
+
+    show(theoryLessonId?: number, event?: LazyLoadEvent, startTime?: Date): void {
+
+        this.selectedPtl = null;
+        this.otherPtl = null;
+        this.completed = false;
 
         this.theoryLessonId = theoryLessonId;
 
         if (!theoryLessonId) {
             this.theoryLesson = new CreateOrEditTheoryLessonDto();
             this.theoryLesson.id = theoryLessonId;
+            this.officeName = '';
 
-             if(startTime != null)
-                 this.startTime = startTime;
-             else
-                 this.startTime = new Date();
+            if (startTime != null)
+                this.startTime = startTime;
+            else
+                this.startTime = new Date();
 
             this.startTimeTime = new Date();
 
             this.licenseClass = '';
+            this.theoryLesson.lessonLength = 1;
 
             this.active = true;
             this.updateInstructors(false);
@@ -93,10 +112,16 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
             this._theoryLessonsServiceProxy.getTheoryLessonForEdit(theoryLessonId).subscribe(result => {
                 this.theoryLesson = result.theoryLesson;
 
+                this.officeName = result.officeName;
                 this.licenseClass = result.theoryLesson.licenseClass;
-                this.startTime = result.theoryLesson.startTime.toJSDate(); 
+                this.startTime = result.theoryLesson.startTime.toJSDate();
 
-                this.startTimeTime = result.theoryLesson.startTime.toJSDate(); 
+                this.startTimeTime = result.theoryLesson.startTime.toJSDate();
+
+                this.refreshPredefinedTheoryLessons(this.licenseClass, this.theoryLesson.predefinedTheoryLessonId);
+
+                if(this.theoryLesson.currentState == TheoryLessonState.Completed)
+                    this.completed = true;
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -109,30 +134,42 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
 
     save(): void {
         //console.log('save');
-            this.saving = true;
+        this.saving = true;
 
-            this.theoryLesson.instructors = [];
+        this.theoryLesson.instructors = [];
 
-            this.startTime.setHours(this.startTimeTime.getHours());
-            this.startTime.setMinutes(this.startTimeTime.getMinutes());
-            this.theoryLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
-  
-            //this.theoryLesson.startTime.minute = this.startTimeTime.getMinutes();
-            console.log(this.theoryLesson.startTime);
+        this.startTime.setHours(this.startTimeTime.getHours());
+        this.startTime.setMinutes(this.startTimeTime.getMinutes());
+        this.theoryLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
-            for (var instructor of this.selectedItems)
-            {
-                var i = new InstructorDto();
-                i.id = this.dropdownListIds[instructor.item_id];
-                this.theoryLesson.instructors.push(
-                    i
-                );
-              //  console.log(i.id);
-            }
+        if (this.selectedPtl != this.otherPtl) {
+            this.theoryLesson.topic = this.selectedPtl.name;
+            this.theoryLesson.predefinedTheoryLessonId = this.selectedPtl.lessonIdString;
+        }
 
-            this._theoryLessonsServiceProxy.createOrEdit(this.theoryLesson)
-             .pipe(finalize(() => { this.saving = false;}))
-             .subscribe(() => {
+        //this.theoryLesson.startTime.minute = this.startTimeTime.getMinutes();
+        console.log(this.theoryLesson.startTime);
+
+        for (var instructor of this.selectedItems) {
+            var i = new InstructorDto();
+            i.id = this.dropdownListIds[instructor.item_id];
+            this.theoryLesson.instructors.push(
+                i
+            );
+            //  console.log(i.id);
+        }
+
+        if(this.completed)
+        {
+          this.theoryLesson.currentState = TheoryLessonState.Completed;
+          console.log(this.theoryLesson.currentState);
+        }
+        else
+          this.theoryLesson.currentState = TheoryLessonState.NotStarted;
+
+        this._theoryLessonsServiceProxy.createOrEdit(this.theoryLesson)
+            .pipe(finalize(() => { this.saving = false; }))
+            .subscribe(() => {
 
                 // this._theoryLessonsServiceProxy.addStudentToLesson(input)
                 // .subscribe(() => {
@@ -144,12 +181,11 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
                 this.notify.info(this.l('SavedSuccessfully'));
                 this.close();
                 this.modalSave.emit(null);
-             });
+            });
     }
 
-    updateInstructors(drivingLessonEdit : boolean ) : void
-    {
-      //  console.log(this.active);
+    updateInstructors(drivingLessonEdit: boolean): void {
+        //  console.log(this.active);
         if (!this.active) {
             return;
         }
@@ -161,35 +197,32 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
             "",
             0,
             1000).subscribe(result => {
-             //   console.log("in");
+                //   console.log("in");
                 // for(var r = 0; r < result.items.length; r++)
                 //     console.log(result.items[r].id);
-    
+
                 this.dropdownList = [];
                 this.dropdownListIds = [];
                 this.selectedItems = [];
 
-                for (var _i = 0; _i < result.items.length; _i++) 
-                {   
+                for (var _i = 0; _i < result.items.length; _i++) {
                     this.dropdownList.push(
-                    {
-                        item_id: _i, 
-                        item_text: result.items[_i].displayName
-                    });
+                        {
+                            item_id: _i,
+                            item_text: result.items[_i].displayName
+                        });
 
                     this.dropdownListIds.push(result.items[_i].id);
                 }
 
-                if(drivingLessonEdit)
-                {
+                if (drivingLessonEdit) {
                     for (var item of this.dropdownList) {
-                       // console.log(this.theoryLesson.instructors.length);
+                        // console.log(this.theoryLesson.instructors.length);
                         for (var instructor of this.theoryLesson.instructors) {
-                           // console.log(instructor.id);
-                           // console.log(this.dropdownListIds[item.item_id]);
-                            if(this.dropdownListIds[item.item_id] == instructor.id)
-                            {
-                               // console.log("Add it now" + instructor.id);
+                            // console.log(instructor.id);
+                            // console.log(this.dropdownListIds[item.item_id]);
+                            if (this.dropdownListIds[item.item_id] == instructor.id) {
+                                // console.log("Add it now" + instructor.id);
                                 this.selectedItems.push(
                                     {
                                         item_id: item.item_id,
@@ -198,7 +231,7 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
                                 );
                             }
                         }
-                        
+
                     }
 
                     //console.log(this.selectedItems.length);
@@ -208,21 +241,58 @@ export class CreateOrEditTheoryLessonModalComponent extends AppComponentBase imp
             });
     }
 
-        openSelectLicenseClassModal() {
+    refreshPredefinedTheoryLessons(licenseClass: string, ptlId: string) {
+        this._theoryLessonsServiceProxy.getPredefinedTheoryLessonsForCreateOrEdit(licenseClass).subscribe(result => {
+            this.predefinedTheoryLessons = result.predefinedTheoryLessons;
+            this.otherPtl = new PredefinedTheoryLessonDto();
+            this.otherPtl.name = this.l('Other');
+            this.predefinedTheoryLessons.push(this.otherPtl);
+
+            if (ptlId != '') {
+                console.log(this.predefinedTheoryLessons);
+                console.log(ptlId);
+                for (let ptl of this.predefinedTheoryLessons) {
+                    if (ptl.lessonIdString == ptlId)
+                        this.selectedPtl = ptl;
+                }
+            }
+        });
+    }
+
+    openSelectLicenseClassModal() {
         //this.theoryLessonLicenseClassLookupTableModal.id = this.theoryLesson.licenseClass;
         this.licenseClassLookupTableModal.displayName = this.licenseClass;
         this.licenseClassLookupTableModal.show();
     }
 
-        setLicenseClassNull() {
+    setLicenseClassNull() {
         this.theoryLesson.licenseClass = null;
         this.licenseClass = '';
     }
 
 
-        getNewLicenseClass() {
+    getNewLicenseClass() {
         this.theoryLesson.licenseClass = this.licenseClassLookupTableModal.displayName;
         this.licenseClass = this.licenseClassLookupTableModal.displayName;
+        this.refreshPredefinedTheoryLessons(this.licenseClass, '');
+    }
+
+    openSelectOfficeModal() {
+        this.officeLookupTableModal.id = this.theoryLesson.officeId;
+        this.officeLookupTableModal.displayName = this.officeName;
+        this.officeLookupTableModal.show();
+    }
+
+
+    setOfficeIdNull() {
+        this.theoryLesson.officeId = null;
+        this.officeName = '';
+    }
+
+
+    getNewOfficeId() {
+        this.theoryLesson.officeId = this.officeLookupTableModal.id;
+        this.officeName = this.officeLookupTableModal.displayName;
     }
 
     close(): void {

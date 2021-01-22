@@ -45,9 +45,8 @@ export class AppNavigationService {
             new AppMenuItem('TheoryLessons', 'Pages.TheoryLessons', 'flaticon-presentation', '/app/main/lessons/theoryLessons'),
             new AppMenuItem('DrivingLessons', 'Pages.DrivingLessons', 'flaticon-car', '/app/main/lessons/drivingLessons'),
             new AppMenuItem('SimulatorLessons', 'Pages.SimulatorLessons', 'flaticon-more', '/app/main/lessons/simulatorLessons',
-                undefined, undefined, undefined, () => {
-                    return this._featureCheckerService.isEnabled('App.Simulator')
-                }),
+                undefined, undefined, undefined, undefined, () => {return this._featureCheckerService.isEnabled('App.Simulator');
+                }, false),
 
             new AppMenuItem('StudentInvoices', 'Pages.StudentInvoices', 'flaticon-coins', '/app/main/sales/studentInvoices'),
 

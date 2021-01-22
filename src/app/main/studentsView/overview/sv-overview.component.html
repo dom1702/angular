@@ -17,9 +17,17 @@
         </sub-header>
 
         <div [class]="containerClass">
+            <div *ngIf="selectedStudentCourse != null" class="card my-10">
+                <h5 class="card-header">{{l('AdditionalInformationFromYourDrivingSchool')}}</h5>
+                <div class="card-body">
+                    <p class="card-text">{{additionalInformation}}</p>
+                  
+                </div>
+            </div>
             <div class="card card-custom gutter-b">
                 <div class="card-body">
 
+                   
 
                     <div *ngIf="selectedStudentCourse != null" class="row">
 
@@ -71,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="selectedStudentCourse != null" class="row">
+                    <!-- <div *ngIf="selectedStudentCourse != null" class="row">
                         <button type="button" (click)="prepareLessonStart()"
                             class="btn btn-primary mr-5">{{l("PrepareLessonStart")}}</button>
                         <button type="button" (click)="startNextOnlineTheoryLesson()"
@@ -79,7 +87,7 @@
                         <input type="text" class="form-control" [(ngModel)]="finishId" name="LastName" />
                         <button type="button" (click)="finishOnlineTheoryLesson()"
                             class="btn btn-primary mr-5">{{l("FinishOnlineTheoryLesson")}}</button>
-                    </div>
+                    </div> -->
                     <div *ngIf="selectedStudentCourse == null">
                         <alert type="danger">
                             <strong>Oh snap!</strong> You are not yet assigned to a course. Please contact your school.

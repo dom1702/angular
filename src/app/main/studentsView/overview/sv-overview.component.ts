@@ -19,6 +19,8 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
     theoryLessons: StudentCoursePredefinedTheoryLessonDto[];
     drivingLessons: StudentCourseDrivingLessonsDto;
 
+    additionalInformation: string;
+
     finishId;
 
     constructor(
@@ -44,6 +46,8 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
         this.loadCourseSelection();
         this.loadTheoryLessons();
         this.loadDrivingLessons();
+
+        this.additionalInformation = this._helper.studentData.additionalInformation;
     }
 
     loadCourseSelection()

@@ -35,8 +35,8 @@
                     <div class="form-group m-form__group" *ngIf="!showStudentSelection">
                         <h5>Student: {{studentFullName}}</h5>
                     </div>
-
-                    <div *ngIf="studentSelected">
+                  
+                    <div *ngIf="studentSelected && studentCourses != null && studentCourses.length > 0">
                         <div class="m--margin-top-40">
 
                             <div *ngIf="studentCourses != null && studentCourses.length > 0">
@@ -50,13 +50,7 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div>
-                            <div *ngIf="studentCourses != null && studentCourses.length == 0">
-                                <alert type="info" >
-                                    <strong>Note</strong> 
-                                    {{l("NoCourseSelected")}}!
-                                </alert>
-                            </div>
+                            </div> 
                             <div class="row">
                                 <div class="col-6 border-right">
                                     <div class="form-group">
@@ -124,11 +118,12 @@
 
                         <div class="m--margin-top-40">
                             <h5>{{l("Resources")}}</h5>
-                            <div [hidden]="instructorPersonalLesson" class="form-group m-form__group">
-                                <label for="LicenseClassClass">{{l("Instructors")}}</label>
-                                <ejs-multiselect #instructor_multiselect id='multiselectelement'
-                                [dataSource]='instructors' [fields]='fields'
-                                [placeholder]='placeholderInstructorSelection'></ejs-multiselect>
+                            <div  [hidden]="instructorPersonalLesson" class="form-group">
+                                <label>{{l("Instructors")}}</label>
+                                <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"  [data]="instructors"
+                                [(ngModel)]="instructorsSelectedItems" [ngModelOptions]="{standalone: true}">
+                            </ng-multiselect-dropdown>
+
                             </div>
 
                             <div class="form-group m-form__group">
@@ -222,6 +217,13 @@
                         </div>
 
                     </div>
+
+                    <div *ngIf="studentCourses != null && studentCourses.length == 0">
+                        <alert type="info" >
+                            <strong>Note</strong> 
+                            {{l("NoCourseSelected")}}!
+                        </alert>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
@@ -229,7 +231,7 @@
                     <button *ngIf="drivingLesson.id"
                         [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') "
                         type="button" class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
-                    <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid"
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid || selectedStudentCourse == null"
                         [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>

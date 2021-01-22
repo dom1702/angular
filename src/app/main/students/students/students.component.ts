@@ -44,6 +44,8 @@ export class StudentsComponent extends AppComponentBase {
     countryFilter = '';
         licenseClassClassFilter = '';
         ssnFilter = '';
+        maxLastLoginFilter : DateTime;
+		minLastLoginFilter : DateTime;
 
 
     _entityTypeFullName = 'Drima.Students.Student';
@@ -91,6 +93,8 @@ export class StudentsComponent extends AppComponentBase {
             this.stateFilter,
             this.countryFilter,
             this.licenseClassClassFilter,
+            this.maxLastLoginFilter,
+            this.minLastLoginFilter,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getSkipCount(this.paginator, event),
             this.primengTableHelper.getMaxResultCount(this.paginator, event)

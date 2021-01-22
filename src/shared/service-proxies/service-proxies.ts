@@ -19214,12 +19214,14 @@ export class StudentsServiceProxy {
      * @param stateFilter (optional) 
      * @param countryFilter (optional) 
      * @param licenseClassFilter (optional) 
+     * @param maxLastLoginFilter (optional) 
+     * @param minLastLoginFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | null | undefined, firstNameFilter: string | null | undefined, lastNameFilter: string | null | undefined, emailFilter: string | null | undefined, phoneNumberFilter: string | null | undefined, maxDateOfBirthFilter: DateTime | null | undefined, minDateOfBirthFilter: DateTime | null | undefined, socialSecurityNumberFilter: string | null | undefined, cityFilter: string | null | undefined, zipCodeFilter: string | null | undefined, stateFilter: string | null | undefined, countryFilter: string | null | undefined, licenseClassFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetStudentForViewDto> {
+    getAll(filter: string | null | undefined, firstNameFilter: string | null | undefined, lastNameFilter: string | null | undefined, emailFilter: string | null | undefined, phoneNumberFilter: string | null | undefined, maxDateOfBirthFilter: DateTime | null | undefined, minDateOfBirthFilter: DateTime | null | undefined, socialSecurityNumberFilter: string | null | undefined, cityFilter: string | null | undefined, zipCodeFilter: string | null | undefined, stateFilter: string | null | undefined, countryFilter: string | null | undefined, licenseClassFilter: string | null | undefined, maxLastLoginFilter: DateTime | null | undefined, minLastLoginFilter: DateTime | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetStudentForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/Students/GetAll?";
         if (filter !== undefined && filter !== null)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
@@ -19247,6 +19249,10 @@ export class StudentsServiceProxy {
             url_ += "CountryFilter=" + encodeURIComponent("" + countryFilter) + "&";
         if (licenseClassFilter !== undefined && licenseClassFilter !== null)
             url_ += "LicenseClassFilter=" + encodeURIComponent("" + licenseClassFilter) + "&";
+        if (maxLastLoginFilter !== undefined && maxLastLoginFilter !== null)
+            url_ += "MaxLastLoginFilter=" + encodeURIComponent(maxLastLoginFilter ? "" + maxLastLoginFilter.toJSON() : "") + "&";
+        if (minLastLoginFilter !== undefined && minLastLoginFilter !== null)
+            url_ += "MinLastLoginFilter=" + encodeURIComponent(minLastLoginFilter ? "" + minLastLoginFilter.toJSON() : "") + "&";
         if (sorting !== undefined && sorting !== null)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
         if (skipCount === null)
@@ -20541,6 +20547,58 @@ export class StudentsServiceProxy {
     }
 
     protected processSendEmailToStudent(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateAdditionalInformation(body: UpdateAdditionalInformationInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Students/UpdateAdditionalInformation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateAdditionalInformation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateAdditionalInformation(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateAdditionalInformation(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -24716,6 +24774,60 @@ export class TheoryLessonsServiceProxy {
             }));
         }
         return _observableOf<PagedResultDtoOfTheoryLessonInstructorLookupTableDto>(<any>null);
+    }
+
+    /**
+     * @param licenseClass (optional) 
+     * @return Success
+     */
+    getPredefinedTheoryLessonsForCreateOrEdit(licenseClass: string | null | undefined): Observable<GetPredefinedTheoryLessonsForCreateOrEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/TheoryLessons/GetPredefinedTheoryLessonsForCreateOrEdit?";
+        if (licenseClass !== undefined && licenseClass !== null)
+            url_ += "LicenseClass=" + encodeURIComponent("" + licenseClass) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPredefinedTheoryLessonsForCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPredefinedTheoryLessonsForCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetPredefinedTheoryLessonsForCreateOrEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetPredefinedTheoryLessonsForCreateOrEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPredefinedTheoryLessonsForCreateOrEdit(response: HttpResponseBase): Observable<GetPredefinedTheoryLessonsForCreateOrEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPredefinedTheoryLessonsForCreateOrEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPredefinedTheoryLessonsForCreateOrEditOutput>(<any>null);
     }
 }
 
@@ -47038,6 +47150,9 @@ export class StudentDto implements IStudentDto {
     payersCity!: string | undefined;
     payersPhone!: string | undefined;
     payersEmail!: string | undefined;
+    lastLogin!: DateTime | undefined;
+    additionalInformation!: string | undefined;
+    additionalInformationInternal!: string | undefined;
     id!: number;
 
     constructor(data?: IStudentDto) {
@@ -47085,6 +47200,9 @@ export class StudentDto implements IStudentDto {
             this.payersCity = _data["payersCity"];
             this.payersPhone = _data["payersPhone"];
             this.payersEmail = _data["payersEmail"];
+            this.lastLogin = _data["lastLogin"] ? DateTime.fromISO(_data["lastLogin"].toString()) : <any>undefined;
+            this.additionalInformation = _data["additionalInformation"];
+            this.additionalInformationInternal = _data["additionalInformationInternal"];
             this.id = _data["id"];
         }
     }
@@ -47132,6 +47250,9 @@ export class StudentDto implements IStudentDto {
         data["payersCity"] = this.payersCity;
         data["payersPhone"] = this.payersPhone;
         data["payersEmail"] = this.payersEmail;
+        data["lastLogin"] = this.lastLogin ? this.lastLogin.toString() : <any>undefined;
+        data["additionalInformation"] = this.additionalInformation;
+        data["additionalInformationInternal"] = this.additionalInformationInternal;
         data["id"] = this.id;
         return data; 
     }
@@ -47164,6 +47285,9 @@ export interface IStudentDto {
     payersCity: string | undefined;
     payersPhone: string | undefined;
     payersEmail: string | undefined;
+    lastLogin: DateTime | undefined;
+    additionalInformation: string | undefined;
+    additionalInformationInternal: string | undefined;
     id: number;
 }
 
@@ -48423,6 +48547,50 @@ export class SendEmailToStudentInput implements ISendEmailToStudentInput {
 export interface ISendEmailToStudentInput {
     studentId: number;
     message: string | undefined;
+}
+
+export class UpdateAdditionalInformationInput implements IUpdateAdditionalInformationInput {
+    studentId!: number;
+    additionalInformationStudent!: string | undefined;
+    additionalInformationInternal!: string | undefined;
+
+    constructor(data?: IUpdateAdditionalInformationInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentId = _data["studentId"];
+            this.additionalInformationStudent = _data["additionalInformationStudent"];
+            this.additionalInformationInternal = _data["additionalInformationInternal"];
+        }
+    }
+
+    static fromJS(data: any): UpdateAdditionalInformationInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateAdditionalInformationInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["additionalInformationStudent"] = this.additionalInformationStudent;
+        data["additionalInformationInternal"] = this.additionalInformationInternal;
+        return data; 
+    }
+}
+
+export interface IUpdateAdditionalInformationInput {
+    studentId: number;
+    additionalInformationStudent: string | undefined;
+    additionalInformationInternal: string | undefined;
 }
 
 export class SVPersonalDataDto implements ISVPersonalDataDto {
@@ -51867,13 +52035,14 @@ export class TheoryLessonDto implements ITheoryLessonDto {
     lessonLength!: number;
     startTime!: DateTime;
     addingMinutesAfter!: number;
-    office!: string | undefined;
     topic!: string | undefined;
     completed!: boolean;
     currentState!: TheoryLessonState;
     description!: string | undefined;
     internalDescription!: string | undefined;
     licenseClass!: string | undefined;
+    officeId!: number | undefined;
+    predefinedTheoryLessonId!: string | undefined;
     instructors!: InstructorDto[] | undefined;
     id!: number;
 
@@ -51891,13 +52060,14 @@ export class TheoryLessonDto implements ITheoryLessonDto {
             this.lessonLength = _data["lessonLength"];
             this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
             this.addingMinutesAfter = _data["addingMinutesAfter"];
-            this.office = _data["office"];
             this.topic = _data["topic"];
             this.completed = _data["completed"];
             this.currentState = _data["currentState"];
             this.description = _data["description"];
             this.internalDescription = _data["internalDescription"];
             this.licenseClass = _data["licenseClass"];
+            this.officeId = _data["officeId"];
+            this.predefinedTheoryLessonId = _data["predefinedTheoryLessonId"];
             if (Array.isArray(_data["instructors"])) {
                 this.instructors = [] as any;
                 for (let item of _data["instructors"])
@@ -51919,13 +52089,14 @@ export class TheoryLessonDto implements ITheoryLessonDto {
         data["lessonLength"] = this.lessonLength;
         data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
         data["addingMinutesAfter"] = this.addingMinutesAfter;
-        data["office"] = this.office;
         data["topic"] = this.topic;
         data["completed"] = this.completed;
         data["currentState"] = this.currentState;
         data["description"] = this.description;
         data["internalDescription"] = this.internalDescription;
         data["licenseClass"] = this.licenseClass;
+        data["officeId"] = this.officeId;
+        data["predefinedTheoryLessonId"] = this.predefinedTheoryLessonId;
         if (Array.isArray(this.instructors)) {
             data["instructors"] = [];
             for (let item of this.instructors)
@@ -51940,19 +52111,21 @@ export interface ITheoryLessonDto {
     lessonLength: number;
     startTime: DateTime;
     addingMinutesAfter: number;
-    office: string | undefined;
     topic: string | undefined;
     completed: boolean;
     currentState: TheoryLessonState;
     description: string | undefined;
     internalDescription: string | undefined;
     licenseClass: string | undefined;
+    officeId: number | undefined;
+    predefinedTheoryLessonId: string | undefined;
     instructors: InstructorDto[] | undefined;
     id: number;
 }
 
 export class GetTheoryLessonForViewDto implements IGetTheoryLessonForViewDto {
     theoryLesson!: TheoryLessonDto;
+    officeName!: string | undefined;
     licenseClassClass!: string | undefined;
     studentCount!: number;
     instructorNames!: string[] | undefined;
@@ -51971,6 +52144,7 @@ export class GetTheoryLessonForViewDto implements IGetTheoryLessonForViewDto {
     init(_data?: any) {
         if (_data) {
             this.theoryLesson = _data["theoryLesson"] ? TheoryLessonDto.fromJS(_data["theoryLesson"]) : <any>undefined;
+            this.officeName = _data["officeName"];
             this.licenseClassClass = _data["licenseClassClass"];
             this.studentCount = _data["studentCount"];
             if (Array.isArray(_data["instructorNames"])) {
@@ -52001,6 +52175,7 @@ export class GetTheoryLessonForViewDto implements IGetTheoryLessonForViewDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["theoryLesson"] = this.theoryLesson ? this.theoryLesson.toJSON() : <any>undefined;
+        data["officeName"] = this.officeName;
         data["licenseClassClass"] = this.licenseClassClass;
         data["studentCount"] = this.studentCount;
         if (Array.isArray(this.instructorNames)) {
@@ -52024,6 +52199,7 @@ export class GetTheoryLessonForViewDto implements IGetTheoryLessonForViewDto {
 
 export interface IGetTheoryLessonForViewDto {
     theoryLesson: TheoryLessonDto;
+    officeName: string | undefined;
     licenseClassClass: string | undefined;
     studentCount: number;
     instructorNames: string[] | undefined;
@@ -52084,12 +52260,14 @@ export class CreateOrEditTheoryLessonDto implements ICreateOrEditTheoryLessonDto
     startTime!: DateTime;
     addingMinutesAfter!: number;
     instructor!: string | undefined;
-    office!: string | undefined;
     topic!: string | undefined;
     description!: string | undefined;
     internalDescription!: string | undefined;
     completed!: boolean;
     licenseClass!: string | undefined;
+    officeId!: number | undefined;
+    predefinedTheoryLessonId!: string | undefined;
+    currentState!: TheoryLessonState;
     instructors!: InstructorDto[] | undefined;
     students!: StudentDto[] | undefined;
     id!: number | undefined;
@@ -52109,12 +52287,14 @@ export class CreateOrEditTheoryLessonDto implements ICreateOrEditTheoryLessonDto
             this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
             this.addingMinutesAfter = _data["addingMinutesAfter"];
             this.instructor = _data["instructor"];
-            this.office = _data["office"];
             this.topic = _data["topic"];
             this.description = _data["description"];
             this.internalDescription = _data["internalDescription"];
             this.completed = _data["completed"];
             this.licenseClass = _data["licenseClass"];
+            this.officeId = _data["officeId"];
+            this.predefinedTheoryLessonId = _data["predefinedTheoryLessonId"];
+            this.currentState = _data["currentState"];
             if (Array.isArray(_data["instructors"])) {
                 this.instructors = [] as any;
                 for (let item of _data["instructors"])
@@ -52142,12 +52322,14 @@ export class CreateOrEditTheoryLessonDto implements ICreateOrEditTheoryLessonDto
         data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
         data["addingMinutesAfter"] = this.addingMinutesAfter;
         data["instructor"] = this.instructor;
-        data["office"] = this.office;
         data["topic"] = this.topic;
         data["description"] = this.description;
         data["internalDescription"] = this.internalDescription;
         data["completed"] = this.completed;
         data["licenseClass"] = this.licenseClass;
+        data["officeId"] = this.officeId;
+        data["predefinedTheoryLessonId"] = this.predefinedTheoryLessonId;
+        data["currentState"] = this.currentState;
         if (Array.isArray(this.instructors)) {
             data["instructors"] = [];
             for (let item of this.instructors)
@@ -52168,12 +52350,14 @@ export interface ICreateOrEditTheoryLessonDto {
     startTime: DateTime;
     addingMinutesAfter: number;
     instructor: string | undefined;
-    office: string | undefined;
     topic: string | undefined;
     description: string | undefined;
     internalDescription: string | undefined;
     completed: boolean;
     licenseClass: string | undefined;
+    officeId: number | undefined;
+    predefinedTheoryLessonId: string | undefined;
+    currentState: TheoryLessonState;
     instructors: InstructorDto[] | undefined;
     students: StudentDto[] | undefined;
     id: number | undefined;
@@ -52181,6 +52365,7 @@ export interface ICreateOrEditTheoryLessonDto {
 
 export class GetTheoryLessonForEditOutput implements IGetTheoryLessonForEditOutput {
     theoryLesson!: CreateOrEditTheoryLessonDto;
+    officeName!: string | undefined;
     licenseClassClass!: string | undefined;
     instructorFirstName!: string | undefined;
 
@@ -52196,6 +52381,7 @@ export class GetTheoryLessonForEditOutput implements IGetTheoryLessonForEditOutp
     init(_data?: any) {
         if (_data) {
             this.theoryLesson = _data["theoryLesson"] ? CreateOrEditTheoryLessonDto.fromJS(_data["theoryLesson"]) : <any>undefined;
+            this.officeName = _data["officeName"];
             this.licenseClassClass = _data["licenseClassClass"];
             this.instructorFirstName = _data["instructorFirstName"];
         }
@@ -52211,6 +52397,7 @@ export class GetTheoryLessonForEditOutput implements IGetTheoryLessonForEditOutp
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["theoryLesson"] = this.theoryLesson ? this.theoryLesson.toJSON() : <any>undefined;
+        data["officeName"] = this.officeName;
         data["licenseClassClass"] = this.licenseClassClass;
         data["instructorFirstName"] = this.instructorFirstName;
         return data; 
@@ -52219,6 +52406,7 @@ export class GetTheoryLessonForEditOutput implements IGetTheoryLessonForEditOutp
 
 export interface IGetTheoryLessonForEditOutput {
     theoryLesson: CreateOrEditTheoryLessonDto;
+    officeName: string | undefined;
     licenseClassClass: string | undefined;
     instructorFirstName: string | undefined;
 }
@@ -52621,6 +52809,50 @@ export class PagedResultDtoOfTheoryLessonInstructorLookupTableDto implements IPa
 export interface IPagedResultDtoOfTheoryLessonInstructorLookupTableDto {
     totalCount: number;
     items: TheoryLessonInstructorLookupTableDto[] | undefined;
+}
+
+export class GetPredefinedTheoryLessonsForCreateOrEditOutput implements IGetPredefinedTheoryLessonsForCreateOrEditOutput {
+    predefinedTheoryLessons!: PredefinedTheoryLessonDto[] | undefined;
+
+    constructor(data?: IGetPredefinedTheoryLessonsForCreateOrEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["predefinedTheoryLessons"])) {
+                this.predefinedTheoryLessons = [] as any;
+                for (let item of _data["predefinedTheoryLessons"])
+                    this.predefinedTheoryLessons!.push(PredefinedTheoryLessonDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetPredefinedTheoryLessonsForCreateOrEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPredefinedTheoryLessonsForCreateOrEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.predefinedTheoryLessons)) {
+            data["predefinedTheoryLessons"] = [];
+            for (let item of this.predefinedTheoryLessons)
+                data["predefinedTheoryLessons"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetPredefinedTheoryLessonsForCreateOrEditOutput {
+    predefinedTheoryLessons: PredefinedTheoryLessonDto[] | undefined;
 }
 
 export class TheoryLessonTopicDto implements ITheoryLessonTopicDto {
