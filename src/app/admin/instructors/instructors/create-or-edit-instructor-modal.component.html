@@ -94,6 +94,19 @@
 								</div>
 								<input class="form-control" name="instructor.defaultOfficeId" [(ngModel)]="instructor.defaultOfficeId" type="text"  hidden>
 
+								<div class="form-group">
+									<label for="DefaultVehicle">{{l("DefaultVehicle")}}</label>
+									<div class="input-group">
+										<input class="form-control" id="vehicleName" name="vehicleName" [(ngModel)]="vehicleName" type="text" disabled>     
+										<div class="input-group-append">
+											<button class="btn btn-primary blue" (click)="openSelectVehicleModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon" type="button" (click)="setVehicleNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<input class="form-control" name="defaultVehicleId" [(ngModel)]="instructor.defaultVehicleId" type="text"  hidden>
+
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
@@ -104,5 +117,5 @@
     </div>
 
 <officeLookupTableModal #officeLookupTableModal (modalSave)="getOffice()"></officeLookupTableModal>
-		 
+<vehicleLookupTableModal #vehicleLookupTableModal (modalSave)="getNewVehicleId()"></vehicleLookupTableModal>	 
 </div>

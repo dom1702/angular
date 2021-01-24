@@ -10,6 +10,7 @@ import { Language, LanguagesService } from '@app/shared/common/services/language
 import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/instructor-lookup-table-modal.component';
 import { AssignStudentToCourseModalComponent } from './assign-student-to-course-modal.component';
 import { isValid } from "finnish-personal-identity-code-validator";
+import { VehicleLookupTableModalComponent } from '@app/shared/common/lookup/vehicle-lookup-table-modal.component';
 
 @Component({
     selector: 'createOrEditStudentModal',
@@ -19,6 +20,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
 
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @ViewChild('pricePackageLookupTableModal', { static: true }) pricePackageLookupTableModal: PricePackageLookupTableModalComponent;
+    @ViewChild('vehicleLookupTableModal') vehicleLookupTableModal: VehicleLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -48,7 +50,9 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
     assignToCourseAfterSave;
 
     @ViewChild('instructorLookupTableModal') instructorLookupTableModal: InstructorLookupTableModalComponent;
+
     instructorFullName = '';
+    vehicleName = '';
 
     constructor(
         injector: Injector,
@@ -118,6 +122,9 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
 
     show(studentId?: number): void {
 
+        this.instructorFullName = '';
+        this.vehicleName = '';
+
         this.assignToCourseAfterSave = false;
         this.dateOfBirth = null;
 
@@ -144,6 +151,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
                 this.student.id = studentId;
 
                 this.instructorFullName = result.defaultInstructorFullName;
+                this.vehicleName = result.defaultVehicleName;
 
                 if (this.student.dateOfBirth) {
                   //  this.dateOfBirth = this.student.dateOfBirth.toDate();
@@ -357,5 +365,23 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
         }
     }
 
+  openSelectVehicleModal() {
+        //this.vehicleLicenseClassLookupTableModal.id = this.vehicle.licenseClassId;
+        //this.vehicleLicenseClassLookupTableModal.displayName = this.licenseClassClass;
+        this.vehicleLookupTableModal.show();
+    }
 
+
+    setVehicleNull() {
+        this.student.defaultVehicleId = null;
+        this.vehicleName = '';
+    }
+
+
+    getNewVehicleId() {
+        if (this.vehicleLookupTableModal.id != null) {
+            this.student.defaultVehicleId = this.vehicleLookupTableModal.id;
+            this.vehicleName = this.vehicleLookupTableModal.name;
+        }
+    }
 }

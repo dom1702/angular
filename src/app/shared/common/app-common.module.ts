@@ -55,6 +55,7 @@ import { CreateOrEditPricePackageModalComponent } from './sales/pricePackages/cr
 import { PricePackageProductLookupTableModalComponent } from './sales/pricePackages/pricePackage-product-lookup-table-modal.component';
 import { ViewPricePackageModalComponent } from './sales/pricePackages/view-pricePackage-modal.component';
 import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { VehicleLookupTableModalComponent } from './lookup/vehicle-lookup-table-modal.component';
 
 @NgModule({
     imports: [
@@ -112,7 +113,8 @@ import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
         PricePackageProductLookupTableModalComponent,
         ViewPricePackageModalComponent,		
         CreateOrEditPricePackageModalComponent,
-        ViewProductModalComponent
+        ViewProductModalComponent,
+        VehicleLookupTableModalComponent
     ],
     exports: [
         TimeZoneComboComponent,
@@ -128,7 +130,8 @@ import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
         PricePackageProductLookupTableModalComponent,
         ViewPricePackageModalComponent,		
         CreateOrEditPricePackageModalComponent,
-        ViewProductModalComponent
+        ViewProductModalComponent,
+        VehicleLookupTableModalComponent
     ],
     providers: [
         DateTimeService,
