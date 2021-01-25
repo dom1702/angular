@@ -31978,6 +31978,8 @@ export class DrivingLessonDto implements IDrivingLessonDto {
     length!: number;
     startTime!: DateTime;
     completed!: boolean;
+    studentNotPresent!: boolean;
+    billToStudent!: boolean;
     topic!: string | undefined;
     licenseClass!: string | undefined;
     studentId!: number | undefined;
@@ -32003,6 +32005,8 @@ export class DrivingLessonDto implements IDrivingLessonDto {
             this.length = _data["length"];
             this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
             this.completed = _data["completed"];
+            this.studentNotPresent = _data["studentNotPresent"];
+            this.billToStudent = _data["billToStudent"];
             this.topic = _data["topic"];
             this.licenseClass = _data["licenseClass"];
             this.studentId = _data["studentId"];
@@ -32036,6 +32040,8 @@ export class DrivingLessonDto implements IDrivingLessonDto {
         data["length"] = this.length;
         data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
         data["completed"] = this.completed;
+        data["studentNotPresent"] = this.studentNotPresent;
+        data["billToStudent"] = this.billToStudent;
         data["topic"] = this.topic;
         data["licenseClass"] = this.licenseClass;
         data["studentId"] = this.studentId;
@@ -32062,6 +32068,8 @@ export interface IDrivingLessonDto {
     length: number;
     startTime: DateTime;
     completed: boolean;
+    studentNotPresent: boolean;
+    billToStudent: boolean;
     topic: string | undefined;
     licenseClass: string | undefined;
     studentId: number | undefined;
@@ -32201,6 +32209,8 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
     description!: string | undefined;
     internalDescription!: string | undefined;
     completed!: boolean;
+    studentNotPresent!: boolean;
+    billToStudent!: boolean;
     topic!: string | undefined;
     startingLocation!: string | undefined;
     licenseClass!: string | undefined;
@@ -32229,6 +32239,8 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
             this.description = _data["description"];
             this.internalDescription = _data["internalDescription"];
             this.completed = _data["completed"];
+            this.studentNotPresent = _data["studentNotPresent"];
+            this.billToStudent = _data["billToStudent"];
             this.topic = _data["topic"];
             this.startingLocation = _data["startingLocation"];
             this.licenseClass = _data["licenseClass"];
@@ -32261,6 +32273,8 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
         data["description"] = this.description;
         data["internalDescription"] = this.internalDescription;
         data["completed"] = this.completed;
+        data["studentNotPresent"] = this.studentNotPresent;
+        data["billToStudent"] = this.billToStudent;
         data["topic"] = this.topic;
         data["startingLocation"] = this.startingLocation;
         data["licenseClass"] = this.licenseClass;
@@ -32286,6 +32300,8 @@ export interface ICreateOrEditDrivingLessonDto {
     description: string | undefined;
     internalDescription: string | undefined;
     completed: boolean;
+    studentNotPresent: boolean;
+    billToStudent: boolean;
     topic: string | undefined;
     startingLocation: string | undefined;
     licenseClass: string | undefined;
@@ -39046,6 +39062,8 @@ export class LicenseClassDto implements ILicenseClassDto {
     class!: string | undefined;
     description!: string | undefined;
     symbolImageUrl!: string | undefined;
+    predefinedDrivingLessons!: PredefinedDrivingLessonDto[] | undefined;
+    predefinedTheoryLessons!: PredefinedTheoryLessonDto[] | undefined;
     id!: number;
 
     constructor(data?: ILicenseClassDto) {
@@ -39062,6 +39080,16 @@ export class LicenseClassDto implements ILicenseClassDto {
             this.class = _data["class"];
             this.description = _data["description"];
             this.symbolImageUrl = _data["symbolImageUrl"];
+            if (Array.isArray(_data["predefinedDrivingLessons"])) {
+                this.predefinedDrivingLessons = [] as any;
+                for (let item of _data["predefinedDrivingLessons"])
+                    this.predefinedDrivingLessons!.push(PredefinedDrivingLessonDto.fromJS(item));
+            }
+            if (Array.isArray(_data["predefinedTheoryLessons"])) {
+                this.predefinedTheoryLessons = [] as any;
+                for (let item of _data["predefinedTheoryLessons"])
+                    this.predefinedTheoryLessons!.push(PredefinedTheoryLessonDto.fromJS(item));
+            }
             this.id = _data["id"];
         }
     }
@@ -39078,6 +39106,16 @@ export class LicenseClassDto implements ILicenseClassDto {
         data["class"] = this.class;
         data["description"] = this.description;
         data["symbolImageUrl"] = this.symbolImageUrl;
+        if (Array.isArray(this.predefinedDrivingLessons)) {
+            data["predefinedDrivingLessons"] = [];
+            for (let item of this.predefinedDrivingLessons)
+                data["predefinedDrivingLessons"].push(item.toJSON());
+        }
+        if (Array.isArray(this.predefinedTheoryLessons)) {
+            data["predefinedTheoryLessons"] = [];
+            for (let item of this.predefinedTheoryLessons)
+                data["predefinedTheoryLessons"].push(item.toJSON());
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -39087,6 +39125,8 @@ export interface ILicenseClassDto {
     class: string | undefined;
     description: string | undefined;
     symbolImageUrl: string | undefined;
+    predefinedDrivingLessons: PredefinedDrivingLessonDto[] | undefined;
+    predefinedTheoryLessons: PredefinedTheoryLessonDto[] | undefined;
     id: number;
 }
 
@@ -39177,6 +39217,8 @@ export interface IPagedResultDtoOfGetLicenseClassForViewDto {
 export class CreateOrEditLicenseClassDto implements ICreateOrEditLicenseClassDto {
     class!: string;
     description!: string | undefined;
+    predefinedDrivingLessons!: PredefinedDrivingLessonDto[] | undefined;
+    predefinedTheoryLessons!: PredefinedTheoryLessonDto[] | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditLicenseClassDto) {
@@ -39192,6 +39234,16 @@ export class CreateOrEditLicenseClassDto implements ICreateOrEditLicenseClassDto
         if (_data) {
             this.class = _data["class"];
             this.description = _data["description"];
+            if (Array.isArray(_data["predefinedDrivingLessons"])) {
+                this.predefinedDrivingLessons = [] as any;
+                for (let item of _data["predefinedDrivingLessons"])
+                    this.predefinedDrivingLessons!.push(PredefinedDrivingLessonDto.fromJS(item));
+            }
+            if (Array.isArray(_data["predefinedTheoryLessons"])) {
+                this.predefinedTheoryLessons = [] as any;
+                for (let item of _data["predefinedTheoryLessons"])
+                    this.predefinedTheoryLessons!.push(PredefinedTheoryLessonDto.fromJS(item));
+            }
             this.id = _data["id"];
         }
     }
@@ -39207,6 +39259,16 @@ export class CreateOrEditLicenseClassDto implements ICreateOrEditLicenseClassDto
         data = typeof data === 'object' ? data : {};
         data["class"] = this.class;
         data["description"] = this.description;
+        if (Array.isArray(this.predefinedDrivingLessons)) {
+            data["predefinedDrivingLessons"] = [];
+            for (let item of this.predefinedDrivingLessons)
+                data["predefinedDrivingLessons"].push(item.toJSON());
+        }
+        if (Array.isArray(this.predefinedTheoryLessons)) {
+            data["predefinedTheoryLessons"] = [];
+            for (let item of this.predefinedTheoryLessons)
+                data["predefinedTheoryLessons"].push(item.toJSON());
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -39215,6 +39277,8 @@ export class CreateOrEditLicenseClassDto implements ICreateOrEditLicenseClassDto
 export interface ICreateOrEditLicenseClassDto {
     class: string;
     description: string | undefined;
+    predefinedDrivingLessons: PredefinedDrivingLessonDto[] | undefined;
+    predefinedTheoryLessons: PredefinedTheoryLessonDto[] | undefined;
     id: number | undefined;
 }
 
@@ -48542,6 +48606,8 @@ export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
     description!: string | undefined;
     internalDescription!: string | undefined;
     completed!: boolean;
+    studentNotPresent!: boolean;
+    billToStudent!: boolean;
     topic!: string | undefined;
     licenseClass!: string | undefined;
     startingLocation!: string | undefined;
@@ -48572,6 +48638,8 @@ export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
             this.description = _data["description"];
             this.internalDescription = _data["internalDescription"];
             this.completed = _data["completed"];
+            this.studentNotPresent = _data["studentNotPresent"];
+            this.billToStudent = _data["billToStudent"];
             this.topic = _data["topic"];
             this.licenseClass = _data["licenseClass"];
             this.startingLocation = _data["startingLocation"];
@@ -48602,6 +48670,8 @@ export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
         data["description"] = this.description;
         data["internalDescription"] = this.internalDescription;
         data["completed"] = this.completed;
+        data["studentNotPresent"] = this.studentNotPresent;
+        data["billToStudent"] = this.billToStudent;
         data["topic"] = this.topic;
         data["licenseClass"] = this.licenseClass;
         data["startingLocation"] = this.startingLocation;
@@ -48625,6 +48695,8 @@ export interface IDrivingLessonOfCourseDto {
     description: string | undefined;
     internalDescription: string | undefined;
     completed: boolean;
+    studentNotPresent: boolean;
+    billToStudent: boolean;
     topic: string | undefined;
     licenseClass: string | undefined;
     startingLocation: string | undefined;

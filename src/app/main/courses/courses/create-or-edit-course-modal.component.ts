@@ -11,16 +11,12 @@ import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
-interface PredefinedLesson {
-    name: string,
-    id: number
-}
 
 @Component({
     selector: 'createOrEditCourseModal',
     templateUrl: './create-or-edit-course-modal.component.html'
 })
-export class CreateOrEditCourseModalComponent extends AppComponentBase implements OnInit{
+export class CreateOrEditCourseModalComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @ViewChild('officeLookupTableModal', { static: true }) courseOfficeLookupTableModal: OfficeLookupTableModalComponent;
@@ -35,18 +31,12 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
     officeName = '';
 
-    predefinedDrivingLessons: PredefinedLesson[] = [];
-    predefinedTheoryLessons: PredefinedLesson[]= [];
-
-    selectedPredefinedDrivingLessons: PredefinedLesson[]= [];
-    selectedPredefinedTheoryLessons: PredefinedLesson[]= [];
-
     // Multiselect dropdowns
     pdlList = [];
     pdlselectedItems = [];
     ptlList = [];
     ptlselectedItems = [];
-    dropdownSettings : IDropdownSettings;
+    dropdownSettings: IDropdownSettings;
     placeholder = this.l('Select');
 
     pricePackages: any[];
@@ -67,9 +57,8 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
         super(injector);
     }
 
-    ngOnInit()
-    {
-        this.dropdownSettings = 
+    ngOnInit() {
+        this.dropdownSettings =
         {
             singleSelection: false,
             idField: 'item_id',
@@ -79,22 +68,6 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
             allowSearchFilter: false,
             noDataAvailablePlaceholderText: this.l('NoData')
         };
-    }
-
-    onPdlItemSelect(item: any) {
-        console.log(item);
-    }
-
-    onPdlSelectAll(items: any) {
-        console.log(items);
-    }
-
-    onPtlItemSelect(item: any) {
-        console.log(item);
-    }
-
-    onPtlSelectAll(items: any) {
-        console.log(items);
     }
 
     UpdatePricePackage() {
@@ -119,25 +92,22 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
                     this.pricePackages.find(e => e.id === this.course.pricePackages[i].id).checked = true;
                 }
 
-                if(this.course.pricePackages.some(e => e.id === this.course.highlightedPricePackageId))
-                this.pricePackageSelectedAsHighlighted  = this.pricePackages.find(e => e.id === this.course.highlightedPricePackageId);
+                if (this.course.pricePackages.some(e => e.id === this.course.highlightedPricePackageId))
+                    this.pricePackageSelectedAsHighlighted = this.pricePackages.find(e => e.id === this.course.highlightedPricePackageId);
             }
         });
-
     }
 
     updateHighlightedPricePackage(): void {
         console.log(this.pricePackageSelectedAsHighlighted);
     }
 
-    pricePackagesChanged(): void{
-        if(this.pricePackageSelectedAsHighlighted == null)
+    pricePackagesChanged(): void {
+        if (this.pricePackageSelectedAsHighlighted == null)
             return;
 
-        for(var i = 0; i < this.pricePackages.length; i++)
-        {
-            if(!this.pricePackages[i].checked && this.pricePackageSelectedAsHighlighted.id == this.pricePackages[i].id)
-            {
+        for (var i = 0; i < this.pricePackages.length; i++) {
+            if (!this.pricePackages[i].checked && this.pricePackageSelectedAsHighlighted.id == this.pricePackages[i].id) {
                 this.pricePackageSelectedAsHighlighted = null;
                 return;
             }
@@ -148,38 +118,12 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
         this.pricePackageSelectedAsHighlighted = null;
 
-        this._predefinedDrivingLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
-
-            console.log(result);
-
+        if (!courseId) {
             this.pdlList = [];
             this.pdlselectedItems = [];
-
-            for (var i = 0; i < result.length; i++) {
-                this.pdlList.push(
-                    {
-                        item_id: result[i].id,
-                        item_text: result[i].name
-                    });
-            }
-        });
-
-        this._predefinedTheoryLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
-
             this.ptlList = [];
             this.ptlselectedItems = [];
 
-            for (var i = 0; i < result.length; i++) {
-                this.ptlList.push(
-                    {
-                        item_id: result[i].id,
-                        item_text: result[i].name
-                    });
-            }
-        });
-
-        
-        if (!courseId) {
             this.course = new CreateOrEditCourseDto();
             this.course.id = courseId;
             this.course.startDate = this._dateTimeService.getStartOfDay();
@@ -196,7 +140,34 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
             this.active = true;
             this.modal.show();
-        } else {
+        } 
+        else {
+            this._predefinedDrivingLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
+
+                this.pdlList = [];
+
+                for (var i = 0; i < result.length; i++) {
+                    this.pdlList.push(
+                        {
+                            item_id: result[i].id,
+                            item_text: result[i].name
+                        });
+                }
+            });
+
+            this._predefinedTheoryLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
+
+                this.ptlList = [];
+
+                for (var i = 0; i < result.length; i++) {
+                    this.ptlList.push(
+                        {
+                            item_id: result[i].id,
+                            item_text: result[i].name
+                        });
+                }
+            });
+
             this._coursesServiceProxy.getCourseForEdit(courseId).subscribe(result => {
                 this.course = result.course;
 
@@ -205,32 +176,26 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
                 this.UpdatePricePackage();
 
-                console.log(result);
+                this.pdlselectedItems = [];
 
-                for (var item of this.pdlList) {
-                    for (var pdl of this.course.predefinedDrivingLessons) {
-                        if (item.item_text == pdl.name) {
-                            this.pdlselectedItems.push(
-                                {
-                                    item_id: item.item_id,
-                                    item_text: item.item_text
-                                }
-                            );
+                for (var pdl of this.course.predefinedDrivingLessons) {
+                    this.pdlselectedItems.push(
+                        {
+                            item_id: pdl.id,
+                            item_text: pdl.name
                         }
-                    }
+                    );
                 }
 
-                for (var item of this.ptlList) {
-                    for (var ptl of this.course.predefinedTheoryLessons) {
-                        if (item.item_text == ptl.name) {
-                            this.ptlselectedItems.push(
-                                {
-                                    item_id: item.item_id,
-                                    item_text: item.item_text
-                                }
-                            );
+                this.ptlselectedItems = [];
+
+                for (var ptl of this.course.predefinedTheoryLessons) {
+                    this.ptlselectedItems.push(
+                        {
+                            item_id: ptl.id,
+                            item_text: ptl.name
                         }
-                    }
+                    );
                 }
 
                 this.active = true;
@@ -261,8 +226,7 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
         this.course.pricePackages = [];
         for (var i = 0; i < this.pricePackages.length; i++) {
-            if(this.pricePackages[i].checked)
-            {
+            if (this.pricePackages[i].checked) {
                 var pp: PricePackageDto = new PricePackageDto()
                 pp.id = this.pricePackages[i].id;
                 this.course.pricePackages.push(pp);
@@ -271,7 +235,7 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
 
         this.course.licenseClass = this.licenseClassSelected;
-        if(this.pricePackageSelectedAsHighlighted != null)
+        if (this.pricePackageSelectedAsHighlighted != null)
             this.course.highlightedPricePackageId = this.pricePackageSelectedAsHighlighted.id;
 
         this._coursesServiceProxy.createOrEdit(this.course)
@@ -321,13 +285,19 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
         this._predefinedDrivingLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
 
-            this.predefinedDrivingLessons = [];
-
+            this.pdlList = [];
+            this.pdlselectedItems = [];
             for (var i = 0; i < result.length; i++) {
-                this.predefinedDrivingLessons.push(
+                this.pdlList.push(
                     {
-                        id: result[i].id,
-                        name: result[i].name
+                        item_id: result[i].id,
+                        item_text: result[i].name
+                    }
+                );
+                this.pdlselectedItems.push(
+                    {
+                        item_id: result[i].id,
+                        item_text: result[i].name
                     }
                 );
             }
@@ -335,19 +305,37 @@ export class CreateOrEditCourseModalComponent extends AppComponentBase implement
 
         this._predefinedTheoryLessonsServiceProxy.getAllForLookup(this.licenseClassSelected).subscribe(result => {
 
-            this.predefinedTheoryLessons = [];
-
+            this.ptlList = [];
+            this.ptlselectedItems = [];
             for (var i = 0; i < result.length; i++) {
-                this.predefinedTheoryLessons.push(
+                this.ptlList.push(
                     {
-                        id: result[i].id,
-                        name: result[i].name
+                        item_id: result[i].id,
+                        item_text: result[i].name
+                    }
+                );
+                this.ptlselectedItems.push(
+                    {
+                        item_id: result[i].id,
+                        item_text: result[i].name
                     }
                 );
             }
         });
     }
 
+    atLeastOnePricePackageSelected() : boolean
+    {
+        if(this.pricePackages == undefined)
+        return false;
+
+        for (var i = 0; i < this.pricePackages.length; i++) {
+            if(this.pricePackages[i].checked)
+            return true;
+        }
+
+        return false;
+    }
 
     close(): void {
         this.active = false;

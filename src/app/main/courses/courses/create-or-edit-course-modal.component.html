@@ -130,7 +130,7 @@
 										<div class="col-10">
 											<div class="row">
 												<label attr.for="PricePackage_{{pp.dl}}" class="checkbox">
-													<input id="PricePackage_{{pp.dl}}" type="checkbox" name="{{pp.dl}}" [(ngModel)]="pp.checked" (change)='pricePackagesChanged()' required>
+													<input id="PricePackage_{{pp.dl}}" type="checkbox" name="{{pp.dl}}" [(ngModel)]="pp.checked" (change)='pricePackagesChanged()'>
 													<span></span>
 													{{pp.dl}}
 												
@@ -143,20 +143,12 @@
 								</div>
 							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label>{{l("PricePackages")}}</label>
-							<ejs-multiselect #pp_multiselect id='multiselectelement' [dataSource]='pricePackages'
-								[fields]='fields' [placeholder]='placeholderPricePackageSelection'>
-							</ejs-multiselect>
-						</div> -->
 						<br />
 						<h4>Predefined lessons</h4>
 						<div class="form-group">
 							<label>{{l("PredefinedDrivingLessons")}}</label>
 							<ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"  [data]="pdlList"
-							[(ngModel)]="pdlselectedItems" [ngModelOptions]="{standalone: true}"
-							 (onSelect)="onPdlItemSelect($event)"
-							(onSelectAll)="onPdlSelectAll($event)">
+							[(ngModel)]="pdlselectedItems" [ngModelOptions]="{standalone: true}">
 						</ng-multiselect-dropdown>
 								<!-- <p-multiSelect id="predefinedDrivingLessons" name="predefinedDrivingLessons" [options]="predefinedDrivingLessons" [(ngModel)]="selectedPredefinedDrivingLessons" optionLabel="name" styleClass="dark-panel"></p-multiSelect> -->
 
@@ -164,9 +156,7 @@
 						<div class="form-group">
 							<label>{{l("PredefinedTheoryLessons")}}</label>
 							<ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"  [data]="ptlList"
-							[(ngModel)]="ptlselectedItems" [ngModelOptions]="{standalone: true}"
-							(onSelect)="onPtlItemSelect($event)"
-							(onSelectAll)="onPtlSelectAll($event)">
+							[(ngModel)]="ptlselectedItems" [ngModelOptions]="{standalone: true}">
 						</ng-multiselect-dropdown>
 								<!-- <p-multiSelect id="predefinedTheoryLessons"  name="predefinedTheoryLessons"  [options]="predefinedTheoryLessons" [(ngModel)]="selectedPredefinedTheoryLessons" optionLabel="name"></p-multiSelect> -->
 
@@ -196,7 +186,7 @@
 				<div class="modal-footer">
 					<button [disabled]="saving" type="button" class="btn btn-default"
 						(click)="close()">{{l("Cancel")}}</button>
-					<button type="submit" class="btn btn-primary blue" [disabled]="!courseForm.form.valid"
+					<button type="submit" class="btn btn-primary blue" [disabled]="!courseForm.form.valid || !atLeastOnePricePackageSelected()"
 						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
 						<span>{{l("Save")}}</span></button>
 				</div>

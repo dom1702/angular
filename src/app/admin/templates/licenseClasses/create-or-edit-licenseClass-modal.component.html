@@ -25,6 +25,24 @@
 									<input type="text" id="LicenseClass_Description" class="form-control" [(ngModel)]="licenseClass.description" name="Description"    />
                                 </div>
                                 
+                                <h4>Predefined lessons</h4>
+                                <div class="form-group">
+                                    <label>{{l("PredefinedDrivingLessons")}}</label>
+                                    <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings" [data]="pdlList"
+                                        [(ngModel)]="pdlselectedItems" [ngModelOptions]="{standalone: true}">
+                                    </ng-multiselect-dropdown>
+                                    <!-- <p-multiSelect id="predefinedDrivingLessons" name="predefinedDrivingLessons" [options]="predefinedDrivingLessons" [(ngModel)]="selectedPredefinedDrivingLessons" optionLabel="name" styleClass="dark-panel"></p-multiSelect> -->
+                                
+                                </div>
+                                <div class="form-group">
+                                    <label>{{l("PredefinedTheoryLessons")}}</label>
+                                    <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings" [data]="ptlList"
+                                        [(ngModel)]="ptlselectedItems" [ngModelOptions]="{standalone: true}"
+                                       >
+                                    </ng-multiselect-dropdown>
+                                    <!-- <p-multiSelect id="predefinedTheoryLessons"  name="predefinedTheoryLessons"  [options]="predefinedTheoryLessons" [(ngModel)]="selectedPredefinedTheoryLessons" optionLabel="name"></p-multiSelect> -->
+                                
+                                </div>
                                 <!-- <div class="form-group">
                                     <label>{{"ClassImage" | localize}}</label>
                                     <div class="row m-form">

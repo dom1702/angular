@@ -53,6 +53,11 @@
                             {{l('Simulator')}}
                             <p-sortIcon field="doneOnSimulator"></p-sortIcon>
                         </th>
+
+                        <th style="width: 50px" pSortableColumn="billToStudent">
+                            {{l('Bill')}}
+                            <p-sortIcon field="billToStudent"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-record="$implicit">
@@ -145,6 +150,13 @@
                             <div *ngIf="record.doneOnSimulator" class="text-center"><i
                                     class="fa fa-check-circle m--font-success" title="True"></i></div>
                             <div *ngIf="!record.doneOnSimulator" class="text-center"><i class="fa fa-times-circle"
+                                    title="False"></i></div>
+                        </td>
+                        <td style="width:100px">
+                            <span class="p-column-title"> {{l('Bill')}}</span>
+                            <div *ngIf="record.billToStudent" class="text-center"><i
+                                    class="fa fa-check-circle m--font-success" title="True"></i></div>
+                            <div *ngIf="!record.billToStudent" class="text-center"><i class="fa fa-times-circle"
                                     title="False"></i></div>
                         </td>
                     </tr>

@@ -69,6 +69,8 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
     currentStudentDefaultInstructorId;
 
+    currentState = 0;
+
     constructor(
         injector: Injector,
         private _drivingLessonsServiceProxy: DrivingLessonsServiceProxy,
@@ -98,6 +100,26 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         this.numberOfLessonsAddition = "(á " + minutesPerLesson + " minutes)";
     }
 
+    updateState()
+    {
+        if(this.currentState == 1)
+        {
+            this.drivingLesson.completed = false;
+            this.drivingLesson.studentNotPresent = false;
+        }
+        else  if(this.currentState == 2)
+        {
+            this.drivingLesson.completed = true;
+            this.drivingLesson.studentNotPresent = false;
+        }
+        else  if(this.currentState == 3)
+        {
+            this.drivingLesson.completed = false;
+            this.drivingLesson.studentNotPresent = true;
+        }
+        console.log(this.currentState);
+    }
+
     onItemSelect(item: any) {
         console.log(item);
     }
@@ -116,7 +138,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
         if (!drivingLessonId) {
 
+            this.currentState = 1;
             this.drivingLesson = new CreateOrEditDrivingLessonDto();
+            this.drivingLesson.billToStudent = true;
 
             if (studentId != null) {
                 this.drivingLesson.studentId = studentId;
@@ -184,6 +208,13 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                 this.startTime = result.drivingLesson.startTime.toJSDate();
                 this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
+                if(this.drivingLesson.completed)
+                this.currentState = 2;
+            else if(this.drivingLesson.studentNotPresent)
+                this.currentState = 3;
+            else
+                this.currentState = 1;
+
                 this.active = true;
                 this.updateInstructors(true);
 
@@ -206,6 +237,13 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                 this.studentSelected = true;
                 this.selectedStudentCourse = null;
                 this.studentCourses = null;
+
+                if(this.drivingLesson.completed)
+                    this.currentState = 2;
+                else if(this.drivingLesson.studentNotPresent)
+                    this.currentState = 3;
+                else
+                    this.currentState = 1;
 
                 this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
                     "",

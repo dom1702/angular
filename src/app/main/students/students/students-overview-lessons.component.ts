@@ -82,7 +82,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
                     doneOnSimulator: i.doneOnSimulator, // not implemented
                     predefinedDrivingLessonId: i.predefinedDrivingLessonId,
                     feedbackPdfFileGuid: i.feedbackPdfFile,
-                    isExam: i.isExam
+                    isExam: i.isExam,
+                    billToStudent: i.billToStudent
                 }
 
                 if(lesson.predefinedDrivingLessonId == null && !lesson.isExam)
@@ -92,6 +93,7 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
                 drivingLessons.push(lesson);
             }
+            console.log(drivingLessons);
 
             this.primengTableHelper.totalRecordsCount = drivingLessons.length;
             this.primengTableHelper.records = drivingLessons;
