@@ -36,8 +36,9 @@
                         <h5>Student: {{studentFullName}}</h5>
                     </div>
 
-                    <div *ngIf="studentSelected && studentCourses != null && studentCourses.length > 0">
-                        <div class="m--margin-top-40">
+                    <div *ngIf="studentSelected && studentCourses != null && studentCourses.length > 0"
+                        class="form-group">
+                        <div class="my-10">
 
                             <div *ngIf="studentCourses != null && studentCourses.length > 0">
                                 <label>Course Specific: </label><br>
@@ -51,10 +52,11 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-6 border-right">
                                     <div class="form-group">
-                                        <label class="radio">
+                                        <label class="radio" *ngIf="numberOfCheckedPdls == 0">
                                             <input type="radio" name="pdl_option" [value]="null"
                                                 [(ngModel)]="selectedPdl" (change)='updateCheck()'>
                                             <span></span>
@@ -64,8 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div *ngIf="selectedStudentCourse">
-
+                                    <div *ngIf="selectedStudentCourse && this.drivingLesson.id != null">
                                         <div class="col-md-auto"
                                             *ngFor="let pdl of selectedStudentCourse.predefinedDrivingLessons">
                                             <label class="radio">
@@ -73,8 +74,17 @@
                                                     [(ngModel)]="selectedPdl" (change)='updateCheck()'>
                                                 <span></span>
                                                 {{pdl.name}}
-
-
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-list"
+                                        *ngIf="selectedStudentCourse && this.drivingLesson.id == null">
+                                        <div *ngFor="let pdl of pdlCheckboxesList">
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="pdl_checkboxes" [(ngModel)]="pdl.checked"
+                                                    (change)='updatedCheckboxList()'>
+                                                <span></span>
+                                                {{pdl.name}}
                                             </label>
                                         </div>
                                     </div>
@@ -82,7 +92,13 @@
                             </div>
                         </div>
 
-                        <div class="checkbox-list">
+                        <div class="form-group" *ngIf="numberOfCheckedPdls > 1">
+                            <alert type="info">
+                                <strong>Info!</strong> Please note that you will create more than one lesson in a row
+                            </alert>
+                        </div>
+
+                        <div class="form-group" *ngIf="numberOfCheckedPdls < 2">
                             <label for="SetTopicAutomatically" class="checkbox">
                                 <input id="SetTopicAutomatically" type="checkbox" name="SetTopicAutomatically"
                                     [(ngModel)]="setTopicNameAutomatically">
@@ -92,7 +108,8 @@
                             </label>
                         </div>
 
-                        <div *ngIf="!selectedPdl && !setTopicNameAutomatically" class="form-group m-form__group">
+                        <div *ngIf="!selectedPdl && !setTopicNameAutomatically && numberOfCheckedPdls < 2"
+                            class="form-group">
                             <label for="DrivingLessonTopic">{{l("DrivingLessonTopic")}}</label>
                             <div class="input-group">
                                 <input class="form-control" id="DrivingLessonTopic" name="drivingLessonTopic"
@@ -116,7 +133,7 @@
                                 [(ngModel)]="drivingLesson.startingLocation" name="StartingLocation" />
                         </div>
 
-                        <div class="m--margin-top-40">
+                        <div class="mt-20">
                             <h5>{{l("Resources")}}</h5>
                             <div [hidden]="instructorPersonalLesson" class="form-group">
                                 <label>{{l("Instructors")}}</label>
@@ -149,7 +166,7 @@
                         </div>
 
 
-                        <div class="m--margin-top-40">
+                        <div class="mt-20">
                             <h5>{{l("Time")}}</h5>
                             <div class="row">
                                 <div class="col-6 border-right">

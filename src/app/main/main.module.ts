@@ -136,6 +136,8 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { StudentsOverviewViewPaymentModalComponent } from './students/students/students-overview-invoices-payment-modal.component';
 import { MoveToAnotherCourseModalComponent } from './students/students/move-to-another-course-modal.component';
 import { ChangePricePackageModalComponent } from './students/students/change-price-package-modal.component';
+import { EditStudentsCourseModalComponent } from './courses/courses/edit-students-course-modal.component';
+import { CourseStudentLookupTableModalComponent } from './courses/courses/course-student-lookup-table-modal.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -172,7 +174,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         InputMaskModule,		
         TableModule,
         ReactiveFormsModule,
-        //TabsModule.forRoot(), try this if its not working
+        TabsModule.forRoot(),
         NgxChartsModule,
         NgMultiSelectDropDownModule.forRoot(),
         ScheduleAllModule,
@@ -266,6 +268,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       StudentsOverviewViewPaymentModalComponent,
       MoveToAnotherCourseModalComponent,
       ChangePricePackageModalComponent,
+      EditStudentsCourseModalComponent,
+      CourseStudentLookupTableModalComponent,
       
       AssignStudentToCourseModalComponent,
       SVLicenseClassSelectionComponent,

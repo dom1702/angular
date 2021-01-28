@@ -9,32 +9,57 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <div class="row justify-content-center mt-3">
+                    <div class="row justify-content-center">
 
-                        <button *ngIf="allowCreateDrivingLesson" [disabled]="saving" type="button"
-                            class="btn btn-primary blue"
-                            (click)="openDrivingLessonModal()">{{l("DrivingLesson")}}</button>
+                        <!-- <div class="col-md-auto m-5" *ngIf="allowCreateDrivingLesson">
+                         
+                                <a class="btn btn-primary btn-block"
+                                    (click)="openDrivingLessonModal()">
+                                    <i class="fa fa-car"></i><br><span>{{l("DrivingLesson")}}</span>
+                                </a>
+                            
+                        </div>
+                        <div class="col-md-auto m-5" *ngIf="allowCreateSimulatorLesson">
+                         
+                                <a class="btn btn-primary btn-block"
+                                    (click)="openSimulatorLessonModal()"> <i
+                                        class="fa fa-desktop"></i><br><span>{{l("SimulatorLesson")}}</span></a>
+                           
+                        </div>
+                        <div class="col-md-auto m-5" *ngIf="allowCreateTheoryLesson">
+                           
+                                <a class="btn btn-primary btn-block"
+                                    (click)="openTheoryLessonModal()"> <i
+                                        class="fa fa-graduation-cap"></i><br><span>{{l("TheoryLesson")}}</span></a>
+                         
+                        </div>
+                        <div class="col-md-auto m-5" *ngIf="allowCreateEvent">
+                            
+                                <a class="btn btn-primary btn-block"
+                                    (click)="openEventModal()"> <i
+                                        class="fa fa-calendar"></i><br><span>{{l("Event")}}</span></a>
+                           
+                        </div> -->
+                        <button *ngIf="allowCreateDrivingLesson" type="button" class="btn btn-primary btn-block"
+                            (click)="openDrivingLessonModal()"><i class="fa fa-car"></i><span>{{l("DrivingLesson")}}</span></button>
                     </div>
                     <div class="row justify-content-center mt-3" *ngIf="allowCreateSimulatorLesson">
-                        <button  [disabled]="saving" type="button"
-                            class="btn btn-primary blue"
-                            (click)="openSimulatorLessonModal()">{{l("SimulatorLesson")}}</button>
+                        <button type="button" class="btn btn-primary btn-block" (click)="openSimulatorLessonModal()"><i class="fa fa-desktop"></i><span>{{l("SimulatorLesson")}}</span></button>
                     </div>
                     <div class="row justify-content-center mt-3">
-                        <button *ngIf="allowCreateTheoryLesson" [disabled]="saving" type="button"
-                            class="btn btn-primary blue"
-                            (click)="openTheoryLessonModal()">{{l("TheoryLesson")}}</button>
+                        <button *ngIf="allowCreateTheoryLesson" type="button" class="btn btn-primary btn-block"
+                            (click)="openTheoryLessonModal()"> <i class="fa fa-graduation-cap"></i><span>{{l("TheoryLesson")}}</span></button>
                     </div>
                     <div class="row justify-content-center mt-3">
-                        <button *ngIf="allowCreateEvent" [disabled]="saving" type="button" class="btn btn-primary blue"
-                            (click)="openEventModal()">{{l("Event")}}</button>
+                        <button *ngIf="allowCreateEvent" type="button" class="btn btn-primary btn-block"
+                            (click)="openEventModal()"> <i class="fa fa-calendar"></i><span>{{l("Event")}}</span></button>
                     </div>
+
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button [disabled]="saving" type="button" class="btn btn-default"
-                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
             </div>
         </div>
     </div>

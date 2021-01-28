@@ -105,7 +105,11 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
-    events: this.updateEvents.bind(this)
+    events: this.updateEvents.bind(this),
+    eventDidMount: (info) => {
+      console.log(info);
+      info.el.style.borderWidth = '4px';
+     }
 
   };
 
@@ -231,6 +235,19 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
           resourceIds.push("instr_" + item.instructorIds[instructorId]); 
           }
 
+          var borderColor = 'yellow';
+          if(item.appointmentType == EventType.Event || item.appointmentType == EventType.Holiday)
+          {
+            borderColor = backgroundColor;
+          }
+          else
+          {
+          if(item.completed)
+            borderColor = 'green';
+          if(item.studentNotPresent)
+            borderColor = 'red';
+          }
+
           data.push(
             {
               //Id: item.id,
@@ -243,7 +260,8 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
               extendedProps: {
                 appointmentType: item.appointmentType
               },
-              allDay: item.allDay
+              allDay: item.allDay,
+              borderColor: borderColor
               //AppointmentType: item.appointmentType.toString(),
               // VehicleID: 1
             });
@@ -254,6 +272,11 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
         successCallback(data);
 
       });
+  }
+
+  eventRender(info)
+  {
+    console.log(info);
   }
 
   handleDateClick(arg) {
