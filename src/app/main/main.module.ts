@@ -8,11 +8,6 @@ import { PaymentsComponent } from './sales/payments/payments.component';
 import { ViewPaymentModalComponent } from './sales/payments/view-payment-modal.component';
 import { CreateOrEditPaymentModalComponent } from './sales/payments/create-or-edit-payment-modal.component';
 
-import { TestResourcesComponent } from './resources/testResources/testResources.component';
-import { ViewTestResourceModalComponent } from './resources/testResources/view-testResource-modal.component';
-import { CreateOrEditTestResourceModalComponent } from './resources/testResources/create-or-edit-testResource-modal.component';
-import { TestResourceVehicleLookupTableModalComponent } from './resources/testResources/testResource-vehicle-lookup-table-modal.component';
-
 import { UtilsModule } from '@shared/utils/utils.module';
 import { CountoModule } from 'angular2-counto';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -205,11 +200,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
 		ViewPaymentModalComponent,
 		CreateOrEditPaymentModalComponent,
-		TestResourcesComponent,
-
-		ViewTestResourceModalComponent,
-		CreateOrEditTestResourceModalComponent,
-    TestResourceVehicleLookupTableModalComponent,
         DashboardComponent,
         TheoryLessonsComponent,
       ViewTheoryLessonModalComponent,		
