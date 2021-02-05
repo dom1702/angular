@@ -57,7 +57,7 @@
                     </div> -->
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-auto">
+                                <div class="col-md-auto" *ngIf="allowedToSeeOwnDrivingLessons">
                                     <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
                                 [(ngModel)]="eventTypeFilter.drivingLessons" btnCheckbox btnCheckboxTrue="true"
                                 btnCheckboxFalse="false">
@@ -72,21 +72,7 @@
 
                                     </label>
                                 </div>
-                                <div *ngIf="simulatorFeatureEnabled" class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.simulatorLessons" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("SimulatorLessons")}}
-                            </button> -->
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="showSimulatorLessons"
-                                            [(ngModel)]="eventTypeFilter.simulatorLessons" (change)="refetchEvents()">
-                                        <span></span>
-                                        {{l("SimulatorLessons")}}
-
-                                    </label>
-                                </div>
-                                <div class="col-md-auto">
+                                <div class="col-md-auto" *ngIf="allowedToSeeOwnDrivingLessons">
                                     <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
                                 [(ngModel)]="eventTypeFilter.theoryLessons" btnCheckbox btnCheckboxTrue="true"
                                 btnCheckboxFalse="false">
@@ -100,7 +86,7 @@
 
                                     </label>
                                 </div>
-                                <div class="col-md-auto">
+                                <div class="col-md-auto" *ngIf="allowedToSeeOwnAppointments">
                                     <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
                                 [(ngModel)]="eventTypeFilter.otherEvents" btnCheckbox btnCheckboxTrue="true"
                                 btnCheckboxFalse="false">
@@ -152,8 +138,8 @@
 
                             </div>
                         </div>
-                        <h5 class="m--margin-top-20">Filter Resources (relevant for resource view)</h5>
-                        <div class="form-group">
+                        <h5 class="m--margin-top-20" *ngIf="allowedToSeeOwnDrivingLessons && vehiclesResources.length > 0">Filter Resources (relevant for resource view)</h5>
+                        <div class="form-group" *ngIf="allowedToSeeOwnDrivingLessons&& vehiclesResources.length > 0">
                             <div class="row">
                                 <div class="col-md-auto">
                                     <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"

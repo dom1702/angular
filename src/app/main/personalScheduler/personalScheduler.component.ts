@@ -138,40 +138,40 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
       const name = Calendar.name;
       this.simulatorFeatureEnabled = abp.features.isEnabled("App.Simulator");
   
-      this._schedulerServiceProxy.getAllVehicles().subscribe(result =>
-        {
-          for (let i of result.vehicles) {
-            this.vehiclesResources.push(
-              {
-                id: "veh_" + i.id,
-                name: i.name,
-                checked: false
-              }
-            );
-          }
-        });
+      // this._schedulerServiceProxy.getAllVehicles().subscribe(result =>
+      //   {
+      //     for (let i of result.vehicles) {
+      //       this.vehiclesResources.push(
+      //         {
+      //           id: "veh_" + i.id,
+      //           name: i.name,
+      //           checked: false
+      //         }
+      //       );
+      //     }
+      //   });
   
   
   
           this.calendarOptions.resources = null;
     }
   
-    updateResourcesList()
-    {
-      this.calendarOptions.resources = null;
+     updateResourcesList()
+     {
+    //   this.calendarOptions.resources = null;
   
-      var res : any[] = [];
+    //   var res : any[] = [];
   
-      for (let v of this.vehiclesResources) {
-        if(v.checked)
-        res.push({
-          id: v.id,
-          title : v.name
-        });
-      }
+    //   for (let v of this.vehiclesResources) {
+    //     if(v.checked)
+    //     res.push({
+    //       id: v.id,
+    //       title : v.name
+    //     });
+    //   }
   
-      this.calendarOptions.resources = res;
-    }
+    //   this.calendarOptions.resources = res;
+     }
   
     updateEvents(info, successCallback, failureCallback) {
       console.log(info);
@@ -266,8 +266,23 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
     handleDateClick(arg) {
       console.log(arg);
       this.startTime = arg.date;
-      this.createEventTypeModal.show(this, this.isGranted('Pages.DrivingLessons.Create'), this.isGranted('Pages.DrivingLessons.Create'), true,
-      this.isGranted('Pages.SimulatorLessons.Create')); 
+
+      if(!this.isGranted('Pages.InstructorsOwnDrivingLessons.Create'))
+      {
+          this.openEventModal();
+      }
+      else if(!this.isGranted('OwnAppointments.Create'))
+      {
+          this.openDrivingLessonModal();
+      }
+      else
+      {
+          this.createEventTypeModal.show(this, this.isGranted('Pages.InstructorsOwnDrivingLessons.Create'), false, 
+              this.isGranted('OwnAppointments.Create'), false); 
+      }
+
+      //this.createEventTypeModal.show(this, this.isGranted('Pages.DrivingLessons.Create'), this.isGranted('Pages.DrivingLessons.Create'), true,
+      //this.isGranted('Pages.SimulatorLessons.Create')); 
     }
   
     handleDateSelect(selectInfo: DateSelectArg) {
