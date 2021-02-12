@@ -39,8 +39,10 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     customCssUploader: FileUploader;
 
     invoiceLogoUploader: FileUploader;
+    ceoSignatureUploader : FileUploader
 
     invoiceLogo: any;
+    ceoSignature:any;
 
     remoteServiceBaseUrl = AppConsts.remoteServiceBaseUrl;
 
@@ -74,6 +76,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.initUploaders();
         this.loadSocialLoginSettings();
         this.updateInvoiceLogoThumbnail();
+        this.updateCeoSignatureThumbnail();
     }
 
     getSettings(): void {
@@ -133,6 +136,15 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
             }
         );
 
+        this.ceoSignatureUploader = this.createUploader(
+            '/TenantCustomization/UploadCeoSignature',
+            result => {
+                this._tenantSettingsService.updateCeoSignatureId(result.id);
+                this._tenantSettingsService.updateCeoSignatureFileType(result.fileType);
+                this.updateCeoSignatureThumbnail();
+            }
+        );
+
         this.customCssUploader = this.createUploader(
             '/TenantCustomization/UploadCustomCss',
             result => {
@@ -186,6 +198,10 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.invoiceLogoUploader.uploadAll();
     }
 
+    uploadCeoSignature(): void {
+        this.ceoSignatureUploader.uploadAll();
+    }
+
     uploadCustomCss(): void {
         this.customCssUploader.uploadAll();
     }
@@ -201,6 +217,21 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
             {
                let objectURL = 'data:image/jpeg;base64,' + result;
                 this.invoiceLogo = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            }
+        });
+    }
+
+    updateCeoSignatureThumbnail()
+    {
+        this._tenantSettingsService.getCeoSignature().subscribe((result: any) => {
+            if(result == null)
+            {
+                this.ceoSignature = null;
+            }
+            else
+            {
+               let objectURL = 'data:image/jpeg;base64,' + result;
+                this.ceoSignature = this.sanitizer.bypassSecurityTrustUrl(objectURL);
             }
         });
     }
@@ -229,6 +260,13 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     clearInvoiceLogo(): void {
         this._tenantSettingsService.clearInvoiceLogo().subscribe(() => {
             this.updateInvoiceLogoThumbnail();
+            this.notify.info(this.l('ClearedSuccessfully'));
+        });
+    }
+
+    clearCeoSignature(): void {
+        this._tenantSettingsService.clearCeoSignature().subscribe(() => {
+            this.updateCeoSignatureThumbnail();
             this.notify.info(this.l('ClearedSuccessfully'));
         });
     }

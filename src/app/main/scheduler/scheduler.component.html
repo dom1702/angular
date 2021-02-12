@@ -232,7 +232,13 @@
                             </div>
                         </div>
                         <div class="form-group mt-10">
-                            <full-calendar #calendar [options]="calendarOptions" ></full-calendar>
+                            <!-- <full-calendar #calendar [options]="calendarOptions"></full-calendar> -->
+                            <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" scrollTime="08:00"
+                                style="height: 1000px;">
+                                <kendo-scheduler-day-view>
+                                </kendo-scheduler-day-view>
+                             
+                            </kendo-scheduler>
                         </div>
                     </div>
                 </div>

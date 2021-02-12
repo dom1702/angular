@@ -1,5 +1,5 @@
 ﻿import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { PaymentStudentInvoiceLookupTableModalComponent } from './sales/payments/payment-studentInvoice-lookup-table-modal.component';
@@ -133,6 +133,9 @@ import { MoveToAnotherCourseModalComponent } from './students/students/move-to-a
 import { ChangePricePackageModalComponent } from './students/students/change-price-package-modal.component';
 import { EditStudentsCourseModalComponent } from './courses/courses/edit-students-course-modal.component';
 import { CourseStudentLookupTableModalComponent } from './courses/courses/course-student-lookup-table-modal.component';
+import { SchedulerModule } from '@progress/kendo-angular-scheduler';
+
+import '@progress/kendo-angular-intl/locales/de/all';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -192,7 +195,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         PaginationModule.forRoot(),
         ScrollPanelModule,
         CheckBoxModule  ,
-        FullCalendarModule
+        FullCalendarModule,
+        SchedulerModule
      ],
     declarations: [
     PaymentStudentInvoiceLookupTableModalComponent,
@@ -273,11 +277,12 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       LicenseClassLookupTableModalComponent,
       SendMessageToStudentModalComponent,
       SVTheoryPracticeComponent,
-      OfficeLookupTableModalComponent  ],
+      OfficeLookupTableModalComponent],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
-        { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale }
+        { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale },
+        { provide: LOCALE_ID, useValue: 'de'}
     ]
 })
 export class MainModule { }

@@ -47,23 +47,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Simulator_Type">{{l("SimulatorType")}}</label>
-                        <select class="form-control" name="SimulatorType" id="Simulator_Type" [(ngModel)]="simulator.simulatorType">
+                        <label for="Simulator_Type">{{l("SimulatorType")}} *</label>
+                        <select class="form-control" name="SimulatorType" id="Simulator_Type" [(ngModel)]="simulator.simulatorType" required [disabled]="this.simulator.id != null">
                         <option value="0">{{l('Edusim')}}</option>
 
                         <option value="1">{{l('EdusimTruck')}}</option>
 
-
+                        <option value="2">{{l('Other')}}</option>
                         </select>
                     </div>
 
+                    <div *ngIf="simulator.simulatorType == 0 || simulator.simulatorType == 1">
                     <label for="Simulator_SimulatorCode">{{l("SimulatorCode")}} *</label>
                     <div class="row justify-content-md-center">
                         <div class="col">
                             <div class="form-group">
                                 
                                 <input type="text" id="Simulator_SimulatorCode" class="form-control"
-                                    [(ngModel)]="simulatorCode" name="SimulatorCode" readonly required />
+                                    [(ngModel)]="simulatorCode" name="SimulatorCode" readonly  [attr.required]="simulator.simulatorType == 0 || simulator.simulatorType == 1" />
                             </div>
                         </div>
                         <div class="col-md-auto">
@@ -74,7 +75,7 @@
                                     {{l("Copy")}}</button>
                         </div>
                     </div>
-
+                </div>
                     <br />
                     <div class="m-checkbox-list">
                         <label for="Simulator_InUse" class="kt-checkbox">

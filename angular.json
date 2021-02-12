@@ -53,6 +53,8 @@
     "node_modules/@fullcalendar/daygrid/main.min.css",
     "node_modules/@fullcalendar/timegrid/main.min.css",
 
+    "node_modules/@progress/kendo-theme-bootstrap/dist/all.css",
+
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.css",
               "src/assets/primeng/tree/css/primeng.tree.css",
@@ -180,6 +182,8 @@
               "node_modules/@fullcalendar/daygrid/main.min.css",
               "node_modules/@fullcalendar/timegrid/main.min.css",
 
+              "node_modules/@progress/kendo-theme-bootstrap/dist/all.css",
+              
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.css",
               "src/assets/primeng/tree/css/primeng.tree.css",

@@ -1,121 +1,125 @@
-<h4 class="mt-10">{{l("General")}}</h4>
-<div class="mt-5">
-    <div *ngIf="student" class="row">
-
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("Name")}} :</h6>
-            {{student.firstName}} {{student.lastName}}
+<div class="col-12 shadow p-3 my-10 bg-white rounded">
+    <div class="row justify-content-between" style="height: 40px;">
+        <div class="col-3 text-left">
+            <h5 class="m-5">{{l("General")}}</h5>
         </div>
-        <!-- <div class="col-md-3 col-sm-6 mb-3">
+        <div class="col-3 text-right">
+            <button type="button" (click)="editStudent()" class="btn btn-primary"><i
+                    class="fa fa-edit"></i><span>{{l("Edit")}}</span></button>
+        </div>
+    </div>
+    <hr />
+    <div class="m-5">
+        <div *ngIf="student" class="row">
+
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("Name")}} :</h6>
+                {{student.firstName}} {{student.lastName}}
+            </div>
+            <!-- <div class="col-md-3 col-sm-6 mb-3">
             <h6>{{l("LastName")}} :</h6>
             {{student.lastName}}
         </div> -->
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("EmailAddress")}} :</h6>
-            {{student.email}}
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("PhoneNumber")}} :</h6>
-            {{student.phoneNumber}}
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("Address")}} :</h6>
-            {{getAddressString()}}
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("BirthCountry")}} :</h6>
-            {{l(birthCountry)}}
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("NativeLanguage")}} :</h6>
-            {{l(nativeLanguage)}}
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <h6>{{l("SSN")}} :</h6>
-            {{student.ssn}}
-        </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("EmailAddress")}} :</h6>
+                {{student.email}}
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("PhoneNumber")}} :</h6>
+                {{student.phoneNumber}}
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("Address")}} :</h6>
+                {{getAddressString()}}
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("BirthCountry")}} :</h6>
+                {{l(birthCountry)}}
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("NativeLanguage")}} :</h6>
+                {{l(nativeLanguage)}}
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <h6>{{l("SSN")}} :</h6>
+                {{student.ssn}}
+            </div>
 
-        <div class="col-md-3 col-sm-6">
-            <h6>{{l("LicenseClasses")}} :</h6>
-            {{licenseClasses}}
-        </div>
+            <div class="col-md-3 col-sm-6">
+                <h6>{{l("LicenseClasses")}} :</h6>
+                {{licenseClasses}}
+            </div>
 
-        <div class="col-md-3 col-sm-6">
-            <h6>{{l("LicenseClassesAlreadyOwned")}} :</h6>
-            {{licenseClassesAlreadyOwned}}
-        </div>
-        <div *ngIf="student.lastLogin != null" class="col-md-3 col-sm-6">
-            <h6>{{l("LastLogin")}} :</h6>
-            {{student.lastLogin | luxonFormat:'F'}}
-        </div>
-        <div *ngIf="student.lastLogin == null" class="col-md-3 col-sm-6">
-            <h6>{{l("LastLogin")}} :</h6>
-            {{l("NeverLoggedIn")}}
+            <div class="col-md-3 col-sm-6">
+                <h6>{{l("LicenseClassesAlreadyOwned")}} :</h6>
+                {{licenseClassesAlreadyOwned}}
+            </div>
+            <div *ngIf="student.lastLogin != null" class="col-md-3 col-sm-6">
+                <h6>{{l("LastLogin")}} :</h6>
+                {{student.lastLogin | luxonFormat:'F'}}
+            </div>
+            <div *ngIf="student.lastLogin == null" class="col-md-3 col-sm-6">
+                <h6>{{l("LastLogin")}} :</h6>
+                {{l("NeverLoggedIn")}}
+            </div>
         </div>
     </div>
 </div>
 
-<h4 class="mt-10">{{l("CourseInfo")}}</h4>
-
 <div class="mt-5">
     <div *ngIf="parentOverview.selectedStudentCourse">
-        <!-- <h6>{{l("CourseName")}}:</h6> <label>{{parentOverview.selectedStudentCourse.course.name}}</label> -->
 
+        <div class="row justify-content-between">
 
+            <div *ngIf="drivingLessons != null" class="col-md-6 col-sm-12 shadow p-3 m-5 bg-white rounded">
+                <h5 class="m-5">{{l("DrivingLessons")}} </h5>
+                <hr />
+                <div class="m-5">
 
-        <!-- <div class="progress m-progress">
-                    <div class="progress-bar m--bg-info" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="12"></div>
-                </div> -->
-        <div class="container">
-            <div class="row">
-
-                <div *ngIf="drivingLessons != null" class="col-md-6 col-sm-12">
-                    <h5 class="text-md-center">{{l("DrivingLessons")}} </h5>
-                    <div class="mt-5">
-
-                        <label>{{l("BasicLessons")}} </label>
-                        <progressbar [animate]="true" [max]="12" [value]="drivingLessons.basicLessonsCompletedCount"
-                            type="success">
-                            {{drivingLessons.basicLessonsCompletedCount}} / 12
-                        </progressbar>
-                    </div>
-                    <div class="mt-5">
-                        <div class="col-6" *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
-                            <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check-circle m--font-success"
-                                    title="True"></i><label>&nbsp;{{pdl.name}}</label>
-                                <label *ngIf="pdl.doneOnSimulator">(Simulator)</label>
-                            </div>
-                            <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
-                                    class="fa fa-times-circle m--font-danger"
-                                    title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
-                            <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
-                                    class="fa fa-spinner m--font-info"
-                                    title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
-                        </div>
-
-                    </div>
+                    <label>{{l("BasicLessons")}} </label>
+                    <progressbar [animate]="true" [max]="12" [value]="drivingLessons.basicLessonsCompletedCount"
+                        type="success">
+                        {{drivingLessons.basicLessonsCompletedCount}} / 12
+                    </progressbar>
                 </div>
-
-                <div class="col-md-6 col-sm-12">
-                    <h5 class="text-md-center">{{l("TheoryLessons")}} </h5>
-                    <div class="row">
-                        <div class="col-6" *ngFor="let ptl of theoryLessons; index as i">
-                            <div *ngIf="ptl.currentState == theoryLessonState.Completed" class="text-center"><i
-                                    class="fa fa-check-circle m--font-success"
-                                    title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
-                            <div *ngIf="ptl.currentState == theoryLessonState.NotStarted || ptl.currentState == theoryLessonState.Canceled"
-                                class="text-center"><i class="fa fa-times-circle m--font-danger"
-                                    title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
-                            <div *ngIf="ptl.currentState == theoryLessonState.Running" class="text-center"><i
-                                    class="fa fa-spinner m--font-info"
-                                    title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                <div class="m-5">
+                    <div class="col-6" *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
+                        <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check-circle m--font-success"
+                                title="True"></i><label>&nbsp;{{pdl.name}}</label>
+                            <label *ngIf="pdl.doneOnSimulator">(Simulator)</label>
                         </div>
-
+                        <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
+                                class="fa fa-times-circle m--font-danger"
+                                title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                        <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
+                                class="fa fa-spinner m--font-info" title="False"></i><label>&nbsp;{{pdl.name}}</label>
+                        </div>
                     </div>
+
                 </div>
             </div>
-        </div>
 
+
+            <div class="col-md-5 col-sm-12 shadow p-3 m-5 bg-white rounded">
+                <h5 class="m-5">{{l("TheoryLessons")}} </h5>
+                <hr />
+                <div class="row">
+                    <div class="col-6" *ngFor="let ptl of theoryLessons; index as i">
+                        <div *ngIf="ptl.currentState == theoryLessonState.Completed" class="text-center"><i
+                                class="fa fa-check-circle m--font-success"
+                                title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
+                        <div *ngIf="ptl.currentState == theoryLessonState.NotStarted || ptl.currentState == theoryLessonState.Canceled"
+                            class="text-center"><i class="fa fa-times-circle m--font-danger"
+                                title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                        <div *ngIf="ptl.currentState == theoryLessonState.Running" class="text-center"><i
+                                class="fa fa-spinner m--font-info" title="False"></i><label>&nbsp;{{ptl.name}}</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
 
     </div>
 </div>
@@ -127,78 +131,99 @@
     </div>
 </div>
 
-<h4 class="mt-10">{{l("PricePackage")}}</h4>
+<div class="row justify-content-between">
+    <div class="col-md-6 col-sm-12 shadow p-3 m-5 bg-white rounded">
+        <h5 class="m-5">{{l("CourseInfo")}}</h5>
+        <hr />
+        <div class="m-5">
+            <div *ngIf="student" class="row">
 
-<div class="mt-5">
-    <div *ngIf="student" class="row">
-
-        <div *ngIf="pricePackageName" class="col-6 mb-3">
-            <h6>{{l("Name")}} :</h6>
-            {{pricePackageName}}
+                <div *ngIf="pricePackageName" class="col-12 mb-5">
+                    {{l("PricePackage")}} : {{pricePackageName}}
+                </div>
+               
+                <div *ngIf="!pricePackageName" class="col-12 mb-3">
+                    <alert type="warning">
+                        <strong>Warning!</strong> {{l("NoPricePackageAssignedYet")}}!
+                    </alert>
+                </div>
+            </div>
+            <div class="row ml-1">
+                <button type="button" (click)="openAssignToCourseModal()"
+                    class="btn btn-primary btn-sm">{{l("AssignToCourse")}}</button>
+                <button type="button" (click)="openMoveToAnotherCourseModal()"
+                    class="btn btn-primary btn-sm">{{l("MoveToAnotherCourse")}}</button>
+                <button *ngIf="this.parentOverview.selectedStudentCourse != null" type="button"
+                    (click)="this.parentOverview.removeFromSelectedCourse()"
+                    class="btn btn-primary btn-sm">{{l("RemoveFromSelectedCourse")}}</button>
+            </div>
         </div>
-        <div *ngIf="!pricePackageName" class="col-6 mb-3">
-            <!-- <h6 style="color:red">{{l("NoPricePackageAssignedYet")}}!</h6> -->
-            <alert type="warning">
-                <strong>Warning!</strong> {{l("NoPricePackageAssignedYet")}}!
-            </alert>
+    </div>
+    <div class="col-md-5 col-sm-12 shadow p-3 m-5 bg-white rounded">
+        <h5 class="m-5">{{l("UserAccount")}}</h5>
+        <hr />
+        <div class="m-5">
+            <label *ngIf="!student.userId">{{l("StudentNotLinkedToAUserAccount")}}</label>
+            <br *ngIf="!student.userId"><button *ngIf="!student.userId" type="button"
+                (click)="createOrEditUserAccount()"
+                class="btn btn-secondary mr-5">{{l("CreateAndAssignUserAccount")}}</button>
+            <label *ngIf="student.userId">{{l("UserName")}}: {{student.userName}} ({{student.userId}})</label>
+            <div *ngIf="student.userId" class="mt-5"><button *ngIf="student.userId" type="button"
+                    (click)="createOrEditUserAccount()"
+                    class="btn btn-secondary mr-5">{{l("EditStudentsUserAccount")}}</button>
+                <button *ngIf="student.userId" type="button" (click)="impersonate()"
+                    class="btn btn-primary mr-5"><span>{{l("Impersonate")}}</span></button>
+            </div>
         </div>
+    </div>
+</div>
+<div class="col-12 shadow p-3 my-10 bg-white rounded">
+    <h4 class="m-5">{{l("AdditionalInformation")}}</h4>
+    <hr />
+    <div class="m-5">
+        <label for="additionalInformationStudent">{{l("CanBeSeenByStudent")}}</label>
+        <div class="row">
+            <div class="col-11"><textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                    [readonly]="additionalInformationStudentIsReadyOnly" [(ngModel)]="additionalInformationStudent"
+                    name="additionalInformationStudent"></textarea>
+            </div>
+            <div class="col-1">
 
+                <button *ngIf="additionalInformationStudentIsReadyOnly" type="button"
+                    (click)="editAdditionalInformation()" class="btn btn-outline-primary btn-icon"><i
+                        class="fa fa-edit"></i></button>
+                <button *ngIf="!additionalInformationStudentIsReadyOnly" type="button"
+                    (click)="saveAdditionalInformation()" class="btn btn-outline-primary btn-icon"><i
+                        class="fa fa-save"></i></button>
+
+            </div>
+        </div>
+        <label class="mt-4" for="additionalInformationInternal">{{l("Internal")}}</label>
+        <div class="row">
+            <div class="col-11"><textarea class="form-control" rows="3"
+                    [readonly]="additionalInformationInternalIsReadyOnly" [(ngModel)]="additionalInformationInternal"
+                    name="additionalInformationInternal"></textarea>
+            </div>
+            <div class="col-1">
+
+                <button *ngIf="additionalInformationInternalIsReadyOnly" type="button"
+                    (click)="editInternalAdditionalInformation()" class="btn btn-outline-primary btn-icon"><i
+                        class="fa fa-edit"></i></button>
+                <button *ngIf="!additionalInformationInternalIsReadyOnly" type="button"
+                    (click)="saveInternalAdditionalInformation()" class="btn btn-outline-primary btn-icon"><i
+                        class="fa fa-save"></i></button>
+
+            </div>
+        </div>
     </div>
 </div>
 
-<h4 class="mt-10">{{l("UserAccount")}}</h4>
-
-<label *ngIf="!student.userId">{{l("StudentNotLinkedToAUserAccount")}}</label>
-<br><button *ngIf="!student.userId" type="button" (click)="createOrEditUserAccount()"
-    class="btn btn-secondary mr-5">{{l("CreateAndAssignUserAccount")}}</button>
-<label *ngIf="student.userId">{{l("UserName")}}: {{student.userName}} ({{student.userId}})</label>
-<br><button *ngIf="student.userId" type="button" (click)="createOrEditUserAccount()"
-    class="btn btn-secondary mr-5">{{l("EditStudentsUserAccount")}}</button>
-
-<h4 class="mt-10">{{l("AdditionalInformation")}}</h4>
-<label for="additionalInformationStudent">{{l("CanBeSeenByStudent")}}</label>
-<div class="row">
-    <div class="col-10"><textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [readonly]="additionalInformationStudentIsReadyOnly"
-            [(ngModel)]="additionalInformationStudent" name="additionalInformationStudent"></textarea>
-    </div>
-    <div class="col-2">
-      
-            <button  *ngIf="additionalInformationStudentIsReadyOnly" type="button" (click)="editAdditionalInformation()" class="btn btn-outline-primary btn-icon"><i
-                    class="fa fa-edit"></i></button>
-            <button *ngIf="!additionalInformationStudentIsReadyOnly" type="button" (click)="saveAdditionalInformation()" class="btn btn-outline-primary btn-icon"><i
-                    class="fa fa-save"></i></button>
-       
-    </div>
-</div>
-<label class="mt-2" for="additionalInformationInternal">{{l("Internal")}}</label>
-<div class="row">
-    <div class="col-10"><textarea class="form-control" rows="3" [readonly]="additionalInformationInternalIsReadyOnly" [(ngModel)]="additionalInformationInternal"
-            name="additionalInformationInternal"></textarea>
-    </div>
-    <div class="col-2">
-
-            <button *ngIf="additionalInformationInternalIsReadyOnly" type="button" (click)="editInternalAdditionalInformation()"
-                class="btn btn-outline-primary btn-icon"><i class="fa fa-edit"></i></button>
-            <button *ngIf="!additionalInformationInternalIsReadyOnly"type="button" (click)="saveInternalAdditionalInformation()"
-                class="btn btn-outline-primary btn-icon"><i class="fa fa-save"></i></button>
-     
-    </div>
-</div>
-
-<div class="mt-10">
+<div class="mt-15">
     <div class="row justify-content-end">
-        <button type="button" (click)="impersonate()"
-            class="btn btn-primary mr-5"><span>{{l("Impersonate")}}</span></button>
+
         <button type="button" (click)="openSendMessage()" class="btn btn-primary mr-5"><i
                 class="fa fa-envelope"></i><span>{{l("SendEmail")}}</span></button>
-        <button type="button" (click)="openAssignToCourseModal()"
-            class="btn btn-primary mr-5">{{l("AssignToCourse")}}</button>
-        <button type="button" (click)="openMoveToAnotherCourseModal()"
-            class="btn btn-primary mr-5">{{l("MoveToAnotherCourse")}}</button>
-        <button type="button" (click)="editStudent()" class="btn btn-primary mr-5">{{l("EditStudentData")}}</button>
-        <button *ngIf="this.parentOverview.selectedStudentCourse != null" type="button"
-            (click)="this.parentOverview.removeFromSelectedCourse()"
-            class="btn btn-primary mr-5">{{l("RemoveFromSelectedCourse")}}</button>
+
 
     </div>
 </div>

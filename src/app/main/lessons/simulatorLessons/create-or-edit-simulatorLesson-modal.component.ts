@@ -1,7 +1,7 @@
 import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
-import { SimulatorLessonsServiceProxy, CreateOrEditSimulatorLessonDto, SimulatorLessonState } from '@shared/service-proxies/service-proxies';
+import { SimulatorLessonsServiceProxy, CreateOrEditSimulatorLessonDto, SimulatorLessonState, SimulatorType } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SimulatorLessonPersonLookupTableModalComponent } from './simulatorLesson-person-lookup-table-modal.component';
 import { SimulatorLessonSimulatorLookupTableModalComponent } from './simulatorLesson-simulator-lookup-table-modal.component';
@@ -40,6 +40,8 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
     setTopicNameAutomatically: boolean = true;
 
+    isEdusimSimulator : boolean = false;
+
     constructor(
         injector: Injector,
         private _simulatorLessonsServiceProxy: SimulatorLessonsServiceProxy,
@@ -52,6 +54,8 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
         this.simulatorModules = null;
         this.manuallyMarkCompleted = false;
         this.setTopicNameAutomatically = true;
+        this.startTime = this._dateTimeService.getDate().toJSDate();
+        this.startTimeTime = this._dateTimeService.getDate().toJSDate();
     }
 
     show(simulatorLessonId?: number, studentId: number = null, 
@@ -59,6 +63,7 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
         if (!simulatorLessonId) {
             this.simulatorLesson = new CreateOrEditSimulatorLessonDto();
+            this.manuallyMarkCompleted = false;
 
             if(studentId != null)
             {
@@ -72,7 +77,7 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
             this.simulatorLesson.id = simulatorLessonId;
             this.simulatorLesson.startTime = this._dateTimeService.getStartOfDay();
-            this.startTimeTime = new Date();
+         
           
             this.simulatorName = '';
             this.simulatorLesson.length = 1;
@@ -170,7 +175,10 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
         this.simulatorName = this.simulatorLessonSimulatorLookupTableModal.displayName;
 
         this._simulatorLessonsServiceProxy.getAvailableModulesOnSimulator(this.simulatorLesson.simulatorId).subscribe(result => {
-            if(result.availableModulesOnSim.length == 0)
+
+            this.isEdusimSimulator = result.simulatorType == SimulatorType.Edusim || result.simulatorType == SimulatorType.EdusimTruck;
+
+            if(this.isEdusimSimulator && result.availableModulesOnSim.length == 0)
             {
                 this.message.error(this.l("SimHasNoModulesYetErrorMessage"));
                 this.close();
