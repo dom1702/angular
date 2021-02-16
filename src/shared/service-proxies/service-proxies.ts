@@ -32862,6 +32862,8 @@ export class GetCoursesForCreateOrEditDto implements IGetCoursesForCreateOrEditD
     courses!: CourseDto[] | undefined;
     defaultInstructorId!: number | undefined;
     defaultStartingLocation!: string | undefined;
+    defaultVehicleId!: number | undefined;
+    defaultVehicleName!: string | undefined;
 
     constructor(data?: IGetCoursesForCreateOrEditDto) {
         if (data) {
@@ -32881,6 +32883,8 @@ export class GetCoursesForCreateOrEditDto implements IGetCoursesForCreateOrEditD
             }
             this.defaultInstructorId = _data["defaultInstructorId"];
             this.defaultStartingLocation = _data["defaultStartingLocation"];
+            this.defaultVehicleId = _data["defaultVehicleId"];
+            this.defaultVehicleName = _data["defaultVehicleName"];
         }
     }
 
@@ -32900,6 +32904,8 @@ export class GetCoursesForCreateOrEditDto implements IGetCoursesForCreateOrEditD
         }
         data["defaultInstructorId"] = this.defaultInstructorId;
         data["defaultStartingLocation"] = this.defaultStartingLocation;
+        data["defaultVehicleId"] = this.defaultVehicleId;
+        data["defaultVehicleName"] = this.defaultVehicleName;
         return data; 
     }
 }
@@ -32908,6 +32914,8 @@ export interface IGetCoursesForCreateOrEditDto {
     courses: CourseDto[] | undefined;
     defaultInstructorId: number | undefined;
     defaultStartingLocation: string | undefined;
+    defaultVehicleId: number | undefined;
+    defaultVehicleName: string | undefined;
 }
 
 export class DrivingLessonTopicDto implements IDrivingLessonTopicDto {

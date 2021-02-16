@@ -536,6 +536,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                     //}
                 }
             }
+
+            this.drivingLesson.vehicleId = result.defaultVehicleId;
+            this.vehicleName = result.defaultVehicleName
         })
     }
 

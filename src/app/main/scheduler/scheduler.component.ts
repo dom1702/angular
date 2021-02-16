@@ -12,16 +12,19 @@ import { CreateOrEditSimulatorLessonModalComponent } from '../lessons/simulatorL
 //import { CalendarOptions, DateSelectArg, EventApi, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
 
 
+
 //import { Calendar } from '@fullcalendar/core'; // include this line
 import { reduce } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { DateChangeEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
-import { sampleData, displayDate } from './events-utc';
+import { DateChangeEvent, SchedulerEvent, SlotClickEvent } from '@progress/kendo-angular-scheduler';
 @Component({
   templateUrl: './scheduler.component.html',
+  //styleUrls: ['~@progress/kendo-theme-default/scss/all.scss'],
   animations: [appModuleAnimation()]
 })
 export class SchedulerComponent extends AppComponentBase implements OnInit {
+
+
 
   @ViewChild('createOrEditDrivingLessonModal', { static: true })
   createOrEditDrivingLessonModal: CreateOrEditDrivingLessonModalComponent;
@@ -56,7 +59,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
 
   startTime: Date;
 
-  events: SchedulerEvent[] = sampleData;
+  events: SchedulerEvent[];
 
   options: any;
 
@@ -114,17 +117,17 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
 
   eventTypeFilter: any = { drivingLessons: true, simulatorLessons: false, theoryLessons: true, otherEvents: true };
 
-  vehiclesResources : any[] = [];
+  vehiclesResources: any[] = [];
   instructorsResources: any[] = [];
 
   // kendo
-  public selectedDate: Date  = displayDate;
+  public selectedDate: Date = new Date();
 
   constructor(
     injector: Injector,
     private _schedulerServiceProxy: SchedulerServiceProxy,
-    private _vehiclesServiceProxy : VehiclesServiceProxy, 
-    private _instructorsServiceProxy : InstructorsServiceProxy,
+    private _vehiclesServiceProxy: VehiclesServiceProxy,
+    private _instructorsServiceProxy: InstructorsServiceProxy,
     private cd: ChangeDetectorRef
   ) {
     super(injector);
@@ -136,37 +139,34 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
     //const name = Calendar.name;
     this.simulatorFeatureEnabled = abp.features.isEnabled("App.Simulator");
 
-    this._schedulerServiceProxy.getAllVehicles().subscribe(result =>
-      {
-        for (let i of result.vehicles) {
-          this.vehiclesResources.push(
-            {
-              id: "veh_" + i.id,
-              name: i.name,
-              checked: false
-            }
-          );
-        }
-      });
-
-      this._instructorsServiceProxy.getAllForLookupTable("", "", 0, 999).subscribe(result =>
-        {
-          for (let i of result.items) {
-            this.instructorsResources.push(
-              {
-                id: "instr_" + i.id,
-                name: i.firstName + " " + i.lastName,
-                checked: false
-              }
-            );
+    this._schedulerServiceProxy.getAllVehicles().subscribe(result => {
+      for (let i of result.vehicles) {
+        this.vehiclesResources.push(
+          {
+            id: "veh_" + i.id,
+            name: i.name,
+            checked: false
           }
-        });
+        );
+      }
+    });
 
-        //this.calendarOptions.resources = null;
+    this._instructorsServiceProxy.getAllForLookupTable("", "", 0, 999).subscribe(result => {
+      for (let i of result.items) {
+        this.instructorsResources.push(
+          {
+            id: "instr_" + i.id,
+            name: i.firstName + " " + i.lastName,
+            checked: false
+          }
+        );
+      }
+    });
+
+    //this.calendarOptions.resources = null;
   }
 
-  public onDateChange(args: DateChangeEvent): void 
-  {
+  public onDateChange(args: DateChangeEvent): void {
     this._schedulerServiceProxy.getAllAppointments(
       DateTime.fromJSDate(args.dateRange.start),
       DateTime.fromJSDate(args.dateRange.end),
@@ -203,27 +203,24 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
               break;
           }
 
-          var resourceIds : any[] = [];
+          var resourceIds: any[] = [];
 
-          if(item.vehicleId != null)
-          resourceIds.push("veh_" + item.vehicleId);
-          if(item.instructorIds != null)
-          {
-          for(var instructorId of item.instructorIds.keys())
-          resourceIds.push("instr_" + item.instructorIds[instructorId]); 
+          if (item.vehicleId != null)
+            resourceIds.push("veh_" + item.vehicleId);
+          if (item.instructorIds != null) {
+            for (var instructorId of item.instructorIds.keys())
+              resourceIds.push("instr_" + item.instructorIds[instructorId]);
           }
 
           var borderColor = 'yellow';
-          if(item.appointmentType == EventType.Event || item.appointmentType == EventType.Holiday)
-          {
+          if (item.appointmentType == EventType.Event || item.appointmentType == EventType.Holiday) {
             borderColor = backgroundColor;
           }
-          else
-          {
-          if(item.completed)
-            borderColor = 'green';
-          if(item.studentNotPresent)
-            borderColor = 'red';
+          else {
+            if (item.completed)
+              borderColor = 'green';
+            if (item.studentNotPresent)
+              borderColor = 'red';
           }
 
           this.events.push(
@@ -250,28 +247,33 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
     // We're setting the events after the current change detection cycle
     // has completed, hence we need to trigger a new one.
     this.cd.detectChanges();
-}
+  }
 
-  updateResourcesList()
-  {
+  public slotClickHandler({ sender, start, end, isAllDay }: SlotClickEvent): void {
+    this.startTime = start;
+    this.createEventTypeModal.show(this, this.isGranted('Pages.DrivingLessons.Create'), this.isGranted('Pages.DrivingLessons.Create'), true,
+      this.isGranted('Pages.SimulatorLessons.Create'));
+  }
+
+  updateResourcesList() {
     //this.calendarOptions.resources = null;
 
-    var res : any[] = [];
+    var res: any[] = [];
 
     for (let v of this.vehiclesResources) {
-      if(v.checked)
-      res.push({
-        id: v.id,
-        title : v.name
-      });
+      if (v.checked)
+        res.push({
+          id: v.id,
+          title: v.name
+        });
     }
 
     for (let v of this.instructorsResources) {
-      if(v.checked)
-      res.push({
-        id: v.id,
-        title : v.name
-      });
+      if (v.checked)
+        res.push({
+          id: v.id,
+          title: v.name
+        });
     }
 
     //this.calendarOptions.resources = res;
@@ -364,8 +366,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
   //     });
   // }
 
-  eventRender(info)
-  {
+  eventRender(info) {
     console.log(info);
   }
 
@@ -373,7 +374,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
     console.log(arg);
     this.startTime = arg.date;
     this.createEventTypeModal.show(this, this.isGranted('Pages.DrivingLessons.Create'), this.isGranted('Pages.DrivingLessons.Create'), true,
-    this.isGranted('Pages.SimulatorLessons.Create')); 
+      this.isGranted('Pages.SimulatorLessons.Create'));
   }
 
   // handleDateSelect(selectInfo: DateSelectArg) {
@@ -425,7 +426,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
 
   openTheoryLessonModal(): void {
     this.createEventTypeModal.close();
-     this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
+    this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
   }
 
   openEventModal(): void {
@@ -436,7 +437,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
 
   openSimulatorLessonModal(): void {
     this.createEventTypeModal.close();
-      this.createOrEditSimulatorLessonModal.startTime = this.startTime;
+    this.createOrEditSimulatorLessonModal.startTime = this.startTime;
     this.createOrEditSimulatorLessonModal.show();
   }
 
