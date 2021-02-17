@@ -25328,6 +25328,379 @@ export class TimingServiceProxy {
 }
 
 @Injectable()
+export class TodosServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param isPredefinedFilter (optional) 
+     * @param addToNewStudentsFilter (optional) 
+     * @param licenseClassesFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | null | undefined, titleFilter: string | null | undefined, isPredefinedFilter: number | null | undefined, addToNewStudentsFilter: number | null | undefined, licenseClassesFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetTodoForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/GetAll?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (titleFilter !== undefined && titleFilter !== null)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&";
+        if (isPredefinedFilter !== undefined && isPredefinedFilter !== null)
+            url_ += "IsPredefinedFilter=" + encodeURIComponent("" + isPredefinedFilter) + "&";
+        if (addToNewStudentsFilter !== undefined && addToNewStudentsFilter !== null)
+            url_ += "AddToNewStudentsFilter=" + encodeURIComponent("" + addToNewStudentsFilter) + "&";
+        if (licenseClassesFilter !== undefined && licenseClassesFilter !== null)
+            url_ += "LicenseClassesFilter=" + encodeURIComponent("" + licenseClassesFilter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetTodoForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetTodoForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetTodoForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetTodoForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetTodoForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getTodoForView(id: number | undefined): Observable<GetTodoForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/GetTodoForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTodoForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTodoForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetTodoForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetTodoForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTodoForView(response: HttpResponseBase): Observable<GetTodoForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetTodoForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetTodoForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getTodoForEdit(id: number | undefined): Observable<GetTodoForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/GetTodoForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTodoForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTodoForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetTodoForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetTodoForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTodoForEdit(response: HttpResponseBase): Observable<GetTodoForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetTodoForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetTodoForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditTodoDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param isPredefinedFilter (optional) 
+     * @param addToNewStudentsFilter (optional) 
+     * @param licenseClassesFilter (optional) 
+     * @return Success
+     */
+    getTodosToExcel(filter: string | null | undefined, titleFilter: string | null | undefined, isPredefinedFilter: number | null | undefined, addToNewStudentsFilter: number | null | undefined, licenseClassesFilter: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/GetTodosToExcel?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (titleFilter !== undefined && titleFilter !== null)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&";
+        if (isPredefinedFilter !== undefined && isPredefinedFilter !== null)
+            url_ += "IsPredefinedFilter=" + encodeURIComponent("" + isPredefinedFilter) + "&";
+        if (addToNewStudentsFilter !== undefined && addToNewStudentsFilter !== null)
+            url_ += "AddToNewStudentsFilter=" + encodeURIComponent("" + addToNewStudentsFilter) + "&";
+        if (licenseClassesFilter !== undefined && licenseClassesFilter !== null)
+            url_ += "LicenseClassesFilter=" + encodeURIComponent("" + licenseClassesFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTodosToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTodosToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTodosToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class TokenAuthServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -53253,6 +53626,249 @@ export class ListResultDtoOfNameValueDto implements IListResultDtoOfNameValueDto
 
 export interface IListResultDtoOfNameValueDto {
     items: NameValueDto[] | undefined;
+}
+
+export class TodoDto implements ITodoDto {
+    title!: string | undefined;
+    isPredefined!: boolean;
+    addToNewStudents!: boolean;
+    licenseClasses!: string[] | undefined;
+    id!: number;
+
+    constructor(data?: ITodoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.isPredefined = _data["isPredefined"];
+            this.addToNewStudents = _data["addToNewStudents"];
+            if (Array.isArray(_data["licenseClasses"])) {
+                this.licenseClasses = [] as any;
+                for (let item of _data["licenseClasses"])
+                    this.licenseClasses!.push(item);
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): TodoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TodoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["isPredefined"] = this.isPredefined;
+        data["addToNewStudents"] = this.addToNewStudents;
+        if (Array.isArray(this.licenseClasses)) {
+            data["licenseClasses"] = [];
+            for (let item of this.licenseClasses)
+                data["licenseClasses"].push(item);
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ITodoDto {
+    title: string | undefined;
+    isPredefined: boolean;
+    addToNewStudents: boolean;
+    licenseClasses: string[] | undefined;
+    id: number;
+}
+
+export class GetTodoForViewDto implements IGetTodoForViewDto {
+    todo!: TodoDto;
+
+    constructor(data?: IGetTodoForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.todo = _data["todo"] ? TodoDto.fromJS(_data["todo"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetTodoForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTodoForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["todo"] = this.todo ? this.todo.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetTodoForViewDto {
+    todo: TodoDto;
+}
+
+export class PagedResultDtoOfGetTodoForViewDto implements IPagedResultDtoOfGetTodoForViewDto {
+    totalCount!: number;
+    items!: GetTodoForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetTodoForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetTodoForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetTodoForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetTodoForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetTodoForViewDto {
+    totalCount: number;
+    items: GetTodoForViewDto[] | undefined;
+}
+
+export class CreateOrEditTodoDto implements ICreateOrEditTodoDto {
+    title!: string;
+    description!: string | undefined;
+    addToNewStudents!: boolean;
+    licenseClasses!: string[];
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditTodoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.licenseClasses = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.addToNewStudents = _data["addToNewStudents"];
+            if (Array.isArray(_data["licenseClasses"])) {
+                this.licenseClasses = [] as any;
+                for (let item of _data["licenseClasses"])
+                    this.licenseClasses!.push(item);
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditTodoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditTodoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["addToNewStudents"] = this.addToNewStudents;
+        if (Array.isArray(this.licenseClasses)) {
+            data["licenseClasses"] = [];
+            for (let item of this.licenseClasses)
+                data["licenseClasses"].push(item);
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditTodoDto {
+    title: string;
+    description: string | undefined;
+    addToNewStudents: boolean;
+    licenseClasses: string[];
+    id: number | undefined;
+}
+
+export class GetTodoForEditOutput implements IGetTodoForEditOutput {
+    todo!: CreateOrEditTodoDto;
+
+    constructor(data?: IGetTodoForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.todo = _data["todo"] ? CreateOrEditTodoDto.fromJS(_data["todo"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetTodoForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTodoForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["todo"] = this.todo ? this.todo.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetTodoForEditOutput {
+    todo: CreateOrEditTodoDto;
 }
 
 export class AuthenticateModel implements IAuthenticateModel {

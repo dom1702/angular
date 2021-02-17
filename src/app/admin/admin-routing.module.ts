@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { TodosComponent } from './scheduler/todos/todos.component';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 import { HostDashboardComponent } from './dashboard/host-dashboard.component';
 import { DemoUiComponentsComponent } from './demo-ui-components/demo-ui-components.component';
@@ -43,6 +44,7 @@ import { TheoryLessonTopicsComponent } from './templates/theoryLessonTopics/theo
             {
                 path: '',
                 children: [
+                    { path: 'scheduler/todos', component: TodosComponent, data: { permission: 'Pages.Administration.Todos' }  },
                     { path: 'lessons/predefinedTheoryLessons', component: PredefinedTheoryLessonsComponent, data: { permission: 'Pages.Administration.PredefinedTheoryLessons' }  },
                     { path: 'lessons/predefinedDrivingLessons', component: PredefinedDrivingLessonsComponent, data: { permission: 'Pages.Administration.PredefinedDrivingLessons' }  },
                     { path: 'forms/forms', component: FormsComponent, data: { permission: 'Pages.Administration.Forms' }  },

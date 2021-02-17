@@ -77,7 +77,7 @@ export class DrivingLessonsComponent extends AppComponentBase {
         }
 
         this.primengTableHelper.showLoadingIndicator();
-        console.log(this.primengTableHelper.defaultRecordsCountPerPage);
+        //console.log(this.primengTableHelper.defaultRecordsCountPerPage);
         this._drivingLessonsServiceProxy.getAll(
             this.filterText,
             this.maxLengthFilter == null ? this.maxLengthFilterEmpty: this.maxLengthFilter,
