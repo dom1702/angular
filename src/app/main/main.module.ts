@@ -137,6 +137,7 @@ import { SchedulerModule } from '@progress/kendo-angular-scheduler';
 
 import '@progress/kendo-angular-intl/locales/de/all';
 import { IntlModule } from '@progress/kendo-angular-intl';
+import { StudentsOverviewTasksComponent } from './students/students/students-overview-tasks.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -279,7 +280,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       LicenseClassLookupTableModalComponent,
       SendMessageToStudentModalComponent,
       SVTheoryPracticeComponent,
-      OfficeLookupTableModalComponent],
+      OfficeLookupTableModalComponent,
+    StudentsOverviewTasksComponent],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },

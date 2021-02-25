@@ -25635,6 +25635,290 @@ export class TodosServiceProxy {
 
     /**
      * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllTodosForLookup(filter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetAllTodosForLookupTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/GetAllTodosForLookup?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTodosForLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTodosForLookup(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetAllTodosForLookupTableDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetAllTodosForLookupTableDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTodosForLookup(response: HttpResponseBase): Observable<PagedResultDtoOfGetAllTodosForLookupTableDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetAllTodosForLookupTableDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetAllTodosForLookupTableDto>(<any>null);
+    }
+
+    /**
+     * @param studentId (optional) 
+     * @return Success
+     */
+    getAllTodosFromStudent(studentId: number | undefined): Observable<GetAllTodosFromStudentOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/GetAllTodosFromStudent?";
+        if (studentId === null)
+            throw new Error("The parameter 'studentId' cannot be null.");
+        else if (studentId !== undefined)
+            url_ += "StudentId=" + encodeURIComponent("" + studentId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTodosFromStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTodosFromStudent(<any>response_);
+                } catch (e) {
+                    return <Observable<GetAllTodosFromStudentOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetAllTodosFromStudentOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTodosFromStudent(response: HttpResponseBase): Observable<GetAllTodosFromStudentOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAllTodosFromStudentOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAllTodosFromStudentOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addTodoToStudent(body: AddTodoToStudentInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/AddTodoToStudent";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddTodoToStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddTodoToStudent(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddTodoToStudent(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param studentId (optional) 
+     * @param todoId (optional) 
+     * @return Success
+     */
+    removeTodoFromStudent(studentId: number | undefined, todoId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/RemoveTodoFromStudent?";
+        if (studentId === null)
+            throw new Error("The parameter 'studentId' cannot be null.");
+        else if (studentId !== undefined)
+            url_ += "StudentId=" + encodeURIComponent("" + studentId) + "&";
+        if (todoId === null)
+            throw new Error("The parameter 'todoId' cannot be null.");
+        else if (todoId !== undefined)
+            url_ += "TodoId=" + encodeURIComponent("" + todoId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveTodoFromStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveTodoFromStudent(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveTodoFromStudent(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    changeTodoState(body: ChangeTodoStateInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/ChangeTodoState";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeTodoState(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeTodoState(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeTodoState(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
      * @param titleFilter (optional) 
      * @param isPredefinedFilter (optional) 
      * @param addToNewStudentsFilter (optional) 
@@ -53633,6 +53917,7 @@ export class TodoDto implements ITodoDto {
     isPredefined!: boolean;
     addToNewStudents!: boolean;
     licenseClasses!: string[] | undefined;
+    description!: string | undefined;
     id!: number;
 
     constructor(data?: ITodoDto) {
@@ -53654,6 +53939,7 @@ export class TodoDto implements ITodoDto {
                 for (let item of _data["licenseClasses"])
                     this.licenseClasses!.push(item);
             }
+            this.description = _data["description"];
             this.id = _data["id"];
         }
     }
@@ -53675,6 +53961,7 @@ export class TodoDto implements ITodoDto {
             for (let item of this.licenseClasses)
                 data["licenseClasses"].push(item);
         }
+        data["description"] = this.description;
         data["id"] = this.id;
         return data; 
     }
@@ -53685,6 +53972,7 @@ export interface ITodoDto {
     isPredefined: boolean;
     addToNewStudents: boolean;
     licenseClasses: string[] | undefined;
+    description: string | undefined;
     id: number;
 }
 
@@ -53869,6 +54157,222 @@ export class GetTodoForEditOutput implements IGetTodoForEditOutput {
 
 export interface IGetTodoForEditOutput {
     todo: CreateOrEditTodoDto;
+}
+
+export class GetAllTodosForLookupTableDto implements IGetAllTodosForLookupTableDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: IGetAllTodosForLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): GetAllTodosForLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllTodosForLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data; 
+    }
+}
+
+export interface IGetAllTodosForLookupTableDto {
+    id: number;
+    displayName: string | undefined;
+}
+
+export class PagedResultDtoOfGetAllTodosForLookupTableDto implements IPagedResultDtoOfGetAllTodosForLookupTableDto {
+    totalCount!: number;
+    items!: GetAllTodosForLookupTableDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetAllTodosForLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetAllTodosForLookupTableDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetAllTodosForLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetAllTodosForLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetAllTodosForLookupTableDto {
+    totalCount: number;
+    items: GetAllTodosForLookupTableDto[] | undefined;
+}
+
+export class GetAllTodosFromStudentOutput implements IGetAllTodosFromStudentOutput {
+    todos!: TodoDto[] | undefined;
+
+    constructor(data?: IGetAllTodosFromStudentOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["todos"])) {
+                this.todos = [] as any;
+                for (let item of _data["todos"])
+                    this.todos!.push(TodoDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetAllTodosFromStudentOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllTodosFromStudentOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.todos)) {
+            data["todos"] = [];
+            for (let item of this.todos)
+                data["todos"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetAllTodosFromStudentOutput {
+    todos: TodoDto[] | undefined;
+}
+
+export class AddTodoToStudentInput implements IAddTodoToStudentInput {
+    studentId!: number;
+    todoId!: number;
+
+    constructor(data?: IAddTodoToStudentInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentId = _data["studentId"];
+            this.todoId = _data["todoId"];
+        }
+    }
+
+    static fromJS(data: any): AddTodoToStudentInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddTodoToStudentInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["todoId"] = this.todoId;
+        return data; 
+    }
+}
+
+export interface IAddTodoToStudentInput {
+    studentId: number;
+    todoId: number;
+}
+
+export class ChangeTodoStateInput implements IChangeTodoStateInput {
+    studentId!: number;
+    todoId!: number;
+    completed!: boolean;
+
+    constructor(data?: IChangeTodoStateInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentId = _data["studentId"];
+            this.todoId = _data["todoId"];
+            this.completed = _data["completed"];
+        }
+    }
+
+    static fromJS(data: any): ChangeTodoStateInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChangeTodoStateInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["todoId"] = this.todoId;
+        data["completed"] = this.completed;
+        return data; 
+    }
+}
+
+export interface IChangeTodoStateInput {
+    studentId: number;
+    todoId: number;
+    completed: boolean;
 }
 
 export class AuthenticateModel implements IAuthenticateModel {
