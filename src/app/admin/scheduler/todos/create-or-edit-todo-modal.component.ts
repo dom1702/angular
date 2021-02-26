@@ -38,7 +38,8 @@ export class CreateOrEditTodoModalComponent extends AppComponentBase implements 
             textField: 'item_text',
             selectAllText: 'Select All',
             unSelectAllText: 'Unselect All',
-            allowSearchFilter: false
+            allowSearchFilter: false,
+            limitSelection: 1
         };
     }
 
@@ -48,77 +49,20 @@ export class CreateOrEditTodoModalComponent extends AppComponentBase implements 
             this.todo.id = todoId;
 
             this.active = true;
-            this.updateLicenseClass(false);
             this.modal.show();
         } else {
             this._todosServiceProxy.getTodoForEdit(todoId).subscribe((result) => {
                 this.todo = result.todo;
 
                 this.active = true;
-                this.updateLicenseClass(true);
                 this.modal.show();
             });
         }
     }
 
-    updateLicenseClass(isEdit: boolean): void {
-        if (!this.active) {
-            return;
-        }
-
-        this.primengTableHelper.showLoadingIndicator();
-
-        this._licenseClassService.getAllLicenseClassesForLookupTable(
-            "",
-            "",
-            0,
-            1000).subscribe(result => {
-
-                // for(var r = 0; r < result.items.length; r++)
-                //     console.log(result.items[r].id);
-
-                this.dropdownList = [];
-                this.selectedItems = [];
-
-                for (var _i = 0; _i < result.items.length; _i++) {
-                    this.dropdownList.push(
-                        {
-                            item_id: _i,
-                            item_text: result.items[_i].displayName
-                        });
-                }
-
-                if (isEdit) {
-                    for (var item of this.dropdownList) {
-                        for (var todoClasses of this.todo.licenseClasses) {
-                            if (item.item_text == todoClasses) {
-                                this.selectedItems.push(
-                                    {
-                                        item_id: item.item_id,
-                                        item_text: item.item_text
-                                    }
-                                );
-                            }
-                        }
-                    }
-
-                    //console.log(this.selectedItems.length);
-                }
-
-                this.primengTableHelper.hideLoadingIndicator();
-            });
-    }
 
     save(): void {
         this.saving = true;
-
-        this.todo.licenseClasses = [];
-
-        for (var licenseClass of this.selectedItems) {
-            this.todo.licenseClasses.push(
-                licenseClass.item_text
-            );
-        }
 
         this._todosServiceProxy
             .createOrEdit(this.todo)

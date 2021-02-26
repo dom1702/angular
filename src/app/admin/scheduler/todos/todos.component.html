@@ -175,7 +175,7 @@
                                                         <a
                                                             class="dropdown-item"
                                                             href="javascript:;"
-                                                            *ngIf="record.todo.isPredefined && permission.isGranted('Pages.Administration.Todos.Delete')"
+                                                            *ngIf="!record.todo.isPredefined && permission.isGranted('Pages.Administration.Todos.Delete')"
                                                             (click)="deleteTodo(record.todo)"
                                                             >{{ l("Delete") }}</a
                                                         >
@@ -206,8 +206,12 @@
                                             </div>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="p-column-title"> {{ l("LicenseClasses") }}</span>
-                                            {{ record.todo.licenseClasses }}
+                                            <span class="p-column-title"> {{ l("LicenseClass") }}</span>
+                                            {{ record.todo.licenseClass }}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="p-column-title"> {{ l("OrderNo") }}</span>
+                                            {{ record.todo.orderNo }}
                                         </td>
                                     </tr>
                                 </ng-template>

@@ -1,14 +1,14 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentInvoiceDto, StudentInvoicesServiceProxy, PaymentDto } from '@shared/service-proxies/service-proxies';
+import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentInvoiceDto, StudentInvoicesServiceProxy, PaymentDto, TodoDto, TodosServiceProxy, AddTodoToStudentInput, StudentTodoDto, ChangeTodoStateInput, UpdateOrderOfStudentInput } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
-import { PricePackageLookupTableModalComponent } from './pricePackage-lookup-table-modal.component';
 import { StudentsOverviewComponent } from './students-overview.component';
+import { TodoLookupTableModalComponent } from '@app/shared/common/lookup/todo-lookup-table-modal.component';
 
 @Component({
     selector: 'students-overview-tasks',
@@ -19,12 +19,15 @@ import { StudentsOverviewComponent } from './students-overview.component';
 export class StudentsOverviewTasksComponent extends AppComponentBase {
 
     @Input() student: StudentDto;
-    @Input() parentOverview : StudentsOverviewComponent;
+    @Input() parentOverview: StudentsOverviewComponent;
+
+    @ViewChild('todoLookupTableModal', { static: true }) todoLookupTableModal: TodoLookupTableModalComponent;
 
 
-    invoices: StudentInvoiceDto[];
+    todos: StudentTodoDto[];
+    todosMoved: StudentTodoDto[];
 
-    showInvoicesOfAllCourses : boolean;
+    showApplyButton : boolean;
 
     constructor(
         injector: Injector,
@@ -32,8 +35,7 @@ export class StudentsOverviewTasksComponent extends AppComponentBase {
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
-        private _pricePackageServiceProxy: PricePackagesServiceProxy,
-        private _studentInvoicesServiceProxy: StudentInvoicesServiceProxy,
+        private _todoServiceProxy: TodosServiceProxy,
         private _router: Router
     ) {
         super(injector);
@@ -42,88 +44,138 @@ export class StudentsOverviewTasksComponent extends AppComponentBase {
     ngOnInit(): void {
 
         this.parentOverview.courseChanged.subscribe(() => {
-            this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
-                (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
-                    //console.log(result);
-                this.invoices = result;
-            });
+            this.refresh();
         });
-       
     }
 
-    createNewInvoice(): void {
-        this._router.navigate(['app/main/sales/studentInvoices/create-studentInvoice', { studentId: this.student.id, 
-            courseId: this.parentOverview.selectedStudentCourse.course.id }]);
+    refresh()
+    {
+        this._todoServiceProxy.getAllTodosFromStudent(this.student.id, this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
+
+            this.primengTableHelper.totalRecordsCount = result.todos.length;
+            this.primengTableHelper.records = result.todos;
+            this.todos = result.todos;
+            this.todosMoved = result.todos;
+            this.showApplyButton = false;
+        });
     }
 
-    editInvoice(invoiceId: number): void {
-        this._router.navigate(['app/main/sales/studentInvoices/create-studentInvoice', { id: invoiceId }]);
-    }
-
-    deleteInvoice(invoiceId: number): void {
+    deleteTodo(todoId: number): void {
         this.message.confirm(
             '',
             '',
             (isConfirmed) => {
                 if (isConfirmed) {
-                    this._studentInvoicesServiceProxy.delete(invoiceId)
-                        .subscribe(() => {
-
-                            this.notify.success(this.l('SuccessfullyDeleted'));
-
-                            this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
-                                (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
-
-                                this.invoices = result;
-
-                            });
-                        });
+                    this._todoServiceProxy.removeTodoFromStudent(this.student.id, todoId, this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
+                        this.notify.success(this.l('SuccessfullyDeleted'));
+                        this.refresh();
+                    });
                 }
             }
         );
     }
 
-    getPdf(studentInvoice: StudentInvoiceDto): void {
-        this._studentInvoicesServiceProxy.createPdfById(studentInvoice.id)
-        .subscribe((result) => {
+    openSelectTodoModal() {
+        this.todoLookupTableModal.show();
+    }
 
-            
-            this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
-                (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
+    getNewTodoId() {
 
-                this.invoices = result;
-
+        if(this.todoLookupTableModal.id != null)
+        {
+            var input : AddTodoToStudentInput = new AddTodoToStudentInput();
+            input.courseId = this.parentOverview.selectedStudentCourse.course.id;
+            input.todoId = this.todoLookupTableModal.id;
+            input.studentId = this.student.id;
+            input.orderNo = this.todoLookupTableModal.orderNo;
+            this._todoServiceProxy.addTodoToStudent(input).subscribe(result => {
+                this.refresh();
             });
-           
-            this._fileDownloadService.downloadTempFile(result);
+            
+        }
+    }
+
+    markCompleted(todo: StudentTodoDto): void {
+
+        if(todo.completed)
+        return;
+        var input : ChangeTodoStateInput = new ChangeTodoStateInput();
+        input.courseId = this.parentOverview.selectedStudentCourse.course.id;
+        input.todoId = todo.id;
+        input.studentId = this.student.id;
+        input.completed = true;
+        this._todoServiceProxy.changeTodoState(input).subscribe(result => {
+            this.refresh();
         });
     }
 
-    updateInvoices()
-    {
-        this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
-            (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
-            this.invoices = result;
+    markUncompleted(todo: StudentTodoDto): void {
+        if(!todo.completed)
+        return;
+        var input : ChangeTodoStateInput = new ChangeTodoStateInput();
+        input.courseId = this.parentOverview.selectedStudentCourse.course.id;
+        input.todoId = todo.id;
+        input.studentId = this.student.id;
+        input.completed = false;
+        this._todoServiceProxy.changeTodoState(input).subscribe(result => {
+            this.refresh();
         });
     }
 
-    updateInvoicesAndOpenModalAgain(invoiceId : number)
-    {
-        this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
-            (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
-            this.invoices = result;
-            console.log(this.invoices);
-            console.log(invoiceId);
-            var item = this.invoices.find(x => x.id === invoiceId);
-            console.log(item);
-           
-        });
+    moveUp(todo: StudentTodoDto): void {
+
+        for(var i = 0; i < this.todosMoved.length; i++)
+        {
+            if(this.todosMoved[i] == todo)
+            {
+                if(i == 0)
+                    return;
+
+                var d = this.todosMoved[i-1];
+                this.todosMoved[i-1] = this.todosMoved[i];
+                this.todosMoved[i] = d;
+
+                this.showApplyButton = true;
+
+                return;
+            }
+        }      
     }
 
-    getPayersAddressString() {
-        if (this.student == null)
-            return '';
+    moveDown(todo: StudentTodoDto): void {
+        for(var i = 0; i < this.todosMoved.length; i++)
+        {
+            if(this.todosMoved[i] == todo)
+            {
+                if(i == this.todosMoved.length - 1)
+                    return;
 
-        return this.student.payersStreet + ", " + this.student.payersZipCode + ", " + this.student.payersCity;
+                var d = this.todosMoved[i+1];
+                this.todosMoved[i+1] = this.todosMoved[i];
+                this.todosMoved[i] = d;
+
+                this.showApplyButton = true;
+
+                return;
+            }
+        }     
+    }
+
+    applyMoved()
+    {   
+        for(var i = 0; i < this.todosMoved.length; i++)
+        {
+            this.todosMoved[i].orderNo = i+1;
+        }
+        var input = new UpdateOrderOfStudentInput();
+        input.todos = this.todosMoved;
+        input.courseId = this.parentOverview.selectedStudentCourse.course.id;
+        input.studentId = this.student.id;
+
+        this._todoServiceProxy.updateOrderOfStudent(input).subscribe(result => 
+            {
+                this.showApplyButton = false;
+                this.notify.success(this.l('SuccessfullySaved'));
+            })
     }
 }

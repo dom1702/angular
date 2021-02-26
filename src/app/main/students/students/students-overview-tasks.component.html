@@ -1,126 +1,85 @@
 <div *ngIf="student">
-    <div class="form-group">
-    <div class="card" *ngIf="student.payersSocialSecurityNo">
-        <div class="card-body">
-            <h4 class="card-title">{{l("Payers data")}}</h4>
-            <div class="row">
-               
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <h6>{{l("Name")}} :</h6>
-                    {{student.payersName}}
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <h6>{{l("EmailAddress")}} :</h6>
-                    {{student.payersEmail}}
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <h6>{{l("PhoneNumber")}} :</h6>
-                    {{student.payersPhone}}
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <h6>{{l("Address")}} :</h6>
-                    {{getPayersAddressString()}}
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <h6>{{l("SSN")}} :</h6>
-                    {{student.payersSocialSecurityNo}}
-                </div>
-            
+    <div class="mt-10">
+
+        <div class="col text-right">
+            <button *ngIf="isGranted('Pages.Administration.Todos.Create')" (click)="openSelectTodoModal()"
+                class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("AddTask")}}</button>
+        </div>
+    </div>
+    <div class="row align-items-center my-10">
+        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+            <p-table #dataTable [value]="primengTableHelper.records" [scrollable]="true" ScrollWidth="100%"
+                [responsive]="primengTableHelper.isResponsive" [resizableColumns]="primengTableHelper.resizableColumns">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 150px"
+                            [hidden]="!isGrantedAny('Pages.Administration.Todos.Edit', 'Pages.Administration.Todos.Delete')">
+                            {{l('Actions')}}</th>
+                        <th style="width: 150px" pSortableColumn="lessonType">
+                            {{l('Title')}}
+                            <p-sortIcon field="lessonType"></p-sortIcon>
+                        </th>
+                        <th style="width: 150px" pSortableColumn="startTime">
+                            {{l('Description')}}
+                            <p-sortIcon field="startTime"></p-sortIcon>
+                        </th>
+                        <th style="width: 100px" pSortableColumn="startTime">
+                            {{l('Completed')}}
+                            <p-sortIcon field="startTime"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-record="$implicit">
+                    <tr>
+                        <td style="width: 150px"
+                            [hidden]="!isGrantedAny('Pages.Administration.Todos.Edit', 'Pages.Administration.Todos.Delete')">
+
+                                <div class="btn-group mr-2" role="group" aria-label="...">
+
+                                    <button type="button" class="btn btn-outline-secondary btn-icon"
+                                    *ngIf="permission.isGranted('Pages.Administration.Todos.Delete')"
+                                    (click)="deleteTodo(record.id)"><i class="fa fa-trash"></i></button>
+                                    <button  type="button" *ngIf="isGranted('Pages.Administration.Todos')" (click)="markCompleted(record)"
+                                    class="btn btn-outline-secondary btn-icon"><i class="fa fa-check"></i> </button>
+                                    <button  type="button" *ngIf="isGranted('Pages.Administration.Todos')" (click)="markUncompleted(record)"
+                                    class="btn btn-outline-secondary btn-icon"><i class="fa fa-times"></i> </button>
+                                    <button  type="button" *ngIf="isGranted('Pages.Administration.Todos')" (click)="moveUp(record)"
+                                    class="btn btn-outline-secondary btn-icon"><i class="fa fa-arrow-up"></i> </button>
+                                    <button  type="button" *ngIf="isGranted('Pages.Administration.Todos')" (click)="moveDown(record)"
+                                    class="btn btn-outline-secondary btn-icon"><i class="fa fa-arrow-down"></i> </button>
+                                </div>
+                           
+                        </td>
+                        <td style="width:150px">
+                            <span class="p-column-title"> {{l('Title')}}</span>
+                            {{record.title}}
+                        </td>
+                        <td style="width:150px">
+                            <span class="p-column-title"> {{l('Description')}}</span>
+                            {{record.description}}
+                        </td>
+                        <td style="width:100px">
+                            <span class="p-column-title"> {{l('Completed')}}</span>
+                            <div *ngIf="record.completed" class="text-left"><i
+                                class="fa fa-check" style="color: rgb(71, 207, 58);" title="True"></i></div>
+                            <div *ngIf="!record.completed" class="text-left"><i class="fa fa-times"  style="color: Tomato;"
+                                    title="False"></i></div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                {{l('NoData')}}
             </div>
         </div>
     </div>
-</div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-auto">
-                <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-            [(ngModel)]="eventTypeFilter.otherEvents" btnCheckbox btnCheckboxTrue="true"
-            btnCheckboxFalse="false">
-            {{l("Appointments")}}
-        </button> -->
-                <label class="m-checkbox">
-                    <input [(ngModel)]="showInvoicesOfAllCourses" type="checkbox" name="showAll"
-                        (change)="updateInvoices()">
-                    {{l("ShowInvoicesOfAllCourses")}}
-                    <span></span>
-                </label>
-            </div>
-        </div>
-    </div>
+    <div class="mt-10">
 
-    <div *ngIf="invoices && invoices.length > 0" class="form-group">
-        <p-table [value]="invoices">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>{{l("Date")}}</th>
-                    <th>{{l("DateDue")}}</th>
-                    <th>{{l("TotalAfterVat")}}</th>
-                    <th style="width:150px">{{l("PdfFileCreated")}}</th>
-                    <th>{{l("Action")}}</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-invoice>
-                <tr>
-                    <td>{{invoice.date  | luxonFormat:'D' }}</td>
-                    <td>{{invoice.dateDue  | luxonFormat:'D'}}</td>
-                    <td>{{invoice.totalAfterVat  | currency:'EUR'}}</td>
-                    <td style="width:150px">
-                        <div *ngIf="invoice.pdfFileCreated" class="text-center"><i
-                                class="fa fa-check-circle m--font-success" title="True"></i></div>
-                        <div *ngIf="!invoice.pdfFileCreated" class="text-center"><i class="fa fa-times-circle"
-                                title="False"></i></div>
-                    </td>
-                    <td>
-                        <div class="btn-group dropdown" dropdown container="body">
-                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                            </button>
-                            <ul class="dropdown-menu" *dropdownMenu>
-                                <!-- <li>
-                                    <a href="javascript:;" (click)="viewStudentModal.show(record)">{{l('View')}}</a>
-                                </li> -->
-                                <li *ngIf="invoice.pdfFileCreated" class="dropdown-item">
-                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
-                                        (click)="getPdf(invoice)">{{l('GetPdf')}}</a>
-                                </li>
-                                <li *ngIf="!invoice.pdfFileCreated" class="dropdown-item">
-                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
-                                        (click)="getPdf(invoice)">{{l('CreatePdf')}}</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Payments.Edit')"
-                                        (click)="openPaymentModal(invoice)">{{l('Payments')}}</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Students.Edit')"
-                                        (click)="editInvoice(invoice.id)">{{l('Edit')}}</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="dropdown-item" *ngIf="permission.isGranted('Pages.Students.Delete')"
-                                        (click)="deleteInvoice(invoice.id)">{{l('Delete')}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-
-    <div *ngIf="invoices && invoices.length == 0" class="form-group">
-        <alert type="info">
-            <strong>Info!</strong> {{l("NoInvoicesCreatedYet")}}!
-        </alert>
-    </div>
-
-    <div class="form-group">
-        <div class="m--margin-top-30">
-            <div class="m--align-right">
-                <button type="button" (click)="createNewInvoice()"
-                    class="btn btn-primary mr-5">{{l("CreateNewInvoice")}}</button>
-            </div>
+        <div class="col text-right">
+            <button *ngIf="isGranted('Pages.Administration.Todos.Create') && showApplyButton" (click)="applyMoved()"
+                class="btn btn-danger">{{l("Apply")}}</button>
         </div>
     </div>
 </div>
 
-<studentsOverviewViewPaymentModal #studentsOverviewViewPaymentModal (modalSave)="updateInvoices()"></studentsOverviewViewPaymentModal>
+<todoLookupTableModal #todoLookupTableModal (modalSave)="getNewTodoId()"></todoLookupTableModal>

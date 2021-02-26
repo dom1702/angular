@@ -25702,14 +25702,17 @@ export class TodosServiceProxy {
 
     /**
      * @param studentId (optional) 
+     * @param courseId (optional) 
      * @return Success
      */
-    getAllTodosFromStudent(studentId: number | undefined): Observable<GetAllTodosFromStudentOutput> {
+    getAllTodosFromStudent(studentId: number | undefined, courseId: number | null | undefined): Observable<GetAllTodosFromStudentOutput> {
         let url_ = this.baseUrl + "/api/services/app/Todos/GetAllTodosFromStudent?";
         if (studentId === null)
             throw new Error("The parameter 'studentId' cannot be null.");
         else if (studentId !== undefined)
             url_ += "StudentId=" + encodeURIComponent("" + studentId) + "&";
+        if (courseId !== undefined && courseId !== null)
+            url_ += "CourseId=" + encodeURIComponent("" + courseId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -25811,9 +25814,10 @@ export class TodosServiceProxy {
     /**
      * @param studentId (optional) 
      * @param todoId (optional) 
+     * @param courseId (optional) 
      * @return Success
      */
-    removeTodoFromStudent(studentId: number | undefined, todoId: number | undefined): Observable<void> {
+    removeTodoFromStudent(studentId: number | undefined, todoId: number | undefined, courseId: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Todos/RemoveTodoFromStudent?";
         if (studentId === null)
             throw new Error("The parameter 'studentId' cannot be null.");
@@ -25823,6 +25827,10 @@ export class TodosServiceProxy {
             throw new Error("The parameter 'todoId' cannot be null.");
         else if (todoId !== undefined)
             url_ += "TodoId=" + encodeURIComponent("" + todoId) + "&";
+        if (courseId === null)
+            throw new Error("The parameter 'courseId' cannot be null.");
+        else if (courseId !== undefined)
+            url_ += "CourseId=" + encodeURIComponent("" + courseId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -25899,6 +25907,58 @@ export class TodosServiceProxy {
     }
 
     protected processChangeTodoState(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateOrderOfStudent(body: UpdateOrderOfStudentInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Todos/UpdateOrderOfStudent";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateOrderOfStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateOrderOfStudent(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateOrderOfStudent(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -53916,8 +53976,9 @@ export class TodoDto implements ITodoDto {
     title!: string | undefined;
     isPredefined!: boolean;
     addToNewStudents!: boolean;
-    licenseClasses!: string[] | undefined;
+    licenseClass!: string | undefined;
     description!: string | undefined;
+    orderNo!: number;
     id!: number;
 
     constructor(data?: ITodoDto) {
@@ -53934,12 +53995,9 @@ export class TodoDto implements ITodoDto {
             this.title = _data["title"];
             this.isPredefined = _data["isPredefined"];
             this.addToNewStudents = _data["addToNewStudents"];
-            if (Array.isArray(_data["licenseClasses"])) {
-                this.licenseClasses = [] as any;
-                for (let item of _data["licenseClasses"])
-                    this.licenseClasses!.push(item);
-            }
+            this.licenseClass = _data["licenseClass"];
             this.description = _data["description"];
+            this.orderNo = _data["orderNo"];
             this.id = _data["id"];
         }
     }
@@ -53956,12 +54014,9 @@ export class TodoDto implements ITodoDto {
         data["title"] = this.title;
         data["isPredefined"] = this.isPredefined;
         data["addToNewStudents"] = this.addToNewStudents;
-        if (Array.isArray(this.licenseClasses)) {
-            data["licenseClasses"] = [];
-            for (let item of this.licenseClasses)
-                data["licenseClasses"].push(item);
-        }
+        data["licenseClass"] = this.licenseClass;
         data["description"] = this.description;
+        data["orderNo"] = this.orderNo;
         data["id"] = this.id;
         return data; 
     }
@@ -53971,8 +54026,9 @@ export interface ITodoDto {
     title: string | undefined;
     isPredefined: boolean;
     addToNewStudents: boolean;
-    licenseClasses: string[] | undefined;
+    licenseClass: string | undefined;
     description: string | undefined;
+    orderNo: number;
     id: number;
 }
 
@@ -54064,7 +54120,8 @@ export class CreateOrEditTodoDto implements ICreateOrEditTodoDto {
     title!: string;
     description!: string | undefined;
     addToNewStudents!: boolean;
-    licenseClasses!: string[];
+    licenseClass!: string;
+    orderNo!: number;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditTodoDto) {
@@ -54074,9 +54131,6 @@ export class CreateOrEditTodoDto implements ICreateOrEditTodoDto {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
-        if (!data) {
-            this.licenseClasses = [];
-        }
     }
 
     init(_data?: any) {
@@ -54084,11 +54138,8 @@ export class CreateOrEditTodoDto implements ICreateOrEditTodoDto {
             this.title = _data["title"];
             this.description = _data["description"];
             this.addToNewStudents = _data["addToNewStudents"];
-            if (Array.isArray(_data["licenseClasses"])) {
-                this.licenseClasses = [] as any;
-                for (let item of _data["licenseClasses"])
-                    this.licenseClasses!.push(item);
-            }
+            this.licenseClass = _data["licenseClass"];
+            this.orderNo = _data["orderNo"];
             this.id = _data["id"];
         }
     }
@@ -54105,11 +54156,8 @@ export class CreateOrEditTodoDto implements ICreateOrEditTodoDto {
         data["title"] = this.title;
         data["description"] = this.description;
         data["addToNewStudents"] = this.addToNewStudents;
-        if (Array.isArray(this.licenseClasses)) {
-            data["licenseClasses"] = [];
-            for (let item of this.licenseClasses)
-                data["licenseClasses"].push(item);
-        }
+        data["licenseClass"] = this.licenseClass;
+        data["orderNo"] = this.orderNo;
         data["id"] = this.id;
         return data; 
     }
@@ -54119,7 +54167,8 @@ export interface ICreateOrEditTodoDto {
     title: string;
     description: string | undefined;
     addToNewStudents: boolean;
-    licenseClasses: string[];
+    licenseClass: string;
+    orderNo: number;
     id: number | undefined;
 }
 
@@ -54162,6 +54211,7 @@ export interface IGetTodoForEditOutput {
 export class GetAllTodosForLookupTableDto implements IGetAllTodosForLookupTableDto {
     id!: number;
     displayName!: string | undefined;
+    orderNo!: number;
 
     constructor(data?: IGetAllTodosForLookupTableDto) {
         if (data) {
@@ -54176,6 +54226,7 @@ export class GetAllTodosForLookupTableDto implements IGetAllTodosForLookupTableD
         if (_data) {
             this.id = _data["id"];
             this.displayName = _data["displayName"];
+            this.orderNo = _data["orderNo"];
         }
     }
 
@@ -54190,6 +54241,7 @@ export class GetAllTodosForLookupTableDto implements IGetAllTodosForLookupTableD
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["displayName"] = this.displayName;
+        data["orderNo"] = this.orderNo;
         return data; 
     }
 }
@@ -54197,6 +54249,7 @@ export class GetAllTodosForLookupTableDto implements IGetAllTodosForLookupTableD
 export interface IGetAllTodosForLookupTableDto {
     id: number;
     displayName: string | undefined;
+    orderNo: number;
 }
 
 export class PagedResultDtoOfGetAllTodosForLookupTableDto implements IPagedResultDtoOfGetAllTodosForLookupTableDto {
@@ -54247,8 +54300,72 @@ export interface IPagedResultDtoOfGetAllTodosForLookupTableDto {
     items: GetAllTodosForLookupTableDto[] | undefined;
 }
 
+export class StudentTodoDto implements IStudentTodoDto {
+    title!: string | undefined;
+    isPredefined!: boolean;
+    addToNewStudents!: boolean;
+    licenseClass!: string | undefined;
+    description!: string | undefined;
+    completed!: boolean;
+    orderNo!: number;
+    id!: number;
+
+    constructor(data?: IStudentTodoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.isPredefined = _data["isPredefined"];
+            this.addToNewStudents = _data["addToNewStudents"];
+            this.licenseClass = _data["licenseClass"];
+            this.description = _data["description"];
+            this.completed = _data["completed"];
+            this.orderNo = _data["orderNo"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): StudentTodoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentTodoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["isPredefined"] = this.isPredefined;
+        data["addToNewStudents"] = this.addToNewStudents;
+        data["licenseClass"] = this.licenseClass;
+        data["description"] = this.description;
+        data["completed"] = this.completed;
+        data["orderNo"] = this.orderNo;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IStudentTodoDto {
+    title: string | undefined;
+    isPredefined: boolean;
+    addToNewStudents: boolean;
+    licenseClass: string | undefined;
+    description: string | undefined;
+    completed: boolean;
+    orderNo: number;
+    id: number;
+}
+
 export class GetAllTodosFromStudentOutput implements IGetAllTodosFromStudentOutput {
-    todos!: TodoDto[] | undefined;
+    todos!: StudentTodoDto[] | undefined;
 
     constructor(data?: IGetAllTodosFromStudentOutput) {
         if (data) {
@@ -54264,7 +54381,7 @@ export class GetAllTodosFromStudentOutput implements IGetAllTodosFromStudentOutp
             if (Array.isArray(_data["todos"])) {
                 this.todos = [] as any;
                 for (let item of _data["todos"])
-                    this.todos!.push(TodoDto.fromJS(item));
+                    this.todos!.push(StudentTodoDto.fromJS(item));
             }
         }
     }
@@ -54288,12 +54405,14 @@ export class GetAllTodosFromStudentOutput implements IGetAllTodosFromStudentOutp
 }
 
 export interface IGetAllTodosFromStudentOutput {
-    todos: TodoDto[] | undefined;
+    todos: StudentTodoDto[] | undefined;
 }
 
 export class AddTodoToStudentInput implements IAddTodoToStudentInput {
     studentId!: number;
     todoId!: number;
+    courseId!: number;
+    orderNo!: number;
 
     constructor(data?: IAddTodoToStudentInput) {
         if (data) {
@@ -54308,6 +54427,8 @@ export class AddTodoToStudentInput implements IAddTodoToStudentInput {
         if (_data) {
             this.studentId = _data["studentId"];
             this.todoId = _data["todoId"];
+            this.courseId = _data["courseId"];
+            this.orderNo = _data["orderNo"];
         }
     }
 
@@ -54322,6 +54443,8 @@ export class AddTodoToStudentInput implements IAddTodoToStudentInput {
         data = typeof data === 'object' ? data : {};
         data["studentId"] = this.studentId;
         data["todoId"] = this.todoId;
+        data["courseId"] = this.courseId;
+        data["orderNo"] = this.orderNo;
         return data; 
     }
 }
@@ -54329,11 +54452,14 @@ export class AddTodoToStudentInput implements IAddTodoToStudentInput {
 export interface IAddTodoToStudentInput {
     studentId: number;
     todoId: number;
+    courseId: number;
+    orderNo: number;
 }
 
 export class ChangeTodoStateInput implements IChangeTodoStateInput {
     studentId!: number;
     todoId!: number;
+    courseId!: number;
     completed!: boolean;
 
     constructor(data?: IChangeTodoStateInput) {
@@ -54349,6 +54475,7 @@ export class ChangeTodoStateInput implements IChangeTodoStateInput {
         if (_data) {
             this.studentId = _data["studentId"];
             this.todoId = _data["todoId"];
+            this.courseId = _data["courseId"];
             this.completed = _data["completed"];
         }
     }
@@ -54364,6 +54491,7 @@ export class ChangeTodoStateInput implements IChangeTodoStateInput {
         data = typeof data === 'object' ? data : {};
         data["studentId"] = this.studentId;
         data["todoId"] = this.todoId;
+        data["courseId"] = this.courseId;
         data["completed"] = this.completed;
         return data; 
     }
@@ -54372,7 +54500,60 @@ export class ChangeTodoStateInput implements IChangeTodoStateInput {
 export interface IChangeTodoStateInput {
     studentId: number;
     todoId: number;
+    courseId: number;
     completed: boolean;
+}
+
+export class UpdateOrderOfStudentInput implements IUpdateOrderOfStudentInput {
+    studentId!: number;
+    courseId!: number;
+    todos!: StudentTodoDto[] | undefined;
+
+    constructor(data?: IUpdateOrderOfStudentInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentId = _data["studentId"];
+            this.courseId = _data["courseId"];
+            if (Array.isArray(_data["todos"])) {
+                this.todos = [] as any;
+                for (let item of _data["todos"])
+                    this.todos!.push(StudentTodoDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateOrderOfStudentInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateOrderOfStudentInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["courseId"] = this.courseId;
+        if (Array.isArray(this.todos)) {
+            data["todos"] = [];
+            for (let item of this.todos)
+                data["todos"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IUpdateOrderOfStudentInput {
+    studentId: number;
+    courseId: number;
+    todos: StudentTodoDto[] | undefined;
 }
 
 export class AuthenticateModel implements IAuthenticateModel {

@@ -35,8 +35,12 @@
                         <div *ngIf="!item.todo.addToNewStudents" class="text-left"><i class="fa fa-times-circle" title="False"></i></div>
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>{{ l("LicenseClasses") }} :</h6>
-                        {{ item.todo.licenseClasses }}
+                        <h6>{{ l("LicenseClass") }} :</h6>
+                        {{ item.todo.licenseClass }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("OrderNo") }} :</h6>
+                        {{ item.todo.orderNo }}
                     </div>
                 </div>
             </div>

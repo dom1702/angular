@@ -27,6 +27,20 @@
                         <validation-messages [formCtrl]="Todo_Description"></validation-messages>
                     </div>
 
+                    <div class="form-group">
+                        <label for="Todo_OrderNo">{{ l("OrderNo") }}</label>
+                        <input type="text" #Todo_OrderNo="ngModel" id="Todo_OrderNo" class="form-control"
+                            [(ngModel)]="todo.orderNo" name="OrderNo" />
+                        <validation-messages [formCtrl]="Todo_OrderNo"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Todo_LicenseClass">{{ l("LicenseClass") }}</label>
+                        <input type="text" #Todo_LicenseClass="ngModel" id="Todo_LicenseClass" class="form-control"
+                            [(ngModel)]="todo.licenseClass" name="LicenseClass" />
+                        <validation-messages [formCtrl]="Todo_LicenseClass"></validation-messages>
+                    </div>
+
                     <br />
                     <div class="m-checkbox-list">
                         <label for="Todo_AddToNewStudents" class="kt-checkbox">
@@ -37,16 +51,6 @@
                         </label>
                         <validation-messages [formCtrl]="Todo_AddToNewStudents"></validation-messages>
                     </div>
-
-                    <div class="form-group">
-                        <label for="LicenseClassClass">{{l("LicenseClass")}}</label>
-                        <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings" [data]="dropdownList"
-                            [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
-                            >
-                        </ng-multiselect-dropdown>
-                    </div>
-                    <input class="form-control" name="todo.licenseClasses" [(ngModel)]="todo.licenseClasses"
-                        type="text" hidden>
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l("Cancel")
