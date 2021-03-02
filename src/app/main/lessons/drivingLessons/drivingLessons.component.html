@@ -196,7 +196,7 @@
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('StartTime')}}</span>
                                             <span *ngIf="record.drivingLesson.startTime">
-                                                {{record.drivingLesson.startTime | luxonFormat:'F' }}
+                                                {{record.drivingLesson.startTime | luxonFormat:'f' }}
                                                 <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
                                             </span>
                                             <span *ngIf="!record.drivingLesson.startTime">-</span>
@@ -214,8 +214,8 @@
                                             {{record.studentFullName}}
                                         </td>
                                         <td style="width:150px">
-                                            <span class="p-column-title"> {{l('DrivingLessonTopic')}}</span>
-                                            {{record.vehicleNameBrandModel}}
+                                            <span class="p-column-title"> {{l('Vehicle')}}</span>
+                                            {{record.vehicleNameBrandModel | replaceNullOrEmptyWithText}}
                                         </td>
 
 

@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { DateTime } from 'luxon';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'createOrEditDrivingLessonModal',
@@ -79,7 +80,8 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         private _drivingLessonsServiceProxy: DrivingLessonsServiceProxy,
         private _instructorsOwnDrivingLessonsServiceProxy: InstructorsOwnDrivingLessonsServiceProxy,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _dateTimeService: DateTimeService
+        private _dateTimeService: DateTimeService,
+        private _router: Router
     ) {
         super(injector);
 
@@ -629,5 +631,19 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         this.modal.hide();
 
         this.studentSelected = null;
+    }
+
+    goToStudentOverview() : void{
+        var studentId = this.drivingLesson.studentId;
+        this.close();
+        this._router.navigate(['app/main/students/students/students-overview', { id: studentId }]);
+    }
+
+    instructorSelected() : boolean{
+        return this.instructorsSelectedItems != null && this.instructorsSelectedItems.length > 0;
+    }
+
+    vehicleSelected() : boolean{
+        return this.drivingLesson.vehicleId != null;
     }
 }

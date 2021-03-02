@@ -20,47 +20,22 @@
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div *ngIf="selectedStudentCourse != null">
-                        <h5 class="text-md-center">{{l("TheoryLessons")}} </h5>
                         <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-md-3 col-sm-12">
-                                    <div class="mt-10">
-
-                                        <div class="card">
-                                            <div class="card-header">
-                                                {{('Legend')}}
-                                            </div>
-                                            <div class="card-body">
-                                                <div><i class="fa fa-times-circle" title="True"></i><label
-                                                        style="padding-left:10px">{{('NotStarted')}}</label></div>
-                                                <div><i class="fa fa-spinner" title="False"></i><label
-                                                        style="padding-left:10px">{{('Running')}}</label>
-                                                </div>
-                                                <div><i class="fa fa-check-circle m--font-success"
-                                                        title="False"></i><label
-                                                        style="padding-left:10px">{{('Completed')}}</label></div>
-                                                <div><i class="fa fa-times-circle m--font-danger"
-                                                        title="False"></i><label
-                                                        style="padding-left:10px">{{('Canceled')}}</label></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-9 col-sm-12">
-                                    <div class="mt-10">
+                            <div class="row justify-content-around">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="my-10">
                                         <div class="row">
                                             <div class="col-6" *ngFor="let ptl of theoryLessons; index as i">
-                                                <div *ngIf="ptl.currentState === 0" class="text-center"><i
+                                                <div *ngIf="ptl.currentState === 0"><i
                                                         class="fa fa-times-circle"
                                                         title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
-                                                <div *ngIf="ptl.currentState === 1" class="text-center"><i
+                                                <div *ngIf="ptl.currentState === 1"><i
                                                         class="fa fa-spinner"
                                                         title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
-                                                <div *ngIf="ptl.currentState === 2" class="text-center"><i
+                                                <div *ngIf="ptl.currentState === 2"><i
                                                         class="fa fa-check-circle m--font-success"
                                                         title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
-                                                <div *ngIf="ptl.currentState === 3" class="text-center"><i
+                                                <div *ngIf="ptl.currentState === 3"><i
                                                         class="fa fa-times-circle m--font-danger"
                                                         title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
                                             </div>
@@ -70,6 +45,7 @@
                                 </div>
                             </div>
                         </div>
+                        <hr />
                         <div class="mt-10">
                             <h5 class="text-md-center">{{l("Details")}} </h5>
                         </div>

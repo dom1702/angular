@@ -41,6 +41,7 @@ export class TLStudentLookupTableModalComponent extends AppComponentBase {
         this.theoryLessonId = theoryLessonId;
         this.active = true;
         this.paginator.rows = 5;
+        this.filterText = '';
         this.getAll();
         this.modal.show();
     }
