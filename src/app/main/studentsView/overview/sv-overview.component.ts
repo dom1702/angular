@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild, OnDestroy } from '@angular/core
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import * as moment from 'moment';
-import { CourseDto, StudentsViewServiceProxy, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto } from '@shared/service-proxies/service-proxies';
+import { CourseDto, StudentsViewServiceProxy, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto, SVGetAllTodosOutput } from '@shared/service-proxies/service-proxies';
 import { StudentViewHelper } from '../studentViewHelper.component';
 
 
@@ -18,6 +18,7 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
     // Could later be moved to the helper class as it is used also by the theory lesson / driving lesson part
     theoryLessons: StudentCoursePredefinedTheoryLessonDto[];
     drivingLessons: StudentCourseDrivingLessonsDto;
+    todos: SVGetAllTodosOutput;
 
     additionalInformation: string;
 
@@ -46,6 +47,7 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
         this.loadCourseSelection();
         this.loadTheoryLessons();
         this.loadDrivingLessons();
+        this.loadTodos();
 
         this.additionalInformation = this._helper.studentData.additionalInformation;
     }
@@ -89,6 +91,18 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
         });
     }
 
+    loadTodos()
+    {
+        if(this.selectedStudentCourse == null)
+            return;
+
+        this._studentViewService.getAllTodos(this.selectedStudentCourse.id).subscribe((result) => 
+        {
+            this.todos = result;
+            console.log(result);
+        });
+    }
+
     ngOnDestroy(): void {
   
     }
@@ -98,6 +112,7 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
 
         this.loadTheoryLessons();
         this.loadDrivingLessons();
+        this.loadTodos();
     }
 
     prepareLessonStart()

@@ -35,15 +35,15 @@
                                     </div>
 
                                     <div class="row my-10">
-                                        <div class="col-6 shadow p-3 m-5 bg-white rounded"
+                                        <div class="col-5 shadow p-3 m-5 bg-white rounded"
                                             *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
-                                            <div *ngIf="pdl.completed" ><i class="fa fa-check"
+                                            <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check"
                                                     style="color: rgb(71, 207, 58);"
                                                     title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
-                                            <div *ngIf="!pdl.completed && !pdl.running" ><i
+                                            <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
                                                     class="fa fa-times" style="color: Tomato;"
                                                     title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
-                                            <div *ngIf="!pdl.completed && pdl.running " ><i
+                                            <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
                                                     class="fa fa-spinner" title="False"></i><label>&nbsp;{{pdl.name}}
                                                     <span class="badge bg-secondary">{{l('Booked')}}</span></label>
                                             </div>
