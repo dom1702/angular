@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild, OnDestroy } from '@angular/core
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import * as moment from 'moment';
-import { CourseDto, StudentsViewServiceProxy, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto, SVGetAllTodosOutput } from '@shared/service-proxies/service-proxies';
+import { CourseDto, StudentsViewServiceProxy, StudentCoursePredefinedTheoryLessonDto, OnlineTheoryServiceProxy, StartNextOnlineTheoryLessonInput, FinishOnlineTheoryLessonInput, StudentCourseDrivingLessonsDto, SVGetAllTodosOutput, SVChangeTodoStateInput } from '@shared/service-proxies/service-proxies';
 import { StudentViewHelper } from '../studentViewHelper.component';
 
 
@@ -145,5 +145,47 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
             this.finishId = "";
             this.courseChanged();
         });
+    }
+
+    updateCheckedTasks(task)
+    {
+        console.log(task);
+
+        var input : SVChangeTodoStateInput = new SVChangeTodoStateInput();
+        input.todoId = task.id;
+        input.courseId = this.selectedStudentCourse.id;
+        input.completed = task.completed;
+
+        var title = '';
+        var message = '';
+        if(task.completed) // means that the student checked complete
+        {
+            title = this.l('TaskDoneQuestion');
+        }
+        else
+        {
+            title = this.l('TaskAlreadyCompleted');
+            message = "Do you really want to undo the task completion?";
+        }
+
+        this.message.confirm(
+            message,
+            title,
+            (isConfirmed) => {
+                if (isConfirmed) {
+
+                    this._studentViewService.changeTodoState(input).subscribe(result =>
+                        {
+                            this.notify.success(this.l('SuccessfullySaved'));
+                        });
+                }
+                else
+                {
+                    task.completed = !task.completed;
+                }
+            }
+        );
+
+        
     }
 }

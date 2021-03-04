@@ -1,26 +1,31 @@
 <div [@routerTransition]>
 
     <div class="content d-flex flex-column flex-column-fluid">
+
         <sub-header [title]="l('DrivingLessons')" [description]="'Review your past and upcoming driving lessons'">
-
             <div role="actions" style="width: 300px" *ngIf="selectedStudentCourse != null">
-
                 <label>Course: </label><br>
                 <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged()">
                     <option *ngFor="let course of studentCourses" [ngValue]="course">
                         {{course.name}}
                     </option>
                 </select>
-
             </div>
-
         </sub-header>
+
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div *ngIf="selectedStudentCourse != null">
                     
                         <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                        class="fa fa-car" title="False"></i>&nbsp;Book a Driving
+                                        Lesson</a>
+                                </div>
+                            </div>
                             <div class="row justify-content-around">
                                 <div class="col-md-6 col-sm-12">
                                     <div *ngIf="drivingLessons != null">

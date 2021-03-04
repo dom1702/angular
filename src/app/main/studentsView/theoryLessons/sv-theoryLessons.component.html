@@ -21,6 +21,13 @@
                 <div class="card-body">
                     <div *ngIf="selectedStudentCourse != null">
                         <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;Start
+                                        Theory Lesson</a>
+                                </div>
+                            </div>
                             <div class="row justify-content-around">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="row my-10">
@@ -90,7 +97,7 @@
                                                 <td style="width:150px">
                                                     <span class="p-column-title"> {{l('StartTime')}}</span>
                                                     <span *ngIf="record.startTime">
-                                                        {{record.startTime}}
+                                                        {{record.startTime | luxonFormat:'F'}}
                                                         <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
                                                     </span>
                                                     <span *ngIf="!record.startTime">-</span>
@@ -110,11 +117,11 @@
 
                                                 <td style="width:100px">
                                                     <span class="p-column-title"> {{l('Completed')}}</span>
-                                                    <div *ngIf="record.currentState === 2" class="text-center"><i
-                                                            class="fa fa-check-circle m--font-success" title="True"></i>
+                                                    <div *ngIf="record.currentState === 2" class="text-center"><i class="fa fa-check"
+                                                        style="color: rgb(71, 207, 58);" title="True"></i>
                                                     </div>
                                                     <div *ngIf="record.currentState !== 2" class="text-center"><i
-                                                            class="fa fa-times-circle" title="False"></i></div>
+                                                        class="fa fa-times" style="color: Tomato;" title="False"></i></div>
                                                 </td>
 
                                             </tr>
@@ -129,14 +136,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-10">
-                            <div class="text-md-center">
-                                <button type="button" class="btn btn-primary mr-5"
-                                    routerLink="/app/main/studentsView/theoryCourse/quiz">{{l("PrepareLessonStart")}}
-                                </button>
-                            </div>
-
-                        </div>
+                        
                     </div>
 
                     <div *ngIf="selectedStudentCourse == null">

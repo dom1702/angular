@@ -10,7 +10,7 @@ import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 export interface IFormattedUserNotification {
     userNotificationId: string;
     text: string;
-    time: string;
+    time: Date;
     creationTime: Date;
     icon: string;
     state: String;
@@ -89,7 +89,7 @@ export class UserNotificationHelper extends AppComponentBase {
         let formatted: IFormattedUserNotification = {
             userNotificationId: userNotification.id,
             text: abp.notifications.getFormattedMessageFromUserNotification(userNotification),
-            time: this._dateTimeService.formatJSDate(userNotification.notification.creationTime, 'yyyy-LL-dd HH:mm:ss'),
+            time: userNotification.notification.creationTime,
             creationTime: userNotification.notification.creationTime,
             icon: this.getUiIconBySeverity(userNotification.notification.severity),
             state: abp.notifications.getUserNotificationStateAsString(userNotification.state),
