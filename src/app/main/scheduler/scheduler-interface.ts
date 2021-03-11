@@ -4,4 +4,5 @@ export interface IScheduler {
     openTheoryLessonModal();
     openEventModal();
     openSimulatorLessonModal();
+    openExamModal();
 }

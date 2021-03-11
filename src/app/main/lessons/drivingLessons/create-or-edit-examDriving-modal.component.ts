@@ -14,6 +14,7 @@ import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/i
 import { Subscription } from 'rxjs';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { DateTime } from 'luxon';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
     selector: 'createOrEditExamDrivingModal',
@@ -48,11 +49,10 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     instructorPersonalLesson: boolean;
     instructorId?: number;
 
-    @ViewChildren('instructor_multiselect') insturctor_Multiselect: QueryList<MultiSelectComponent>;
-    instructors: Object[];
-    fields: Object = { text: 'instr', value: 'id' };
-    placeholderInstructorSelection: string = 'Select instructors';
-    private instructorMultiselectSubscription: Subscription;
+    instructors = [];
+    instructorsSelectedItems = [];
+    dropdownSettings: IDropdownSettings;
+    placeholder = this.l('Select');
 
     showStudentSelection = false;
     studentSelected = false;
@@ -79,6 +79,17 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     }
 
     ngOnInit() {
+        this.dropdownSettings =
+        {
+            singleSelection: false,
+            idField: 'item_id',
+            textField: 'item_text',
+            selectAllText: this.l('SelectAll'),
+            unSelectAllText: this.l('UnselectAll'),
+            allowSearchFilter: false,
+            noDataAvailablePlaceholderText: this.l('NoData')
+        };
+
         this.ismeridian = false;
 
         var minutesPerLesson = abp.setting.get("App.CoreData.DurationDrivingLesson");
@@ -93,30 +104,8 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         console.log(items);
     }
 
-    updateMultiSelect(id: number) {
-        this.instructorMultiselectSubscription = this.insturctor_Multiselect.changes.subscribe((comps: QueryList<MultiSelectComponent>) => {
-            var selected: number[] = [];
-
-            if (this.drivingLesson.instructors != null) {
-
-                for (var i = 0; i < this.drivingLesson.instructors.length; i++) {
-                    selected.push(this.drivingLesson.instructors[i].id);
-                }
-
-                this.insturctor_Multiselect.first.value = selected;
-            }
-            else if (id != null) {
-                selected.push(id);
-
-                this.insturctor_Multiselect.first.value = selected;
-            }
-
-            this.instructorMultiselectSubscription.unsubscribe();
-        });
-    }
-
     show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null, 
-        studentFirstName:string = "", studentLastName:string = ""): void {
+        studentFirstName:string = "", studentLastName:string = "", startTime: Date = null): void {
 
         this.instructorPersonalLesson = instructorPersonalLesson;
         this.selectedPdl = null;
@@ -143,7 +132,14 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         
             this.drivingLesson.id = drivingLessonId;
             this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
-            this.startTimeTime = new Date();
+            if (startTime != null) {
+                this.startTime = startTime;
+                this.startTimeTime = startTime;
+            }
+            else {
+                this.startTime = this._dateTimeService.getDate().toJSDate();
+                this.startTimeTime = this._dateTimeService.getDate().toJSDate();
+            }
             this.drivingLessonTopic = '';
             this.licenseClass = '';
            
@@ -152,11 +148,24 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
             this.drivingLesson.addingMinutesAfter = 0;
             this.refreshStudentFullName();
 
+            this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
+                "",
+                "",
+                0,
+                1000).subscribe(result => {
+                    this.instructors = [];
+
+                    for (var i = 0; i < result.items.length; i++) {
+                        this.instructors.push(
+                            {
+                                item_id: result.items[i].id,
+                                item_text: result.items[i].displayName
+                            }
+                        );
+                    }
+                });
+
             this.active = true;
-            this.updateInstructors(false);
-
-            this.updateMultiSelect(null);
-
             this.modal.show();
         } else if (this.instructorPersonalLesson) {
             this._instructorsOwnDrivingLessonsServiceProxy.getDrivingLessonForEdit(drivingLessonId).subscribe(result => {
@@ -194,6 +203,40 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.selectedStudentCourse = null;
                 this.studentCourses = null;
 
+                this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
+                    "",
+                    "",
+                    0,
+                    1000).subscribe(result => {
+                        this.instructors = [];
+                        this.instructorsSelectedItems = [];
+
+                        for (var i = 0; i < result.items.length; i++) {
+                            this.instructors.push(
+                                {
+                                    item_id: result.items[i].id,
+                                    item_text: result.items[i].displayName
+                                }
+                            );
+                        }
+
+                        if (this.drivingLesson.instructors != null && this.drivingLesson.instructors.length > 0) {
+                            for (var item of this.instructors) {
+                                for (var instr of this.drivingLesson.instructors) {
+                                    if (item.item_id == instr.id) {
+                                        this.instructorsSelectedItems.push(
+                                            {
+                                                item_id: item.item_id,
+                                                item_text: item.item_text
+                                            }
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+
                 this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result2 => {
                     this.studentCourses = result2.courses;
 
@@ -210,9 +253,6 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 });
 
                 this.active = true;
-                this.updateInstructors(true);
-
-                this.updateMultiSelect(null);
 
                 this.modal.show();
             });
@@ -244,13 +284,10 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
         this.drivingLesson.courseId = this.selectedStudentCourse.id;
 
-        if (this.insturctor_Multiselect.first.value != null) {
-            this.drivingLesson.instructors = [];
-            for (var j = 0; j < this.insturctor_Multiselect.first.value.length; j++) {
-                var ins: InstructorDto = new InstructorDto()
-                ins.id = Number(this.insturctor_Multiselect.first.value[j]);
-                this.drivingLesson.instructors.push(ins);
-            }
+        for (var instrSelected of this.instructorsSelectedItems) {
+            var instr: InstructorDto = new InstructorDto()
+            instr.id = instrSelected.item_id;
+            this.drivingLesson.instructors.push(instr);
         }
 
         if (this.instructorPersonalLesson) {
@@ -291,8 +328,8 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 for (var i = 0; i < result.items.length; i++) {
                     this.instructors.push(
                         {
-                            id: result.items[i].id,
-                            instr: result.items[i].displayName
+                            item_id: result.items[i].id,
+                            item_text: result.items[i].displayName
                         }
                     );
                 }
@@ -387,7 +424,23 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
             this.currentStudentDefaultInstructorId = result.defaultInstructorId;
             this.drivingLesson.startingLocation = result.defaultStartingLocation;
 
-            this.updateMultiSelect(this.currentStudentDefaultInstructorId);
+            this.instructorsSelectedItems = [];
+
+            for (var item of this.instructors) {
+                if (item.item_id == this.currentStudentDefaultInstructorId) {
+                    //if (this.instructorsSelectedItems.find(x => x.id == this.currentStudentDefaultInstructorId)) {
+                    this.instructorsSelectedItems.push(
+                        {
+                            item_id: item.item_id,
+                            item_text: item.item_text
+                        }
+                    );
+                    //}
+                }
+            }
+
+            this.drivingLesson.vehicleId = result.defaultVehicleId;
+            this.vehicleName = result.defaultVehicleName
         })
     }
 
@@ -443,5 +496,13 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.modal.hide();
 
         this.studentSelected = null;
+    }
+
+    instructorSelected() : boolean{
+        return this.instructorsSelectedItems != null && this.instructorsSelectedItems.length > 0;
+    }
+
+    vehicleSelected() : boolean{
+        return this.drivingLesson.vehicleId != null;
     }
 }

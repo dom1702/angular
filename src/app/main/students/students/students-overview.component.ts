@@ -23,6 +23,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     subscription: Subscription;
 
+    title: string = this.l('StudentOverview');
+
     overallActive: boolean = false;
     overviewTabName: string = this.l("Overview");
     pricePackageTabName: string = this.l("PricePackage");
@@ -67,6 +69,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
             this._studentsServiceProxy.getStudentForView(id).subscribe(result => {
 
                 this.student = result.student;
+
+                this.title = this.l('StudentOverview') + " - " + this.student.firstName + " " + this.student.lastName + " (" + this.student.customerId + ")";
 
                 this.overallActive = true;
 

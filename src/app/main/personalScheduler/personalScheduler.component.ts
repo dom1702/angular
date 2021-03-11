@@ -16,6 +16,7 @@ import { CalendarOptions, DateSelectArg, EventApi, EventClickArg, FullCalendarCo
 import { Calendar } from '@fullcalendar/core'; // include this line
 import { reduce } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { CreateOrEditExamDrivingModalComponent } from '../lessons/drivingLessons/create-or-edit-examDriving-modal.component';
 
 @Component({
     providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService],
@@ -26,6 +27,9 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
 
     @ViewChild('createOrEditDrivingLessonModal', { static: true })
     createOrEditDrivingLessonModal: CreateOrEditDrivingLessonModalComponent;
+
+    @ViewChild('createOrEditExamDrivingModal', { static: true })
+    createOrEditExamDrivingModal: CreateOrEditExamDrivingModalComponent;
   
     @ViewChild('createOrEditTheoryLessonModal', { static: true })
     createOrEditTheoryLessonModal: CreateOrEditTheoryLessonModalComponent;
@@ -328,6 +332,11 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
     openTheoryLessonModal(): void {
       this.createEventTypeModal.close();
        this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
+    }
+
+    openExamModal(): void{
+      this.createEventTypeModal.close();
+      this.createOrEditExamDrivingModal.show(null, true, null, "", "", this.startTime);
     }
   
     openEventModal(): void {

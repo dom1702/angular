@@ -32823,6 +32823,7 @@ export class InstructorDto implements IInstructorDto {
     licenseClasses!: string[] | undefined;
     defaultOfficeId!: number | undefined;
     defaultVehicleId!: number | undefined;
+    additionalInformationInternal!: string | undefined;
     id!: number;
 
     constructor(data?: IInstructorDto) {
@@ -32847,6 +32848,7 @@ export class InstructorDto implements IInstructorDto {
             }
             this.defaultOfficeId = _data["defaultOfficeId"];
             this.defaultVehicleId = _data["defaultVehicleId"];
+            this.additionalInformationInternal = _data["additionalInformationInternal"];
             this.id = _data["id"];
         }
     }
@@ -32871,6 +32873,7 @@ export class InstructorDto implements IInstructorDto {
         }
         data["defaultOfficeId"] = this.defaultOfficeId;
         data["defaultVehicleId"] = this.defaultVehicleId;
+        data["additionalInformationInternal"] = this.additionalInformationInternal;
         data["id"] = this.id;
         return data; 
     }
@@ -32884,6 +32887,7 @@ export interface IInstructorDto {
     licenseClasses: string[] | undefined;
     defaultOfficeId: number | undefined;
     defaultVehicleId: number | undefined;
+    additionalInformationInternal: string | undefined;
     id: number;
 }
 
@@ -38874,6 +38878,7 @@ export class CreateOrEditInstructorDto implements ICreateOrEditInstructorDto {
     licenseClasses!: string[] | undefined;
     defaultOfficeId!: number | undefined;
     defaultVehicleId!: number | undefined;
+    additionalInformationInternal!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditInstructorDto) {
@@ -38904,6 +38909,7 @@ export class CreateOrEditInstructorDto implements ICreateOrEditInstructorDto {
             }
             this.defaultOfficeId = _data["defaultOfficeId"];
             this.defaultVehicleId = _data["defaultVehicleId"];
+            this.additionalInformationInternal = _data["additionalInformationInternal"];
             this.id = _data["id"];
         }
     }
@@ -38934,6 +38940,7 @@ export class CreateOrEditInstructorDto implements ICreateOrEditInstructorDto {
         }
         data["defaultOfficeId"] = this.defaultOfficeId;
         data["defaultVehicleId"] = this.defaultVehicleId;
+        data["additionalInformationInternal"] = this.additionalInformationInternal;
         data["id"] = this.id;
         return data; 
     }
@@ -38953,6 +38960,7 @@ export interface ICreateOrEditInstructorDto {
     licenseClasses: string[] | undefined;
     defaultOfficeId: number | undefined;
     defaultVehicleId: number | undefined;
+    additionalInformationInternal: string | undefined;
     id: number | undefined;
 }
 
@@ -43293,6 +43301,7 @@ export enum EventType {
     Event = 2,
     Holiday = 3,
     SimulatorLesson = 4,
+    DrivingExam = 5,
 }
 
 export class SchedulerEventDto implements ISchedulerEventDto {
@@ -48346,6 +48355,7 @@ export interface IPagedResultDtoOfStudentInvoiceProductLookupTableDto {
 }
 
 export class StudentDto implements IStudentDto {
+    customerId!: string | undefined;
     firstName!: string | undefined;
     lastName!: string | undefined;
     email!: string | undefined;
@@ -48389,6 +48399,7 @@ export class StudentDto implements IStudentDto {
 
     init(_data?: any) {
         if (_data) {
+            this.customerId = _data["customerId"];
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
             this.email = _data["email"];
@@ -48440,6 +48451,7 @@ export class StudentDto implements IStudentDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["customerId"] = this.customerId;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
         data["email"] = this.email;
@@ -48484,6 +48496,7 @@ export class StudentDto implements IStudentDto {
 }
 
 export interface IStudentDto {
+    customerId: string | undefined;
     firstName: string | undefined;
     lastName: string | undefined;
     email: string | undefined;
@@ -48614,6 +48627,7 @@ export interface IPagedResultDtoOfGetStudentForViewDto {
 }
 
 export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
+    customerId!: string | undefined;
     firstName!: string;
     lastName!: string;
     email!: string | undefined;
@@ -48652,6 +48666,7 @@ export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
 
     init(_data?: any) {
         if (_data) {
+            this.customerId = _data["customerId"];
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
             this.email = _data["email"];
@@ -48698,6 +48713,7 @@ export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["customerId"] = this.customerId;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
         data["email"] = this.email;
@@ -48737,6 +48753,7 @@ export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
 }
 
 export interface ICreateOrEditStudentDto {
+    customerId: string | undefined;
     firstName: string;
     lastName: string;
     email: string | undefined;
@@ -52137,6 +52154,8 @@ export class TenantCoreDataSettingsEditDto implements ITenantCoreDataSettingsEdi
     phoneLand!: string | undefined;
     website!: string | undefined;
     email!: string | undefined;
+    iban!: string | undefined;
+    bic!: string | undefined;
     drivingSchoolNumber!: string | undefined;
     durationDrivingLesson!: number;
     durationTheoryLesson!: number;
@@ -52162,6 +52181,8 @@ export class TenantCoreDataSettingsEditDto implements ITenantCoreDataSettingsEdi
             this.phoneLand = _data["phoneLand"];
             this.website = _data["website"];
             this.email = _data["email"];
+            this.iban = _data["iban"];
+            this.bic = _data["bic"];
             this.drivingSchoolNumber = _data["drivingSchoolNumber"];
             this.durationDrivingLesson = _data["durationDrivingLesson"];
             this.durationTheoryLesson = _data["durationTheoryLesson"];
@@ -52187,6 +52208,8 @@ export class TenantCoreDataSettingsEditDto implements ITenantCoreDataSettingsEdi
         data["phoneLand"] = this.phoneLand;
         data["website"] = this.website;
         data["email"] = this.email;
+        data["iban"] = this.iban;
+        data["bic"] = this.bic;
         data["drivingSchoolNumber"] = this.drivingSchoolNumber;
         data["durationDrivingLesson"] = this.durationDrivingLesson;
         data["durationTheoryLesson"] = this.durationTheoryLesson;
@@ -52205,6 +52228,8 @@ export interface ITenantCoreDataSettingsEditDto {
     phoneLand: string | undefined;
     website: string | undefined;
     email: string | undefined;
+    iban: string | undefined;
+    bic: string | undefined;
     drivingSchoolNumber: string | undefined;
     durationDrivingLesson: number;
     durationTheoryLesson: number;

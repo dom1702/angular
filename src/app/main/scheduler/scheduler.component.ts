@@ -16,6 +16,7 @@ import { CalendarOptions, DateSelectArg, EventApi, EventClickArg, FullCalendarCo
 import { Calendar } from '@fullcalendar/core'; // include this line
 import { reduce } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { CreateOrEditExamDrivingModalComponent } from '../lessons/drivingLessons/create-or-edit-examDriving-modal.component';
 
 @Component({
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService],
@@ -26,6 +27,9 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
 
   @ViewChild('createOrEditDrivingLessonModal', { static: true })
   createOrEditDrivingLessonModal: CreateOrEditDrivingLessonModalComponent;
+
+  @ViewChild('createOrEditExamDrivingModal', { static: true })
+  createOrEditExamDrivingModal: CreateOrEditExamDrivingModalComponent;
 
   @ViewChild('createOrEditTheoryLessonModal', { static: true })
   createOrEditTheoryLessonModal: CreateOrEditTheoryLessonModalComponent;
@@ -66,7 +70,8 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
   simulatorFeatureEnabled;
   //calendarPlugins = [dayGridPlugin];
   calendarOptions: CalendarOptions = {
-    //timeZone: 'UTC',
+    //timeZone: 'local',
+    locale: abp.localization.currentLanguage.name,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
     headerToolbar: {
@@ -87,7 +92,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
         dayHeaderFormat:
         {
           titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' },
-          weekday: 'short'
+          weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true
         }
       }
     },
@@ -128,7 +133,6 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-
 
     const name = Calendar.name;
     this.simulatorFeatureEnabled = abp.features.isEnabled("App.Simulator");
@@ -210,6 +214,9 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
           switch (item.appointmentType) {
             case EventType.DrivingLesson:
               backgroundColor = '#F57F17';
+              break;
+            case EventType.DrivingExam:
+              backgroundColor = '#F17F17';
               break;
             case EventType.TheoryLesson:
               backgroundColor = '#7fa900';
@@ -313,6 +320,9 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
             this.createOrEditEventModal.show(Number(clickInfo.event.id));
         else     if (clickInfo.event.extendedProps.appointmentType == EventType.SimulatorLesson)
             this.createOrEditSimulatorLessonModal.show(Number(clickInfo.event.id));
+            else     if (clickInfo.event.extendedProps.appointmentType == EventType.DrivingExam)
+            this.createOrEditExamDrivingModal.show(Number(clickInfo.event.id));
+            
   }
 
   handleEvents(events: EventApi[]) {
@@ -331,6 +341,11 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
     console.log(this.startTime);
 
     this.createOrEditDrivingLessonModal.show(null, false, null, "", "", this.startTime);
+  }
+
+  openExamModal(): void{
+    this.createEventTypeModal.close();
+    this.createOrEditExamDrivingModal.show(null, false, null, "", "", this.startTime);
   }
 
   openTheoryLessonModal(): void {

@@ -98,9 +98,10 @@
                             <h5>{{l("Resources")}}</h5>
                             <div [hidden]="instructorPersonalLesson" class="form-group m-form__group">
                                 <label for="LicenseClassClass">{{l("Instructors")}}</label>
-                                <ejs-multiselect #instructor_multiselect id='multiselectelement'
-                                [dataSource]='instructors' [fields]='fields'
-                                [placeholder]='placeholderInstructorSelection'></ejs-multiselect>
+                                <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"
+                                [data]="instructors" [(ngModel)]="instructorsSelectedItems"
+                                [ngModelOptions]="{standalone: true}">
+                            </ng-multiselect-dropdown>
                             </div>
 
                             <div class="form-group m-form__group">
@@ -133,7 +134,7 @@
 
                                     <div class="form-group">
                                         <label for="DrivingLesson_StartTime">{{l("StartDate")}}</label>
-                                        <input required class="form-control m-input" type="timepicker" bsDatepicker bsDatepicker datePickerLuxonModifier
+                                        <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier
                                             [(date)]="startTime" id="DrivingLesson_StartTime"
                                             name="DrivingLesson_StartTime" [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                                     </div>
@@ -200,7 +201,7 @@
                     <button *ngIf="drivingLesson.id"
                         [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') "
                         type="button" class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
-                    <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid"
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid|| selectedStudentCourse == null || !instructorSelected() || !vehicleSelected()"
                         [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>

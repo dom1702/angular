@@ -62,6 +62,11 @@ export class CreateEventTypeModalComponent extends AppComponentBase implements O
         this.scheduler.openDrivingLessonModal();
     }
 
+    openExamModal(): void
+    {
+        this.scheduler.openExamModal();
+    }
+
     openTheoryLessonModal(): void
     {
         this.scheduler.openTheoryLessonModal();

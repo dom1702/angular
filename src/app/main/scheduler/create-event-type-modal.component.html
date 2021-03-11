@@ -9,53 +9,38 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <div class="row justify-content-center">
-
-                        <!-- <div class="col-md-auto m-5" *ngIf="allowCreateDrivingLesson">
-                         
-                                <a class="btn btn-primary btn-block"
-                                    (click)="openDrivingLessonModal()">
-                                    <i class="fa fa-car"></i><br><span>{{l("DrivingLesson")}}</span>
-                                </a>
-                            
+                    <div class="row">
+                        <div class="col-9">
+                            <button *ngIf="allowCreateDrivingLesson" type="button" class="btn btn-primary btn-block"
+                                (click)="openDrivingLessonModal()"><i
+                                    class="fa fa-car"></i><span>{{l("DrivingLesson")}}</span></button>
                         </div>
-                        <div class="col-md-auto m-5" *ngIf="allowCreateSimulatorLesson">
-                         
-                                <a class="btn btn-primary btn-block"
-                                    (click)="openSimulatorLessonModal()"> <i
-                                        class="fa fa-desktop"></i><br><span>{{l("SimulatorLesson")}}</span></a>
-                           
+                        <div class="col-3">
+                            <button *ngIf="allowCreateDrivingLesson" type="button" class="btn btn-primary btn-block"
+                                (click)="openExamModal()"><i class="fa fa-car"></i><span>{{l("Exam")}}</span></button>
                         </div>
-                        <div class="col-md-auto m-5" *ngIf="allowCreateTheoryLesson">
-                           
-                                <a class="btn btn-primary btn-block"
-                                    (click)="openTheoryLessonModal()"> <i
-                                        class="fa fa-graduation-cap"></i><br><span>{{l("TheoryLesson")}}</span></a>
-                         
+                    </div>
+                    <div class="row mt-3" *ngIf="allowCreateSimulatorLesson">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary btn-block"
+                                (click)="openSimulatorLessonModal()"><i
+                                    class="fa fa-desktop"></i><span>{{l("SimulatorLesson")}}</span></button>
                         </div>
-                        <div class="col-md-auto m-5" *ngIf="allowCreateEvent">
-                            
-                                <a class="btn btn-primary btn-block"
-                                    (click)="openEventModal()"> <i
-                                        class="fa fa-calendar"></i><br><span>{{l("Event")}}</span></a>
-                           
-                        </div> -->
-                        <button *ngIf="allowCreateDrivingLesson" type="button" class="btn btn-primary btn-block"
-                            (click)="openDrivingLessonModal()"><i class="fa fa-car"></i><span>{{l("DrivingLesson")}}</span></button>
                     </div>
-                    <div class="row justify-content-center mt-3" *ngIf="allowCreateSimulatorLesson">
-                        <button type="button" class="btn btn-primary btn-block" (click)="openSimulatorLessonModal()"><i class="fa fa-desktop"></i><span>{{l("SimulatorLesson")}}</span></button>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button *ngIf="allowCreateTheoryLesson" type="button" class="btn btn-primary btn-block"
+                                (click)="openTheoryLessonModal()"> <i
+                                    class="fa fa-graduation-cap"></i><span>{{l("TheoryLesson")}}</span></button>
+                        </div>
                     </div>
-                    <div class="row justify-content-center mt-3">
-                        <button *ngIf="allowCreateTheoryLesson" type="button" class="btn btn-primary btn-block"
-                            (click)="openTheoryLessonModal()"> <i class="fa fa-graduation-cap"></i><span>{{l("TheoryLesson")}}</span></button>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button *ngIf="allowCreateEvent" type="button" class="btn btn-primary btn-block"
+                                (click)="openEventModal()"> <i
+                                    class="fa fa-calendar"></i><span>{{l("Event")}}</span></button>
+                        </div>
                     </div>
-                    <div class="row justify-content-center mt-3">
-                        <button *ngIf="allowCreateEvent" type="button" class="btn btn-primary btn-block"
-                            (click)="openEventModal()"> <i class="fa fa-calendar"></i><span>{{l("Event")}}</span></button>
-                    </div>
-
-
                 </div>
             </div>
             <div class="modal-footer">
