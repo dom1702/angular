@@ -47,7 +47,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
     currentNativeLanguage: string;
     languages: Language[];
 
-    assignToCourseAfterSave;
+    assignToCourseAfterSave = true;
 
     @ViewChild('instructorLookupTableModal') instructorLookupTableModal: InstructorLookupTableModalComponent;
 
@@ -125,7 +125,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
         this.instructorFullName = '';
         this.vehicleName = '';
 
-        this.assignToCourseAfterSave = false;
+        this.assignToCourseAfterSave = true;
         this.dateOfBirth = null;
 
         if (!studentId) {
