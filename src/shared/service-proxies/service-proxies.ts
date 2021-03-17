@@ -1346,6 +1346,428 @@ export class AuditLogServiceProxy {
 }
 
 @Injectable()
+export class BankAccountsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param bicFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | null | undefined, bicFilter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetBankAccountForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/GetAll?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (bicFilter !== undefined && bicFilter !== null)
+            url_ += "BicFilter=" + encodeURIComponent("" + bicFilter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetBankAccountForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetBankAccountForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetBankAccountForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetBankAccountForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetBankAccountForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getBankAccountForView(id: number | undefined): Observable<GetBankAccountForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/GetBankAccountForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankAccountForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankAccountForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetBankAccountForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetBankAccountForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBankAccountForView(response: HttpResponseBase): Observable<GetBankAccountForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetBankAccountForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetBankAccountForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getBankAccountForEdit(id: number | undefined): Observable<GetBankAccountForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/GetBankAccountForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankAccountForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankAccountForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetBankAccountForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetBankAccountForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBankAccountForEdit(response: HttpResponseBase): Observable<GetBankAccountForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetBankAccountForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetBankAccountForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditBankAccountDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param bicFilter (optional) 
+     * @return Success
+     */
+    getBankAccountsToExcel(filter: string | null | undefined, bicFilter: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/GetBankAccountsToExcel?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (bicFilter !== undefined && bicFilter !== null)
+            url_ += "BicFilter=" + encodeURIComponent("" + bicFilter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBankAccountsToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankAccountsToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBankAccountsToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllBankAccountsForLookupTable(filter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfBankAccountLookupTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/BankAccounts/GetAllBankAccountsForLookupTable?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllBankAccountsForLookupTable(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllBankAccountsForLookupTable(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfBankAccountLookupTableDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfBankAccountLookupTableDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllBankAccountsForLookupTable(response: HttpResponseBase): Observable<PagedResultDtoOfBankAccountLookupTableDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfBankAccountLookupTableDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfBankAccountLookupTableDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class CachingServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -30712,6 +31134,318 @@ export interface IEntityPropertyChangeDto {
     id: number;
 }
 
+export class BankAccountDto implements IBankAccountDto {
+    payee!: string | undefined;
+    iban!: string | undefined;
+    bic!: string | undefined;
+    isDefault!: boolean;
+    id!: number;
+
+    constructor(data?: IBankAccountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payee = _data["payee"];
+            this.iban = _data["iban"];
+            this.bic = _data["bic"];
+            this.isDefault = _data["isDefault"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): BankAccountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BankAccountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payee"] = this.payee;
+        data["iban"] = this.iban;
+        data["bic"] = this.bic;
+        data["isDefault"] = this.isDefault;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IBankAccountDto {
+    payee: string | undefined;
+    iban: string | undefined;
+    bic: string | undefined;
+    isDefault: boolean;
+    id: number;
+}
+
+export class GetBankAccountForViewDto implements IGetBankAccountForViewDto {
+    bankAccount!: BankAccountDto;
+
+    constructor(data?: IGetBankAccountForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bankAccount = _data["bankAccount"] ? BankAccountDto.fromJS(_data["bankAccount"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetBankAccountForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBankAccountForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bankAccount"] = this.bankAccount ? this.bankAccount.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetBankAccountForViewDto {
+    bankAccount: BankAccountDto;
+}
+
+export class PagedResultDtoOfGetBankAccountForViewDto implements IPagedResultDtoOfGetBankAccountForViewDto {
+    totalCount!: number;
+    items!: GetBankAccountForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetBankAccountForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetBankAccountForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetBankAccountForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetBankAccountForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetBankAccountForViewDto {
+    totalCount: number;
+    items: GetBankAccountForViewDto[] | undefined;
+}
+
+export class CreateOrEditBankAccountDto implements ICreateOrEditBankAccountDto {
+    payee!: string;
+    iban!: string | undefined;
+    bic!: string | undefined;
+    isDefault!: boolean;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditBankAccountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.payee = _data["payee"];
+            this.iban = _data["iban"];
+            this.bic = _data["bic"];
+            this.isDefault = _data["isDefault"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditBankAccountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditBankAccountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payee"] = this.payee;
+        data["iban"] = this.iban;
+        data["bic"] = this.bic;
+        data["isDefault"] = this.isDefault;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditBankAccountDto {
+    payee: string;
+    iban: string | undefined;
+    bic: string | undefined;
+    isDefault: boolean;
+    id: number | undefined;
+}
+
+export class GetBankAccountForEditOutput implements IGetBankAccountForEditOutput {
+    bankAccount!: CreateOrEditBankAccountDto;
+
+    constructor(data?: IGetBankAccountForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bankAccount = _data["bankAccount"] ? CreateOrEditBankAccountDto.fromJS(_data["bankAccount"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetBankAccountForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBankAccountForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bankAccount"] = this.bankAccount ? this.bankAccount.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetBankAccountForEditOutput {
+    bankAccount: CreateOrEditBankAccountDto;
+}
+
+export class BankAccountLookupTableDto implements IBankAccountLookupTableDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: IBankAccountLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): BankAccountLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BankAccountLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data; 
+    }
+}
+
+export interface IBankAccountLookupTableDto {
+    id: number;
+    displayName: string | undefined;
+}
+
+export class PagedResultDtoOfBankAccountLookupTableDto implements IPagedResultDtoOfBankAccountLookupTableDto {
+    totalCount!: number;
+    items!: BankAccountLookupTableDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfBankAccountLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BankAccountLookupTableDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfBankAccountLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfBankAccountLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfBankAccountLookupTableDto {
+    totalCount: number;
+    items: BankAccountLookupTableDto[] | undefined;
+}
+
 export class CacheDto implements ICacheDto {
     name!: string | undefined;
 
@@ -47917,6 +48651,8 @@ export class CreateOrEditStudentInvoiceDto implements ICreateOrEditStudentInvoic
     useInstallments!: boolean;
     installmentCount!: number;
     installmentInterval!: number;
+    iban!: string | undefined;
+    bic!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditStudentInvoiceDto) {
@@ -47972,6 +48708,8 @@ export class CreateOrEditStudentInvoiceDto implements ICreateOrEditStudentInvoic
             this.useInstallments = _data["useInstallments"];
             this.installmentCount = _data["installmentCount"];
             this.installmentInterval = _data["installmentInterval"];
+            this.iban = _data["iban"];
+            this.bic = _data["bic"];
             this.id = _data["id"];
         }
     }
@@ -48027,6 +48765,8 @@ export class CreateOrEditStudentInvoiceDto implements ICreateOrEditStudentInvoic
         data["useInstallments"] = this.useInstallments;
         data["installmentCount"] = this.installmentCount;
         data["installmentInterval"] = this.installmentInterval;
+        data["iban"] = this.iban;
+        data["bic"] = this.bic;
         data["id"] = this.id;
         return data; 
     }
@@ -48071,6 +48811,8 @@ export interface ICreateOrEditStudentInvoiceDto {
     useInstallments: boolean;
     installmentCount: number;
     installmentInterval: number;
+    iban: string | undefined;
+    bic: string | undefined;
     id: number | undefined;
 }
 
@@ -52154,8 +52896,6 @@ export class TenantCoreDataSettingsEditDto implements ITenantCoreDataSettingsEdi
     phoneLand!: string | undefined;
     website!: string | undefined;
     email!: string | undefined;
-    iban!: string | undefined;
-    bic!: string | undefined;
     drivingSchoolNumber!: string | undefined;
     durationDrivingLesson!: number;
     durationTheoryLesson!: number;
@@ -52181,8 +52921,6 @@ export class TenantCoreDataSettingsEditDto implements ITenantCoreDataSettingsEdi
             this.phoneLand = _data["phoneLand"];
             this.website = _data["website"];
             this.email = _data["email"];
-            this.iban = _data["iban"];
-            this.bic = _data["bic"];
             this.drivingSchoolNumber = _data["drivingSchoolNumber"];
             this.durationDrivingLesson = _data["durationDrivingLesson"];
             this.durationTheoryLesson = _data["durationTheoryLesson"];
@@ -52208,8 +52946,6 @@ export class TenantCoreDataSettingsEditDto implements ITenantCoreDataSettingsEdi
         data["phoneLand"] = this.phoneLand;
         data["website"] = this.website;
         data["email"] = this.email;
-        data["iban"] = this.iban;
-        data["bic"] = this.bic;
         data["drivingSchoolNumber"] = this.drivingSchoolNumber;
         data["durationDrivingLesson"] = this.durationDrivingLesson;
         data["durationTheoryLesson"] = this.durationTheoryLesson;
@@ -52228,8 +52964,6 @@ export interface ITenantCoreDataSettingsEditDto {
     phoneLand: string | undefined;
     website: string | undefined;
     email: string | undefined;
-    iban: string | undefined;
-    bic: string | undefined;
     drivingSchoolNumber: string | undefined;
     durationDrivingLesson: number;
     durationTheoryLesson: number;

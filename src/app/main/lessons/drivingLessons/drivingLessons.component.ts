@@ -17,6 +17,7 @@ import { DateTime } from 'luxon';
 
 @Component({
     templateUrl: './drivingLessons.component.html',
+    styleUrls: ['./drivingLessons.component.less'],
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
@@ -42,7 +43,9 @@ export class DrivingLessonsComponent extends AppComponentBase {
         instructorFilter = '';
 
         
-
+    completedColor = '#d2f9d2';
+    canceledColor = '#feaeae';
+    uncompletedColor = 'white';
 
     _entityTypeFullName = 'Drima.Lessons.DrivingLesson';
     entityHistoryEnabled = false;

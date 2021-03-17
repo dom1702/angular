@@ -163,7 +163,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                        <td style="width: 130px"
+                                        <td style="width: 130px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}"
                                             [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
@@ -193,7 +193,7 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td style="width:150px">
+                                        <td style="width:150px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('StartTime')}}</span>
                                             <span *ngIf="record.drivingLesson.startTime">
                                                 {{record.drivingLesson.startTime | luxonFormat:'f' }}
@@ -201,36 +201,36 @@
                                             </span>
                                             <span *ngIf="!record.drivingLesson.startTime">-</span>
                                         </td>
-                                        <td style="width:80px">
+                                        <td style="width:80px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('Class')}}</span>
                                             {{record.drivingLesson.licenseClass}}
                                         </td>
-                                        <td style="width:150px">
+                                        <td style="width:150px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('Instructors')}}</span>
                                             {{record.instructorNames}}
                                         </td>
-                                        <td style="width:150px">
+                                        <td style="width:150px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('Student')}}</span>
                                             {{record.studentFullName}}
                                         </td>
-                                        <td style="width:150px">
+                                        <td style="width:150px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('Vehicle')}}</span>
                                             {{record.vehicleNameBrandModel | replaceNullOrEmptyWithText}}
                                         </td>
 
 
 
-                                        <td style="width:50px">
+                                        <td style="width:50px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('Length')}}</span>
                                             {{record.drivingLesson.length}}
                                         </td>
 
-                                        <td style="width:100px">
+                                        <td style="width:100px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                                             <span class="p-column-title"> {{l('Completed')}}</span>
                                             <div *ngIf="record.drivingLesson.completed" class="text-center"><i
-                                                    class="fa fa-check-circle m--font-success" title="True"></i></div>
+                                                class="fa fa-check" style="color: rgb(71, 207, 58);" title="True"></i></div>
                                             <div *ngIf="!record.drivingLesson.completed" class="text-center"><i
-                                                    class="fa fa-times-circle" title="False"></i></div>
+                                                class="fa fa-times"  style="color: Tomato;" title="False"></i></div>
                                         </td>
 
                                     </tr>
