@@ -13,6 +13,7 @@ import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistor
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { DateTime } from 'luxon';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Component({
     templateUrl: './studentInvoices.component.html',
@@ -53,7 +54,8 @@ export class StudentInvoicesComponent extends AppComponentBase {
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
-        private _router: Router
+        private _router: Router,
+        private _http : HttpClient
     ) {
         super(injector);
     }
@@ -142,5 +144,57 @@ export class StudentInvoicesComponent extends AppComponentBase {
         });
 
   
+    }
+
+
+    testPayment()
+    {
+        //  const crypto = require("crypto");
+        // // //var createHmac = require('create-hmac')
+
+        //  const ACCOUNT = "375917";
+        //  const SECRET = "SAIPPUAKAUPPIAS";
+
+        // const headers = {
+        //     "checkout-account": ACCOUNT,
+        //     "checkout-algorithm": "sha256",
+        //     "checkout-method": "GET",
+        //     "checkout-nonce": "564635208570151",
+        //     "checkout-timestamp": Date.now.toString(),
+        //   };
+
+  
+
+        
+
+        // const calculateHmac = (secret, params, body) => {
+        //     const hmacPayload = Object.keys(params)
+        //       .sort()
+        //       .map((key) => [key, params[key]].join(":"))
+        //       .concat(body ? JSON.stringify(body) : "")
+        //       .join("\n");
+          
+        //     return crypto.createHmac("sha256", secret).update(hmacPayload).digest("hex");
+        //   };
+
+        //   var signature = calculateHmac(SECRET, headers, '');
+
+        //   console.log(signature);
+
+        //   const headersGet = new HttpHeaders()
+        //   .append('checkout-account', '375917')
+        //   .append('checkout-algorithm', 'sha256')
+        //   .append('checkout-method', 'GET')
+        //   .append('checkout-timestamp', Date.now.toString()) //'yyyy-MM-ddTHH:mm:ssZ' ISO 8601
+        //   .append('checkout-transaction-id', '')
+        //   .append('cof-plugin-version', 'drima')
+        //   .append('checkout-algorithm', 'sha256')
+        //   .append('signature', signature);
+
+        //   var result = this._http.get('api.checkout.fi/merchants/payment-providers?amount=1000&groups=mobile,creditcard', {headers: headersGet })
+
+        //   console.log(result);
+        console.log("go");
+        this._studentInvoicesServiceProxy.getAllPaymentProviders().subscribe();
     }
 }
