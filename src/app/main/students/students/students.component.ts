@@ -103,9 +103,10 @@ export class StudentsComponent extends AppComponentBase {
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
 
-            if(this.createOrEditStudentModal.assignToCourseAfterSave)
+            if(this.createOrEditStudentModal.justSaved)
             {
                 this.openAssignToCourseModal();
+                this.createOrEditStudentModal.justSaved = false;
             }
         });
     }

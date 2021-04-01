@@ -49,6 +49,8 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
 
     assignToCourseAfterSave = true;
 
+    justSaved = false;
+
     @ViewChild('instructorLookupTableModal') instructorLookupTableModal: InstructorLookupTableModalComponent;
 
     instructorFullName = '';
@@ -327,6 +329,8 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
                     this.close();
                     this.modalSave.emit(null);
                 });
+
+            this.justSaved = true;
         }
         else {
             this._studentsServiceProxy.createOrEdit(this.student)
