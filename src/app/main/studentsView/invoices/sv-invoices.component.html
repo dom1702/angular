@@ -49,6 +49,9 @@
                                             <button type="button" [disabled]="!invoice.readyForPickup"
                                                 (click)="downloadInvoice(invoice.studentInvoiceId)"
                                                 class="btn btn-primary mr-5">{{l("DownloadInvoice")}}</button>
+                                                <button type="button" [disabled]="!invoice.readyForPickup"
+                                                (click)="payNow(invoice.studentInvoiceId)"
+                                                class="btn btn-primary mr-5">{{l("PayNow")}}</button>
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -67,3 +70,4 @@
     </div>
     </div>
 </div>
+<studentPaymentModal #studentPaymentModal (modalSave)="paymentSuccess()"></studentPaymentModal>

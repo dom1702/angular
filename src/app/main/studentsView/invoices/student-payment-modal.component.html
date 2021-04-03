@@ -1,0 +1,48 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #paymentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ l("Payment") }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body" [busyIf]="loading">
+                    <div class="container">
+                    <div class="row justify-content-center" *ngIf="paymentProviderDtos != null">
+                        <div class="col-sm-6" *ngFor="let provider of paymentProviderDtos">
+                            <div class="card text-center text-dark bg-light mb-3">
+                                <div class="card-body">
+                                    
+                                    <h5 class="card-title">{{provider.name}}</h5>
+                                    <!-- <p class="card-text">With supporting text below as a natural lead-in to additional
+                                        content.</p> -->
+                                        <img src="{{provider.icon}}"> <br>
+                                    <a href="#" class="btn btn-primary mt-10">{{l('Select')}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l("Cancel")
+                        }}</button>
+                    <!-- <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!paymentForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -40,10 +40,13 @@
                         <h6>{{ l("PaymentMethod") }} :</h6>
                         {{ l(paymentMethod[item.payment.paymentMethod]) }}
                     </div>
-
                     <div class="col-6 mb-3">
-                        <h6>({{ l("StudentInvoice") }}) {{ l("UserFriendlyInvoiceId") }} :</h6>
+                        <h6>{{ l("UserFriendlyInvoiceId") }} :</h6>
                         {{ item.studentInvoiceUserFriendlyInvoiceId }}
+                    </div>
+                    <div *ngIf="item.payment.paidWithApi" class="col-6 mb-3">
+                        <h6>{{ l("TransactionId") }} :</h6>
+                        {{ item.payment.transactionId }}
                     </div>
                 </div>
             </div>

@@ -38,7 +38,7 @@
                                 {{ l(paymentMethod[item.paymentMethod]) }}
                             </div>
                             <div class="col-6 mb-3">
-                                <button *ngIf="isGranted('Pages.Payments.Edit')" (click)="editPayment(item.id)" class="btn btn-primary blue">
+                                <button *ngIf="isGranted('Pages.Payments.Edit') && !item.paidWithApi" (click)="editPayment(item.id)" class="btn btn-primary blue">
                                     <i class="fa fa-edit"></i> {{ l("Edit") }}
                                 </button>
                             </div>

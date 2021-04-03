@@ -23,6 +23,8 @@ import { SVTheoryLessonsComponent } from './studentsView/theoryLessons/sv-theory
 import { SVLicenseClassSelectionComponent } from './studentsView/theoryPractice/sv-licenseClassSelection.component';
 import { SVLicenseClassTasksOverview } from './studentsView/theoryPractice/sv-licenseClassTasksOverview.component';
 import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-theoryPracticeQuiz.component';
+import { SVPaymentSuccessComponent } from './studentsView/invoices/payment-success.component';
+import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed.component';
 
 @NgModule({
     imports: [
@@ -48,6 +50,8 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
                     { path: 'studentsView/drivingLessons', component: SVDrivingLessonComponent, data: { permission: 'StudentView' }},
                     { path: 'studentsView/frequentlyAskedQuestions', component: SVFrequentlyAskedQuestionsComponent, data: { permission: 'StudentView' }},
                     { path: 'studentsView/invoices', component: SVInvoicesComponent, data: { permission: 'StudentView' }},
+                    { path: 'studentsView/payment-success', component: SVPaymentSuccessComponent, data: { permission: 'StudentView' }},
+                    { path: 'studentsView/payment-failed', component: SVPaymentFailedComponent, data: { permission: 'StudentView' }},
                     { 
                         path: 'studentsView/theoryCourse/quiz', 
                         canDeactivate: [SVQuizGuard],

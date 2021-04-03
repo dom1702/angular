@@ -19862,7 +19862,7 @@ export class StudentInvoicesServiceProxy {
     /**
      * @return Success
      */
-    getAllPaymentProviders(): Observable<void> {
+    getAllPaymentProviders(): Observable<PaymentProviderDto[]> {
         let url_ = this.baseUrl + "/api/services/app/StudentInvoices/GetAllPaymentProviders";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -19870,6 +19870,7 @@ export class StudentInvoicesServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "text/plain"
             })
         };
 
@@ -19880,14 +19881,14 @@ export class StudentInvoicesServiceProxy {
                 try {
                     return this.processGetAllPaymentProviders(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<PaymentProviderDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<PaymentProviderDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllPaymentProviders(response: HttpResponseBase): Observable<void> {
+    protected processGetAllPaymentProviders(response: HttpResponseBase): Observable<PaymentProviderDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -19896,14 +19897,21 @@ export class StudentInvoicesServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PaymentProviderDto.fromJS(item));
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<PaymentProviderDto[]>(<any>null);
     }
 }
 
@@ -22150,6 +22158,229 @@ export class StudentsViewServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllPaymentProviders(): Observable<PaymentProviderDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/StudentsView/GetAllPaymentProviders";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPaymentProviders(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPaymentProviders(<any>response_);
+                } catch (e) {
+                    return <Observable<PaymentProviderDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PaymentProviderDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllPaymentProviders(response: HttpResponseBase): Observable<PaymentProviderDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PaymentProviderDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaymentProviderDto[]>(<any>null);
+    }
+
+    /**
+     * @param studentInvoiceId (optional) 
+     * @return Success
+     */
+    createPayment(studentInvoiceId: number | undefined): Observable<CreatePaymentOutput> {
+        let url_ = this.baseUrl + "/api/services/app/StudentsView/CreatePayment?";
+        if (studentInvoiceId === null)
+            throw new Error("The parameter 'studentInvoiceId' cannot be null.");
+        else if (studentInvoiceId !== undefined)
+            url_ += "studentInvoiceId=" + encodeURIComponent("" + studentInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreatePayment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreatePayment(<any>response_);
+                } catch (e) {
+                    return <Observable<CreatePaymentOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreatePaymentOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreatePayment(response: HttpResponseBase): Observable<CreatePaymentOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreatePaymentOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreatePaymentOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    paymentSucceeded(body: PaymentSucceededDto | undefined): Observable<PaymentSucceededOutput> {
+        let url_ = this.baseUrl + "/api/services/app/StudentsView/PaymentSucceeded";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPaymentSucceeded(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPaymentSucceeded(<any>response_);
+                } catch (e) {
+                    return <Observable<PaymentSucceededOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PaymentSucceededOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPaymentSucceeded(response: HttpResponseBase): Observable<PaymentSucceededOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaymentSucceededOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaymentSucceededOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    paymentFailed(body: PaymentFailedDto | undefined): Observable<PaymentFailedOutput> {
+        let url_ = this.baseUrl + "/api/services/app/StudentsView/PaymentFailed";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPaymentFailed(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPaymentFailed(<any>response_);
+                } catch (e) {
+                    return <Observable<PaymentFailedOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PaymentFailedOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPaymentFailed(response: HttpResponseBase): Observable<PaymentFailedOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaymentFailedOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaymentFailedOutput>(<any>null);
     }
 }
 
@@ -43594,6 +43825,8 @@ export enum PaymentMethod {
     DirectDebit = 2,
     CreditCard = 3,
     Paypal = 4,
+    Mobile = 5,
+    Credit = 6,
 }
 
 export class PaymentDto implements IPaymentDto {
@@ -43603,6 +43836,8 @@ export class PaymentDto implements IPaymentDto {
     amount!: number;
     paymentMethod!: PaymentMethod;
     studentInvoiceId!: number | undefined;
+    paidWithApi!: boolean;
+    transactionId!: string | undefined;
     id!: number;
 
     constructor(data?: IPaymentDto) {
@@ -43622,6 +43857,8 @@ export class PaymentDto implements IPaymentDto {
             this.amount = _data["amount"];
             this.paymentMethod = _data["paymentMethod"];
             this.studentInvoiceId = _data["studentInvoiceId"];
+            this.paidWithApi = _data["paidWithApi"];
+            this.transactionId = _data["transactionId"];
             this.id = _data["id"];
         }
     }
@@ -43641,6 +43878,8 @@ export class PaymentDto implements IPaymentDto {
         data["amount"] = this.amount;
         data["paymentMethod"] = this.paymentMethod;
         data["studentInvoiceId"] = this.studentInvoiceId;
+        data["paidWithApi"] = this.paidWithApi;
+        data["transactionId"] = this.transactionId;
         data["id"] = this.id;
         return data; 
     }
@@ -43653,6 +43892,8 @@ export interface IPaymentDto {
     amount: number;
     paymentMethod: PaymentMethod;
     studentInvoiceId: number | undefined;
+    paidWithApi: boolean;
+    transactionId: string | undefined;
     id: number;
 }
 
@@ -49143,6 +49384,121 @@ export interface IPagedResultDtoOfStudentInvoiceProductLookupTableDto {
     items: StudentInvoiceProductLookupTableDto[] | undefined;
 }
 
+export enum PaymentMethodGroupDto {
+    Mobile = 0,
+    Bank = 1,
+    Creditcard = 2,
+    Credit = 3,
+}
+
+export class PaymentApiFormFieldDto implements IPaymentApiFormFieldDto {
+    name!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: IPaymentApiFormFieldDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): PaymentApiFormFieldDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentApiFormFieldDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface IPaymentApiFormFieldDto {
+    name: string | undefined;
+    value: string | undefined;
+}
+
+export class PaymentProviderDto implements IPaymentProviderDto {
+    url!: string | undefined;
+    icon!: string | undefined;
+    svg!: string | undefined;
+    group!: PaymentMethodGroupDto;
+    name!: string | undefined;
+    id!: string | undefined;
+    parameters!: PaymentApiFormFieldDto[] | undefined;
+
+    constructor(data?: IPaymentProviderDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.url = _data["url"];
+            this.icon = _data["icon"];
+            this.svg = _data["svg"];
+            this.group = _data["group"];
+            this.name = _data["name"];
+            this.id = _data["id"];
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters!.push(PaymentApiFormFieldDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentProviderDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentProviderDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["url"] = this.url;
+        data["icon"] = this.icon;
+        data["svg"] = this.svg;
+        data["group"] = this.group;
+        data["name"] = this.name;
+        data["id"] = this.id;
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPaymentProviderDto {
+    url: string | undefined;
+    icon: string | undefined;
+    svg: string | undefined;
+    group: PaymentMethodGroupDto;
+    name: string | undefined;
+    id: string | undefined;
+    parameters: PaymentApiFormFieldDto[] | undefined;
+}
+
 export class StudentDto implements IStudentDto {
     customerId!: string | undefined;
     firstName!: string | undefined;
@@ -51359,6 +51715,306 @@ export interface ISVChangeTodoStateInput {
     todoId: number;
     courseId: number;
     completed: boolean;
+}
+
+export class CreatePaymentOutput implements ICreatePaymentOutput {
+    succeeded!: boolean;
+    url!: string | undefined;
+
+    constructor(data?: ICreatePaymentOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.succeeded = _data["succeeded"];
+            this.url = _data["url"];
+        }
+    }
+
+    static fromJS(data: any): CreatePaymentOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePaymentOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["succeeded"] = this.succeeded;
+        data["url"] = this.url;
+        return data; 
+    }
+}
+
+export interface ICreatePaymentOutput {
+    succeeded: boolean;
+    url: string | undefined;
+}
+
+export class PaymentSucceededParameter implements IPaymentSucceededParameter {
+    key!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: IPaymentSucceededParameter) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): PaymentSucceededParameter {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentSucceededParameter();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface IPaymentSucceededParameter {
+    key: string | undefined;
+    value: string | undefined;
+}
+
+export class PaymentSucceededDto implements IPaymentSucceededDto {
+    parameters!: PaymentSucceededParameter[] | undefined;
+
+    constructor(data?: IPaymentSucceededDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters!.push(PaymentSucceededParameter.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentSucceededDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentSucceededDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPaymentSucceededDto {
+    parameters: PaymentSucceededParameter[] | undefined;
+}
+
+export class PaymentSucceededOutput implements IPaymentSucceededOutput {
+    totalAmount!: number;
+    reference!: string | undefined;
+    providerName!: string | undefined;
+    paymentAccepted!: boolean;
+
+    constructor(data?: IPaymentSucceededOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalAmount = _data["totalAmount"];
+            this.reference = _data["reference"];
+            this.providerName = _data["providerName"];
+            this.paymentAccepted = _data["paymentAccepted"];
+        }
+    }
+
+    static fromJS(data: any): PaymentSucceededOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentSucceededOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalAmount"] = this.totalAmount;
+        data["reference"] = this.reference;
+        data["providerName"] = this.providerName;
+        data["paymentAccepted"] = this.paymentAccepted;
+        return data; 
+    }
+}
+
+export interface IPaymentSucceededOutput {
+    totalAmount: number;
+    reference: string | undefined;
+    providerName: string | undefined;
+    paymentAccepted: boolean;
+}
+
+export class PaymentFailedParameter implements IPaymentFailedParameter {
+    key!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: IPaymentFailedParameter) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.key = _data["key"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): PaymentFailedParameter {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentFailedParameter();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface IPaymentFailedParameter {
+    key: string | undefined;
+    value: string | undefined;
+}
+
+export class PaymentFailedDto implements IPaymentFailedDto {
+    parameters!: PaymentFailedParameter[] | undefined;
+
+    constructor(data?: IPaymentFailedDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["parameters"])) {
+                this.parameters = [] as any;
+                for (let item of _data["parameters"])
+                    this.parameters!.push(PaymentFailedParameter.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentFailedDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentFailedDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.parameters)) {
+            data["parameters"] = [];
+            for (let item of this.parameters)
+                data["parameters"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPaymentFailedDto {
+    parameters: PaymentFailedParameter[] | undefined;
+}
+
+export class PaymentFailedOutput implements IPaymentFailedOutput {
+    totalAmount!: number;
+    reference!: string | undefined;
+    providerName!: string | undefined;
+
+    constructor(data?: IPaymentFailedOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalAmount = _data["totalAmount"];
+            this.reference = _data["reference"];
+            this.providerName = _data["providerName"];
+        }
+    }
+
+    static fromJS(data: any): PaymentFailedOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentFailedOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalAmount"] = this.totalAmount;
+        data["reference"] = this.reference;
+        data["providerName"] = this.providerName;
+        return data; 
+    }
+}
+
+export interface IPaymentFailedOutput {
+    totalAmount: number;
+    reference: string | undefined;
+    providerName: string | undefined;
 }
 
 export class TenantListDto implements ITenantListDto {
