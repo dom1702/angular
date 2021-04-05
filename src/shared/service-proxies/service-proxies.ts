@@ -48613,6 +48613,9 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
     courseId!: number | undefined;
     items!: StudentInvoiceItemDto[] | undefined;
     payments!: PaymentDto[] | undefined;
+    paidPartly!: boolean;
+    paidCompletely!: boolean;
+    overpaid!: boolean;
     id!: number;
 
     constructor(data?: IStudentInvoiceDto) {
@@ -48646,6 +48649,9 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
                 for (let item of _data["payments"])
                     this.payments!.push(PaymentDto.fromJS(item));
             }
+            this.paidPartly = _data["paidPartly"];
+            this.paidCompletely = _data["paidCompletely"];
+            this.overpaid = _data["overpaid"];
             this.id = _data["id"];
         }
     }
@@ -48679,6 +48685,9 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
             for (let item of this.payments)
                 data["payments"].push(item.toJSON());
         }
+        data["paidPartly"] = this.paidPartly;
+        data["paidCompletely"] = this.paidCompletely;
+        data["overpaid"] = this.overpaid;
         data["id"] = this.id;
         return data; 
     }
@@ -48697,6 +48706,9 @@ export interface IStudentInvoiceDto {
     courseId: number | undefined;
     items: StudentInvoiceItemDto[] | undefined;
     payments: PaymentDto[] | undefined;
+    paidPartly: boolean;
+    paidCompletely: boolean;
+    overpaid: boolean;
     id: number;
 }
 
@@ -51454,6 +51466,9 @@ export class SVCourseInvoiceDto implements ISVCourseInvoiceDto {
     courseId!: number | undefined;
     pdfFile!: string;
     readyForPickup!: boolean;
+    overpaid!: boolean;
+    paidPartly!: boolean;
+    paidCompletely!: boolean;
 
     constructor(data?: ISVCourseInvoiceDto) {
         if (data) {
@@ -51474,6 +51489,9 @@ export class SVCourseInvoiceDto implements ISVCourseInvoiceDto {
             this.courseId = _data["courseId"];
             this.pdfFile = _data["pdfFile"];
             this.readyForPickup = _data["readyForPickup"];
+            this.overpaid = _data["overpaid"];
+            this.paidPartly = _data["paidPartly"];
+            this.paidCompletely = _data["paidCompletely"];
         }
     }
 
@@ -51494,6 +51512,9 @@ export class SVCourseInvoiceDto implements ISVCourseInvoiceDto {
         data["courseId"] = this.courseId;
         data["pdfFile"] = this.pdfFile;
         data["readyForPickup"] = this.readyForPickup;
+        data["overpaid"] = this.overpaid;
+        data["paidPartly"] = this.paidPartly;
+        data["paidCompletely"] = this.paidCompletely;
         return data; 
     }
 }
@@ -51507,6 +51528,9 @@ export interface ISVCourseInvoiceDto {
     courseId: number | undefined;
     pdfFile: string;
     readyForPickup: boolean;
+    overpaid: boolean;
+    paidPartly: boolean;
+    paidCompletely: boolean;
 }
 
 export class SVStudentInvoicePerCourseDto implements ISVStudentInvoicePerCourseDto {

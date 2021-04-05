@@ -22,7 +22,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group m-form__group">
-                        <label for="StudentInvoiceUserFriendlyInvoiceId">{{ l("StudentInvoice") }}</label>
+                        <label for="StudentInvoiceUserFriendlyInvoiceId">{{ l("StudentInvoice") }} *</label>
                         <div class="input-group">
                             <input
                                 class="form-control"
@@ -31,6 +31,7 @@
                                 [(ngModel)]="studentInvoiceUserFriendlyInvoiceId"
                                 type="text"
                                 disabled
+                                required
                             />
                             <div class="input-group-append">
                                 <button class="btn btn-primary blue" (click)="openSelectStudentInvoiceModal()" type="button">
@@ -89,7 +90,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Payment_Amount">{{ l("Amount") }}</label>
+                        <label for="Payment_Amount">{{ l("Amount") }} *</label>
                         <input
                             type="number"
                             #Payment_Amount="ngModel"
@@ -97,6 +98,7 @@
                             class="form-control"
                             [(ngModel)]="payment.amount"
                             name="Amount"
+                            required
                         />
                         <validation-messages [formCtrl]="Payment_Amount"></validation-messages>
                     </div>
@@ -128,7 +130,7 @@
                     <button
                         type="submit"
                         class="btn btn-primary blue"
-                        [disabled]="!paymentForm.form.valid"
+                        [disabled]="!paymentForm.form.valid || this.payment.studentInvoiceId == null"
                         [buttonBusy]="saving"
                         [busyText]="l('SavingWithThreeDot')"
                     >

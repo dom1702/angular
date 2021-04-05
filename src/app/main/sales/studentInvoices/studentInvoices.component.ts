@@ -77,6 +77,8 @@ export class StudentInvoicesComponent extends AppComponentBase {
 
         this.primengTableHelper.showLoadingIndicator();
 
+
+
         this._studentInvoicesServiceProxy.getAll(
             this.filterText,
             this.recipientFirstNameFilter,
@@ -94,6 +96,7 @@ export class StudentInvoicesComponent extends AppComponentBase {
             this.primengTableHelper.getSkipCount(this.paginator, event),
             this.primengTableHelper.getMaxResultCount(this.paginator, event)
         ).subscribe(result => {
+            console.log("getall");
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();

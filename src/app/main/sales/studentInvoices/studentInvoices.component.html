@@ -177,7 +177,7 @@
                                             <p-sortIcon field="studentInvoice.dateDue"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="pdfFileCreated">
-                                            {{l('PdfFileCreated')}}
+                                            {{l('Paid')}}
                                             <p-sortIcon field="studentInvoice.pdfFileCreated"></p-sortIcon>
                                         </th>
 
@@ -260,11 +260,19 @@
                                             <span *ngIf="!record.studentInvoice.dateDue">-</span>
                                         </td>
                                         <td style="width:100px">
-                                            <span class="p-column-title"> {{l('PdfCreated')}}</span>
-                                            <div *ngIf="record.studentInvoice.pdfFileCreated" class="text-center"><i
-                                                    class="fa fa-check-circle m--font-success" title="True"></i></div>
-                                            <div *ngIf="!record.studentInvoice.pdfFileCreated" class="text-center"><i
-                                                    class="fa fa-times-circle" title="False"></i></div>
+                                            <span class="p-column-title"> {{l('Paid')}}</span>
+                                            <span *ngIf="!record.studentInvoice.overpaid && !record.studentInvoice.paidCompletely && !record.studentInvoice.paidPartly" style="color: Tomato;">
+                                                {{ l('NotYet') }}
+                                            </span>
+                                            <span *ngIf="record.studentInvoice.overpaid" style="color: Tomato;">
+                                                {{ l('Overpaid') }}
+                                            </span>
+                                            <span *ngIf="record.studentInvoice.paidCompletely" style="color: rgb(71, 207, 58);">
+                                                {{ l('Yes') }}
+                                            </span>
+                                            <span *ngIf="record.studentInvoice.paidPartly" style="color: rgb(255, 170, 42);">
+                                                {{ l('Partly') }}
+                                            </span>
                                         </td>
 
                                     </tr>

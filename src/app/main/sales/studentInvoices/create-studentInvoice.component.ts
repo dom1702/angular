@@ -195,6 +195,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
         this.form.get('createPdfOnSave').setValue(false);
 
         this._studentInvoicesServiceProxy.getStudentInvoiceForEdit(id).subscribe(result => {
+
+          console.log(result);
           this.studentInvoice = result.studentInvoice;
           this.studentInvoiceId = result.studentInvoice.id;
 
@@ -224,6 +226,10 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
           this.form.get('text1').setValue(result.studentInvoice.text1);
           this.form.get('text2').setValue(result.studentInvoice.text2);
           this.form.get('reference').setValue(result.studentInvoice.reference);
+
+          this.form.get('installmentActive').setValue(result.studentInvoice.useInstallments);
+          this.form.get('installmentCount').setValue(result.studentInvoice.installmentCount);
+          this.form.get('installmentInterval').setValue(result.studentInvoice.installmentInterval);
 
           this.unsubscribeToItemFormValueChanges();
 
