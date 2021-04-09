@@ -1,7 +1,7 @@
 ﻿import { Component, ViewChild, Injector, Output, EventEmitter } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { finalize } from "rxjs/operators";
-import { PaymentsServiceProxy, CreateOrEditPaymentDto, StudentInvoicesServiceProxy, PaymentProviderDto, StudentsViewServiceProxy } from "@shared/service-proxies/service-proxies";
+import { PaymentsServiceProxy, CreateOrEditPaymentDto, StudentInvoicesServiceProxy, PaymentProviderDto, StudentsViewServiceProxy, SVCourseInvoiceDto } from "@shared/service-proxies/service-proxies";
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { DateTime } from "luxon";
 
@@ -22,48 +22,60 @@ export class StudentPaymentModalComponent extends AppComponentBase {
     loading = false;
 
     studentInvoiceUserFriendlyInvoiceId = "";
+    invoice: SVCourseInvoiceDto;
 
-    paymentProviderDtos : PaymentProviderDto[];
-
-    constructor(injector: Injector, 
-        private _paymentsServiceProxy: PaymentsServiceProxy, 
+    constructor(injector: Injector,
+        private _paymentsServiceProxy: PaymentsServiceProxy,
         private _dateTimeService: DateTimeService,
         private _studentInvoicesServiceProxy: StudentInvoicesServiceProxy,
         private _studentViewService: StudentsViewServiceProxy) {
         super(injector);
     }
 
-    show(studentInvoiceId?: number): void {
+    show(invoice: SVCourseInvoiceDto): void {
         this.active = true;
         this.modal.show();
 
-        this.loading = true;
-
-        // this._studentViewService.getAllPaymentProviders().subscribe((result) =>
-        // {
-        //     this.paymentProviderDtos = result;
-        //     console.log(this.paymentProviderDtos);
-        //     this.loading = false;
-        // });
-
-        this._studentViewService.createPayment(studentInvoiceId).subscribe();
+        this.invoice = invoice;
     }
 
-    save(): void {
-        // this.saving = true;
+    payInstallment(installment) {
 
-        // this._paymentsServiceProxy
-        //     .createOrEdit(this.payment)
-        //     .pipe(
-        //         finalize(() => {
-        //             this.saving = false;
-        //         })
-        //     )
-        //     .subscribe(() => {
-        //         this.notify.info(this.l("SavedSuccessfully"));
-        //         this.close();
-        //         this.modalSave.emit(null);
-        //     });
+        this.loading = true;
+
+        this._studentViewService.createPayment(this.invoice.studentInvoiceId, installment.installmentName).subscribe((result) => {
+            this.loading = false;
+            if (result.succeeded) {
+                window.location.href = result.url;
+            }
+            else {
+                console.log("Failed");
+            }
+        });
+    }
+
+    payCompletely() {
+
+    }
+
+    isPaid(installmentId)
+    {
+        for(var payment of this.invoice.payments)
+        {
+            if(payment.installmentId == installmentId)
+                return true;
+        }
+
+        return false;
+    }
+
+    getPaymentTime(installmentId)
+    {
+        for(var payment of this.invoice.payments)
+        {
+            if(payment.installmentId == installmentId)
+                return payment.date;
+        }
     }
 
     close(): void {

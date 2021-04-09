@@ -30,7 +30,7 @@
                                         <th>{{l("InvoiceId")}}</th>
                                         <th>{{l("Date")}}</th>
                                         <th>{{l("DateDue")}}</th>
-                                        <th style="width:150px">{{l("ReadyForPickup")}}</th>
+                                        <!-- <th style="width:150px">{{l("ReadyForPickup")}}</th> -->
                                         <th>{{l("Action")}}</th>
                                     </tr>
                                 </ng-template>
@@ -39,19 +39,22 @@
                                         <td>{{invoice.userFriendlyInvoiceId}}</td>
                                         <td>{{invoice.date |luxonFormat:'D'}}</td>
                                         <td>{{invoice.dateDue | luxonFormat:'D'}}</td>
-                                        <td style="width:150px">
+                                        <!-- <td style="width:150px">
                                             <div *ngIf="invoice.readyForPickup" class="text-center"><i class="fa fa-check"
                                                 style="color: rgb(71, 207, 58);" title="True"></i></div>
                                             <div *ngIf="!invoice.readyForPickup" class="text-center"><i
                                                 class="fa fa-times" style="color: Tomato;" title="False"></i></div>
-                                        </td>
+                                        </td> -->
                                         <td>
-                                            <button type="button" [disabled]="!invoice.readyForPickup"
+                                            <button type="button" 
                                                 (click)="downloadInvoice(invoice.studentInvoiceId)"
                                                 class="btn btn-primary mr-5">{{l("DownloadInvoice")}}</button>
-                                                <button type="button" [disabled]="!invoice.readyForPickup"
+                                                <button *ngIf="invoice.installments == null || invoice.installments.length == 0" type="button" 
                                                 (click)="payNow(invoice.studentInvoiceId)"
                                                 class="btn btn-primary mr-5">{{l("PayNow")}}</button>
+                                                <button *ngIf="invoice.installments != null && invoice.installments.length > 0"type="button"
+                                                (click)="openPaymentModal(invoice)"
+                                                class="btn btn-primary mr-5">{{l("Payments")}}</button>
                                         </td>
                                     </tr>
                                 </ng-template>

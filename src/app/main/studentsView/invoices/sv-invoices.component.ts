@@ -28,6 +28,7 @@ export class SVInvoicesComponent extends AppComponentBase implements OnInit{
         this._studentViewService.getAllStudentInvoices().subscribe((result) =>
         {
             this.invoicesPerCourse = result;
+            console.log(this.invoicesPerCourse);
         });
      
     }
@@ -42,7 +43,7 @@ export class SVInvoicesComponent extends AppComponentBase implements OnInit{
 
     payNow(studentInvoiceId)
     {
-        this._studentViewService.createPayment(studentInvoiceId).subscribe((result) => 
+        this._studentViewService.createPayment(studentInvoiceId, null).subscribe((result) => 
         {
             if(result.succeeded)
             {
@@ -54,6 +55,11 @@ export class SVInvoicesComponent extends AppComponentBase implements OnInit{
             }
         });
         //this.studentPaymentModal.show(studentInvoiceId);
+    }
+
+    openPaymentModal(invoice)
+    {
+        this.studentPaymentModal.show(invoice);
     }
 
     paymentSuccess()

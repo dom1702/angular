@@ -22217,14 +22217,17 @@ export class StudentsViewServiceProxy {
 
     /**
      * @param studentInvoiceId (optional) 
+     * @param installmentName (optional) 
      * @return Success
      */
-    createPayment(studentInvoiceId: number | undefined): Observable<CreatePaymentOutput> {
+    createPayment(studentInvoiceId: number | undefined, installmentName: string | null | undefined): Observable<CreatePaymentOutput> {
         let url_ = this.baseUrl + "/api/services/app/StudentsView/CreatePayment?";
         if (studentInvoiceId === null)
             throw new Error("The parameter 'studentInvoiceId' cannot be null.");
         else if (studentInvoiceId !== undefined)
             url_ += "studentInvoiceId=" + encodeURIComponent("" + studentInvoiceId) + "&";
+        if (installmentName !== undefined && installmentName !== null)
+            url_ += "installmentName=" + encodeURIComponent("" + installmentName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -43838,6 +43841,7 @@ export class PaymentDto implements IPaymentDto {
     studentInvoiceId!: number | undefined;
     paidWithApi!: boolean;
     transactionId!: string | undefined;
+    installmentId!: number | undefined;
     id!: number;
 
     constructor(data?: IPaymentDto) {
@@ -43859,6 +43863,7 @@ export class PaymentDto implements IPaymentDto {
             this.studentInvoiceId = _data["studentInvoiceId"];
             this.paidWithApi = _data["paidWithApi"];
             this.transactionId = _data["transactionId"];
+            this.installmentId = _data["installmentId"];
             this.id = _data["id"];
         }
     }
@@ -43880,6 +43885,7 @@ export class PaymentDto implements IPaymentDto {
         data["studentInvoiceId"] = this.studentInvoiceId;
         data["paidWithApi"] = this.paidWithApi;
         data["transactionId"] = this.transactionId;
+        data["installmentId"] = this.installmentId;
         data["id"] = this.id;
         return data; 
     }
@@ -43894,6 +43900,7 @@ export interface IPaymentDto {
     studentInvoiceId: number | undefined;
     paidWithApi: boolean;
     transactionId: string | undefined;
+    installmentId: number | undefined;
     id: number;
 }
 
@@ -43992,6 +43999,7 @@ export class CreateOrEditPaymentDto implements ICreateOrEditPaymentDto {
     amount!: number;
     paymentMethod!: PaymentMethod;
     studentInvoiceId!: number | undefined;
+    installmentId!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditPaymentDto) {
@@ -44011,6 +44019,7 @@ export class CreateOrEditPaymentDto implements ICreateOrEditPaymentDto {
             this.amount = _data["amount"];
             this.paymentMethod = _data["paymentMethod"];
             this.studentInvoiceId = _data["studentInvoiceId"];
+            this.installmentId = _data["installmentId"];
             this.id = _data["id"];
         }
     }
@@ -44030,6 +44039,7 @@ export class CreateOrEditPaymentDto implements ICreateOrEditPaymentDto {
         data["amount"] = this.amount;
         data["paymentMethod"] = this.paymentMethod;
         data["studentInvoiceId"] = this.studentInvoiceId;
+        data["installmentId"] = this.installmentId;
         data["id"] = this.id;
         return data; 
     }
@@ -44042,6 +44052,7 @@ export interface ICreateOrEditPaymentDto {
     amount: number;
     paymentMethod: PaymentMethod;
     studentInvoiceId: number | undefined;
+    installmentId: number | undefined;
     id: number | undefined;
 }
 
@@ -48600,6 +48611,54 @@ export interface IStudentInvoiceItemDto {
     sumIncludingVat: number;
 }
 
+export class StudentInvoiceInstallmentDto implements IStudentInvoiceInstallmentDto {
+    installmentName!: string | undefined;
+    installmentDueDate!: DateTime;
+    installmentTotal!: number;
+    id!: number;
+
+    constructor(data?: IStudentInvoiceInstallmentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.installmentName = _data["installmentName"];
+            this.installmentDueDate = _data["installmentDueDate"] ? DateTime.fromISO(_data["installmentDueDate"].toString()) : <any>undefined;
+            this.installmentTotal = _data["installmentTotal"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): StudentInvoiceInstallmentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentInvoiceInstallmentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["installmentName"] = this.installmentName;
+        data["installmentDueDate"] = this.installmentDueDate ? this.installmentDueDate.toString() : <any>undefined;
+        data["installmentTotal"] = this.installmentTotal;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IStudentInvoiceInstallmentDto {
+    installmentName: string | undefined;
+    installmentDueDate: DateTime;
+    installmentTotal: number;
+    id: number;
+}
+
 export class StudentInvoiceDto implements IStudentInvoiceDto {
     recipientFirstName!: string | undefined;
     recipientLastName!: string | undefined;
@@ -48612,6 +48671,7 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
     studentId!: number | undefined;
     courseId!: number | undefined;
     items!: StudentInvoiceItemDto[] | undefined;
+    installments!: StudentInvoiceInstallmentDto[] | undefined;
     payments!: PaymentDto[] | undefined;
     paidPartly!: boolean;
     paidCompletely!: boolean;
@@ -48643,6 +48703,11 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
                 this.items = [] as any;
                 for (let item of _data["items"])
                     this.items!.push(StudentInvoiceItemDto.fromJS(item));
+            }
+            if (Array.isArray(_data["installments"])) {
+                this.installments = [] as any;
+                for (let item of _data["installments"])
+                    this.installments!.push(StudentInvoiceInstallmentDto.fromJS(item));
             }
             if (Array.isArray(_data["payments"])) {
                 this.payments = [] as any;
@@ -48680,6 +48745,11 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
+        if (Array.isArray(this.installments)) {
+            data["installments"] = [];
+            for (let item of this.installments)
+                data["installments"].push(item.toJSON());
+        }
         if (Array.isArray(this.payments)) {
             data["payments"] = [];
             for (let item of this.payments)
@@ -48705,6 +48775,7 @@ export interface IStudentInvoiceDto {
     studentId: number | undefined;
     courseId: number | undefined;
     items: StudentInvoiceItemDto[] | undefined;
+    installments: StudentInvoiceInstallmentDto[] | undefined;
     payments: PaymentDto[] | undefined;
     paidPartly: boolean;
     paidCompletely: boolean;
@@ -51469,6 +51540,8 @@ export class SVCourseInvoiceDto implements ISVCourseInvoiceDto {
     overpaid!: boolean;
     paidPartly!: boolean;
     paidCompletely!: boolean;
+    installments!: StudentInvoiceInstallmentDto[] | undefined;
+    payments!: PaymentDto[] | undefined;
 
     constructor(data?: ISVCourseInvoiceDto) {
         if (data) {
@@ -51492,6 +51565,16 @@ export class SVCourseInvoiceDto implements ISVCourseInvoiceDto {
             this.overpaid = _data["overpaid"];
             this.paidPartly = _data["paidPartly"];
             this.paidCompletely = _data["paidCompletely"];
+            if (Array.isArray(_data["installments"])) {
+                this.installments = [] as any;
+                for (let item of _data["installments"])
+                    this.installments!.push(StudentInvoiceInstallmentDto.fromJS(item));
+            }
+            if (Array.isArray(_data["payments"])) {
+                this.payments = [] as any;
+                for (let item of _data["payments"])
+                    this.payments!.push(PaymentDto.fromJS(item));
+            }
         }
     }
 
@@ -51515,6 +51598,16 @@ export class SVCourseInvoiceDto implements ISVCourseInvoiceDto {
         data["overpaid"] = this.overpaid;
         data["paidPartly"] = this.paidPartly;
         data["paidCompletely"] = this.paidCompletely;
+        if (Array.isArray(this.installments)) {
+            data["installments"] = [];
+            for (let item of this.installments)
+                data["installments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.payments)) {
+            data["payments"] = [];
+            for (let item of this.payments)
+                data["payments"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -51531,6 +51624,8 @@ export interface ISVCourseInvoiceDto {
     overpaid: boolean;
     paidPartly: boolean;
     paidCompletely: boolean;
+    installments: StudentInvoiceInstallmentDto[] | undefined;
+    payments: PaymentDto[] | undefined;
 }
 
 export class SVStudentInvoicePerCourseDto implements ISVStudentInvoicePerCourseDto {
