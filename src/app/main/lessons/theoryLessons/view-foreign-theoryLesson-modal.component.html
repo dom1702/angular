@@ -14,41 +14,20 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <h6>{{l("StartTime")}} :</h6>
-                        {{item.theoryLesson.startTime | luxonFormat:'F'}}
+                        {{item.theoryLesson.startTime | luxonFormat:'D'}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("LessonLength")}} :</h6>
                         {{item.theoryLesson.lessonLength}}
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>{{l("AddingMinutesAfter")}} :</h6>
-                        {{item.theoryLesson.addingMinutesAfter}}
-                    </div>
-                    <div class="col-6 mb-3">
-                        <h6>{{l("Instructor")}} :</h6>
-                        {{instructorList | replaceNullOrEmptyWithText}}
-                    </div>
-                    <div class="col-6 mb-3">
-                        <h6>{{l("Office")}} :</h6>
-                        {{item.officeName | replaceNullOrEmptyWithText}}
-                    </div>
-                    <div class="col-6 mb-3">
                         <h6>{{l("Topic")}} :</h6>
-                        {{item.theoryLesson.topic| replaceNullOrEmptyWithText}}
+                        {{item.theoryLesson.topic}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Completed")}} :</h6>
                         {{item.theoryLesson.completed}}
                     </div>
-                    <div class="col-6 mb-3">
-                        <h6>{{l("LicenseClass")}} :</h6>
-                        {{item.theoryLesson.licenseClass}}
-                    </div>
-                    <div class="col-6 mb-3">
-                        <h6>{{l("Students")}} :</h6>
-                        {{studentList}}
-                    </div>
-
                 </div>
                 <div class="row mt-15 mx-3">
                     <p class="font-italic">Created: {{item.theoryLesson.creationTime | luxonFormat:'F' }} ({{item.theoryLesson.creationFullName }})</p>

@@ -141,6 +141,9 @@ import { StudentsOverviewTasksComponent } from './students/students/students-ove
 import { StudentPaymentModalComponent } from './studentsView/invoices/student-payment-modal.component';
 import { SVPaymentSuccessComponent } from './studentsView/invoices/payment-success.component';
 import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed.component';
+import { CreateOrEditForeignTheoryLessonModalComponent } from './lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
+import { StudentsOverviewTheoryLessonsComponent } from './students/students/students-overview-theory-lessons.component';
+import { ViewForeignTheoryLessonModalComponent } from './lessons/theoryLessons/view-foreign-theoryLesson-modal.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -287,13 +290,16 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     StudentsOverviewTasksComponent,
     StudentPaymentModalComponent,
     SVPaymentSuccessComponent,
-    SVPaymentFailedComponent
+    SVPaymentFailedComponent,
+      CreateOrEditForeignTheoryLessonModalComponent,
+      StudentsOverviewTheoryLessonsComponent,
+      ViewForeignTheoryLessonModalComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
         { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale },
-        { provide: LOCALE_ID, useValue: 'de'}
+        //{ provide: LOCALE_ID, useValue: 'de'}
     ]
 })
 export class MainModule { }

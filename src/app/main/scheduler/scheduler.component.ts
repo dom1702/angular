@@ -111,9 +111,28 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     events: this.updateEvents.bind(this),
-    eventDidMount: (info) => {
+    eventContent: (info) => {
       console.log(info);
-      info.el.style.borderWidth = '4px';
+      // info.el.style.borderWidth = '4px';
+      // var node = document.createElement('div');
+      // node.append(document.createTextNode('lol'));
+      // info.el.append(node);
+      let arrayOfDomNodes = [];
+
+      let timeEl = document.createElement('div');
+      timeEl.innerHTML = info.timeText;
+      arrayOfDomNodes.push(timeEl);
+      let topicEl = document.createElement('div');
+      topicEl.innerHTML = info.event._def.title;
+      arrayOfDomNodes.push(topicEl);
+      if(info.event._def.extendedProps.appointmentType == 0)
+      {
+        let vehicleEl = document.createElement('div');
+        vehicleEl.innerHTML = info.event._def.extendedProps.vehicleName + " - " + info.event._def.extendedProps.startingLocation;
+        arrayOfDomNodes.push(vehicleEl);
+      }
+
+      return { domNodes: arrayOfDomNodes }
      }
 
   };
@@ -265,10 +284,13 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
               resourceIds: resourceIds,
               backgroundColor: backgroundColor,
               extendedProps: {
-                appointmentType: item.appointmentType
+                appointmentType: item.appointmentType,
+                vehicleName: item.vehicleName,
+                startingLocation: item.startingLocation
               },
               allDay: item.allDay,
-              borderColor: borderColor
+              borderColor: borderColor,
+            
               //AppointmentType: item.appointmentType.toString(),
               // VehicleID: 1
             });
@@ -281,10 +303,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit {
       });
   }
 
-  eventRender(info)
-  {
-    console.log(info);
-  }
+
 
   handleDateClick(arg) {
     console.log(arg);

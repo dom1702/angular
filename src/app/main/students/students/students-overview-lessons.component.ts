@@ -16,6 +16,7 @@ import { CreateOrEditDrivingLessonModalComponent } from '@app/main/lessons/drivi
 import { CreateOrEditSimulatorLessonModalComponent } from '@app/main/lessons/simulatorLessons/create-or-edit-simulatorLesson-modal.component';
 import { ViewSimulatorLessonModalComponent } from '@app/main/lessons/simulatorLessons/view-simulatorLesson-modal.component';
 import { CreateOrEditExamDrivingModalComponent } from '@app/main/lessons/drivingLessons/create-or-edit-examDriving-modal.component';
+import { CreateOrEditForeignTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
 
 @Component({
     selector: 'students-overview-lessons',
@@ -31,6 +32,7 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
     @ViewChild('createOrEditExamDrivingModal') createOrEditExamDrivingModal: CreateOrEditExamDrivingModalComponent;
     @ViewChild('createOrEditSimulatorLessonModal') createOrEditSimulatorLessonModal: CreateOrEditSimulatorLessonModalComponent;
     @ViewChild('viewSimulatorLessonModal') viewSimulatorLessonModal: ViewSimulatorLessonModalComponent;
+    @ViewChild('createOrEditForeignTheoryLessonModal') createOrEditForeignTheoryLessonModal: CreateOrEditForeignTheoryLessonModalComponent;
 
     @Input() student: StudentDto;
     @Input() parentOverview: StudentsOverviewComponent;
@@ -184,6 +186,11 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
     createSimulatorLesson(): void {
         this.createOrEditSimulatorLessonModal.show(null, this.parentOverview.student.id, this.parentOverview.student.firstName + " " + this.parentOverview.student.lastName);
+    }
+
+    addTheoryLessonManually() : void
+    {
+        this.createOrEditForeignTheoryLessonModal.show(this.parentOverview.selectedStudentCourse.course.licenseClass, this.parentOverview.selectedStudentCourse.course.id, this.parentOverview.student.id);
     }
 
     downloadFeedbackPdf(record): void

@@ -97,6 +97,7 @@ export class DrivingLessonsComponent extends AppComponentBase {
         ).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
+            console.log(result);
             this.primengTableHelper.hideLoadingIndicator();
         });
     }

@@ -1,4 +1,5 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,22 +13,22 @@
             <div class="modal-body">
 
                 <div class="row">
-                        <div class="col-6 mb-3">
-                                <h6>{{l("DrivingLessonID")}} :</h6>
-                                {{item.drivingLesson.id}}
-                            </div>
                     <div class="col-6 mb-3">
-                            <h6>{{l("Student")}} :</h6>
-                            {{studentName}}
-                        </div>
-                        <div class="col-6 mb-3">
-                            <h6>{{l("Instructor")}} :</h6>
-                            {{instructorList}}
-                        </div>
-                        <div class="col-6 mb-3">
-                                <h6>{{l("Class")}} :</h6>
-                                {{item.drivingLesson.licenseClass}}
-                            </div>
+                        <h6>{{l("DrivingLessonID")}} :</h6>
+                        {{item.drivingLesson.id}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Student")}} :</h6>
+                        {{studentName}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Instructor")}} :</h6>
+                        {{instructorList}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Class")}} :</h6>
+                        {{item.drivingLesson.licenseClass | replaceNullOrEmptyWithText}}
+                    </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Length")}} :</h6>
                         {{item.drivingLesson.length}}
@@ -46,19 +47,24 @@
                         {{item.drivingLesson.topic}}
                     </div>
                     <div class="col-6 mb-3">
-                            <h6>{{l("Description")}} :</h6>
-                            {{descr}}
-                        </div>
-                        <div class="col-6 mb-3">
-                            <h6>{{l("Vehicle")}} :</h6>
-                            {{item.vehicleNameBrandModel}}
-                        </div>
-
+                        <h6>{{l("Description")}} :</h6>
+                        {{descr | replaceNullOrEmptyWithText}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Vehicle")}} :</h6>
+                        {{item.vehicleNameBrandModel | replaceNullOrEmptyWithText}}
+                    </div>
                 </div>
-
+                <div class="row mt-15 mx-3">
+                    <p class="font-italic">Created: {{item.drivingLesson.creationTime | luxonFormat:'F' }} ({{item.drivingLesson.creationFullName }})</p>
+                </div>
+                <div class="row mx-3" *ngIf="item.drivingLesson.lastModificationTime != undefined">
+                    <p class="font-italic">Last modification: {{item.drivingLesson.lastModificationTime | luxonFormat:'F' }} ({{item.drivingLesson.lastModificationFullName }})</p>
+                </div>
             </div>
             <div class="modal-footer">
-                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
             </div>
         </div>
     </div>

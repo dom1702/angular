@@ -193,10 +193,10 @@
                                                     {{l("Actions")}}
                                                 </button>
                                                 <ul class="dropdown-menu" *dropdownMenu>
-                                                    <!-- <li>
-													<a href="javascript:;"
+                                                    <li>
+													<a href="javascript:;" class="dropdown-item"
 														(click)="viewStudentInvoiceModal.show(record)">{{l('View')}}</a>
-                                                </li> -->
+                                                    </li>
                                                     <li *ngIf="record.studentInvoice.pdfFileCreated">
                                                         <a href="javascript:;" class="dropdown-item"
                                                             *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"

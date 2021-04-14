@@ -4,6 +4,8 @@
     <div class="mt-10">
 
         <div class="col text-right">
+            <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="addTheoryLessonManually()"
+            class="btn btn-secondary blue"><i class="fa fa-plus"></i> {{l("AddTheoryLessonManually")}}</button>
             <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createExam()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewExam")}}</button>
             <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createDrivingLesson()"
@@ -175,5 +177,7 @@
     <createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="refresh()">
     </createOrEditSimulatorLessonModal>
     <viewSimulatorLessonModal #viewSimulatorLessonModal></viewSimulatorLessonModal>
+    <createOrEditForeignTheoryLessonModal #createOrEditForeignTheoryLessonModal (modalSave)="refresh()">
+    </createOrEditForeignTheoryLessonModal>
 
 </div>

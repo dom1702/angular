@@ -1,6 +1,6 @@
 import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { GetStudentInvoiceForViewDto, StudentInvoiceDto } from '@shared/service-proxies/service-proxies';
+import { GetStudentInvoiceForViewDto, StudentInvoiceDto, StudentInvoicesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
@@ -19,7 +19,8 @@ export class ViewStudentInvoiceModalComponent extends AppComponentBase {
 
 
     constructor(
-        injector: Injector
+        injector: Injector,
+        private _studentInvoicesServiceProxy: StudentInvoicesServiceProxy
     ) {
         super(injector);
         this.item = new GetStudentInvoiceForViewDto();
@@ -30,6 +31,12 @@ export class ViewStudentInvoiceModalComponent extends AppComponentBase {
         this.item = item;
         this.active = true;
         this.modal.show();
+
+        this._studentInvoicesServiceProxy.getStudentInvoiceForView(this.item.studentInvoice.id).subscribe((result) =>
+        {
+            console.log(result);
+            this.item = result;
+        });
     }
 
     close(): void {

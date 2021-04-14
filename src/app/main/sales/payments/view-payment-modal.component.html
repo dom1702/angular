@@ -26,11 +26,11 @@
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{ l("Payer") }} :</h6>
-                        {{ item.payment.payer }}
+                        {{ item.payment.payer  | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{ l("Reference") }} :</h6>
-                        {{ item.payment.reference }}
+                        {{ item.payment.reference  | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{ l("Amount") }} :</h6>
@@ -48,6 +48,12 @@
                         <h6>{{ l("TransactionId") }} :</h6>
                         {{ item.payment.transactionId }}
                     </div>
+                </div>
+                <div class="row mt-15 mx-3">
+                    <p class="font-italic">Created: {{item.payment.creationTime | luxonFormat:'F' }} ({{item.payment.creationFullName }})</p>
+                </div>
+                <div class="row mx-3" *ngIf="item.payment.lastModificationTime != undefined">
+                    <p class="font-italic">Last modification: {{item.payment.lastModificationTime | luxonFormat:'F' }} ({{item.payment.lastModificationFullName }})</p>
                 </div>
             </div>
             <div class="modal-footer">

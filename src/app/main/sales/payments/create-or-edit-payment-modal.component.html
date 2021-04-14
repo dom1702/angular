@@ -1,13 +1,5 @@
-﻿<div
-    bsModal
-    #createOrEditModal="bs-modal"
-    class="modal fade"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="createOrEditModal"
-    aria-hidden="true"
-    [config]="{ backdrop: 'static' }"
->
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form *ngIf="active" #paymentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -24,94 +16,72 @@
                     <div class="form-group m-form__group">
                         <label for="StudentInvoiceUserFriendlyInvoiceId">{{ l("StudentInvoice") }} *</label>
                         <div class="input-group">
-                            <input
-                                class="form-control"
-                                id="StudentInvoiceUserFriendlyInvoiceId"
+                            <input class="form-control" id="StudentInvoiceUserFriendlyInvoiceId"
                                 name="studentInvoiceUserFriendlyInvoiceId"
-                                [(ngModel)]="studentInvoiceUserFriendlyInvoiceId"
-                                type="text"
-                                disabled
-                                required
-                            />
+                                [(ngModel)]="studentInvoiceUserFriendlyInvoiceId" type="text" disabled required />
                             <div class="input-group-append">
-                                <button class="btn btn-primary blue" (click)="openSelectStudentInvoiceModal()" type="button">
+                                <button class="btn btn-primary blue" (click)="openSelectStudentInvoiceModal()"
+                                    type="button">
                                     <i class="fa fa-search"></i> {{ l("Pick") }}
                                 </button>
                             </div>
                             <div class="input-group-prepend">
-                                <button class="btn btn-danger btn-icon" type="button" (click)="setStudentInvoiceIdNull()">
+                                <button class="btn btn-danger btn-icon" type="button"
+                                    (click)="setStudentInvoiceIdNull()">
                                     <i class="fa fa-times"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <input class="form-control" name="payment.studentInvoiceId" [(ngModel)]="payment.studentInvoiceId" type="text" hidden />
+                    <input class="form-control" name="payment.studentInvoiceId" [(ngModel)]="payment.studentInvoiceId"
+                        type="text" hidden />
+
+                    <div class="form-group" *ngIf="this.installments != null && this.installments.length > 0">
+                        <label>{{ l("Installments") }}</label>
+                        <div class="radio-list">
+                          
+                                <label class="radio" *ngFor="let installm of installments">
+                                    <input type="radio" name="installm_option" [value]="installm"
+                                        [(ngModel)]="selectedInstallment">
+                                    <span></span>
+                                    {{installm.installmentName}} ({{installm.installmentTotal | currency:'EUR'}})
+                                </label>
+                           
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="Payment_Date">{{ l("Date") }}</label>
-                        <input
-                            required
-                            class="form-control m-input"
-                            #Payment_Date
-                            type="datetime"
-                            bsDatepicker
-                            datePickerLuxonModifier
-                            [(date)]="payment.date"
-                            id="Payment_Date"
-                            name="Payment_Date"
-                        />
+                        <input required class="form-control m-input" #Payment_Date type="datetime" bsDatepicker
+                            datePickerLuxonModifier [(date)]="payment.date" id="Payment_Date" name="Payment_Date" />
                         <validation-messages [formCtrl]="Payment_Date"></validation-messages>
                     </div>
 
                     <div class="form-group">
                         <label for="Payment_Payer">{{ l("Payer") }}</label>
-                        <input
-                            type="text"
-                            #Payment_Payer="ngModel"
-                            id="Payment_Payer"
-                            class="form-control"
-                            [(ngModel)]="payment.payer"
-                            name="Payer"
-                        />
+                        <input type="text" #Payment_Payer="ngModel" id="Payment_Payer" class="form-control"
+                            [(ngModel)]="payment.payer" name="Payer" />
                         <validation-messages [formCtrl]="Payment_Payer"></validation-messages>
                     </div>
 
                     <div class="form-group">
                         <label for="Payment_Reference">{{ l("Reference") }}</label>
-                        <input
-                            type="text"
-                            #Payment_Reference="ngModel"
-                            id="Payment_Reference"
-                            class="form-control"
-                            [(ngModel)]="payment.reference"
-                            name="Reference"
-                        />
+                        <input type="text" #Payment_Reference="ngModel" id="Payment_Reference" class="form-control"
+                            [(ngModel)]="payment.reference" name="Reference" />
                         <validation-messages [formCtrl]="Payment_Reference"></validation-messages>
                     </div>
 
                     <div class="form-group">
                         <label for="Payment_Amount">{{ l("Amount") }} *</label>
-                        <input
-                            type="number"
-                            #Payment_Amount="ngModel"
-                            id="Payment_Amount"
-                            class="form-control"
-                            [(ngModel)]="payment.amount"
-                            name="Amount"
-                            required
-                        />
+                        <input type="number" #Payment_Amount="ngModel" id="Payment_Amount" class="form-control"
+                            [(ngModel)]="payment.amount" name="Amount" required />
                         <validation-messages [formCtrl]="Payment_Amount"></validation-messages>
                     </div>
 
                     <div class="form-group">
                         <label for="Payment_PaymentMethod">{{ l("PaymentMethod") }}</label>
-                        <select
-                            class="form-control"
-                            #Payment_PaymentMethod="ngModel"
-                            name="PaymentMethod"
-                            id="Payment_PaymentMethod"
-                            [(ngModel)]="payment.paymentMethod"
-                        >
+                        <select class="form-control" #Payment_PaymentMethod="ngModel" name="PaymentMethod"
+                            id="Payment_PaymentMethod" [(ngModel)]="payment.paymentMethod">
                             <option value="0">{{ l("Cash") }}</option>
 
                             <option value="1">{{ l("BankTransfer") }}</option>
@@ -126,22 +96,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l("Cancel") }}</button>
-                    <button
-                        type="submit"
-                        class="btn btn-primary blue"
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l("Cancel")
+                        }}</button>
+                    <button type="submit" class="btn btn-primary blue"
                         [disabled]="!paymentForm.form.valid || this.payment.studentInvoiceId == null"
-                        [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"
-                    >
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                         <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <paymentStudentInvoiceLookupTableModal
-        #paymentStudentInvoiceLookupTableModal
-        (modalSave)="getNewStudentInvoiceId()"
-    ></paymentStudentInvoiceLookupTableModal>
+    <paymentStudentInvoiceLookupTableModal #paymentStudentInvoiceLookupTableModal
+        (modalSave)="getNewStudentInvoiceId()"></paymentStudentInvoiceLookupTableModal>
 </div>

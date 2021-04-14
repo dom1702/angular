@@ -1,4 +1,5 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,7 +11,14 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                <div class="row justify-content-center">
+                    <h1 class="display-4 my-5" style="color: Tomato;" *ngIf="!item.studentInvoice.overpaid && !item.studentInvoice.paidCompletely && !item.studentInvoice.paidPartly">{{l('Unpaid')}}</h1>
+                    <h1 class="display-4 my-5" style="color: Tomato;" *ngIf="item.studentInvoice.overpaid">{{l('Overpaid')}}</h1>
+                    <h1 class="display-4 my-5" style="color: rgb(255, 170, 42);" *ngIf="item.studentInvoice.paidPartly">{{l('PaidPartly')}}</h1>
+                    <h1 class="display-4 my-5" style="color: rgb(71, 207, 58);" *ngIf="item.studentInvoice.paidCompletely">{{l('PaidCompletely')}}</h1>
+                </div>
+                <h5>{{l("General")}}</h5>
+                <hr />
                 <div class="row">
                     <div class="col-6 mb-3">
                         <h6>{{l("RecipientFirstName")}} :</h6>
@@ -21,32 +29,97 @@
                         {{ item.studentInvoice.recipientLastName }}
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>{{l("RecipientZipCode")}} :</h6>
-                        {{ item.studentInvoice.recipientZipCode }}
-                    </div>
-                    <div class="col-6 mb-3">
                         <h6>{{l("RecipientCity")}} :</h6>
-                        {{ item.studentInvoice.recipientCity }}
+                        {{ item.studentInvoice.recipientZipCode }} {{ item.studentInvoice.recipientCity }}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Date")}} :</h6>
-                        {{ item.studentInvoice.date }}
-                    </div>
-                    <div class="col-6 mb-3">
-                        <h6>{{l("TotalAfterVat")}} :</h6>
-                        {{ item.studentInvoice.totalAfterVat }}
+                        {{ item.studentInvoice.date | luxonFormat:'D'}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("DateDue")}} :</h6>
-                        {{ item.studentInvoice.dateDue }}
+                        {{ item.studentInvoice.dateDue| luxonFormat:'D' }}
                     </div>
-
-
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalAfterVat")}} :</h6>
+                        {{ item.studentInvoice.totalAfterVat | currency:'EUR'}}
+                    </div>
                 </div>
 
+                <h5 class="mt-8">{{l("Items")}}</h5>
+                <hr />
+                <div class="row">
+                    <div class="col-12 my-4" *ngFor="let it of item.studentInvoice.items">
+                        <h6 class="mb-3"><u>{{it.productName}} :</u></h6>
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <h6>{{l('Quantity')}}:</h6>
+                                {{ it.quantity}}
+                            </div>
+                            <div class="col-4 mb-3">
+                                <h6>{{l('PriceBeforeVat')}}:</h6>
+                                {{ it.priceBeforeVat | currency:'EUR' }}
+                            </div>
+                            <div class="col-4 mb-3">
+                                <h6>{{l('PriceAfterVat')}}:</h6>
+                                {{ it.priceAfterVat | currency:'EUR' }}
+                            </div>
+                          
+                            <div class="col-4 mb-3">
+                                <h6>{{l('ItemVat')}}:</h6>
+                                {{ it.itemVat}}
+                            </div>
+                            <div class="col-4 mb-3">
+                                <h6>{{l('Discount')}}:</h6>
+                                {{ it.discount | currency:'EUR' }}
+                            </div>
+                            <div class="col-4 mb-3">
+                                <h6>{{l('SumIncludingVat')}}:</h6>
+                                {{ it.sumIncludingVat | currency:'EUR' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 my-4"
+                        *ngIf="item.studentInvoice.installments == null || item.studentInvoice.installments.length == 0">
+                        {{l('NoInstallmentsInfo')}}
+                    </div>
+                </div>
+
+                <h5 class="mt-8">{{l("Installments")}}</h5>
+                <hr />
+                <div class="row">
+                    <div class="col-12 my-4" *ngFor="let inst of item.studentInvoice.installments">
+                        <h6 class="mb-3"><u>{{l("Installment")}} {{inst.installmentName}} :</u></h6>
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>{{l('DueDate')}}:</h6>
+                                {{ inst.installmentDueDate | luxonFormat:'D'}}
+                            </div>
+
+                            <div class="col-6">
+                                <h6>{{l('Amount')}}:</h6>
+                                {{ inst.installmentTotal | currency:'EUR' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 my-4"
+                        *ngIf="item.studentInvoice.installments == null || item.studentInvoice.installments.length == 0">
+                        {{l('NoInstallmentsInfo')}}
+                    </div>
+                </div>
+
+                <div class="row mt-15 mx-3">
+                    <p class="font-italic">Created: {{item.studentInvoice.creationTime | luxonFormat:'F' }}
+                        ({{item.studentInvoice.creationFullName }})</p>
+                </div>
+                <div class="row mx-3" *ngIf="item.studentInvoice.lastModificationTime != undefined">
+                    <p class="font-italic">Last modification: {{item.studentInvoice.lastModificationTime |
+                        luxonFormat:'F' }} ({{item.studentInvoice.lastModificationFullName }})</p>
+                </div>
             </div>
             <div class="modal-footer">
-                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
             </div>
         </div>
     </div>

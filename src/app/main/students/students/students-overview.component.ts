@@ -31,7 +31,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
     studentInvoicesTabName: string = this.l("StudentInvoices");
     studentFormsTabName: string = this.l("Forms");
     studentTasksTabName: string = this.l("Tasks");
-    lessonsTabName: string = this.l("Lessons");
+    lessonsTabName: string = this.l("Driving");
+    theoryLessonsTabName: string = this.l("Theory");
 
     student: StudentDto;
     pricePackageName: string = "";
@@ -43,6 +44,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     @Output() courseChanged = new EventEmitter();
     @Output() lessonsTabSelected = new EventEmitter();
+    @Output() theoryLessonsTabSelected = new EventEmitter();
 
     constructor(
         injector: Injector,
@@ -58,6 +60,11 @@ export class StudentsOverviewComponent extends AppComponentBase {
     onLessonsTabSelect(data: TabDirective): void {
         if(data.heading === this.lessonsTabName)
             this.lessonsTabSelected.emit();
+      }
+
+    onTheoryLessonsTabSelect(data: TabDirective): void {
+        if(data.heading === this.theoryLessonsTabName)
+            this.theoryLessonsTabSelected.emit();
       }
 
     ngOnInit(): void {

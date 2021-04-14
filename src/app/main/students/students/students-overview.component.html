@@ -73,6 +73,12 @@
                             </students-overview-lessons>
                    
                         </tab>
+                        <tab heading={{theoryLessonsTabName}} id="tab3" (selectTab)="onTheoryLessonsTabSelect($event)">
+                        
+                            <students-overview-theory-lessons [student]="student" [parentOverview]="this">
+                            </students-overview-theory-lessons>
+                   
+                        </tab>
                         <tab heading={{pricePackageTabName}}>
                            
                             <students-overview-pricePackage *ngIf="selectedStudentCourse" [parentOverview]="this"

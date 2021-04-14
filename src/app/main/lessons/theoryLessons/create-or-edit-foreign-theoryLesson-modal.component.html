@@ -1,0 +1,62 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #theoryLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="theoryLesson.id">{{l("EditForeignTheoryLesson")}}</span>
+                        <span *ngIf="!theoryLesson.id">{{l("CreateNewForeignTheoryLesson")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <label for="PredefinedTheoryLesson">{{l("Topic")}}</label>
+                    <div class="form-group" *ngIf="predefinedTheoryLessons">
+
+                        <div class="radio-list">
+
+
+                            <label class="radio" *ngFor="let ptl of predefinedTheoryLessons">
+                                <input type="radio" name="ptl_option" [value]="ptl" [(ngModel)]="selectedPtl" required>
+                                <span></span>
+                                {{ptl.name}}
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TheoryLesson_StartTime">{{l("StartDate")}}</label>
+                        <input required class="form-control m-input" type="timepicker" bsDatepicker
+                            datePickerLuxonModifier [(date)]="startTime" id="TheoryLesson_StartTime"
+                            name="TheoryLesson_StartTime"
+                            [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TheoryLesson_Description">{{l("Description")}}</label>
+                        <input type="text" id="TheoryLesson_Description" class="form-control"
+                            [(ngModel)]="theoryLesson.description" name="Description" />
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!theoryLessonForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>

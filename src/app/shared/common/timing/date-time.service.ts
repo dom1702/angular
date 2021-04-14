@@ -143,7 +143,6 @@ export class DateTimeService {
         if (date instanceof Date) {
             return this.formatDate(this.fromJSDate(date), format);
         }
-
         return date.toFormat(format);
     }
 

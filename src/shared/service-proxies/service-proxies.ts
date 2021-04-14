@@ -19860,6 +19860,66 @@ export class StudentInvoicesServiceProxy {
     }
 
     /**
+     * @param studentInvoiceId (optional) 
+     * @return Success
+     */
+    getInstallmentsOfStudentInvoice(studentInvoiceId: number | undefined): Observable<StudentInvoiceInstallmentDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/StudentInvoices/GetInstallmentsOfStudentInvoice?";
+        if (studentInvoiceId === null)
+            throw new Error("The parameter 'studentInvoiceId' cannot be null.");
+        else if (studentInvoiceId !== undefined)
+            url_ += "studentInvoiceId=" + encodeURIComponent("" + studentInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInstallmentsOfStudentInvoice(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInstallmentsOfStudentInvoice(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentInvoiceInstallmentDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentInvoiceInstallmentDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetInstallmentsOfStudentInvoice(response: HttpResponseBase): Observable<StudentInvoiceInstallmentDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(StudentInvoiceInstallmentDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentInvoiceInstallmentDto[]>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     getAllPaymentProviders(): Observable<PaymentProviderDto[]> {
@@ -21177,6 +21237,71 @@ export class StudentsServiceProxy {
             }));
         }
         return _observableOf<DrivingLessonOfCourseDto[]>(<any>null);
+    }
+
+    /**
+     * @param courseId (optional) 
+     * @param studentId (optional) 
+     * @return Success
+     */
+    getAllTheoryLessonsOfCourse(courseId: number | undefined, studentId: number | undefined): Observable<TheoryLessonOfCourseDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Students/GetAllTheoryLessonsOfCourse?";
+        if (courseId === null)
+            throw new Error("The parameter 'courseId' cannot be null.");
+        else if (courseId !== undefined)
+            url_ += "CourseId=" + encodeURIComponent("" + courseId) + "&";
+        if (studentId === null)
+            throw new Error("The parameter 'studentId' cannot be null.");
+        else if (studentId !== undefined)
+            url_ += "StudentId=" + encodeURIComponent("" + studentId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTheoryLessonsOfCourse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTheoryLessonsOfCourse(<any>response_);
+                } catch (e) {
+                    return <Observable<TheoryLessonOfCourseDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TheoryLessonOfCourseDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTheoryLessonsOfCourse(response: HttpResponseBase): Observable<TheoryLessonOfCourseDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TheoryLessonOfCourseDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TheoryLessonOfCourseDto[]>(<any>null);
     }
 
     /**
@@ -25054,6 +25179,58 @@ export class TheoryLessonsServiceProxy {
     }
 
     protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEditForeignSchool(body: CreateOrEditForeignTheoryLessonDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TheoryLessons/CreateOrEditForeignSchool";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditForeignSchool(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditForeignSchool(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEditForeignSchool(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -33921,6 +34098,15 @@ export class DrivingLessonDto implements IDrivingLessonDto {
     instructorNames!: string[] | undefined;
     predefinedDrivingLessonId!: string | undefined;
     isExam!: boolean;
+    creationFullName!: string | undefined;
+    lastModificationFullName!: string | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: IDrivingLessonDto) {
@@ -33956,6 +34142,15 @@ export class DrivingLessonDto implements IDrivingLessonDto {
             }
             this.predefinedDrivingLessonId = _data["predefinedDrivingLessonId"];
             this.isExam = _data["isExam"];
+            this.creationFullName = _data["creationFullName"];
+            this.lastModificationFullName = _data["lastModificationFullName"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
             this.id = _data["id"];
         }
     }
@@ -33991,6 +34186,15 @@ export class DrivingLessonDto implements IDrivingLessonDto {
         }
         data["predefinedDrivingLessonId"] = this.predefinedDrivingLessonId;
         data["isExam"] = this.isExam;
+        data["creationFullName"] = this.creationFullName;
+        data["lastModificationFullName"] = this.lastModificationFullName;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -34011,6 +34215,15 @@ export interface IDrivingLessonDto {
     instructorNames: string[] | undefined;
     predefinedDrivingLessonId: string | undefined;
     isExam: boolean;
+    creationFullName: string | undefined;
+    lastModificationFullName: string | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -43842,6 +44055,15 @@ export class PaymentDto implements IPaymentDto {
     paidWithApi!: boolean;
     transactionId!: string | undefined;
     installmentId!: number | undefined;
+    creationFullName!: string | undefined;
+    lastModificationFullName!: string | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: IPaymentDto) {
@@ -43864,6 +44086,15 @@ export class PaymentDto implements IPaymentDto {
             this.paidWithApi = _data["paidWithApi"];
             this.transactionId = _data["transactionId"];
             this.installmentId = _data["installmentId"];
+            this.creationFullName = _data["creationFullName"];
+            this.lastModificationFullName = _data["lastModificationFullName"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
             this.id = _data["id"];
         }
     }
@@ -43886,6 +44117,15 @@ export class PaymentDto implements IPaymentDto {
         data["paidWithApi"] = this.paidWithApi;
         data["transactionId"] = this.transactionId;
         data["installmentId"] = this.installmentId;
+        data["creationFullName"] = this.creationFullName;
+        data["lastModificationFullName"] = this.lastModificationFullName;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -43901,6 +44141,15 @@ export interface IPaymentDto {
     paidWithApi: boolean;
     transactionId: string | undefined;
     installmentId: number | undefined;
+    creationFullName: string | undefined;
+    lastModificationFullName: string | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -44347,6 +44596,8 @@ export class SchedulerEventDto implements ISchedulerEventDto {
     location!: string | undefined;
     isBlocked!: boolean;
     vehicleId!: number | undefined;
+    vehicleName!: string | undefined;
+    startingLocation!: string | undefined;
     instructorIds!: number[] | undefined;
     completed!: boolean;
     studentNotPresent!: boolean;
@@ -44372,6 +44623,8 @@ export class SchedulerEventDto implements ISchedulerEventDto {
             this.location = _data["location"];
             this.isBlocked = _data["isBlocked"];
             this.vehicleId = _data["vehicleId"];
+            this.vehicleName = _data["vehicleName"];
+            this.startingLocation = _data["startingLocation"];
             if (Array.isArray(_data["instructorIds"])) {
                 this.instructorIds = [] as any;
                 for (let item of _data["instructorIds"])
@@ -44401,6 +44654,8 @@ export class SchedulerEventDto implements ISchedulerEventDto {
         data["location"] = this.location;
         data["isBlocked"] = this.isBlocked;
         data["vehicleId"] = this.vehicleId;
+        data["vehicleName"] = this.vehicleName;
+        data["startingLocation"] = this.startingLocation;
         if (Array.isArray(this.instructorIds)) {
             data["instructorIds"] = [];
             for (let item of this.instructorIds)
@@ -44423,6 +44678,8 @@ export interface ISchedulerEventDto {
     location: string | undefined;
     isBlocked: boolean;
     vehicleId: number | undefined;
+    vehicleName: string | undefined;
+    startingLocation: string | undefined;
     instructorIds: number[] | undefined;
     completed: boolean;
     studentNotPresent: boolean;
@@ -47406,6 +47663,15 @@ export class SimulatorLessonDto implements ISimulatorLessonDto {
     startCode!: string | undefined;
     moduleIdentifier!: string | undefined;
     feedbackPdfAvailableToDownload!: boolean;
+    creationFullName!: string | undefined;
+    lastModificationFullName!: string | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: ISimulatorLessonDto) {
@@ -47429,6 +47695,15 @@ export class SimulatorLessonDto implements ISimulatorLessonDto {
             this.startCode = _data["startCode"];
             this.moduleIdentifier = _data["moduleIdentifier"];
             this.feedbackPdfAvailableToDownload = _data["feedbackPdfAvailableToDownload"];
+            this.creationFullName = _data["creationFullName"];
+            this.lastModificationFullName = _data["lastModificationFullName"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
             this.id = _data["id"];
         }
     }
@@ -47452,6 +47727,15 @@ export class SimulatorLessonDto implements ISimulatorLessonDto {
         data["startCode"] = this.startCode;
         data["moduleIdentifier"] = this.moduleIdentifier;
         data["feedbackPdfAvailableToDownload"] = this.feedbackPdfAvailableToDownload;
+        data["creationFullName"] = this.creationFullName;
+        data["lastModificationFullName"] = this.lastModificationFullName;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -47468,6 +47752,15 @@ export interface ISimulatorLessonDto {
     startCode: string | undefined;
     moduleIdentifier: string | undefined;
     feedbackPdfAvailableToDownload: boolean;
+    creationFullName: string | undefined;
+    lastModificationFullName: string | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -48676,6 +48969,15 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
     paidPartly!: boolean;
     paidCompletely!: boolean;
     overpaid!: boolean;
+    creationFullName!: string | undefined;
+    lastModificationFullName!: string | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: IStudentInvoiceDto) {
@@ -48717,6 +49019,15 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
             this.paidPartly = _data["paidPartly"];
             this.paidCompletely = _data["paidCompletely"];
             this.overpaid = _data["overpaid"];
+            this.creationFullName = _data["creationFullName"];
+            this.lastModificationFullName = _data["lastModificationFullName"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
             this.id = _data["id"];
         }
     }
@@ -48758,6 +49069,15 @@ export class StudentInvoiceDto implements IStudentInvoiceDto {
         data["paidPartly"] = this.paidPartly;
         data["paidCompletely"] = this.paidCompletely;
         data["overpaid"] = this.overpaid;
+        data["creationFullName"] = this.creationFullName;
+        data["lastModificationFullName"] = this.lastModificationFullName;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -48780,6 +49100,15 @@ export interface IStudentInvoiceDto {
     paidPartly: boolean;
     paidCompletely: boolean;
     overpaid: boolean;
+    creationFullName: string | undefined;
+    lastModificationFullName: string | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -50934,6 +51263,66 @@ export interface IDrivingLessonOfCourseDto {
     doneOnSimulator: boolean;
     feedbackPdfFile: string | undefined;
     isExam: boolean;
+}
+
+export class TheoryLessonOfCourseDto implements ITheoryLessonOfCourseDto {
+    lessonLength!: number;
+    startTime!: DateTime;
+    topic!: string | undefined;
+    currentState!: TheoryLessonState;
+    predefinedTheoryLessonId!: string | undefined;
+    doneAtForeignSchool!: boolean;
+    id!: number;
+
+    constructor(data?: ITheoryLessonOfCourseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lessonLength = _data["lessonLength"];
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
+            this.topic = _data["topic"];
+            this.currentState = _data["currentState"];
+            this.predefinedTheoryLessonId = _data["predefinedTheoryLessonId"];
+            this.doneAtForeignSchool = _data["doneAtForeignSchool"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): TheoryLessonOfCourseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TheoryLessonOfCourseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lessonLength"] = this.lessonLength;
+        data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
+        data["topic"] = this.topic;
+        data["currentState"] = this.currentState;
+        data["predefinedTheoryLessonId"] = this.predefinedTheoryLessonId;
+        data["doneAtForeignSchool"] = this.doneAtForeignSchool;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ITheoryLessonOfCourseDto {
+    lessonLength: number;
+    startTime: DateTime;
+    topic: string | undefined;
+    currentState: TheoryLessonState;
+    predefinedTheoryLessonId: string | undefined;
+    doneAtForeignSchool: boolean;
+    id: number;
 }
 
 export class StudentCourseDto implements IStudentCourseDto {
@@ -54743,6 +55132,16 @@ export class TheoryLessonDto implements ITheoryLessonDto {
     officeId!: number | undefined;
     predefinedTheoryLessonId!: string | undefined;
     instructors!: InstructorDto[] | undefined;
+    doneAtForeignSchool!: boolean;
+    creationFullName!: string | undefined;
+    lastModificationFullName!: string | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: ITheoryLessonDto) {
@@ -54772,6 +55171,16 @@ export class TheoryLessonDto implements ITheoryLessonDto {
                 for (let item of _data["instructors"])
                     this.instructors!.push(InstructorDto.fromJS(item));
             }
+            this.doneAtForeignSchool = _data["doneAtForeignSchool"];
+            this.creationFullName = _data["creationFullName"];
+            this.lastModificationFullName = _data["lastModificationFullName"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
             this.id = _data["id"];
         }
     }
@@ -54801,6 +55210,16 @@ export class TheoryLessonDto implements ITheoryLessonDto {
             for (let item of this.instructors)
                 data["instructors"].push(item.toJSON());
         }
+        data["doneAtForeignSchool"] = this.doneAtForeignSchool;
+        data["creationFullName"] = this.creationFullName;
+        data["lastModificationFullName"] = this.lastModificationFullName;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -54819,6 +55238,16 @@ export interface ITheoryLessonDto {
     officeId: number | undefined;
     predefinedTheoryLessonId: string | undefined;
     instructors: InstructorDto[] | undefined;
+    doneAtForeignSchool: boolean;
+    creationFullName: string | undefined;
+    lastModificationFullName: string | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -54969,6 +55398,7 @@ export class CreateOrEditTheoryLessonDto implements ICreateOrEditTheoryLessonDto
     currentState!: TheoryLessonState;
     instructors!: InstructorDto[] | undefined;
     students!: StudentDto[] | undefined;
+    doneAtForeignSchool!: boolean;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditTheoryLessonDto) {
@@ -55004,6 +55434,7 @@ export class CreateOrEditTheoryLessonDto implements ICreateOrEditTheoryLessonDto
                 for (let item of _data["students"])
                     this.students!.push(StudentDto.fromJS(item));
             }
+            this.doneAtForeignSchool = _data["doneAtForeignSchool"];
             this.id = _data["id"];
         }
     }
@@ -55039,6 +55470,7 @@ export class CreateOrEditTheoryLessonDto implements ICreateOrEditTheoryLessonDto
             for (let item of this.students)
                 data["students"].push(item.toJSON());
         }
+        data["doneAtForeignSchool"] = this.doneAtForeignSchool;
         data["id"] = this.id;
         return data; 
     }
@@ -55059,6 +55491,7 @@ export interface ICreateOrEditTheoryLessonDto {
     currentState: TheoryLessonState;
     instructors: InstructorDto[] | undefined;
     students: StudentDto[] | undefined;
+    doneAtForeignSchool: boolean;
     id: number | undefined;
 }
 
@@ -55108,6 +55541,70 @@ export interface IGetTheoryLessonForEditOutput {
     officeName: string | undefined;
     licenseClassClass: string | undefined;
     instructorFirstName: string | undefined;
+}
+
+export class CreateOrEditForeignTheoryLessonDto implements ICreateOrEditForeignTheoryLessonDto {
+    startTime!: DateTime;
+    topic!: string | undefined;
+    description!: string | undefined;
+    licenseClass!: string | undefined;
+    courseId!: number;
+    predefinedTheoryLessonId!: string | undefined;
+    studentId!: number;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditForeignTheoryLessonDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
+            this.topic = _data["topic"];
+            this.description = _data["description"];
+            this.licenseClass = _data["licenseClass"];
+            this.courseId = _data["courseId"];
+            this.predefinedTheoryLessonId = _data["predefinedTheoryLessonId"];
+            this.studentId = _data["studentId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditForeignTheoryLessonDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditForeignTheoryLessonDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
+        data["topic"] = this.topic;
+        data["description"] = this.description;
+        data["licenseClass"] = this.licenseClass;
+        data["courseId"] = this.courseId;
+        data["predefinedTheoryLessonId"] = this.predefinedTheoryLessonId;
+        data["studentId"] = this.studentId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditForeignTheoryLessonDto {
+    startTime: DateTime;
+    topic: string | undefined;
+    description: string | undefined;
+    licenseClass: string | undefined;
+    courseId: number;
+    predefinedTheoryLessonId: string | undefined;
+    studentId: number;
+    id: number | undefined;
 }
 
 export class GetStudentsOfTheoryLessonDto implements IGetStudentsOfTheoryLessonDto {
