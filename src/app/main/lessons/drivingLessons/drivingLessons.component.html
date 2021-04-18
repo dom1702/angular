@@ -165,7 +165,7 @@
                                     <tr>
                                         <td style="width: 130px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}"
                                             [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
-                                            <div class="btn-group dropdown" dropdown container="body">
+                                            <!-- <div class="btn-group dropdown" dropdown container="body">
                                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
                                                     {{l("Actions")}}
@@ -191,6 +191,24 @@
                                                             (click)="showHistory(record.drivingLesson)">{{l('History')}}</a>
                                                     </li>
                                                 </ul>
+                                            </div> -->
+                                            <div class="btn-group mr-2" role="group" aria-label="...">
+            
+                                                <button type="button" class="btn btn-secondary btn-icon"
+                                                (click)="viewDrivingLessonModal.show(record)"><i class="fa fa-eye"></i></button>
+            
+                                                <button type="button" class="btn btn-secondary btn-icon"
+                                                *ngIf="permission.isGranted('Pages.DrivingLessons.Edit')"
+                                                (click)="createOrEditDrivingLessonModal.show(record.drivingLesson.id)"><i class="fa fa-edit"></i></button>
+            
+                                                <button type="button" class="btn btn-secondary btn-icon"
+                                                *ngIf="permission.isGranted('Pages.DrivingLessons.Delete')"
+                                                (click)="deleteDrivingLesson(record.drivingLesson)"><i class="fa fa-trash"></i></button>
+
+                                                <button type="button" class="btn btn-secondary btn-icon"
+                                                *ngIf="entityHistoryEnabled"
+                                                (click)="showHistory(record.drivingLesson)"><i class="fa fa-history"></i></button>
+
                                             </div>
                                         </td>
                                         <td style="width:150px" [ngStyle]="record.drivingLesson.completed ? {'background-color': completedColor} : record.drivingLesson.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
