@@ -1,0 +1,28 @@
+<div bsModal #filterModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="filterModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{l("CreateNewLessonOrEvent")}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-9">
+                           
+                        </div>
+                        <div class="col-3">
+                            
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+            </div>
+        </div>
+    </div>
+</div>
