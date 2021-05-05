@@ -83,13 +83,6 @@ export class StudentsOverviewOverviewComponent extends AppComponentBase {
                 this.theoryLessons = result;
             });
         });
-
-        // this.parentOverview.courseChanged.subscribe(() => {
-        //     this._studentsServiceProxy.getPredefinedDrivingLessonsOfCourse(this.parentOverview.selectedStudentCourse.course.id, this.student.id).subscribe(result => {
-        //         this.drivingLessons = result;
-        //       console.log(this.drivingLessons);
-        //     });
-        // });
     }
 
     updateLicenseClass(): void {

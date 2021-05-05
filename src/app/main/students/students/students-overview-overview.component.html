@@ -4,7 +4,7 @@
             <h5 class="m-5">{{l("General")}}</h5>
         </div>
         <div class="col-3 text-right">
-            <button type="button" (click)="editStudent()" class="btn btn-primary"><i
+            <button *ngIf="isGranted('Pages.Students.Edit')"type="button" (click)="editStudent()" class="btn btn-primary"><i
                     class="fa fa-edit"></i><span>{{l("Edit")}}</span></button>
         </div>
     </div>
@@ -169,7 +169,7 @@
                     </alert>
                 </div>
             </div>
-            <div class="row ml-1">
+            <div *ngIf="isGranted('Pages.Students.CourseAssignment')" class="row ml-1">
                 <button type="button" (click)="openAssignToCourseModal()"
                     class="btn btn-primary btn-sm">{{l("AssignToCourse")}}</button>
                 <button type="button" (click)="openMoveToAnotherCourseModal()"
@@ -185,14 +185,14 @@
         <hr />
         <div class="m-5">
             <label *ngIf="!student.userId">{{l("StudentNotLinkedToAUserAccount")}}</label>
-            <br *ngIf="!student.userId"><button *ngIf="!student.userId" type="button"
+            <br *ngIf="!student.userId"><button *ngIf="!student.userId && isGranted('Pages.Administration.Users.Create')" type="button"
                 (click)="createOrEditUserAccount()"
                 class="btn btn-secondary mr-5">{{l("CreateAndAssignUserAccount")}}</button>
             <label *ngIf="student.userId">{{l("UserName")}}: {{student.userName}} ({{student.userId}})</label>
-            <div *ngIf="student.userId" class="mt-5"><button *ngIf="student.userId" type="button"
+            <div *ngIf="student.userId" class="mt-5"><button *ngIf="student.userId &&  isGranted('Pages.Administration.Users.Edit')" type="button"
                     (click)="createOrEditUserAccount()"
                     class="btn btn-secondary mr-5">{{l("EditStudentsUserAccount")}}</button>
-                <button *ngIf="student.userId" type="button" (click)="impersonate()"
+                <button *ngIf="student.userId && isGranted('Pages.Administration.Users.Impersonation')" type="button" (click)="impersonate()"
                     class="btn btn-primary mr-5"><span>{{l("Impersonate")}}</span></button>
             </div>
         </div>

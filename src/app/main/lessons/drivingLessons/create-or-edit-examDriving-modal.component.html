@@ -199,7 +199,7 @@
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button *ngIf="drivingLesson.id"
-                        [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') "
+                        [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') && !this.isGranted('Pages.Students.DrivingLessons.Delete')"
                         type="button" class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
                     <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid|| selectedStudentCourse == null || !instructorSelected() || !vehicleSelected()"
                         [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>

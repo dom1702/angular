@@ -17,6 +17,7 @@ import { CreateOrEditSimulatorLessonModalComponent } from '@app/main/lessons/sim
 import { ViewSimulatorLessonModalComponent } from '@app/main/lessons/simulatorLessons/view-simulatorLesson-modal.component';
 import { CreateOrEditExamDrivingModalComponent } from '@app/main/lessons/drivingLessons/create-or-edit-examDriving-modal.component';
 import { CreateOrEditForeignTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'students-overview-lessons',
@@ -39,6 +40,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
     lessons: DrivingLessonOfCourseDto[];
 
+    subscription : Subscription;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -54,13 +57,24 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
         this.parentOverview.lessonsTabSelected.subscribe(() => {
 
-            if(this.lessons != null)
-                return;
+            //if(this.lessons != null)
+            //    return;
 
             this.refresh();
+
+            this.subscription = this.parentOverview.courseChanged.subscribe(() =>
+            {
+                // At this point we need to wait a short time because Input variable student is not yet refreshed
+                 setTimeout(() => {
+                    this.refresh();
+                }, 100);
+            });
         });
 
+        this.parentOverview.lessonsTabDeselected.subscribe(() => {
 
+            this.subscription.unsubscribe();
+        });
     }
     
     refresh() : void
@@ -176,12 +190,12 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
     createDrivingLesson(): void {
         // Instructor specific lesson with preselected instructor must work too !!!
-        this.createOrEditDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName);
+        this.createOrEditDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, null, this.parentOverview.selectedStudentCourse.course.id);
     }
 
     createExam(): void {
         // Instructor specific lesson with preselected instructor must work too !!!
-        this.createOrEditExamDrivingModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName);
+        this.createOrEditExamDrivingModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName,  null, this.parentOverview.selectedStudentCourse.course.id);
     }
 
     createSimulatorLesson(): void {

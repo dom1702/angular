@@ -105,7 +105,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     }
 
     show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null, 
-        studentFirstName:string = "", studentLastName:string = "", startTime: Date = null): void {
+        studentFirstName:string = "", studentLastName:string = "", startTime: Date = null, preselectedCourseId : number = null): void {
 
         this.instructorPersonalLesson = instructorPersonalLesson;
         this.selectedPdl = null;
@@ -121,7 +121,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = studentLastName;
                 this.studentSelected = true;
                 this.showStudentSelection = false;
-                this.refreshCourses();
+                this.refreshCourses(preselectedCourseId);
             }
             else
             {
@@ -412,13 +412,22 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.refreshCourses();
     }
 
-    refreshCourses()
+    refreshCourses(preselectedCourseId : number = null)
     {
         this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result => {
             this.studentCourses = result.courses
 
             if (this.studentCourses.length > 0) {
+                if(preselectedCourseId)
+                {
+                    for(var i of this.studentCourses)
+                        if(i.id == preselectedCourseId)
+                        this.selectedStudentCourse = i;
+                }
+                else
+                {
                 this.selectedStudentCourse = this.studentCourses[0];
+                }
             }
 
             this.currentStudentDefaultInstructorId = result.defaultInstructorId;

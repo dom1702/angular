@@ -18752,6 +18752,73 @@ export class SimulatorsServiceProxy {
         }
         return _observableOf<string>(<any>null);
     }
+
+    /**
+     * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllForLookupTable(filter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAllSimulatorsForLookupTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/Simulators/GetAllForLookupTable?";
+        if (filter !== undefined && filter !== null)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (sorting !== undefined && sorting !== null)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllForLookupTable(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllForLookupTable(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAllSimulatorsForLookupTableDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAllSimulatorsForLookupTableDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllForLookupTable(response: HttpResponseBase): Observable<PagedResultDtoOfAllSimulatorsForLookupTableDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAllSimulatorsForLookupTableDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAllSimulatorsForLookupTableDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -21522,6 +21589,96 @@ export class StudentsServiceProxy {
             }));
         }
         return _observableOf<ChangePricePackageOutput>(<any>null);
+    }
+
+    /**
+     * @param studentId (optional) 
+     * @param startTimeFilter (optional) 
+     * @param endTimeFilter (optional) 
+     * @param returnDrivingLessons (optional) 
+     * @param returnTheoryLessons (optional) 
+     * @param returnOtherEvents (optional) 
+     * @param returnSimulatorLessons (optional) 
+     * @return Success
+     */
+    getAllEventsOfStudent(studentId: number | undefined, startTimeFilter: DateTime | undefined, endTimeFilter: DateTime | undefined, returnDrivingLessons: boolean | undefined, returnTheoryLessons: boolean | undefined, returnOtherEvents: boolean | undefined, returnSimulatorLessons: boolean | undefined): Observable<SchedulerEventDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Students/GetAllEventsOfStudent?";
+        if (studentId === null)
+            throw new Error("The parameter 'studentId' cannot be null.");
+        else if (studentId !== undefined)
+            url_ += "StudentId=" + encodeURIComponent("" + studentId) + "&";
+        if (startTimeFilter === null)
+            throw new Error("The parameter 'startTimeFilter' cannot be null.");
+        else if (startTimeFilter !== undefined)
+            url_ += "StartTimeFilter=" + encodeURIComponent(startTimeFilter ? "" + startTimeFilter.toJSON() : "") + "&";
+        if (endTimeFilter === null)
+            throw new Error("The parameter 'endTimeFilter' cannot be null.");
+        else if (endTimeFilter !== undefined)
+            url_ += "EndTimeFilter=" + encodeURIComponent(endTimeFilter ? "" + endTimeFilter.toJSON() : "") + "&";
+        if (returnDrivingLessons === null)
+            throw new Error("The parameter 'returnDrivingLessons' cannot be null.");
+        else if (returnDrivingLessons !== undefined)
+            url_ += "ReturnDrivingLessons=" + encodeURIComponent("" + returnDrivingLessons) + "&";
+        if (returnTheoryLessons === null)
+            throw new Error("The parameter 'returnTheoryLessons' cannot be null.");
+        else if (returnTheoryLessons !== undefined)
+            url_ += "ReturnTheoryLessons=" + encodeURIComponent("" + returnTheoryLessons) + "&";
+        if (returnOtherEvents === null)
+            throw new Error("The parameter 'returnOtherEvents' cannot be null.");
+        else if (returnOtherEvents !== undefined)
+            url_ += "ReturnOtherEvents=" + encodeURIComponent("" + returnOtherEvents) + "&";
+        if (returnSimulatorLessons === null)
+            throw new Error("The parameter 'returnSimulatorLessons' cannot be null.");
+        else if (returnSimulatorLessons !== undefined)
+            url_ += "ReturnSimulatorLessons=" + encodeURIComponent("" + returnSimulatorLessons) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllEventsOfStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllEventsOfStudent(<any>response_);
+                } catch (e) {
+                    return <Observable<SchedulerEventDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SchedulerEventDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllEventsOfStudent(response: HttpResponseBase): Observable<SchedulerEventDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SchedulerEventDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SchedulerEventDto[]>(<any>null);
     }
 }
 
@@ -44597,6 +44754,8 @@ export class SchedulerEventDto implements ISchedulerEventDto {
     isBlocked!: boolean;
     vehicleId!: number | undefined;
     vehicleName!: string | undefined;
+    simulatorId!: number | undefined;
+    simulatorName!: string | undefined;
     startingLocation!: string | undefined;
     instructorIds!: number[] | undefined;
     completed!: boolean;
@@ -44624,6 +44783,8 @@ export class SchedulerEventDto implements ISchedulerEventDto {
             this.isBlocked = _data["isBlocked"];
             this.vehicleId = _data["vehicleId"];
             this.vehicleName = _data["vehicleName"];
+            this.simulatorId = _data["simulatorId"];
+            this.simulatorName = _data["simulatorName"];
             this.startingLocation = _data["startingLocation"];
             if (Array.isArray(_data["instructorIds"])) {
                 this.instructorIds = [] as any;
@@ -44655,6 +44816,8 @@ export class SchedulerEventDto implements ISchedulerEventDto {
         data["isBlocked"] = this.isBlocked;
         data["vehicleId"] = this.vehicleId;
         data["vehicleName"] = this.vehicleName;
+        data["simulatorId"] = this.simulatorId;
+        data["simulatorName"] = this.simulatorName;
         data["startingLocation"] = this.startingLocation;
         if (Array.isArray(this.instructorIds)) {
             data["instructorIds"] = [];
@@ -44679,6 +44842,8 @@ export interface ISchedulerEventDto {
     isBlocked: boolean;
     vehicleId: number | undefined;
     vehicleName: string | undefined;
+    simulatorId: number | undefined;
+    simulatorName: string | undefined;
     startingLocation: string | undefined;
     instructorIds: number[] | undefined;
     completed: boolean;
@@ -48630,6 +48795,94 @@ export class PagedResultDtoOfSimulatorOfficeLookupTableDto implements IPagedResu
 export interface IPagedResultDtoOfSimulatorOfficeLookupTableDto {
     totalCount: number;
     items: SimulatorOfficeLookupTableDto[] | undefined;
+}
+
+export class AllSimulatorsForLookupTableDto implements IAllSimulatorsForLookupTableDto {
+    id!: number;
+    name!: string | undefined;
+
+    constructor(data?: IAllSimulatorsForLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): AllSimulatorsForLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AllSimulatorsForLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IAllSimulatorsForLookupTableDto {
+    id: number;
+    name: string | undefined;
+}
+
+export class PagedResultDtoOfAllSimulatorsForLookupTableDto implements IPagedResultDtoOfAllSimulatorsForLookupTableDto {
+    totalCount!: number;
+    items!: AllSimulatorsForLookupTableDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfAllSimulatorsForLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AllSimulatorsForLookupTableDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAllSimulatorsForLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAllSimulatorsForLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfAllSimulatorsForLookupTableDto {
+    totalCount: number;
+    items: AllSimulatorsForLookupTableDto[] | undefined;
 }
 
 export class StripeConfigurationDto implements IStripeConfigurationDto {

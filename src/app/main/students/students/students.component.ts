@@ -12,7 +12,6 @@ import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { AssignStudentToCourseModalComponent } from './assign-student-to-course-modal.component';
 import { DateTime } from 'luxon';
 

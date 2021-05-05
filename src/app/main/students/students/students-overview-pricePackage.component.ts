@@ -36,6 +36,8 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
 
     pricePackageName: string = 'None';
 
+    subscription : Subscription;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -47,21 +49,29 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
         super(injector);
     }
 
-    ngOnInit(): void {
-       this.refresh();
+    ngOnInit(): void 
+    {
+       this.parentOverview.onPricePackagesTabSelected.subscribe(() => {
 
-       this.parentOverview.courseChanged.subscribe(() => {
-
-        // At this point we need to wait a short time because Input variable student is not yet refreshed
-         setTimeout(() => {
             this.refresh();
-        }, 100);
-     
+
+            this.subscription = this.parentOverview.courseChanged.subscribe(() =>
+            {
+                // At this point we need to wait a short time because Input variable student is not yet refreshed
+                 setTimeout(() => {
+                    this.refresh();
+                }, 100);
+            });
+        });
+
+        this.parentOverview.onPricePackagesTabDeselected.subscribe(() => {
+
+            this.subscription.unsubscribe();
         });
     }
 
     refresh() : void{
-        //console.log("refresh");
+
         if (this.selectedStudentCourse.pricePackageId != null) {
             this._pricePackageServiceProxy.getPricePackageForView(this.selectedStudentCourse.pricePackageId).subscribe(result => {
 

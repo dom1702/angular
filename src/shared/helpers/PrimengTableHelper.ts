@@ -6,7 +6,7 @@ import * as rtlDetect from 'rtl-detect';
 export class PrimengTableHelper {
     predefinedRecordsCountPerPage = [5, 10, 25, 50, 100, 250, 500];
 
-    defaultRecordsCountPerPage = 10;
+    defaultRecordsCountPerPage = 25;
 
     isResponsive = true;
 

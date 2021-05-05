@@ -54,12 +54,10 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
         this.simulatorModules = null;
         this.manuallyMarkCompleted = false;
         this.setTopicNameAutomatically = true;
-        this.startTime = this._dateTimeService.getDate().toJSDate();
-        this.startTimeTime = this._dateTimeService.getDate().toJSDate();
     }
 
     show(simulatorLessonId?: number, studentId: number = null, 
-        studentName:string = "", studentLastName:string = ""): void {
+        studentName:string = "", studentLastName:string = "", startTime: Date = null): void {
 
         if (!simulatorLessonId) {
             this.simulatorLesson = new CreateOrEditSimulatorLessonDto();
@@ -77,7 +75,14 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
 
             this.simulatorLesson.id = simulatorLessonId;
             this.simulatorLesson.startTime = this._dateTimeService.getStartOfDay();
-         
+            if (startTime != null) {
+                this.startTime = startTime;
+                this.startTimeTime = startTime;
+            }
+            else {
+                this.startTime = this._dateTimeService.getDate().toJSDate();
+                this.startTimeTime = this._dateTimeService.getDate().toJSDate();
+            }
           
             this.simulatorName = '';
             this.simulatorLesson.length = 1;
@@ -189,6 +194,22 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
         })
     }
 
+    delete(): void {
+        this.message.confirm(
+            '',
+            '',
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._simulatorLessonsServiceProxy.delete(this.simulatorLesson.id)
+                        .subscribe(() => {
+                            this.notify.success(this.l('SuccessfullyDeleted'));
+                            this.close();
+                            this.modalSave.emit(null);
+                        });
+                }
+            }
+        );
+    }
 
     close(): void {
 

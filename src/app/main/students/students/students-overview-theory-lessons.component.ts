@@ -19,6 +19,7 @@ import { CreateOrEditExamDrivingModalComponent } from '@app/main/lessons/driving
 import { CreateOrEditForeignTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
 import { ViewTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/view-theoryLesson-modal.component';
 import { ViewForeignTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/view-foreign-theoryLesson-modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'students-overview-theory-lessons',
@@ -38,6 +39,8 @@ export class StudentsOverviewTheoryLessonsComponent extends AppComponentBase imp
 
     lessons: TheoryLessonOfCourseDto[];
 
+    subscription : Subscription;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -53,13 +56,21 @@ export class StudentsOverviewTheoryLessonsComponent extends AppComponentBase imp
 
         this.parentOverview.theoryLessonsTabSelected.subscribe(() => {
 
-            if(this.lessons != null)
-                return;
-
             this.refresh();
+
+            this.subscription = this.parentOverview.courseChanged.subscribe(() =>
+            {
+                // At this point we need to wait a short time because Input variable student is not yet refreshed
+                 setTimeout(() => {
+                    this.refresh();
+                }, 100);
+            });
         });
 
+        this.parentOverview.theoryLessonsTabDeselected.subscribe(() => {
 
+            this.subscription.unsubscribe();
+        });
     }
     
     refresh() : void

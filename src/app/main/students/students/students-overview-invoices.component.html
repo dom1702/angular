@@ -56,7 +56,7 @@
                     <th>{{l("DateDue")}}</th>
                     <th>{{l("TotalAfterVat")}}</th>
                     <th style="width:150px">{{l("Paid")}}</th>
-                    <th>{{l("Action")}}</th>
+                    <th *ngIf="isGrantedAny('Pages.StudentInvoices.Edit',  'Pages.Payments.Edit', 'Pages.StudentInvoices.Edit', 'Pages.StudentInvoices.Delete')">{{l("Action")}}</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-invoice>
@@ -79,7 +79,7 @@
                             {{ l('Partly') }}
                         </span>
                     </td>
-                    <td>
+                    <td *ngIf="isGrantedAny('Pages.StudentInvoices.Edit',  'Pages.Payments.Edit', 'Pages.StudentInvoices.Edit', 'Pages.StudentInvoices.Delete')">
                         <div class="btn-group dropdown" dropdown container="body">
                             <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                 <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
@@ -103,12 +103,12 @@
                                 </li>
                                 <li>
                                     <a href="javascript:;" class="dropdown-item"
-                                        *ngIf="permission.isGranted('Pages.Students.Edit')"
+                                        *ngIf="permission.isGranted('Pages.StudentInvoices.Edit')"
                                         (click)="editInvoice(invoice.id)">{{l('Edit')}}</a>
                                 </li>
                                 <li>
                                     <a href="javascript:;" class="dropdown-item"
-                                        *ngIf="permission.isGranted('Pages.Students.Delete')"
+                                        *ngIf="permission.isGranted('Pages.StudentInvoices.Delete')"
                                         (click)="deleteInvoice(invoice.id)">{{l('Delete')}}</a>
                                 </li>
                             </ul>
@@ -128,7 +128,7 @@
     <div class="form-group">
         <div class="m--margin-top-30">
             <div class="m--align-right">
-                <button type="button" (click)="createNewInvoice()"
+                <button type="button" (click)="createNewInvoice()" *ngIf="permission.isGranted('Pages.StudentInvoices.Create')"
                     class="btn btn-primary mr-5">{{l("CreateNewInvoice")}}</button>
             </div>
         </div>

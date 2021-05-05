@@ -132,7 +132,7 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
     }
 
     show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null,
-        studentFirstName: string = "", studentLastName: string = "", startTime: Date = null): void {
+        studentFirstName: string = "", studentLastName: string = "", startTime: Date = null, preselectedCourseId : number = null): void {
 
         this.instructorPersonalLesson = instructorPersonalLesson;
         this.selectedPdl = null;
@@ -141,7 +141,7 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
             this.currentState = 1;
             this.drivingLesson = new CreateOrEditDrivingLessonDto();
-            this.drivingLesson.billToStudent = true;
+            this.drivingLesson.billToStudent = true;    
 
             if (studentId != null) {
                 this.drivingLesson.studentId = studentId;
@@ -149,7 +149,7 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                 this.studentLastName = studentLastName;
                 this.studentSelected = true;
                 this.showStudentSelection = false;
-                this.refreshCourses();
+                this.refreshCourses(preselectedCourseId);
             }
             else {
                 this.studentFirstName = '';
@@ -209,12 +209,33 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
                 this.startTime = result.drivingLesson.startTime.toJSDate();
                 this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
+                this.showStudentSelection = false;
+                this.studentSelected = true;
+                this.selectedStudentCourse = null;
+                this.studentCourses = null;
+
                 if (this.drivingLesson.completed)
                     this.currentState = 2;
                 else if (this.drivingLesson.studentNotPresent)
                     this.currentState = 3;
                 else
                     this.currentState = 1;
+
+                this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result2 => {
+                    this.studentCourses = result2.courses;
+
+                    for (let course of this.studentCourses) {
+                        if (course.id == result.drivingLesson.courseId) {
+                            this.selectedStudentCourse = course;
+
+
+                            for (let pdl of course.predefinedDrivingLessons) {
+                                if (pdl.lessonIdString == result.drivingLesson.predefinedDrivingLessonId)
+                                    this.selectedPdl = pdl;
+                            }
+                        }
+                    }
+                });
 
                 this.active = true;
                 this.updateInstructors(true);
@@ -512,12 +533,26 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         this.refreshCourses();
     }
 
-    refreshCourses() {
+    courseSelected()
+    {
+        this.updateCheckboxList();
+    }
+
+    refreshCourses(preselectedCourseId : number = null) {
         this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result => {
             this.studentCourses = result.courses
 
             if (this.studentCourses.length > 0) {
+                if(preselectedCourseId)
+                {
+                    for(var i of this.studentCourses)
+                        if(i.id == preselectedCourseId)
+                        this.selectedStudentCourse = i;
+                }
+                else
+                {
                 this.selectedStudentCourse = this.studentCourses[0];
+                }
                 this.updateCheckboxList();
             }
 
@@ -640,6 +675,9 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
     }
 
     instructorSelected() : boolean{
+        if(this.instructorPersonalLesson)
+            return true;
+            
         return this.instructorsSelectedItems != null && this.instructorsSelectedItems.length > 0;
     }
 

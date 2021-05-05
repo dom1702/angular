@@ -178,8 +178,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                        <td style="width: 130px"
-                                            [hidden]="!isGrantedAny('Pages.Students.Edit', 'Pages.Students.Delete')">
+                                        <td style="width: 130px">
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
@@ -240,7 +239,7 @@
                                 {{l('NoData')}}
                             </div>
                             <div class="primeng-paging-container">
-                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                                     (onPageChange)="getStudents($event)"
                                     [totalRecords]="primengTableHelper.totalRecordsCount"
                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">

@@ -7,6 +7,8 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import { BsDropdownModule, BsDropdownConfig } from 'ngx-bootstrap/dropdown';
+import { Subscription } from 'ste-core';
+import { StudentsOverviewComponent } from './students-overview.component';
 
 @Component({
     selector: 'students-overview-forms',
@@ -18,6 +20,7 @@ import { BsDropdownModule, BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 export class StudentsOverviewFormsComponent extends AppComponentBase {
 
     @Input() student: StudentDto;
+    @Input() parentOverview : StudentsOverviewComponent;
 
     invoices: StudentInvoiceDto[];
     createdForms: CreatedFormDto[];
@@ -41,16 +44,20 @@ export class StudentsOverviewFormsComponent extends AppComponentBase {
     }
 
     ngOnInit(): void {
-        this._studentFormsServiceProxy.getAllCreatedFormsByStudentId(this.student.id).subscribe(result => {
 
-            this.createdForms = result;
+        this.parentOverview.onFormsTabSelected.subscribe(() => {
 
-        });
+            this._studentFormsServiceProxy.getAllCreatedFormsByStudentId(this.student.id).subscribe(result => {
 
-        this._formsServiceProxy.getAllUnfiltered().subscribe(result => {
-
-            this.availableForms = result;
-
+                this.createdForms = result;
+    
+            });
+    
+            this._formsServiceProxy.getAllUnfiltered().subscribe(result => {
+    
+                this.availableForms = result;
+    
+            });
         });
     }
 

@@ -144,6 +144,8 @@ import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed
 import { CreateOrEditForeignTheoryLessonModalComponent } from './lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
 import { StudentsOverviewTheoryLessonsComponent } from './students/students/students-overview-theory-lessons.component';
 import { ViewForeignTheoryLessonModalComponent } from './lessons/theoryLessons/view-foreign-theoryLesson-modal.component';
+import { SchedulerFilterModalComponent } from './scheduler/scheduler-filter-modal.component';
+import { StudentsOverviewSchedulerComponent } from './students/students/students-overview-scheduler.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -293,7 +295,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     SVPaymentFailedComponent,
       CreateOrEditForeignTheoryLessonModalComponent,
       StudentsOverviewTheoryLessonsComponent,
-      ViewForeignTheoryLessonModalComponent
+      ViewForeignTheoryLessonModalComponent,
+      SchedulerFilterModalComponent,
+      StudentsOverviewSchedulerComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

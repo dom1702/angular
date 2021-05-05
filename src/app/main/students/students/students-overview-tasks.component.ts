@@ -29,6 +29,8 @@ export class StudentsOverviewTasksComponent extends AppComponentBase {
 
     showApplyButton : boolean;
 
+    subscription : Subscription;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -43,8 +45,18 @@ export class StudentsOverviewTasksComponent extends AppComponentBase {
 
     ngOnInit(): void {
 
-        this.parentOverview.courseChanged.subscribe(() => {
+        this.parentOverview.onTodosTabSelected.subscribe(() => {
+
             this.refresh();
+
+            this.subscription = this.parentOverview.courseChanged.subscribe(() => {
+                this.refresh();
+            });
+        });
+
+        this.parentOverview.onTodosTabDeselected.subscribe(() => {
+            this.subscription.unsubscribe();
+            
         });
     }
 

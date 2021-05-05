@@ -33,6 +33,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
     studentTasksTabName: string = this.l("Tasks");
     lessonsTabName: string = this.l("Driving");
     theoryLessonsTabName: string = this.l("Theory");
+    studentSchedulerTabName: string = this.l("Scheduler");
 
     student: StudentDto;
     pricePackageName: string = "";
@@ -44,7 +45,19 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     @Output() courseChanged = new EventEmitter();
     @Output() lessonsTabSelected = new EventEmitter();
+    @Output() lessonsTabDeselected = new EventEmitter();
     @Output() theoryLessonsTabSelected = new EventEmitter();
+    @Output() theoryLessonsTabDeselected = new EventEmitter();
+    @Output() onPricePackagesTabSelected = new EventEmitter();
+    @Output() onPricePackagesTabDeselected = new EventEmitter();
+    @Output() onStudentInvoicesTabSelected = new EventEmitter();
+    @Output() onStudentInvoicesTabDeselected = new EventEmitter();
+    @Output() onFormsTabSelected = new EventEmitter();
+    @Output() onFormsTabDeselected = new EventEmitter();
+    @Output() onTodosTabSelected = new EventEmitter();
+    @Output() onTodosTabDeselected = new EventEmitter();
+    @Output() onSchedulerTabSelected = new EventEmitter();
+    @Output() onSchedulerTabDeselected = new EventEmitter();
 
     constructor(
         injector: Injector,
@@ -58,14 +71,59 @@ export class StudentsOverviewComponent extends AppComponentBase {
     }
 
     onLessonsTabSelect(data: TabDirective): void {
-        if(data.heading === this.lessonsTabName)
             this.lessonsTabSelected.emit();
       }
 
-    onTheoryLessonsTabSelect(data: TabDirective): void {
-        if(data.heading === this.theoryLessonsTabName)
-            this.theoryLessonsTabSelected.emit();
+      onLessonsTabDeselect(data: TabDirective): void {
+            this.lessonsTabDeselected.emit();
       }
+
+    onTheoryLessonsTabSelect(data: TabDirective): void {
+            this.theoryLessonsTabSelected.emit();
+    }
+
+    onTheoryLessonsTabDeselect(data: TabDirective): void {
+            this.theoryLessonsTabDeselected.emit();
+    }
+
+    onPricePackagesTabSelect(data: TabDirective): void {
+        this.onPricePackagesTabSelected.emit();
+    }
+    onPricePackagesTabDeselect(data: TabDirective): void {
+        this.onPricePackagesTabDeselected.emit();
+    }
+
+    onStudentInvoicesTabSelect(data: TabDirective): void {
+        this.onStudentInvoicesTabSelected.emit();
+    }
+
+    onStudentInvoicesTabDeselect(data: TabDirective): void {
+        this.onStudentInvoicesTabDeselected.emit();
+    }
+
+    onFormsTabSelect(data: TabDirective): void {
+        this.onFormsTabSelected.emit();
+    }
+
+    onFormsTabDeselect(data: TabDirective): void {
+        this.onFormsTabDeselected.emit();
+    }
+
+    onTodosTabSelect(data: TabDirective): void {
+        this.onTodosTabSelected.emit();
+    }
+
+    onTodosTabDeselect(data: TabDirective): void {
+        this.onTodosTabDeselected.emit();
+    }
+
+    onSchedulerTabSelect(data: TabDirective): void {
+        this.onSchedulerTabSelected.emit();
+    }
+
+    onSchedulerTabDeselect(data: TabDirective): void {
+        this.onSchedulerTabDeselected.emit();
+    }
 
     ngOnInit(): void {
 
@@ -111,6 +169,21 @@ export class StudentsOverviewComponent extends AppComponentBase {
             this.drivingLessons = result;
           console.log(this.drivingLessons);
         });
+
+        this.setPricePackageName();
+    }
+
+    setPricePackageName()
+    {
+        if(this.selectedStudentCourse != null)
+                        {
+                            this.pricePackageName = this.selectedStudentCourse.pricePackageName;
+        
+                            if(this.selectedStudentCourse.pricePackageModified)
+                                this.pricePackageName = this.pricePackageName + " (modified for this particular student)";
+                        }
+                        else
+                            this.pricePackageName = "";
     }
 
     public UpdateStudentView(): Observable<any> {
@@ -127,15 +200,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
                     {
                         this.selectedStudentCourse = this.studentCourses[0];
                         
-                        if(this.selectedStudentCourse != null)
-                        {
-                            this.pricePackageName = this.selectedStudentCourse.pricePackageName;
-        
-                            if(this.selectedStudentCourse.pricePackageModified)
-                                this.pricePackageName = this.pricePackageName + " (modified for this particular student)";
-                        }
-                        else
-                            this.pricePackageName = "";
+                        this.setPricePackageName();
                     }
                     else
                     {

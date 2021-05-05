@@ -1,28 +1,98 @@
-<div bsModal #filterModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-    aria-labelledby="filterModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #filterModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="filterModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    {{l("CreateNewLessonOrEvent")}}
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-9">
-                           
-                        </div>
-                        <div class="col-3">
-                            
-                        </div>
-                    </div>
-                   
+            
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {{l("Filter")}}
+                    </h4>
+                    <!-- <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button> -->
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
-            </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div [ngClass]="{'col-4 border-right': simulatorFeatureEnabled == true, 'col-6 border-right' : simulatorFeatureEnabled == false}">
+                                <h6 class="my-5">{{l('Vehicles')}}</h6>
+                                <div class="checkbox-list">
+
+                                    <label class="checkbox" *ngFor="let veh of vehiclesResources">
+                                        <input type="checkbox" name="veh.name" [(ngModel)]="veh.checked">
+                                        <span></span>
+                                        {{veh.name}}
+
+                                    </label>
+                                </div>
+
+                                <div class="row my-4">
+                                    <div class="col-6">
+                                        <a class="btn btn-link-primary font-weight-bold"
+                                            (click)="selectAllVehicles()">Select all</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-link-primary font-weight-bold"
+                                            (click)="deselectAllVehicles()">Deselect all</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div [ngClass]="{'col-4 border-right': simulatorFeatureEnabled == true, 'col-6' : simulatorFeatureEnabled == false}">
+                                <h6 class="my-5">{{l('Instructors')}}</h6>
+
+                                <div class="checkbox-list">
+
+                                    <label class="checkbox" *ngFor="let instr of instructorsResources">
+                                        <input type="checkbox" name="instr.name" [(ngModel)]="instr.checked">
+                                        <span></span>
+                                        {{instr.name}}
+
+                                    </label>
+                                </div>
+
+                                <div class="row my-4">
+                                    <div class="col-6">
+                                        <a class="btn btn-link-primary font-weight-bold"
+                                            (click)="selectAllInstructors()">Select all</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-link-primary font-weight-bold"
+                                            (click)="deselectAllInstructors()">Deselect all</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div [ngClass]="{'col-4': simulatorFeatureEnabled == true, 'col-6' : simulatorFeatureEnabled == false}">
+                                <h6 class="my-5">{{l('Simulators')}}</h6>
+                                <div class="checkbox-list">
+
+                                    <label class="checkbox" *ngFor="let sim of simulatorsResources">
+                                        <input type="checkbox" name="sim.name" [(ngModel)]="sim.checked">
+                                        <span></span>
+                                        {{sim.name}}
+
+                                    </label>
+                                </div>
+
+                                <div class="row my-4">
+                                    <div class="col-6">
+                                        <a class="btn btn-link-primary font-weight-bold"
+                                            (click)="selectAllSimulators()">Select all</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-link-primary font-weight-bold"
+                                            (click)="deselectAllSimulators()">Deselect all</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button> -->
+                    <button type="submit" class="btn btn-primary blue" (click)="apply()">{{l("Apply")}}</button>
+                </div>
+           
         </div>
     </div>
 </div>

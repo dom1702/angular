@@ -67,7 +67,7 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
         console.log(items);
     }
 
-    show(eventId?: number, isPersonalAppointment: boolean = false): void {
+    show(eventId?: number, isPersonalAppointment: boolean = false, studentId : number = null, studentFirstName = "", studentLastName = ""): void {
 
         this.ismeridian = false;
         this.studentFullName = "";
@@ -94,6 +94,12 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
                 this.endTimeTime.setDate(this.startTime.getDate());
                 this.endTimeTime.setTime(this.startTime.getTime());
                 this.endTimeTime.setHours(this.endTimeTime.getHours() + 1);
+
+                
+                if(this.startTimeTime.getHours() == 0 && this.startTimeTime.getMinutes() == 0)
+                this.event.allDay = true;
+            else
+                this.event.allDay = false;
 
                 this.active = true;
 
@@ -126,6 +132,16 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
                 this.event = new CreateOrEditAppointmentDto();
                 this.event.id = eventId;
 
+                if(studentId != null)
+                {
+                    this.studentSelected = true;
+                    this.personId = studentId;
+                    this.studentFirstName = studentFirstName;
+                    this.studentLastName = studentLastName;
+                    this.refreshStudentFullName();
+                    this.personSelected = true;
+                }
+
                 this.startTimeTime.setDate(this.startTime.getDate());
                 this.startTimeTime.setTime(this.startTime.getTime());
                 this.endTime.setDate(this.startTime.getDate());
@@ -133,6 +149,11 @@ export class CreateOrEditEventModalComponent extends AppComponentBase implements
                 this.endTimeTime.setDate(this.startTime.getDate());
                 this.endTimeTime.setTime(this.startTime.getTime());
                 this.endTimeTime.setHours(this.endTimeTime.getHours() + 1);
+
+                if(this.startTimeTime.getHours() == 0 && this.startTimeTime.getMinutes() == 0)
+                this.event.allDay = true;
+            else
+                this.event.allDay = false;
 
                 this.active = true;
 

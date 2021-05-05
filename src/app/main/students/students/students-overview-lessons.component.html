@@ -6,9 +6,9 @@
         <div class="col text-right">
             <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="addTheoryLessonManually()"
             class="btn btn-secondary blue"><i class="fa fa-plus"></i> {{l("AddTheoryLessonManually")}}</button>
-            <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createExam()"
+            <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="createExam()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewExam")}}</button>
-            <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createDrivingLesson()"
+            <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="createDrivingLesson()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewDrivingLesson")}}</button>
             <button *ngIf="isGranted('Pages.SimulatorLessons.Create')" (click)="createSimulatorLesson()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewSimulatorLesson")}}</button>
@@ -65,7 +65,7 @@
                 <ng-template pTemplate="body" let-record="$implicit">
                     <tr>
                         <td style="width: 150px"
-                            [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
+                            [hidden]="!isGrantedAny('Pages.Students.DrivingLessons', 'Pages.Students.DrivingLessons.Edit', 'Pages.Students.DrivingLessons.Delete')">
                             <!-- <div class="btn-group dropdown" dropdown container="body">
                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                     <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
@@ -102,11 +102,11 @@
                                     (click)="showView(record)"><i class="fa fa-eye"></i></button>
 
                                     <button type="button" class="btn btn-outline-secondary btn-icon"
-                                    *ngIf="permission.isGranted('Pages.DrivingLessons.Edit')"
+                                    *ngIf="permission.isGranted('Pages.Students.DrivingLessons.Edit')"
                                     (click)="createOrEdit(record)"><i class="fa fa-edit"></i></button>
 
                                     <button type="button" class="btn btn-outline-secondary btn-icon"
-                                    *ngIf="permission.isGranted('Pages.DrivingLessons.Delete')"
+                                    *ngIf="permission.isGranted('Pages.Students.DrivingLessons.Delete')"
                                     (click)="deleteDrivingLesson(record)"><i class="fa fa-trash"></i></button>
                                 </div>
                            
