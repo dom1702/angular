@@ -32,11 +32,12 @@
     </div> -->
 
     <div class="content d-flex flex-column flex-column-fluid">
+        <div style="height:200px">
         <sub-header *ngIf="overallActive" [title]="title" [description]="">
 
             <div *ngIf="overallActive" role="actions" style="width: 300px">
                 <div >
-                <label>Course: </label><br>
+                <label>Course: </label>
                 <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="CallCourseChanged()">
                     <option *ngFor="let course of studentCourses" [ngValue]="course">
                         {{course.course.name}}
@@ -46,7 +47,7 @@
             </div>
 
         </sub-header>
-
+    </div>
         <div *ngIf="drivingLessons != null && drivingLessons.completedExam">
             <alert type="success">
                 {{l("CourseCompletedMessageStudentOverview")}}!
