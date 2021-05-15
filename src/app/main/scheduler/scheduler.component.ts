@@ -82,6 +82,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
     //selectable: true,
+    contentHeight: 'auto',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -427,6 +428,8 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
   handleDateSelect(selectInfo: DateSelectArg) {
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
+
+    
 
     calendarApi.unselect(); // clear date selection
 

@@ -146,6 +146,7 @@ import { StudentsOverviewTheoryLessonsComponent } from './students/students/stud
 import { ViewForeignTheoryLessonModalComponent } from './lessons/theoryLessons/view-foreign-theoryLesson-modal.component';
 import { SchedulerFilterModalComponent } from './scheduler/scheduler-filter-modal.component';
 import { StudentsOverviewSchedulerComponent } from './students/students/students-overview-scheduler.component';
+import { CreateOrEditWorkingHourModalComponent } from '@app/shared/common/scheduler/create-or-edit-workingHours-modal.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();

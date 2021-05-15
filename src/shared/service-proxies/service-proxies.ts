@@ -14512,6 +14512,227 @@ export class PersonalSchedulerServiceProxy {
         }
         return _observableOf<SchedulerEventDto[]>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addWorkingHourTimeslot(body: AddWorkingHourTimeslotInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PersonalScheduler/AddWorkingHourTimeslot";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddWorkingHourTimeslot(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddWorkingHourTimeslot(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddWorkingHourTimeslot(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param from (optional) 
+     * @param to (optional) 
+     * @return Success
+     */
+    getWorkingHours(from: DateTime | undefined, to: DateTime | undefined): Observable<WorkingHourDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/PersonalScheduler/GetWorkingHours?";
+        if (from === null)
+            throw new Error("The parameter 'from' cannot be null.");
+        else if (from !== undefined)
+            url_ += "From=" + encodeURIComponent(from ? "" + from.toJSON() : "") + "&";
+        if (to === null)
+            throw new Error("The parameter 'to' cannot be null.");
+        else if (to !== undefined)
+            url_ += "To=" + encodeURIComponent(to ? "" + to.toJSON() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetWorkingHours(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWorkingHours(<any>response_);
+                } catch (e) {
+                    return <Observable<WorkingHourDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<WorkingHourDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetWorkingHours(response: HttpResponseBase): Observable<WorkingHourDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(WorkingHourDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<WorkingHourDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateWorkingHourTimeslot(body: UpdateWorkingHourTimeslotInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PersonalScheduler/UpdateWorkingHourTimeslot";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateWorkingHourTimeslot(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateWorkingHourTimeslot(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateWorkingHourTimeslot(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateMultipleWorkingHourTimeslots(body: UpdateMultipleWorkingHourTimeslotsInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PersonalScheduler/UpdateMultipleWorkingHourTimeslots";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateMultipleWorkingHourTimeslots(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateMultipleWorkingHourTimeslots(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateMultipleWorkingHourTimeslots(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -44849,6 +45070,222 @@ export interface ISchedulerEventDto {
     completed: boolean;
     studentNotPresent: boolean;
     id: number;
+}
+
+export class AddWorkingHourTimeslotInput implements IAddWorkingHourTimeslotInput {
+    from!: DateTime;
+    to!: DateTime;
+
+    constructor(data?: IAddWorkingHourTimeslotInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.from = _data["from"] ? DateTime.fromISO(_data["from"].toString()) : <any>undefined;
+            this.to = _data["to"] ? DateTime.fromISO(_data["to"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): AddWorkingHourTimeslotInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddWorkingHourTimeslotInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["from"] = this.from ? this.from.toString() : <any>undefined;
+        data["to"] = this.to ? this.to.toString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IAddWorkingHourTimeslotInput {
+    from: DateTime;
+    to: DateTime;
+}
+
+export class WorkingHourDto implements IWorkingHourDto {
+    instructorId!: number;
+    startTime!: DateTime;
+    endTime!: DateTime;
+    id!: number;
+
+    constructor(data?: IWorkingHourDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.instructorId = _data["instructorId"];
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
+            this.endTime = _data["endTime"] ? DateTime.fromISO(_data["endTime"].toString()) : <any>undefined;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): WorkingHourDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkingHourDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["instructorId"] = this.instructorId;
+        data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
+        data["endTime"] = this.endTime ? this.endTime.toString() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IWorkingHourDto {
+    instructorId: number;
+    startTime: DateTime;
+    endTime: DateTime;
+    id: number;
+}
+
+export class UpdateWorkingHourTimeslotInput implements IUpdateWorkingHourTimeslotInput {
+    workingHourId!: number;
+    from!: DateTime;
+    to!: DateTime;
+
+    constructor(data?: IUpdateWorkingHourTimeslotInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.workingHourId = _data["workingHourId"];
+            this.from = _data["from"] ? DateTime.fromISO(_data["from"].toString()) : <any>undefined;
+            this.to = _data["to"] ? DateTime.fromISO(_data["to"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateWorkingHourTimeslotInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateWorkingHourTimeslotInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["workingHourId"] = this.workingHourId;
+        data["from"] = this.from ? this.from.toString() : <any>undefined;
+        data["to"] = this.to ? this.to.toString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IUpdateWorkingHourTimeslotInput {
+    workingHourId: number;
+    from: DateTime;
+    to: DateTime;
+}
+
+export class UpdateMultipleWorkingHourTimeslotsInput implements IUpdateMultipleWorkingHourTimeslotsInput {
+    addedWorkingHours!: WorkingHourDto[] | undefined;
+    editedWorkingHours!: WorkingHourDto[] | undefined;
+    deletedWorkingHourIds!: number[] | undefined;
+    copyFromDateSource!: DateTime | undefined;
+    copyToDateSource!: DateTime | undefined;
+    copyFromDateTarget!: DateTime | undefined;
+    copyToDateTarget!: DateTime | undefined;
+
+    constructor(data?: IUpdateMultipleWorkingHourTimeslotsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["addedWorkingHours"])) {
+                this.addedWorkingHours = [] as any;
+                for (let item of _data["addedWorkingHours"])
+                    this.addedWorkingHours!.push(WorkingHourDto.fromJS(item));
+            }
+            if (Array.isArray(_data["editedWorkingHours"])) {
+                this.editedWorkingHours = [] as any;
+                for (let item of _data["editedWorkingHours"])
+                    this.editedWorkingHours!.push(WorkingHourDto.fromJS(item));
+            }
+            if (Array.isArray(_data["deletedWorkingHourIds"])) {
+                this.deletedWorkingHourIds = [] as any;
+                for (let item of _data["deletedWorkingHourIds"])
+                    this.deletedWorkingHourIds!.push(item);
+            }
+            this.copyFromDateSource = _data["copyFromDateSource"] ? DateTime.fromISO(_data["copyFromDateSource"].toString()) : <any>undefined;
+            this.copyToDateSource = _data["copyToDateSource"] ? DateTime.fromISO(_data["copyToDateSource"].toString()) : <any>undefined;
+            this.copyFromDateTarget = _data["copyFromDateTarget"] ? DateTime.fromISO(_data["copyFromDateTarget"].toString()) : <any>undefined;
+            this.copyToDateTarget = _data["copyToDateTarget"] ? DateTime.fromISO(_data["copyToDateTarget"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateMultipleWorkingHourTimeslotsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateMultipleWorkingHourTimeslotsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.addedWorkingHours)) {
+            data["addedWorkingHours"] = [];
+            for (let item of this.addedWorkingHours)
+                data["addedWorkingHours"].push(item.toJSON());
+        }
+        if (Array.isArray(this.editedWorkingHours)) {
+            data["editedWorkingHours"] = [];
+            for (let item of this.editedWorkingHours)
+                data["editedWorkingHours"].push(item.toJSON());
+        }
+        if (Array.isArray(this.deletedWorkingHourIds)) {
+            data["deletedWorkingHourIds"] = [];
+            for (let item of this.deletedWorkingHourIds)
+                data["deletedWorkingHourIds"].push(item);
+        }
+        data["copyFromDateSource"] = this.copyFromDateSource ? this.copyFromDateSource.toString() : <any>undefined;
+        data["copyToDateSource"] = this.copyToDateSource ? this.copyToDateSource.toString() : <any>undefined;
+        data["copyFromDateTarget"] = this.copyFromDateTarget ? this.copyFromDateTarget.toString() : <any>undefined;
+        data["copyToDateTarget"] = this.copyToDateTarget ? this.copyToDateTarget.toString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IUpdateMultipleWorkingHourTimeslotsInput {
+    addedWorkingHours: WorkingHourDto[] | undefined;
+    editedWorkingHours: WorkingHourDto[] | undefined;
+    deletedWorkingHourIds: number[] | undefined;
+    copyFromDateSource: DateTime | undefined;
+    copyToDateSource: DateTime | undefined;
+    copyFromDateTarget: DateTime | undefined;
+    copyToDateTarget: DateTime | undefined;
 }
 
 export class GetPredefinedDrivingLessonForViewDto implements IGetPredefinedDrivingLessonForViewDto {

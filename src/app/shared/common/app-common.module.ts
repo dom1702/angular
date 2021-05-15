@@ -58,6 +58,8 @@ import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { VehicleLookupTableModalComponent } from './lookup/vehicle-lookup-table-modal.component';
 import { TodoLookupTableModalComponent } from './lookup/todo-lookup-table-modal.component';
 import { BankAccountLookupTableModalComponent } from './lookup/bankAccount-lookup-table-modal.component';
+import { CreateOrEditWorkingHourModalComponent } from './scheduler/create-or-edit-workingHours-modal.component';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
     imports: [
@@ -82,6 +84,7 @@ import { BankAccountLookupTableModalComponent } from './lookup/bankAccount-looku
         AppBsModalModule,
         AutoCompleteModule,
         NumericTextBoxModule,
+        TimepickerModule.forRoot(),
     ],
     declarations: [
         TimeZoneComboComponent,
@@ -118,7 +121,8 @@ import { BankAccountLookupTableModalComponent } from './lookup/bankAccount-looku
         ViewProductModalComponent,
         VehicleLookupTableModalComponent,
         TodoLookupTableModalComponent,
-        BankAccountLookupTableModalComponent
+        BankAccountLookupTableModalComponent,
+        CreateOrEditWorkingHourModalComponent
     ],
     exports: [
         TimeZoneComboComponent,
@@ -137,7 +141,8 @@ import { BankAccountLookupTableModalComponent } from './lookup/bankAccount-looku
         ViewProductModalComponent,
         VehicleLookupTableModalComponent,
         TodoLookupTableModalComponent,
-        BankAccountLookupTableModalComponent
+        BankAccountLookupTableModalComponent,
+        CreateOrEditWorkingHourModalComponent
     ],
     providers: [
         DateTimeService,

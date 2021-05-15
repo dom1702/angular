@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { SchedulerServiceProxy, GetAllVehiclesForSchedulerDto, VehicleForScheduler, EventType, VehiclesServiceProxy, InstructorsServiceProxy, PersonalSchedulerServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SchedulerServiceProxy, GetAllVehiclesForSchedulerDto, VehicleForScheduler, EventType, VehiclesServiceProxy, InstructorsServiceProxy, PersonalSchedulerServiceProxy, AddWorkingHourTimeslotInput } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditDrivingLessonModalComponent } from '../lessons/drivingLessons/create-or-edit-drivingLesson-modal.component';
 import { CreateEventTypeModalComponent } from '../scheduler/create-event-type-modal.component';
 import { CreateOrEditTheoryLessonModalComponent } from '../lessons/theoryLessons/create-or-edit-theoryLesson-modal.component';
@@ -17,6 +17,8 @@ import { reduce } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { CreateOrEditExamDrivingModalComponent } from '../lessons/drivingLessons/create-or-edit-examDriving-modal.component';
 import { IScheduler } from '../scheduler/scheduler-interface';
+import { select } from '@syncfusion/ej2-schedule';
+import { CreateOrEditWorkingHourModalComponent } from '@app/shared/common/scheduler/create-or-edit-workingHours-modal.component';
 
 @Component({
   templateUrl: './personalScheduler.component.html',
@@ -48,6 +50,9 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
   @ViewChild('studentLookupTableModal', { static: true })
   studentLookupTableModal: StudentLookupTableModalComponent;
 
+  @ViewChild('workingHourModal', { static: true })
+  workingHourModal: CreateOrEditWorkingHourModalComponent;
+
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
 
   currentInstructorFullName: string = '';
@@ -73,10 +78,11 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
     locale: abp.localization.currentLanguage.name,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
+    contentHeight: 'auto',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'timeGridWeek,timeGridDay,listWeek'
     },
     themeSystem: 'bootstrap',
     weekends: false,
@@ -102,16 +108,23 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
       meridiem: false,
       hour12: false
     },
+    firstDay : 1,
     slotMinTime: "06:00:00",
     nowIndicator: true,
     slotDuration: "00:15:00",
+    selectable: true,
+    editable: true,
+    selectMirror: true,
     dateClick: this.handleDateClick.bind(this), // bind is important!
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     events: this.updateEvents.bind(this),
+    selectOverlap: (event) => {
+      return event.display !== 'background'; // Check if we overlapped any other background event here to not let it happen
+    },
     eventDidMount: (info) => {
-      console.log(info);
+      // console.log(info);
       info.el.style.borderWidth = '4px';
     },
     eventContent: (info) => {
@@ -278,9 +291,33 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
 
         console.log(data);
 
-        successCallback(data);
+        this._personalSchedulerServiceProxy.getWorkingHours(info.start, info.end).subscribe((result) => 
+        {
+          console.log(result);
+          for(var wo of result)
+          {
+            var resourceIds: any[] = [];
+            resourceIds.push("instr_" + wo.instructorId);
+
+            data.push(
+              {
+                id: wo.id,
+                start: wo.startTime.toJSDate(),
+                end: wo.endTime.toJSDate(),
+                //resourceIds: resourceIds,
+                display: 'background'
+              }
+            );
+          }
+          console.log(data);
+          successCallback(data);
+        });
+
+        //successCallback(data);
 
       });
+
+   
   }
 
   eventRender(info) {
@@ -307,21 +344,32 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
+    console.log(selectInfo);
 
+    if (((selectInfo.end.getTime() - selectInfo.start.getTime()) / 60000) == 15) {
+      // In this case we don't use this callback because user just clicked on a timeslot
+      return;
+    }
+
+    var workingHourTimeslot: AddWorkingHourTimeslotInput = new AddWorkingHourTimeslotInput();
+    workingHourTimeslot.from = DateTime.fromJSDate(selectInfo.start);
+    workingHourTimeslot.to = DateTime.fromJSDate(selectInfo.end);
+
+    this._personalSchedulerServiceProxy.addWorkingHourTimeslot(workingHourTimeslot).subscribe();
+
+    const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); // clear date selection
 
-    if (title) {
-      calendarApi.addEvent({
-        // id: createEventId(),
-        title,
-        start: selectInfo.startStr,
+    // if () {
+    //   calendarApi.addEvent({
+    //     // id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
 
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay
+    //   });
+    // }
   };
 
   handleEventClick(clickInfo: EventClickArg) {
@@ -361,7 +409,22 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
     this.calendarOptions.weekends = this.showWeekends;
   }
 
+  openWorkingHoursModal() : void 
+  {
+    const calendarApi = this.calendarComponent.getApi();
 
+    var endDate = new Date();
+    endDate.setDate(calendarApi.view.currentEnd.getDate() - 1);
+    endDate.setUTCHours(0);
+    endDate.setUTCMinutes(0);
+
+    var startDate = new Date();
+    startDate.setDate(calendarApi.view.currentStart.getDate());
+    startDate.setUTCHours(0);
+    startDate.setUTCMinutes(0);
+
+    this.workingHourModal.show(DateTime.fromJSDate(startDate), DateTime.fromJSDate(endDate));
+  }
 
   openTheoryLessonModal(): void {
     this.createEventTypeModal.close();
@@ -446,297 +509,9 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
   refreshStudentFullName() {
     this.studentFullName = this.studentFirstName + ' ' + this.studentLastName;
   }
+
+  workingHoursSet()
+  {
+    this.refetchEvents();
+  }
 }
-
-
-// import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-// import { AppComponentBase } from '@shared/common/app-component-base';
-// import { appModuleAnimation } from '@shared/animations/routerTransition';
-// import { View, EventSettingsModel, DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, ScheduleComponent, PopupOpenEventArgs, CellClickEventArgs, EventClickArgs, NavigatingEventArgs, ActionEventArgs, EventRenderedArgs } from '@syncfusion/ej2-angular-schedule';
-// import { PersonalSchedulerServiceProxy } from '@shared/service-proxies/service-proxies';
-// import { CreateOrEditDrivingLessonModalComponent } from '../lessons/drivingLessons/create-or-edit-drivingLesson-modal.component';
-// import { CreateEventTypeModalComponent } from '../scheduler/create-event-type-modal.component';
-// import { CreateOrEditTheoryLessonModalComponent } from '../lessons/theoryLessons/create-or-edit-theoryLesson-modal.component';
-// import { CreateOrEditEventModalComponent } from '../scheduler/create-or-edit-event-modal.component';
-// import { IScheduler } from '../scheduler/scheduler-interface';
-// import { CreateOrEditSimulatorLessonModalComponent } from '../lessons/simulatorLessons/create-or-edit-simulatorLesson-modal.component';
-// import { DateTime } from 'luxon';
-
-
-// @Component({
-//     providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService],
-//     templateUrl: './personalScheduler.component.html',
-//     animations: [appModuleAnimation()]
-// })
-// export class PersonalSchedulerComponent extends AppComponentBase implements IScheduler, OnInit {
-
-//     @ViewChild('scheduleObj')
-//     scheduleObj: ScheduleComponent;
-
-//     @ViewChild('createOrEditDrivingLessonModal')
-//     createOrEditDrivingLessonModal: CreateOrEditDrivingLessonModalComponent;
-
-//     @ViewChild('createOrEditTheoryLessonModal')
-//     createOrEditTheoryLessonModal: CreateOrEditTheoryLessonModalComponent;
-
-//     @ViewChild('createOrEditSimulatorLessonModal')
-//     createOrEditSimulatorLessonModal: CreateOrEditSimulatorLessonModalComponent;
-
-//     @ViewChild('createOrEditEventModal')
-//     createOrEditEventModal: CreateOrEditEventModalComponent;
-
-//     @ViewChild('createEventTypeModal')
-//     createEventTypeModal: CreateEventTypeModalComponent;
-
-//     currentInstructorFullName: string = '';
-//     instructorId: number;
-
-//     studentFullName = '';
-//     studentFirstName = '';
-//     studentLastName = '';
-//     studentId: number;
-
-//     startTime: DateTime;
-
-//     allowedToSeeOwnAppointments : boolean;
-//     allowedToSeeOwnDrivingLessons : boolean;
-
-//     eventTypeFilter: any = { drivingLessons: true, theoryLessons: true, otherEvents: true };
-
-//     // public data: object[] = [];
-//     public data: object[] = [{
-//         Id: 2,
-//         Subject: 'Meeting',
-//         StartTime: new DateTime(),
-//         EndTime: new DateTime(),
-//         IsAllDay: false,
-//         AppointmentType: -1
-//     }];
-
-//     public eventSettings: EventSettingsModel = {
-//         dataSource: this.data
-//     }
-
-//     public currentView: View = 'Day';
-
-//     constructor(
-//         injector: Injector,
-//         private _personalSchedulerServiceProxy: PersonalSchedulerServiceProxy
-//     ) {
-//         super(injector);
-//     }
-
-//     ngOnInit(): void {
-//         this.allowedToSeeOwnAppointments = this.isGranted('OwnAppointments');
-//         this.allowedToSeeOwnDrivingLessons = this.isGranted('Pages.InstructorsOwnDrivingLessons') && this.isGranted('InstructorView');
-
-//         console.log(this.isGranted('Pages.InstructorsOwnDrivingLessons'));
-//         console.log(this.isGranted('InstructorsView'));
-//         console.log(this.isGranted('Something'));
-
-//         this.updateCurrentView();
-//     }
-
-//     onPopupOpen(args: PopupOpenEventArgs): void {
-//         args.cancel = true;
-//         //this.createOrEditDrivingLessonModal.show();
-//         //this.createEventTypeModal.show();
-//     }
-
-//     onCellClick(args: CellClickEventArgs): void {
-//         //this.startTime = args.startTime;
-
-//         if(!this.isGranted('Pages.InstructorsOwnDrivingLessons.Create') 
-//         && !this.isGranted('OwnAppointments.Create'))
-//             return;
-
-//         if(!this.isGranted('Pages.InstructorsOwnDrivingLessons.Create'))
-//         {
-//             this.openEventModal();
-//         }
-//         else if(!this.isGranted('OwnAppointments.Create'))
-//         {
-//             this.openDrivingLessonModal();
-//         }
-//         else
-//         {
-//             this.createEventTypeModal.show(this, this.isGranted('Pages.InstructorsOwnDrivingLessons.Create'), false, 
-//                 this.isGranted('OwnAppointments.Create'), false); 
-//         }
-//     }
-
-//     onEventClick(args: EventClickArgs): void {
-//         if (args.event["AppointmentType"] == 0)
-//         {
-//             if(this.isGranted('Pages.InstructorsOwnDrivingLessons.Edit'))
-//             this.createOrEditDrivingLessonModal.show(args.event["Id"], true);
-//         }
-//         //else if (args.event["AppointmentType"] == 1)
-//         //    this.createOrEditTheoryLessonModal.show(args.event["Id"]);
-//         else if (args.event["AppointmentType"] == 2)
-//         {
-//             if(this.isGranted('OwnAppointments.Edit'))
-//                 this.createOrEditEventModal.show(args.event["Id"], true);
-//         }
-//     }
-
-//     Doubleclick(args: EventClickArgs): void {
-//         console.log("Yay");
-//     }
-
-//     actionComplete(args: ActionEventArgs) {
-
-//         if (args.requestType == "dateNavigate" || args.requestType == "viewNavigate") {
-//             this.updateCurrentView();
-//         }
-//     }
-
-//     schedulerCreated(args: Object) {
-//         this.updateCurrentView();
-//     }
-
-//     navigating(args: NavigatingEventArgs): void {
-//         // this.scheduleObj.showSpinner();
-//         // console.log(args);
-//         // this.scheduleObj.refresh();
-//         // console.log(this.scheduleObj.getCurrentViewDates());
-
-//         // if(args.action == 'date' && args.currentDate != null)
-//         // {
-//         //     if(this.scheduleObj.currentView == 'Day')
-//         //     {
-//         //         // Get events of this day
-//         //     }
-
-//         //     if(this.scheduleObj.currentView == 'Week')
-//         //     {
-//         //         // Get events of this week 
-//         //     }
-
-//         //     if(this.scheduleObj.currentView == 'Month')
-//         //     {
-//         //         // Get events of this month
-//         //     }
-//         // }
-
-//         // if(args.action == 'view' && args.previousView == 'Day' && args.currentView == 'Week')
-//         // {   
-//         //     // changed from day to week
-//         // }
-
-//         // else if(args.action == 'view' && args.previousView == 'Week' && args.currentView == 'Month')
-//         // {   
-//         //     // changed from day to week
-//         // }
-
-//         // else if(args.action == 'view')
-//         // {
-//         //     // changed from month to week or month to day or week to day
-//         // }
-
-//         // this.updateView(args.currentDate, args.currentDate);
-//     }
-
-//     openDrivingLessonModal(): void {
-//         this.createEventTypeModal.close();
-//         this.createOrEditDrivingLessonModal.startTime = this.startTime.toJSDate();
-//         this.createOrEditDrivingLessonModal.show(null, true);
-//     }
-
-//     openTheoryLessonModal(): void {
-//         this.createEventTypeModal.close();
-//         //this.createOrEditTheoryLessonModal.startTime = this.startTime;
-//        // this.createOrEditTheoryLessonModal.show(null, null, this.startTime);
-//     }
-
-//     openEventModal(): void {
-//         this.createEventTypeModal.close();
-//         this.createOrEditEventModal.startTime = this.startTime.toJSDate();
-//         this.createOrEditEventModal.show(null, true);
-//     }
-
-//     openSimulatorLessonModal(): void {
-//         this.createEventTypeModal.close();
-//         this.createOrEditSimulatorLessonModal.startTime = this.startTime.toJSDate();
-//         this.createOrEditSimulatorLessonModal.show();
-//     }
-
-//     updateView(from: Date, to: Date): void {
-
-//         this.data.length = 0;
-
-//         if(!this.eventTypeFilter.drivingLessons && !this.eventTypeFilter.theoryLessons && !this.eventTypeFilter.otherEvents)
-//         {
-//             this.scheduleObj.refresh();
-//             return;
-//         }
-
-//         this.scheduleObj.showSpinner();
-
-//         // uncomment ...
-//         // this._personalSchedulerServiceProxy.getAllEventsOfCurrentPerson(
-//         //     moment(from),
-//         //     moment(to),
-//         //     this.eventTypeFilter.drivingLessons,
-//         //     this.eventTypeFilter.theoryLessons,
-//         //     this.eventTypeFilter.otherEvents,
-//         //     false).subscribe(result => {
-
-//         //         //console.log(result);
-
-//         //         for (var item of result) {
-//         //             this.data.push(
-//         //                 {
-//         //                     Id: item.id,
-//         //                     Subject: item.subject,
-//         //                     StartTime: item.startTime.toDate(),
-//         //                     EndTime: item.endTime.toDate(),
-//         //                     AppointmentType: item.appointmentType.toString()
-//         //                 });
-//         //         }
-
-//         //         //console.log( this.data);
-
-//         //         this.scheduleObj.refresh();
-
-//         //         this.scheduleObj.hideSpinner();
-
-//         //     });
-
-//     }
-
-
-
-//     updateCurrentView(): void {
-//         var dates = this.scheduleObj.getCurrentViewDates();
-
-//         if (dates == null || dates.length == 0)
-//             return;
-
-//         console.log(dates);
-
-//         var fromDate: Date = new Date(dates[0].toString());
-//         var toDate = new Date(dates[dates.length - 1].toString());
-//         toDate.setDate(toDate.getDate() + 1);
-
-//         console.log(fromDate);
-//         console.log(toDate);
-
-//         this.updateView(fromDate, toDate);
-//     }
-
-//     onEventRendered(args: EventRenderedArgs): void {
-//         switch (args.data.AppointmentType) {
-//             case '0':
-//                 (args.element as HTMLElement).style.backgroundColor = '#F57F17';
-//                 break;
-//             case '1':
-//                 (args.element as HTMLElement).style.backgroundColor = '#7fa900';
-//                 break;
-//             case '2':
-//                 (args.element as HTMLElement).style.backgroundColor = '#8e24aa';
-//                 break;
-//         }
-//     }
-// }
-

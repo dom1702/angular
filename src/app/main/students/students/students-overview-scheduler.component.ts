@@ -79,6 +79,7 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
     locale: abp.localization.currentLanguage.name,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
+    contentHeight: 'auto',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
