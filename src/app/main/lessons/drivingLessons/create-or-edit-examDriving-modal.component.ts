@@ -36,7 +36,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     active = false;
     saving = false;
     startTime: Date;
-    startTimeTime : Date;
+    startTimeTime: Date;
     drivingLesson: CreateOrEditDrivingLessonDto = new CreateOrEditDrivingLessonDto();
 
     drivingLessonTopic = '';
@@ -67,6 +67,10 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     setTopicNameAutomatically: boolean = true;
 
     currentStudentDefaultInstructorId;
+
+    // With this variables we will disable setting the students default instructor/vehicle
+    instructorSetExternallyOnShow = false;
+    vehicleSetExternallyOnShow = false;
 
     constructor(
         injector: Injector,
@@ -104,8 +108,19 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         console.log(items);
     }
 
-    show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null, 
-        studentFirstName:string = "", studentLastName:string = "", startTime: Date = null, preselectedCourseId : number = null): void {
+    show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null,
+        studentFirstName: string = "", studentLastName: string = "", startTime: Date = null, preselectedCourseId: number = null,
+        instructorId: number = null, vehicleId: number = null, vehicleName: string = null): void {
+
+        if (instructorId != null)
+            this.instructorSetExternallyOnShow = true;
+        else
+            this.instructorSetExternallyOnShow = false;
+
+            if (vehicleId != null)
+            this.vehicleSetExternallyOnShow = true;
+        else
+            this.vehicleSetExternallyOnShow = false;
 
         this.instructorPersonalLesson = instructorPersonalLesson;
         this.selectedPdl = null;
@@ -114,8 +129,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
             this.drivingLesson = new CreateOrEditDrivingLessonDto();
 
-            if(studentId != null)
-            {
+            if (studentId != null) {
                 this.drivingLesson.studentId = studentId;
                 this.studentFirstName = studentFirstName;
                 this.studentLastName = studentLastName;
@@ -123,13 +137,12 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.showStudentSelection = false;
                 this.refreshCourses(preselectedCourseId);
             }
-            else
-            {
+            else {
                 this.studentFirstName = '';
                 this.studentLastName = '';
                 this.showStudentSelection = true;
             }
-        
+
             this.drivingLesson.id = drivingLessonId;
             this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
             if (startTime != null) {
@@ -142,11 +155,17 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
             }
             this.drivingLessonTopic = '';
             this.licenseClass = '';
-           
+
             this.vehicleName = '';
             this.drivingLesson.length = 1;
             this.drivingLesson.addingMinutesAfter = 0;
             this.refreshStudentFullName();
+
+            if(vehicleId != null)
+            {
+                this.drivingLesson.vehicleId = vehicleId;
+                this.vehicleName = vehicleName;
+            }
 
             this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
                 "",
@@ -154,6 +173,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 0,
                 1000).subscribe(result => {
                     this.instructors = [];
+                    this.instructorsSelectedItems = [];
 
                     for (var i = 0; i < result.items.length; i++) {
                         this.instructors.push(
@@ -162,6 +182,12 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                                 item_text: result.items[i].displayName
                             }
                         );
+                        if (instructorId != null && result.items[i].id == instructorId) {
+                            this.instructorsSelectedItems.push({
+                                item_id: result.items[i].id,
+                                item_text: result.items[i].displayName
+                            });
+                        }
                     }
                 });
 
@@ -176,7 +202,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                
+
                 this.startTime = result.drivingLesson.startTime.toJSDate();
                 this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
@@ -194,7 +220,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                
+
                 this.startTime = result.drivingLesson.startTime.toJSDate();
                 this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
@@ -269,9 +295,9 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
         this.drivingLesson.instructors = [];
 
-       this.startTime.setHours(this.startTimeTime.getHours());
-       this.startTime.setMinutes(this.startTimeTime.getMinutes());
-       this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
+        this.startTime.setHours(this.startTimeTime.getHours());
+        this.startTime.setMinutes(this.startTimeTime.getMinutes());
+        this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
         this.drivingLesson.isExam = true;
 
@@ -412,44 +438,46 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.refreshCourses();
     }
 
-    refreshCourses(preselectedCourseId : number = null)
-    {
+    refreshCourses(preselectedCourseId: number = null) {
         this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result => {
             this.studentCourses = result.courses
 
             if (this.studentCourses.length > 0) {
-                if(preselectedCourseId)
-                {
-                    for(var i of this.studentCourses)
-                        if(i.id == preselectedCourseId)
-                        this.selectedStudentCourse = i;
+                if (preselectedCourseId) {
+                    for (var i of this.studentCourses)
+                        if (i.id == preselectedCourseId)
+                            this.selectedStudentCourse = i;
                 }
-                else
-                {
-                this.selectedStudentCourse = this.studentCourses[0];
+                else {
+                    this.selectedStudentCourse = this.studentCourses[0];
                 }
             }
 
             this.currentStudentDefaultInstructorId = result.defaultInstructorId;
             this.drivingLesson.startingLocation = result.defaultStartingLocation;
 
-            this.instructorsSelectedItems = [];
+            if (!this.instructorSetExternallyOnShow) {
+                this.instructorsSelectedItems = [];
 
-            for (var item of this.instructors) {
-                if (item.item_id == this.currentStudentDefaultInstructorId) {
-                    //if (this.instructorsSelectedItems.find(x => x.id == this.currentStudentDefaultInstructorId)) {
-                    this.instructorsSelectedItems.push(
-                        {
-                            item_id: item.item_id,
-                            item_text: item.item_text
-                        }
-                    );
-                    //}
+                for (var item of this.instructors) {
+                    if (item.item_id == this.currentStudentDefaultInstructorId) {
+                        //if (this.instructorsSelectedItems.find(x => x.id == this.currentStudentDefaultInstructorId)) {
+                        this.instructorsSelectedItems.push(
+                            {
+                                item_id: item.item_id,
+                                item_text: item.item_text
+                            }
+                        );
+                        //}
+                    }
                 }
             }
 
-            this.drivingLesson.vehicleId = result.defaultVehicleId;
-            this.vehicleName = result.defaultVehicleName
+            if(!this.vehicleSetExternallyOnShow)
+            {
+                this.drivingLesson.vehicleId = result.defaultVehicleId;
+                this.vehicleName = result.defaultVehicleName
+            }
         })
     }
 
@@ -507,11 +535,11 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.studentSelected = null;
     }
 
-    instructorSelected() : boolean{
+    instructorSelected(): boolean {
         return this.instructorsSelectedItems != null && this.instructorsSelectedItems.length > 0;
     }
 
-    vehicleSelected() : boolean{
+    vehicleSelected(): boolean {
         return this.drivingLesson.vehicleId != null;
     }
 }
