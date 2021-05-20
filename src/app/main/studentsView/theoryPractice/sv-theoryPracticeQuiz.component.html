@@ -1,9 +1,6 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
         <sub-header [title]="quizMainTitle" [description]="quizSubtitle">
-
-         
-
         </sub-header>
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
@@ -16,26 +13,23 @@
                             <ng-template #quiz>                                                      
                                 <div class="row mb-3"> <!--Quiz State-->
                                     
-                                    <div class="col-md-auto">  <!--Time Progress-->
+                                    <div class="col-2">  <!--Time Progress-->
                                         <h6>Time:</h6>
                                     </div> 
-                                    <div class="col-1">
-                                        <p class="text-right">{{timerMinutes}}:{{timerSeconds}}</p>
+                                    <div class="col-2">
+                                        <p class="text-left">{{timerMinutes}}:{{timerSeconds}}</p>
                                     </div> 
-                                    <div class="col-10">                 
+                                    <div class="col-sm-8">                 
                                         <progressbar [max]="timerMax" [animate]="false" [value]="timerProgress" type={{progressBarType}}></progressbar>                              
                                     </div> 
                                     
-                                    <div class="w-100"></div> <!--Force line break-->
-                                    
-                                    <div class="col-md-auto"> <!--Pagination-->
+                                    <div class="col-2 mt-3"> <!--Pagination-->
                                         <h6>Part:</h6>
                                     </div>
-                                    <div class="col-1">
-                                        <p class="text-right">{{currentQuizSession.selectedQuestion}}/{{currentQuizSession.quiz.length}}</p>          
+                                    <div class="col-2 mt-3">
+                                        <p class="text-left">{{currentQuizSession.selectedQuestion}}/{{currentQuizSession.quiz.length}}</p>          
                                     </div>
-                                    <div class="col-10"> 
-                                        
+                                    <div class="col-sm-8">                             
                                         <button *ngIf="showDirectionalLinks" class="defaultPageButton" (click)="onPreviousPageClicked()">Previous</button>
                                         <button 
                                             *ngFor="let b of questionPageButtons;index as i"

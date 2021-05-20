@@ -23,6 +23,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     showVideoTest : boolean = false;
     closingTime : moment.Moment;
     openingTime : moment.Moment;
+    msgs : Message[] = [];
 
     _aborted : boolean;
     checked : boolean = false;
@@ -35,7 +36,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     quizMayStart = new EventEmitter();
 
     @Output()
-    studentPhoneNumber: number = 0;
+    studentPhoneNumber: string = "";
 
     @Input() 
     quizParts : number;
@@ -68,7 +69,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
                 value.day6OpeningHours, 
                 value.day7OpeningHours];
             this.upcomingOpeningHours = temp;
-            this.studentPhoneNumber = Number.parseInt(value.studentPhoneDefault);
+            this.studentPhoneNumber = value.studentPhoneDefault;
             this._todayOpeningHours = value;
 
             for (let index = 0; index < this.upcomingOpeningHours.length; index++) {
@@ -94,12 +95,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
             this.showOpeningHourMessages();
         }
     }
-
-    get studentPhoneNumberParsed() : string {
-        return this.studentPhoneNumber.toString();
-    }   
-    
-        
+           
     constructor(private injector: Injector, private messageService : MessageService, private _onlineTheoryService : OnlineTheoryServiceProxy) {       
         super(injector);             
     }
@@ -113,7 +109,9 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     }
 
     ngOnInit(): void {
-        this.prepareLessonStart();         
+        this.prepareLessonStart();  
+        
+        this.msgs.push({severity:'info', summary:'Info Message', detail:'PrimeNG rocks'});
     }
 
     show(intention: string, message : string, msg : Message[], detail? : string) {
@@ -142,10 +140,14 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
 
     startLesson() {                  
         if(!this.todayOpeningHours.mayStart)
-        {     
+        {               
             this.showToastError("lesson room closes soon!", "try again tomorrow.")      
         }
         else{
+            if(this.studentPhoneNumber != this.todayOpeningHours.studentPhoneDefault)
+            {
+                console.log("phone number has changed");
+            }
             this.aborted = false;
         }
     }

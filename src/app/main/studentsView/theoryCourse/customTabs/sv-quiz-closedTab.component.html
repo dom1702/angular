@@ -39,19 +39,29 @@
         </ul>
         
         <div *ngIf="todayOpeningHours">            
-            <span>   
-                <p-messages severity="info" [value]="requirementMessage" [closable]="false">               
-                </p-messages>                                               
+            <span>                
+                <p-messages severity="info" [(value)]="requirementMessage" [closable]="false">               
+                </p-messages>                                 
             </span>   
-                 
-            <!-- <div class="ui-inputgroup">
-                <button pButton type="button" label="Phone:" disabled="true"></button>
-                <span class="ui-inputgroup-addon">+</span>
-                <input type="text" pInputText id="studentPhoneNumberParsed" [(ngModel)]="studentPhoneNumberParsed"><br>         
-                <button pButton type="button" label="{{videoTestButtonName}}" (click)="toggleVideoTestBlock()" ></button>
-            </div>  -->
-            <br>
-
+                   
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="input-group">                            
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Phone:</span>
+                            </div>
+                            <input type="text" class="form-control" [(ngModel)]="studentPhoneNumber" placeholder="Phonenumber" aria-describedby="basic-addon1">
+                        </div>                      
+                    </div>
+                    <div class="col-sm">
+                        <button type="button" class="btn btn-primary mr-5" (click)="toggleVideoTestBlock()" >{{videoTestButtonName}}</button>
+                    </div>
+                </div>
+            </div>
+                                  
+            <br>                       
+        
             <div *ngIf="showVideoTest">
                 <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item"

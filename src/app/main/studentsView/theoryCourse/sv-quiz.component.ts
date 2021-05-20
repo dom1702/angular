@@ -465,7 +465,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     convertToQuestion(question : OTSingleChoiceDto) : Question {
         let temp : Question = new Question();
         temp.answerAttempts = 0;
-        temp.correctAnswer = question.correctAnswer-1;
+        temp.correctAnswer = question.correctAnswer;
         temp.pictureUrl = question.imageURL != null ? question.imageURL : null;
         temp.quest = question.question;
         let answersLength = this.getNumberOfAnswers(question);
