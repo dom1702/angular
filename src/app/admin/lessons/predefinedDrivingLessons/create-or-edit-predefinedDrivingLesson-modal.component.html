@@ -8,7 +8,7 @@
                         <span *ngIf="!predefinedDrivingLesson.id">{{l("CreateNewPredefinedDrivingLesson")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                        <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -27,7 +27,7 @@
 					
 								<div class="form-group">
 									<label for="PredefinedDrivingLesson_LessonIdString">{{l("LessonIdString")}} *</label>
-									<input type="text" id="PredefinedDrivingLesson_LessonIdString" class="form-control" [(ngModel)]="predefinedDrivingLesson.lessonIdString" name="LessonIdString"     required/>
+									<input type="text" id="PredefinedDrivingLesson_LessonIdString" class="form-control" [(ngModel)]="predefinedDrivingLesson.lessonIdString" name="LessonIdString" required [disabled]="this.predefinedDrivingLesson.id != null"/>
 								</div>
 					
 								<div class="form-group">

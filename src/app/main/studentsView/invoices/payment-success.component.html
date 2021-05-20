@@ -1,0 +1,38 @@
+<div [@routerTransition]>
+
+    <div class="content d-flex flex-column flex-column-fluid">
+
+        <div [class]="containerClass">
+            <div *ngIf="accepted" class="row justify-content-center my-30">
+                <i class="far fa-handshake fa-10x"></i>
+            </div>
+            <div *ngIf="!accepted" class="row justify-content-center my-30">
+                <i class="far fa-thumbs-down fa-10x"></i>
+            </div>
+            <div class="row justify-content-center my-5">
+                <h1>{{state}}</h1>
+            </div>
+            <div *ngIf="accepted">
+                <div class="row justify-content-center my-5">
+                    <h4>via</h4>
+                </div>
+                <div class="row justify-content-center my-5">
+                    <h2>{{provider}}</h2>
+                </div>
+                <div class="row justify-content-center my-5">
+
+                    <h2>{{amount}}</h2>
+                </div>
+                <div class="row justify-content-center my-5">
+                    <h2>{{reference}}</h2>
+
+                </div>
+            </div>
+
+            <div class="row justify-content-center my-20">
+                <h4>You will be redirected to your invoices in {{timeLeft}}</h4>
+            </div>
+        </div>
+
+    </div>
+</div>

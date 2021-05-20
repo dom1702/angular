@@ -28,8 +28,6 @@ export class CreateEventTypeModalComponent extends AppComponentBase implements O
     allowCreateEvent: boolean;
     allowCreateSimulatorLesson : boolean;
 
-    saving : boolean;
-
     constructor(
         injector: Injector,
         private _drivingLessonsServiceProxy: DrivingLessonsServiceProxy
@@ -62,6 +60,11 @@ export class CreateEventTypeModalComponent extends AppComponentBase implements O
     openDrivingLessonModal(): void
     {
         this.scheduler.openDrivingLessonModal();
+    }
+
+    openExamModal(): void
+    {
+        this.scheduler.openExamModal();
     }
 
     openTheoryLessonModal(): void

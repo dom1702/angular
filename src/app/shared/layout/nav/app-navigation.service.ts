@@ -32,7 +32,7 @@ export class AppNavigationService {
             new AppMenuItem("DrivingLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/drivingLessons"),
             new AppMenuItem("TheoryPractice", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryPractice/licenseClassSelection"),
             new AppMenuItem("Invoices", 'StudentView', "flaticon-coins", "/app/main/studentsView/invoices"),
-            new AppMenuItem("FAQ", 'StudentView', "flaticon-search-1", "/app/main/studentsView/frequentlyAskedQuestions"),
+            //new AppMenuItem("FAQ", 'StudentView', "flaticon-search-1", "/app/main/studentsView/frequentlyAskedQuestions"),
             new AppMenuItem("PlannedInstructorDL", 'InstructorView', "flaticon-book", "/app/main/studentsView/plannedDrivingLessons"),
 
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
@@ -45,9 +45,8 @@ export class AppNavigationService {
             new AppMenuItem('TheoryLessons', 'Pages.TheoryLessons', 'flaticon-presentation', '/app/main/lessons/theoryLessons'),
             new AppMenuItem('DrivingLessons', 'Pages.DrivingLessons', 'flaticon-car', '/app/main/lessons/drivingLessons'),
             new AppMenuItem('SimulatorLessons', 'Pages.SimulatorLessons', 'flaticon-more', '/app/main/lessons/simulatorLessons',
-                undefined, undefined, undefined, () => {
-                    return this._featureCheckerService.isEnabled('App.Simulator')
-                }),
+                undefined, undefined, undefined, undefined, () => {return this._featureCheckerService.isEnabled('App.Simulator');
+                }, false),
 
             new AppMenuItem('StudentInvoices', 'Pages.StudentInvoices', 'flaticon-coins', '/app/main/sales/studentInvoices'),
 
@@ -57,13 +56,15 @@ export class AppNavigationService {
             new AppMenuItem('Courses', 'Pages.Courses', 'flaticon-tabs', '/app/main/courses/courses'),
 
            
-            new AppMenuItem('TestResources', 'Pages.TestResources', 'flaticon-more', '/app/main/resources/testResources'),
-            
             new AppMenuItem('Payments', 'Pages.Payments', 'flaticon-more', '/app/main/sales/payments'),
              new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
-                new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
+                //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
+            new AppMenuItem('BankAccounts', 'Pages.Administration.BankAccounts', 'flaticon-more', '/app/admin/resources/bankAccounts'),
+            
+            new AppMenuItem('Todos', 'Pages.Administration.Todos', 'flaticon-more', '/app/admin/scheduler/todos'),
+            
                 new AppMenuItem('PredefinedTheoryLessons', 'Pages.Administration.PredefinedTheoryLessons', 'flaticon-more', '/app/admin/lessons/predefinedTheoryLessons'),
 
                 new AppMenuItem('PredefinedDrivingLessons', 'Pages.Administration.PredefinedDrivingLessons', 'flaticon-more', '/app/admin/lessons/predefinedDrivingLessons'),
@@ -90,14 +91,14 @@ export class AppNavigationService {
                 new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages', ['/app/admin/languages/{name}/texts']),
                 new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', 'flaticon-folder-1', '/app/admin/auditLogs'),
                 new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),
-                new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', 'flaticon-refresh', '/app/admin/subscription-management'),
+                //new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', 'flaticon-refresh', '/app/admin/subscription-management'),
                 new AppMenuItem('VisualSettings', 'Pages.Administration.UiCustomization', 'flaticon-medical', '/app/admin/ui-customization'),
-                new AppMenuItem('WebhookSubscriptions', 'Pages.Administration.WebhookSubscription', 'flaticon2-world', '/app/admin/webhook-subscriptions'),
-                new AppMenuItem('DynamicProperties', 'Pages.Administration.DynamicProperties', 'flaticon-interface-8', '/app/admin/dynamic-property'),
+                //new AppMenuItem('WebhookSubscriptions', 'Pages.Administration.WebhookSubscription', 'flaticon2-world', '/app/admin/webhook-subscriptions'),
+                //new AppMenuItem('DynamicProperties', 'Pages.Administration.DynamicProperties', 'flaticon-interface-8', '/app/admin/dynamic-property'),
                 new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', 'flaticon-settings', '/app/admin/hostSettings'),
                 new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', 'flaticon-settings', '/app/admin/tenantSettings')
             ]),
-            new AppMenuItem('DemoUiComponents', 'Pages.DemoUiComponents', 'flaticon-shapes', '/app/admin/demo-ui-components')
+            //new AppMenuItem('DemoUiComponents', 'Pages.DemoUiComponents', 'flaticon-shapes', '/app/admin/demo-ui-components')
         ]);
     }
 

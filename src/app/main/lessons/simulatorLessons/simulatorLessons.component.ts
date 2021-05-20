@@ -1,4 +1,4 @@
-import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, Injector, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SimulatorLessonsServiceProxy, SimulatorLessonDto, SimulatorLessonState  } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -12,16 +12,18 @@ import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
+import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';
 
 @Component({
     templateUrl: './simulatorLessons.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class SimulatorLessonsComponent extends AppComponentBase {
+export class SimulatorLessonsComponent extends AppComponentBase implements OnInit{
 
     @ViewChild('createOrEditSimulatorLessonModal', { static: true }) createOrEditSimulatorLessonModal: CreateOrEditSimulatorLessonModalComponent;
     @ViewChild('viewSimulatorLessonModalComponent', { static: true }) viewSimulatorLessonModal: ViewSimulatorLessonModalComponent;
+    @ViewChild('entityTypeHistoryModal', { static: true }) entityTypeHistoryModal: EntityTypeHistoryModalComponent;
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -36,6 +38,9 @@ export class SimulatorLessonsComponent extends AppComponentBase {
 
         lessonState = SimulatorLessonState;
 
+        _entityTypeFullName = 'Drima.Lessons.SimulatorLesson';
+        entityHistoryEnabled = false;
+
 
     constructor(
         injector: Injector,
@@ -45,6 +50,16 @@ export class SimulatorLessonsComponent extends AppComponentBase {
         private _fileDownloadService: FileDownloadService
     ) {
         super(injector);
+    }
+
+    ngOnInit()
+    {
+        this.entityHistoryEnabled = this.setIsEntityHistoryEnabled();
+    }
+
+    private setIsEntityHistoryEnabled(): boolean {
+        let customSettings = (abp as any).custom;
+        return customSettings.EntityHistory && customSettings.EntityHistory.isEnabled && _.filter(customSettings.EntityHistory.enabledEntities, entityType => entityType === this._entityTypeFullName).length === 1;
     }
 
     getSimulatorLessons(event?: LazyLoadEvent) {
@@ -105,5 +120,13 @@ export class SimulatorLessonsComponent extends AppComponentBase {
                 }
             }
         );
+    }
+
+    showHistory(simulatorLesson: SimulatorLessonDto): void {
+        this.entityTypeHistoryModal.show({
+            entityId: simulatorLesson.id.toString(),
+            entityTypeFullName: this._entityTypeFullName,
+            entityTypeDescription: ''
+        });
     }
 }

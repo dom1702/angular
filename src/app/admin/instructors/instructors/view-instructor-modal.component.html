@@ -6,7 +6,7 @@
                     <span>{{l("")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -33,7 +33,13 @@
                         <h6>{{l("LicenseClass")}} :</h6>
                         {{licenseClasses}}
                     </div>
-
+                    <div class="col-12 mb-3">
+                        <h6>{{l("AdditionalInformation")}} :</h6>
+                        <textarea class="form-control" rows="3" [(ngModel)]="item.instructor.additionalInformationInternal"
+                            [readonly]="true"
+							name="additionalInformationInternal"></textarea>
+                    
+                        </div>
                 </div>
 
             </div>

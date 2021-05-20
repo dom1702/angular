@@ -1,0 +1,43 @@
+<div [hidden]="!student">
+
+    <div class="mt-10" *ngIf="showCalender">
+
+        <div class="row">
+            <div class="col-6 ml-5">
+                <h5 class="mb-5">{{l("CalenderViewOptions")}}</h5>
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" name="toggleWeekends" [(ngModel)]="showWeekends"
+                            (change)="toggleWeekendView()">
+                        <span></span>
+                        {{l("Show weekend")}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="mt-10"> </div>
+        <hr>
+        <div class="mt-10">
+            <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+        </div>
+    </div>
+
+</div>
+
+
+<createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="refetchEvents()">
+</createOrEditDrivingLessonModal>
+<createOrEditExamDrivingModal #createOrEditExamDrivingModal (modalSave)="refetchEvents()">
+</createOrEditExamDrivingModal>
+<createEventTypeModal #createEventTypeModal></createEventTypeModal>
+<createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="refetchEvents()">
+</createOrEditTheoryLessonModal>
+<createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="refetchEvents()">
+</createOrEditSimulatorLessonModal>
+<createOrEditEventModal #createOrEditEventModal (modalSave)="refetchEvents()"></createOrEditEventModal>
+<instructorLookupTableModal #instructorLookupTableModal (modalSave)="getNewInstructorId()">
+</instructorLookupTableModal>
+<studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()"></studentLookupTableModal>

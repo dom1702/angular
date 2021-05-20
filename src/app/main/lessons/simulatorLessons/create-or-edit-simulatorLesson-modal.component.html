@@ -1,4 +1,4 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -9,7 +9,7 @@
                         <span *ngIf="!simulatorLesson.id">{{l("CreateNewSimulatorLesson")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                        <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -88,7 +88,7 @@
 
                         <div class="form-group">
                             <label for="SimulatorLesson_StartTime">{{l("StartDate")}}</label>
-                            <input required class="form-control m-input" type="datetime" bsDatepicker datePickerLuxonModifier
+                            <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier
                                 [(date)]="startTime" id="SimulatorLesson_StartTime" name="SimulatorLesson_StartTime"
                                 [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                         </div>
@@ -127,6 +127,9 @@
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
+                        <button *ngIf="simulatorLesson.id"
+                        [disabled]="!isGranted('Pages.SimulatorLessons.Delete') "
+                        type="button" class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
                     <button type="submit" class="btn btn-primary blue" [disabled]="!simulatorLessonForm.form.valid"
                         [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>

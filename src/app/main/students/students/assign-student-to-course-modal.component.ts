@@ -27,6 +27,8 @@ export class AssignStudentToCourseModalComponent extends AppComponentBase implem
     sendEnrollmentMail : boolean;
     showExpiredCourses : boolean;
 
+    courseReadOnly :boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -40,17 +42,30 @@ export class AssignStudentToCourseModalComponent extends AppComponentBase implem
 
     }
 
-    show(student: StudentDto): void {
-
+    show(student: StudentDto, courseId? : number): void {
+        this.courseReadOnly = false;
         this.showExpiredCourses = false;
         this.selectedCourse = null;
         this.student = student;
         this.availableCourses = null;
 
         this._studentsServiceProxy.getFreeCoursesForStudent(this.student.id, this.showExpiredCourses).subscribe(result => {
-            this.availableCourses = result
-        this.selectedPricePackage = null;
-        this.sendEnrollmentMail = false;
+            this.availableCourses = result;
+
+            if(courseId != null)
+            {
+                this.courseReadOnly = true;
+                for(var c of this.availableCourses)
+                    if(c.courseId == courseId)
+                        this.selectedCourse = c;
+            }
+            else
+            {
+                this.selectedCourse = null;
+            }
+
+            this.selectedPricePackage = null;
+            this.sendEnrollmentMail = false;
         });
 
         this.active = true;

@@ -7,7 +7,7 @@
                     <span>{{ l("Details") }}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -38,7 +38,7 @@
                                 {{ l(paymentMethod[item.paymentMethod]) }}
                             </div>
                             <div class="col-6 mb-3">
-                                <button *ngIf="isGranted('Pages.Payments.Edit')" (click)="editPayment(item.id)" class="btn btn-primary blue">
+                                <button *ngIf="isGranted('Pages.Payments.Edit') && !item.paidWithApi" (click)="editPayment(item.id)" class="btn btn-primary blue">
                                     <i class="fa fa-edit"></i> {{ l("Edit") }}
                                 </button>
                             </div>

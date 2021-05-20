@@ -1,0 +1,95 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #workingHourForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("EditWorkingHours")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <ul class="list-group" *ngFor="let woDay of workingHourDays">
+
+                        <li
+                            [ngClass]="woDay.isToday ? 'list-group-item  list-group-item-info mb-1' :'list-group-item mb-1'">
+                            <h6 class="mb-3">{{woDay.day | luxonFormat:'DDDD'}}</h6>
+                            <label *ngIf="woDay.timeslots == null || woDay.timeslots.length == 0">No working hours on
+                                this day</label>
+                            <div class="row align-items-center m-1" *ngFor="let slot of woDay.timeslots">
+                                <div *ngIf="!isTimeslotCurrentlyInEdit(slot)" class="btn-group mr-5" role="group"
+                                    aria-label="...">
+
+                                    <button type="button" class="btn btn-secondary btn-icon"
+                                        [disabled]="currentEditTimeslot != null" (click)="editTimeslot(slot)"><i
+                                            class="fa fa-edit"></i></button>
+
+                                    <button type="button" class="btn btn-secondary btn-icon"
+                                        [disabled]="currentEditTimeslot != null" (click)="deleteTimeslot(slot)"><i
+                                            class="fa fa-trash"></i></button>
+
+                                </div>
+
+                                <label *ngIf="!isTimeslotCurrentlyInEdit(slot)">{{slot.startTime | luxonFormat:'t'}} -
+                                    {{slot.endTime | luxonFormat:'t'}}</label>
+                                <timepicker *ngIf="isTimeslotCurrentlyInEdit(slot)" [(ngModel)]="currentStartTimeInEdit"
+                                    [showMeridian]="false" (isValid)="startTimeValid = $event" name="StartTime">
+
+                                </timepicker> <label *ngIf="isTimeslotCurrentlyInEdit(slot)">&nbsp;-&nbsp;</label>
+                                <timepicker *ngIf="isTimeslotCurrentlyInEdit(slot)" [(ngModel)]="currentEndTimeInEdit"
+                                    [showMeridian]="false" (isValid)="endTimeValid = $event" name="EndTime">
+                                </timepicker>
+
+
+                                <div *ngIf="isTimeslotCurrentlyInEdit(slot)" class="row"><button
+                                        *ngIf="startTimeValid && endTimeValid" type="button"
+                                        class="btn btn-primary btn-icon ml-5" (click)="saveTimeslot(slot)"><i
+                                            class="fa fa-save"></i></button>
+                                    <button type="button" class="btn btn-primary btn-icon ml-1"
+                                        (click)="cancelEdit()"><i class="fa fa-times"></i></button>
+                                </div>
+
+
+                            </div>
+                            <div class="row justify-content-end mr-1">
+                                <button type="button" class="btn btn-secondary btn-icon"
+                                    [disabled]="anyTimeslotCurrentlyInEdit()" (click)="addNewTimeslot(woDay)"><i
+                                        class="fa fa-plus"></i></button>
+                            </div>
+                        </li>
+
+
+                    </ul>
+
+                    <div class="form-group m-4 mt-8">
+                        <h5>{{l('CopyWorkingHours')}}</h5>
+                        <label>This weeks defined working hours will be copied to the requested period of time you set
+                            below</label>
+                        <div class="row">
+                            <div class="col-9"><input type="text" name="Date_Range" placeholder="Daterangepicker" class="form-control"
+                                bsDaterangepicker
+                                [bsConfig]="{ isAnimated: true, adaptivePosition: true, dateInputFormat: 'DD.MM.YYYY' }"
+                                [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="copyDateRange"></div>
+                                <div class="col-2"><button type="button" class="btn btn-default"
+                                (click)="clearDateRange()">{{l("Clear")}}</button></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!workingHourForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

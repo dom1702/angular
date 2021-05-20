@@ -12,25 +12,7 @@
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-
-                    <div class="form-group m-form__group">
-
-                        <label for="Instructor">{{l("Instructor")}}</label>
-                        <div class="input-group">
-                            <input class="form-control" id="currentInstructorFullName" name="currentInstructorFullName"
-                                [(ngModel)]="currentInstructorFullName" type="text" disabled>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary blue" (click)="openSelectInstructorModal()"
-                                    type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
-                            </div>
-                            <div class="input-group-prepend">
-                                <button class="btn btn-danger btn-icon" type="button" (click)="setInstructorNull()"><i
-                                        class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <input class="form-control" name="instructorId" [(ngModel)]="instructorId" type="text" hidden>
-                    <div class="form-group m-form__group">
+                    <!-- <div class="form-group m-form__group">
                         <label for="StudentFirstName">{{l("Student")}}</label>
                         <div class="input-group">
                             <input class="form-control" id="studentFullName" name="studentFullName"
@@ -45,196 +27,68 @@
                             </div>
                         </div>
                     </div>
-                    <input class="form-control" name="studentId" [(ngModel)]="studentId" type="text" hidden>
+                    <input class="form-control" name="studentId" [(ngModel)]="studentId" type="text" hidden> -->
+                 
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 mt-5">
+                               
+                                
+                                    <div class="checkbox-list">
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="showDrivingLessons"
+                                                [(ngModel)]="eventTypeFilter.drivingLessons" (change)="refetchEvents()">
+                                            <span></span>
+                                            {{l("DrivingLessons")}}
+                                        </label>
 
-                    <h5 class="m--margin-top-30">{{l("AppointmentType")}}</h5>
-                    <div class="m--margin-top-20">
-                        <!-- <div class="row">
-                        <div class="col">
-                            <label class="m-checkbox">
-                                <input id="DrivingLessonFilter" type="checkbox" name="DrivingLessonFilter"
-                                    [(ngModel)]="eventTypeFilter.drivingLessons">
-                                {{"DrivingLessons" | localize}}
-                                <span></span>
-                            </label>
-                        </div>
-                        <div class="col">
-                            <label class="m-checkbox">
-                                <input type="checkbox" name="TheoryLessonFilter"
-                                    [(ngModel)]="eventTypeFilter.theoryLessons">
-                                {{"TheoryLessons" | localize}}
-                                <span></span>
-                            </label>
-                        </div>
-                        <div class="col">
-                            <label class="m-checkbox" name="OtherEventsFilter"  [(ngModel)]="eventTypeFilter.otherEvents" (click)="updateCurrentView()">
-                                <input type="checkbox" 
-                                  >
-                                {{"Appointments" | localize}}
-                                <span></span>
-                            </label>
-                        </div>
-                    </div> -->
-                        <!-- <div class="btn-group">
-                        <label class="btn btn-primary" [(ngModel)]="eventTypeFilter.drivingLessons"
-                            (click)="updateCurrentView()" btnCheckbox tabindex="0"
-                            role="button">{{l("DrivingLessons")}}</label>
-                            <label class="btn btn-primary" [(ngModel)]="eventTypeFilter.simulatorLessons"
-                            (click)="updateCurrentView()" btnCheckbox tabindex="0"
-                            role="button">{{l("SimulatorLessons")}}</label>
-                        <label class="btn btn-primary" [(ngModel)]="eventTypeFilter.theoryLessons"
-                            (click)="updateCurrentView()" btnCheckbox tabindex="0"
-                            role="button">{{l("TheoryLessons")}}</label>
-                        <label class="btn btn-primary" [(ngModel)]="eventTypeFilter.otherEvents"
-                            (click)="updateCurrentView()" btnCheckbox tabindex="0"
-                            role="button">{{l("Appointments")}}</label>
-                    </div> -->
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.drivingLessons" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("DrivingLessons")}}
-                            </button> -->
 
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="showDrivingLessons"
-                                            [(ngModel)]="eventTypeFilter.drivingLessons" (change)="refetchEvents()">
-                                        <span></span>
-                                        {{l("DrivingLessons")}}
+                                        <label *ngIf="simulatorFeatureEnabled" class="checkbox">
+                                            <input type="checkbox" name="showSimulatorLessons"
+                                                [(ngModel)]="eventTypeFilter.simulatorLessons"
+                                                (change)="refetchEvents()">
+                                            <span></span>
+                                            {{l("SimulatorLessons")}}
+                                        </label>
 
-                                    </label>
-                                </div>
-                                <div *ngIf="simulatorFeatureEnabled" class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.simulatorLessons" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("SimulatorLessons")}}
-                            </button> -->
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="showSimulatorLessons"
-                                            [(ngModel)]="eventTypeFilter.simulatorLessons" (change)="refetchEvents()">
-                                        <span></span>
-                                        {{l("SimulatorLessons")}}
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="showTheoryLessons"
+                                                [(ngModel)]="eventTypeFilter.theoryLessons" (change)="refetchEvents()">
+                                            <span></span>
+                                            {{l("TheoryLessons")}}
+                                        </label>
 
-                                    </label>
-                                </div>
-                                <div class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.theoryLessons" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("TheoryLessons")}}
-                            </button> -->
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="showTheoryLessons"
-                                            [(ngModel)]="eventTypeFilter.theoryLessons" (change)="refetchEvents()">
-                                        <span></span>
-                                        {{l("TheoryLessons")}}
-
-                                    </label>
-                                </div>
-                                <div class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.otherEvents" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("Appointments")}}
-                            </button> -->
-                                    <label class="checkbox">
-                                        <input [(ngModel)]="eventTypeFilter.otherEvents" type="checkbox"
-                                            name="showOther" (change)="refetchEvents()">
-                                        <span></span>
-                                        {{l("Appointments")}}
-
-                                    </label>
-                                </div>
+                                        <label class="checkbox">
+                                            <input [(ngModel)]="eventTypeFilter.otherEvents" type="checkbox"
+                                                name="showOther" (change)="refetchEvents()">
+                                            <span></span>
+                                            {{l("Appointments")}}
+                                        </label>
+                                    </div>
+                             
                             </div>
-                            <!-- <h5 class="m--margin-top-30">{{l("Vehicles")}}</h5>
-                        <div class="m--margin-top-20">
-                            <div class="row" *ngIf="vehicles">
-                                <div class="col-md-auto" *ngFor="let vehicle of vehicles.vehicles">
-                                    <label attr.for="Vehicle_{{vehicle.name}}" class="checkbox">
-                                        <ejs-checkbox label="Primary" [checked]="true"></ejs-checkbox>
-                                        <input id="Vehicle_{{vehicle.name}}" type="checkbox" name="{{vehicle.name}}"
-                                            [(ngModel)]="vehicle.selected" value="{{vehicle.id}}"
-                                            (change)="onVehicleChange()">
-                                        {{vehicle.name}}
-                                        <span> </span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
-                        </div>
-                        <h5 class="m--margin-top-20">{{l("CalenderViewOptions")}}</h5>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.drivingLessons" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("DrivingLessons")}}
-                            </button> -->
-
+                            <div class="col-md-4 col-sm-12 mt-5">
+                                <h5 class="mb-5">{{l("CalenderViewOptions")}}</h5>
+                                <div class="checkbox-list">
                                     <label class="checkbox">
                                         <input type="checkbox" name="toggleWeekends" [(ngModel)]="showWeekends"
                                             (change)="toggleWeekendView()">
                                         <span></span>
-                                        {{l("Skip weekend")}}
-
+                                        {{l("Show weekend")}}
                                     </label>
                                 </div>
-
+                            </div>
+                            <div class="col-md-4 col-sm-12 mt-5 text-right">
+                                <button (click)="openSchedulerFilterModal()" class="btn btn-primary blue"><i
+                                    class="fa fa-filter"></i>
+                                {{l("FilterResources")}}</button>
                             </div>
                         </div>
-                        <h5 class="m--margin-top-20">Filter Resources (relevant for resource view)</h5>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-auto">
-                                    <!-- <button type="button" class="btn btn-info active" (click)="updateCurrentView()"
-                                [(ngModel)]="eventTypeFilter.drivingLessons" btnCheckbox btnCheckboxTrue="true"
-                                btnCheckboxFalse="false">
-                                {{l("DrivingLessons")}}
-                            </button> -->
-
-                                    <div *ngFor="let veh of vehiclesResources">
-
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="veh.name" [(ngModel)]="veh.checked"
-                                                (change)="updateResourcesList()">
-                                            <span></span>
-                                            {{veh.name}}
-
-                                        </label>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-auto">
-
-                                    <div *ngFor="let instr of instructorsResources">
-
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="instr.name" [(ngModel)]="instr.checked"
-                                                (change)="updateResourcesList()">
-                                            <span></span>
-                                            {{instr.name}}
-
-                                        </label>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="form-group mt-10">
+                        <div class="mt-10">    </div>
+                        <hr>
+                        <div class="mt-10">
                             <full-calendar #calendar [options]="calendarOptions"></full-calendar>
                         </div>
-                    </div>
+                   
                 </div>
 
 
@@ -243,6 +97,8 @@
         </div>
         <createOrEditDrivingLessonModal #createOrEditDrivingLessonModal (modalSave)="refetchEvents()">
         </createOrEditDrivingLessonModal>
+        <createOrEditExamDrivingModal #createOrEditExamDrivingModal (modalSave)="refetchEvents()">
+        </createOrEditExamDrivingModal>
         <createEventTypeModal #createEventTypeModal></createEventTypeModal>
         <createOrEditTheoryLessonModal #createOrEditTheoryLessonModal (modalSave)="refetchEvents()">
         </createOrEditTheoryLessonModal>
@@ -252,4 +108,7 @@
         <instructorLookupTableModal #instructorLookupTableModal (modalSave)="getNewInstructorId()">
         </instructorLookupTableModal>
         <studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()"></studentLookupTableModal>
+
+        <schedulerFilterModal #schedulerFilterModal (modalSave)="filterModalSaved()">
+        </schedulerFilterModal>
     </div>

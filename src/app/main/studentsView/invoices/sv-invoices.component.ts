@@ -4,6 +4,7 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import * as moment from 'moment';
 import { StudentsViewServiceProxy, SVStudentInvoicePerCourseDto } from '@shared/service-proxies/service-proxies';
 import { FileDownloadService } from '@shared/utils/file-download.service';
+import { StudentPaymentModalComponent } from './student-payment-modal.component';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 })
 export class SVInvoicesComponent extends AppComponentBase implements OnInit{
 
+    @ViewChild('studentPaymentModal', {static: true}) studentPaymentModal : StudentPaymentModalComponent; 
     invoicesPerCourse : SVStudentInvoicePerCourseDto[];
 
     constructor(
@@ -26,7 +28,9 @@ export class SVInvoicesComponent extends AppComponentBase implements OnInit{
         this._studentViewService.getAllStudentInvoices().subscribe((result) =>
         {
             this.invoicesPerCourse = result;
+            console.log(this.invoicesPerCourse);
         });
+     
     }
 
     downloadInvoice(studentInvoiceId)
@@ -35,5 +39,31 @@ export class SVInvoicesComponent extends AppComponentBase implements OnInit{
         .subscribe((result) => {
             this._fileDownloadService.downloadTempFile(result);
         });
+    }
+
+    payNow(studentInvoiceId)
+    {
+        this._studentViewService.createPayment(studentInvoiceId, null).subscribe((result) => 
+        {
+            if(result.succeeded)
+            {
+                window.location.href = result.url;
+            }
+            else
+            {
+                console.log("Failed");
+            }
+        });
+        //this.studentPaymentModal.show(studentInvoiceId);
+    }
+
+    openPaymentModal(invoice)
+    {
+        this.studentPaymentModal.show(invoice);
+    }
+
+    paymentSuccess()
+    {
+
     }
 }

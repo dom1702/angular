@@ -36,6 +36,7 @@ export class SimulatorLessonSimulatorLookupTableModalComponent extends AppCompon
     show(): void {
         this.active = true;
         this.paginator.rows = 5;
+        this.filterText = '';
         this.getAll();
         this.modal.show();
     }

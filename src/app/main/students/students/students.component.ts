@@ -12,7 +12,6 @@ import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { AssignStudentToCourseModalComponent } from './assign-student-to-course-modal.component';
 import { DateTime } from 'luxon';
 
@@ -44,6 +43,8 @@ export class StudentsComponent extends AppComponentBase {
     countryFilter = '';
         licenseClassClassFilter = '';
         ssnFilter = '';
+        maxLastLoginFilter : DateTime;
+		minLastLoginFilter : DateTime;
 
 
     _entityTypeFullName = 'Drima.Students.Student';
@@ -91,6 +92,8 @@ export class StudentsComponent extends AppComponentBase {
             this.stateFilter,
             this.countryFilter,
             this.licenseClassClassFilter,
+            this.maxLastLoginFilter,
+            this.minLastLoginFilter,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getSkipCount(this.paginator, event),
             this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -99,9 +102,10 @@ export class StudentsComponent extends AppComponentBase {
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
 
-            if(this.createOrEditStudentModal.assignToCourseAfterSave)
+            if(this.createOrEditStudentModal.justSaved)
             {
                 this.openAssignToCourseModal();
+                this.createOrEditStudentModal.justSaved = false;
             }
         });
     }

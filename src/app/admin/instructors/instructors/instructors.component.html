@@ -74,12 +74,6 @@
                             </div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="StateFilter">{{l("State")}}</label>
-									<input type="text" class="form-control" id="StateFilter" name="stateFilter" [(ngModel)]="stateFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
 									<label for="CountryFilter">{{l("Country")}}</label>
 									<input type="text" class="form-control" id="CountryFilter" name="countryFilter" [(ngModel)]="countryFilter">
 								</div>
@@ -200,7 +194,7 @@
                             {{l('NoData')}}
                         </div>
                         <div class="primeng-paging-container">
-                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                          #paginator
                                          (onPageChange)="getInstructors($event)"
                                          [totalRecords]="primengTableHelper.totalRecordsCount"

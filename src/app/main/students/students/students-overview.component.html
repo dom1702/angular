@@ -32,17 +32,20 @@
     </div> -->
 
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header *ngIf="overallActive" [title]="l('StudentOverview')" [description]="">
+
+        <sub-header *ngIf="overallActive" [title]="title" [description]="" >
 
             <div *ngIf="overallActive" role="actions" style="width: 300px">
-                <div >
-                <label>Course: </label><br>
-                <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged.next()">
-                    <option *ngFor="let course of studentCourses" [ngValue]="course">
-                        {{course.course.name}}
-                    </option>
-                </select>
-            </div>
+                <div>
+                    
+                    <label>Course: </label> 
+                    <select class="form-control" title="test" [(ngModel)]="selectedStudentCourse"
+                        (ngModelChange)="CallCourseChanged()">
+                        <option *ngFor="let course of studentCourses" [ngValue]="course">
+                            {{course.course.name}}
+                        </option>
+                    </select>
+                </div>
             </div>
 
         </sub-header>
@@ -59,37 +62,65 @@
 
                     <tabset>
                         <tab heading={{overviewTabName}} id="tab1">
-                         
-                                
+
+
                             <students-overview-overview [student]="student" [parentOverview]="this"
                                 [pricePackageName]="pricePackageName" [drivingLessons]="this.drivingLessons">
                             </students-overview-overview>
-                     
-            
+
+
                         </tab>
-                        <tab heading={{lessonsTabName}} id="tab2" (selectTab)="onLessonsTabSelect($event)">
-                        
+                        <tab heading={{lessonsTabName}} id="tab2" (selectTab)="onLessonsTabSelect($event)"
+                            (deselect)="onLessonsTabDeselect($event)">
+
                             <students-overview-lessons [student]="student" [parentOverview]="this">
                             </students-overview-lessons>
-                   
+
                         </tab>
-                        <tab heading={{pricePackageTabName}}>
-                           
+                        <tab heading={{theoryLessonsTabName}} id="tab3" (selectTab)="onTheoryLessonsTabSelect($event)"
+                            (deselect)="onTheoryLessonsTabDeselect($event)">
+
+                            <students-overview-theory-lessons [student]="student" [parentOverview]="this">
+                            </students-overview-theory-lessons>
+
+                        </tab>
+                        <tab *ngIf="isGranted('Pages.Administration.PricePackages')" heading={{pricePackageTabName}}
+                            id="tab4" (selectTab)="onPricePackagesTabSelect($event)"
+                            (deselect)="onPricePackagesTabDeselect($event)">
+
                             <students-overview-pricePackage *ngIf="selectedStudentCourse" [parentOverview]="this"
                                 [student]="student" [selectedStudentCourse]="selectedStudentCourse">
                             </students-overview-pricePackage>
-                     
+
                         </tab>
-                        <tab heading={{studentInvoicesTabName}}>
-                        
+                        <tab *ngIf="isGranted('Pages.Students.ViewSpecificInvoice')" heading={{studentInvoicesTabName}}
+                            id="tab5" (selectTab)="onStudentInvoicesTabSelect($event)"
+                            (deselect)="onStudentInvoicesTabDeselect($event)">
+
                             <students-overview-invoices [parentOverview]="this" [student]="student">
                             </students-overview-invoices>
-                     
+
                         </tab>
-                        <tab heading={{studentFormsTabName}}>
-                   
-                            <students-overview-forms [student]="student"></students-overview-forms>
-                     
+                        <tab *ngIf="isGranted('Pages.Administration.Forms')" heading={{studentFormsTabName}} id="tab6"
+                            (selectTab)="onFormsTabSelect($event)" (deselect)="onFormsTabDeselect($event)">
+
+                            <students-overview-forms [parentOverview]="this" [student]="student">
+                            </students-overview-forms>
+
+                        </tab>
+                        <tab *ngIf="isGranted('Pages.Administration.Todos')" heading={{studentTasksTabName}} id="tab7"
+                            (selectTab)="onTodosTabSelect($event)" (deselect)="onTodosTabDeselect($event)">
+
+                            <students-overview-tasks [student]="student" [parentOverview]="this">
+                            </students-overview-tasks>
+
+                        </tab>
+                        <tab heading={{studentSchedulerTabName}} id="tab8" (selectTab)="onSchedulerTabSelect($event)"
+                            (deselect)="onSchedulerTabDeselect($event)">
+
+                            <students-overview-scheduler [student]="student" [parentOverview]="this">
+                            </students-overview-scheduler>
+
                         </tab>
                     </tabset>
 

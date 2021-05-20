@@ -13,6 +13,7 @@ import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistor
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { DateTime } from 'luxon';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Component({
     templateUrl: './studentInvoices.component.html',
@@ -53,7 +54,8 @@ export class StudentInvoicesComponent extends AppComponentBase {
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
-        private _router: Router
+        private _router: Router,
+        private _http : HttpClient
     ) {
         super(injector);
     }

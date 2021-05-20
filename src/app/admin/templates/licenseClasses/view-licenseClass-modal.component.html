@@ -6,7 +6,7 @@
                     <span>{{l("")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -20,8 +20,14 @@
                         <h6>{{l("Description")}} :</h6>
                         {{item.licenseClass.description}}
                     </div>
-
-
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PredefinedTheoryLessons")}} :</h6>
+                        {{ptlList}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PredefinedDrivingLessons")}} :</h6>
+                        {{pdlList}}
+                    </div>
                 </div>
 
             </div>

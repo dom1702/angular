@@ -1,7 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PaymentsComponent } from './sales/payments/payments.component';
-import { TestResourcesComponent } from './resources/testResources/testResources.component';
 import { CoursesComponent } from './courses/courses/courses.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EnrollmentsComponent } from './enrollments/enrollments/enrollments.component';
@@ -24,6 +23,8 @@ import { SVTheoryLessonsComponent } from './studentsView/theoryLessons/sv-theory
 import { SVLicenseClassSelectionComponent } from './studentsView/theoryPractice/sv-licenseClassSelection.component';
 import { SVLicenseClassTasksOverview } from './studentsView/theoryPractice/sv-licenseClassTasksOverview.component';
 import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-theoryPracticeQuiz.component';
+import { SVPaymentSuccessComponent } from './studentsView/invoices/payment-success.component';
+import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed.component';
 
 @NgModule({
     imports: [
@@ -32,7 +33,7 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
                 path: '',
                 children: [
                     { path: 'sales/payments', component: PaymentsComponent, data: { permission: 'Pages.Payments' }  },
-                    { path: 'resources/testResources', component: TestResourcesComponent, data: { permission: 'Pages.TestResources' }  },
+                   
                     { path: 'enrollments/enrollments', component: EnrollmentsComponent, data: { permission: 'Pages.Enrollments' }  },
                     { path: 'courses/courses', component: CoursesComponent, data: { permission: 'Pages.Courses' }  },
                     { path: 'lessons/simulatorLessons', component: SimulatorLessonsComponent, data: { permission: 'Pages.SimulatorLessons' }  },
@@ -49,6 +50,8 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
                     { path: 'studentsView/drivingLessons', component: SVDrivingLessonComponent, data: { permission: 'StudentView' }},
                     { path: 'studentsView/frequentlyAskedQuestions', component: SVFrequentlyAskedQuestionsComponent, data: { permission: 'StudentView' }},
                     { path: 'studentsView/invoices', component: SVInvoicesComponent, data: { permission: 'StudentView' }},
+                    { path: 'studentsView/payment-success', component: SVPaymentSuccessComponent, data: { permission: 'StudentView' }},
+                    { path: 'studentsView/payment-failed', component: SVPaymentFailedComponent, data: { permission: 'StudentView' }},
                     { 
                         path: 'studentsView/theoryCourse/quiz', 
                         canDeactivate: [SVQuizGuard],

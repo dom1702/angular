@@ -1,0 +1,77 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #paymentForm="ngForm" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>Your payments for {{invoice.userFriendlyInvoiceId}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body" [busyIf]="loading">
+                    <div class="card bg-light mb-3" *ngFor="let item of invoice.installments; index as i">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Installment {{item.installmentName}}</h5>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l("DueDate") }} :</h6>
+                                    {{ item.installmentDueDate | luxonFormat: "D" }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l("Amount") }} :</h6>
+                                    {{ item.installmentTotal }}
+                                </div>
+                                <div class="col-12 mt-5" *ngIf="isPaid(item.id)">
+                                    <!-- <button (click)="payInstallment(item)" class="btn btn-primary blue">
+                                        <i class="fas fa-money-bill-wave"></i> {{ l("PayInstallmentNow") }}
+                                    </button>
+                                    <button class="btn btn-secondary" disabled>
+                                        <i class="far fa-handshake"></i> {{ l("Paid") }}
+                                    </button> -->
+                                    <div class="alert alert-success" role="alert">
+                                        Thank you! We received your payment on {{ getPaymentTime(item.id) | luxonFormat:
+                                        "D" }}.
+                                    </div>
+                                </div>
+                                <div class="col-6 mt-5" *ngIf="!isPaid(item.id)">
+                                    <button (click)="payInstallment(item)" class="btn btn-primary blue">
+                                        <i class="fas fa-money-bill-wave"></i> {{ l("PayInstallmentNow") }}
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-5" *ngIf="invoice.payments.length == 0">
+
+                        <label>Do you wish to pay everything now?</label>
+                    </div>
+                    <div class="row justify-content-center my-5" *ngIf="invoice.payments.length == 0">
+                        <button (click)="payCompletely()" class="btn btn-primary blue">
+                            <i class="fas fa-money-bill-wave"></i> {{ l("PayAllInstallments") }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l("Cancel")
+                        }}</button>
+                    <!-- <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!paymentForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

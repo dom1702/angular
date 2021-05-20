@@ -1,7 +1,7 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { StudentInvoicesServiceProxy, CreateOrEditStudentInvoiceDto, StudentsServiceProxy, ProductsServiceProxy, StudentInvoiceItemDto, PricePackagesServiceProxy, GetEmptyStudentInvoiceForViewDtoCourseDto } from '@shared/service-proxies/service-proxies';
+import { StudentInvoicesServiceProxy, CreateOrEditStudentInvoiceDto, StudentsServiceProxy, ProductsServiceProxy, StudentInvoiceItemDto, PricePackagesServiceProxy, GetEmptyStudentInvoiceForViewDtoCourseDto, BankAccountsServiceProxy, GetBankAccountForViewDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ import { InvoiceProductLookupTableModalComponent } from './invoice-product-looku
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ArrayValidators } from '@app/shared/common/formValidator/Array.validator';
 import { DateTime, Duration } from 'luxon';
+import { BankAccountLookupTableModalComponent } from '@app/shared/common/lookup/bankAccount-lookup-table-modal.component';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
 
   @ViewChild('studentLookupTableModal', { static: true }) studentLookupTableModal: InvoiceStudentLookupTableModalComponent;
   @ViewChild('productLookupTableModal', { static: true }) productLookupTableModal: InvoiceProductLookupTableModalComponent;
+  @ViewChild('bankAccountLookupTableModal', { static: true }) bankAccountLookupTableModal: BankAccountLookupTableModalComponent;
 
   subscription: Subscription;
 
@@ -55,6 +57,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
 
   itemForm: FormGroup;
 
+  availableBankAccounts : GetBankAccountForViewDto[];
+
   get itemFormItems() {
     // Typecast, because: reasons
     // https://github.com/angular/angular-cli/issues/6099
@@ -74,6 +78,7 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
     private _productsServiceProxy: ProductsServiceProxy,
     private _pricePackagesServiceProxy: PricePackagesServiceProxy,
     private _fileDownloadService: FileDownloadService,
+    private _bankAccountService : BankAccountsServiceProxy,
     private _router: Router,
     private _route: ActivatedRoute,
     private fb: FormBuilder,
@@ -118,6 +123,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
       text2: [''],
       reference: [''],
 
+      selectedBankAccount: [''],
+
       createPdfOnSave: [true]
 
     });
@@ -153,8 +160,6 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
 
     });
 
-    //this.getExampleItems();
-
     this.subscribeToItemFormValueChanges();
 
     this.updateTotalBeforeVat();
@@ -162,24 +167,6 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
     this.updateTotalAfterVat();
 
     this.previousItemForm = _.cloneDeep(this.itemForm);
-
-    // if (!studentInvoiceId) {
-    //     this.studentInvoice = new CreateOrEditStudentInvoiceDto();
-    //     this.studentInvoice.id = studentInvoiceId;
-    //     this.studentInvoice.date = moment().startOf('day');
-    //     this.studentInvoice.dateDue = moment().startOf('day');
-
-    //     this.active = true;
-    //     this.modal.show();
-    // } else {
-    //     this._studentInvoicesServiceProxy.getStudentInvoiceForEdit(studentInvoiceId).subscribe(result => {
-    //         this.studentInvoice = result.studentInvoice;
-
-
-    //         this.active = true;
-    //         this.modal.show();
-    //     });
-    // }
 
     this.studentInvoiceId = null;
 
@@ -194,6 +181,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
         this.studentSetBefore = true;
 
         this.insertStudentData(studentId, courseId);
+
+        this.setDefaultBankAccount();
       }
       // NOTE: In this case course Id must be set by the user first !!! 
       // Therefore Create new invoice over the big list is currently disabled
@@ -206,6 +195,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
         this.form.get('createPdfOnSave').setValue(false);
 
         this._studentInvoicesServiceProxy.getStudentInvoiceForEdit(id).subscribe(result => {
+
+          console.log(result);
           this.studentInvoice = result.studentInvoice;
           this.studentInvoiceId = result.studentInvoice.id;
 
@@ -236,6 +227,10 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
           this.form.get('text2').setValue(result.studentInvoice.text2);
           this.form.get('reference').setValue(result.studentInvoice.reference);
 
+          this.form.get('installmentActive').setValue(result.studentInvoice.useInstallments);
+          this.form.get('installmentCount').setValue(result.studentInvoice.installmentCount);
+          this.form.get('installmentInterval').setValue(result.studentInvoice.installmentInterval);
+
           this.unsubscribeToItemFormValueChanges();
 
           var control = <FormArray>this.itemForm.get('items');
@@ -256,6 +251,8 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
           this.updateTotalBeforeVat();
           this.updateTotalVat();
           this.updateTotalAfterVat();
+      
+          this.updateBankAccount(result.studentInvoice.iban, result.studentInvoice.bic);
         });
       }
     })
@@ -560,6 +557,14 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
       input.installmentInterval = this.form.get('installmentInterval').value;
     }
 
+    if(this.form.get('selectedBankAccount').value != null)
+    {
+      input.iban = this.form.get('selectedBankAccount').value.bankAccount.iban;
+      input.bic = this.form.get('selectedBankAccount').value.bankAccount.bic;
+    }
+
+    console.log(input);
+
     return input;
   }
 
@@ -669,6 +674,7 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
     return;
 
     this.insertStudentData(this.studentLookupTableModal.id, null);
+    this.setDefaultBankAccount();
   }
 
   insertStudentData(studentId : number, courseId : number)
@@ -738,5 +744,59 @@ export class CreateStudentInvoiceComponent extends AppComponentBase implements O
       {courseId: null, courseName: this.l("NotCourseRelated"), pricePackageId: null}
       ));
   }  
+
+  openSelectBankAccountModal()
+  {
+    this.bankAccountLookupTableModal.show();
+  }
+
+  setBankAccountNull()
+  {
+    this.form.get('bankAccountId').setValue(null);
+    this.form.get('bankAccount').setValue('');
+  }
+
+  getNewBankAccount()
+  {
+    if (this.bankAccountLookupTableModal.id == null)
+    return;
+
+    this.form.get('bankAccountId').setValue(this.bankAccountLookupTableModal.id);
+    this.form.get('bankAccount').setValue(this.bankAccountLookupTableModal.displayName);
+  }
+
+  setDefaultBankAccount()
+  {
+    this.form.get('selectedBankAccount').setValue(null);
+    this._bankAccountService.getAll("", "", "", 0, 999).subscribe((result) =>
+    {
+      this.availableBankAccounts = result.items;
+
+      for(var b of this.availableBankAccounts)
+      {
+        if(b.bankAccount.isDefault)
+        {
+          this.form.get('selectedBankAccount').setValue(b);
+        }
+      }
+    });
+  }
+
+  updateBankAccount(iban : string, bic : string)
+  {
+    this.form.get('selectedBankAccount').setValue(null);
+    this._bankAccountService.getAll("", "", "", 0, 999).subscribe((result) =>
+    {
+      this.availableBankAccounts = result.items;
+
+      for(var b of this.availableBankAccounts)
+      {
+        if(b.bankAccount.iban == iban && b.bankAccount.bic == bic)
+        {
+          this.form.get('selectedBankAccount').setValue(b);
+        }
+      }
+    });
+  }
 }
 

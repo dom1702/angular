@@ -55,6 +55,11 @@ import { CreateOrEditPricePackageModalComponent } from './sales/pricePackages/cr
 import { PricePackageProductLookupTableModalComponent } from './sales/pricePackages/pricePackage-product-lookup-table-modal.component';
 import { ViewPricePackageModalComponent } from './sales/pricePackages/view-pricePackage-modal.component';
 import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { VehicleLookupTableModalComponent } from './lookup/vehicle-lookup-table-modal.component';
+import { TodoLookupTableModalComponent } from './lookup/todo-lookup-table-modal.component';
+import { BankAccountLookupTableModalComponent } from './lookup/bankAccount-lookup-table-modal.component';
+import { CreateOrEditWorkingHourModalComponent } from './scheduler/create-or-edit-workingHours-modal.component';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
     imports: [
@@ -79,6 +84,7 @@ import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
         AppBsModalModule,
         AutoCompleteModule,
         NumericTextBoxModule,
+        TimepickerModule.forRoot(),
     ],
     declarations: [
         TimeZoneComboComponent,
@@ -112,7 +118,11 @@ import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
         PricePackageProductLookupTableModalComponent,
         ViewPricePackageModalComponent,		
         CreateOrEditPricePackageModalComponent,
-        ViewProductModalComponent
+        ViewProductModalComponent,
+        VehicleLookupTableModalComponent,
+        TodoLookupTableModalComponent,
+        BankAccountLookupTableModalComponent,
+        CreateOrEditWorkingHourModalComponent
     ],
     exports: [
         TimeZoneComboComponent,
@@ -128,7 +138,11 @@ import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
         PricePackageProductLookupTableModalComponent,
         ViewPricePackageModalComponent,		
         CreateOrEditPricePackageModalComponent,
-        ViewProductModalComponent
+        ViewProductModalComponent,
+        VehicleLookupTableModalComponent,
+        TodoLookupTableModalComponent,
+        BankAccountLookupTableModalComponent,
+        CreateOrEditWorkingHourModalComponent
     ],
     providers: [
         DateTimeService,

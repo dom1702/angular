@@ -1,0 +1,66 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #todoForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="todo.id">{{ l("EditTodo") }}</span>
+                        <span *ngIf="!todo.id">{{ l("CreateNewTodo") }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Todo_Title">{{ l("Title") }} *</label>
+                        <input type="text" #Todo_Title="ngModel" id="Todo_Title" class="form-control"
+                            [(ngModel)]="todo.title" name="Title" required />
+                        <validation-messages [formCtrl]="Todo_Title"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Todo_Description">{{ l("Description") }}</label>
+                        <input type="text" #Todo_Description="ngModel" id="Todo_Description" class="form-control"
+                            [(ngModel)]="todo.description" name="Description" />
+                        <validation-messages [formCtrl]="Todo_Description"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Todo_OrderNo">{{ l("OrderNo") }}</label>
+                        <input type="text" #Todo_OrderNo="ngModel" id="Todo_OrderNo" class="form-control"
+                            [(ngModel)]="todo.orderNo" name="OrderNo" />
+                        <validation-messages [formCtrl]="Todo_OrderNo"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Todo_LicenseClass">{{ l("LicenseClass") }}</label>
+                        <input type="text" #Todo_LicenseClass="ngModel" id="Todo_LicenseClass" class="form-control"
+                            [(ngModel)]="todo.licenseClass" name="LicenseClass" />
+                        <validation-messages [formCtrl]="Todo_LicenseClass"></validation-messages>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Todo_AddToNewStudents" class="kt-checkbox">
+                            <input id="Todo_AddToNewStudents" #Todo_AddToNewStudents="ngModel" type="checkbox"
+                                name="AddToNewStudents" [(ngModel)]="todo.addToNewStudents" />
+                            {{ l("AddToNewStudents") }}
+                            <span></span>
+                        </label>
+                        <validation-messages [formCtrl]="Todo_AddToNewStudents"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{ l("Cancel")
+                        }}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!todoForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

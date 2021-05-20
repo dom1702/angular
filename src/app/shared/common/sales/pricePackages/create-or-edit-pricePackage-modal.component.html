@@ -9,7 +9,7 @@
                         <span *ngIf="!pricePackage.id">{{l("CreateNewPricePackage")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                        <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -28,6 +28,11 @@
                             name="Description" />
                             <input *ngIf="!descriptionEditable" type="text" id="PricePackage_Description" class="form-control" [(ngModel)]="pricePackage.description"
                             name="Description" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PricePackage_Total">{{l("TotalPrice")}}</label><br>
+                        <p class="lead"><strong>  {{totalPrice | currency:'EUR'}}</strong></p>
                     </div>
 
                     <label for="Products">{{l("Products")}}</label>

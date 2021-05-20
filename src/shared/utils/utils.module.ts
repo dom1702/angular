@@ -21,6 +21,7 @@ import { PermissionPipe } from '@shared/common/pipes/permission.pipe';
 import { PermissionAnyPipe } from '@shared/common/pipes/permission-any.pipe';
 import { PermissionAllPipe } from '@shared/common/pipes/permission-all.pipe';
 import { FeatureCheckerPipe } from '@shared/common/pipes/feature-checker.pipe';
+import { ReplaceNullOrEmptyWithTextPipe } from '@shared/common/pipes/replace-null-with-text.pipe';
 import { DatePickerLuxonModifierDirective } from './date-time/date-picker-luxon-modifier.directive';
 import { DateRangePickerLuxonModifierDirective } from './date-time/date-range-picker-luxon-modifier.directive';
 
@@ -51,6 +52,7 @@ import { DateRangePickerLuxonModifierDirective } from './date-time/date-range-pi
         PermissionPipe,
         PermissionAnyPipe,
         FeatureCheckerPipe,
+        ReplaceNullOrEmptyWithTextPipe,
         DatePickerLuxonModifierDirective,
         DateRangePickerLuxonModifierDirective,
         PermissionAllPipe
@@ -70,6 +72,7 @@ import { DateRangePickerLuxonModifierDirective } from './date-time/date-range-pi
         PermissionPipe,
         PermissionAnyPipe,
         FeatureCheckerPipe,
+        ReplaceNullOrEmptyWithTextPipe,
         DatePickerLuxonModifierDirective,
         DateRangePickerLuxonModifierDirective,
         PermissionAllPipe

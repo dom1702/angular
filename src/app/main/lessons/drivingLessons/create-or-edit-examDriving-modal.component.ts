@@ -14,6 +14,7 @@ import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/i
 import { Subscription } from 'rxjs';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { DateTime } from 'luxon';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
     selector: 'createOrEditExamDrivingModal',
@@ -35,7 +36,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     active = false;
     saving = false;
     startTime: Date;
-    startTimeTime : Date;
+    startTimeTime: Date;
     drivingLesson: CreateOrEditDrivingLessonDto = new CreateOrEditDrivingLessonDto();
 
     drivingLessonTopic = '';
@@ -48,11 +49,10 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     instructorPersonalLesson: boolean;
     instructorId?: number;
 
-    @ViewChildren('instructor_multiselect') insturctor_Multiselect: QueryList<MultiSelectComponent>;
-    instructors: Object[];
-    fields: Object = { text: 'instr', value: 'id' };
-    placeholderInstructorSelection: string = 'Select instructors';
-    private instructorMultiselectSubscription: Subscription;
+    instructors = [];
+    instructorsSelectedItems = [];
+    dropdownSettings: IDropdownSettings;
+    placeholder = this.l('Select');
 
     showStudentSelection = false;
     studentSelected = false;
@@ -68,6 +68,10 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
     currentStudentDefaultInstructorId;
 
+    // With this variables we will disable setting the students default instructor/vehicle
+    instructorSetExternallyOnShow = false;
+    vehicleSetExternallyOnShow = false;
+
     constructor(
         injector: Injector,
         private _drivingLessonsServiceProxy: DrivingLessonsServiceProxy,
@@ -79,6 +83,17 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
     }
 
     ngOnInit() {
+        this.dropdownSettings =
+        {
+            singleSelection: false,
+            idField: 'item_id',
+            textField: 'item_text',
+            selectAllText: this.l('SelectAll'),
+            unSelectAllText: this.l('UnselectAll'),
+            allowSearchFilter: false,
+            noDataAvailablePlaceholderText: this.l('NoData')
+        };
+
         this.ismeridian = false;
 
         var minutesPerLesson = abp.setting.get("App.CoreData.DurationDrivingLesson");
@@ -93,30 +108,19 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         console.log(items);
     }
 
-    updateMultiSelect(id: number) {
-        this.instructorMultiselectSubscription = this.insturctor_Multiselect.changes.subscribe((comps: QueryList<MultiSelectComponent>) => {
-            var selected: number[] = [];
+    show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null,
+        studentFirstName: string = "", studentLastName: string = "", startTime: Date = null, preselectedCourseId: number = null,
+        instructorId: number = null, vehicleId: number = null, vehicleName: string = null): void {
 
-            if (this.drivingLesson.instructors != null) {
+        if (instructorId != null)
+            this.instructorSetExternallyOnShow = true;
+        else
+            this.instructorSetExternallyOnShow = false;
 
-                for (var i = 0; i < this.drivingLesson.instructors.length; i++) {
-                    selected.push(this.drivingLesson.instructors[i].id);
-                }
-
-                this.insturctor_Multiselect.first.value = selected;
-            }
-            else if (id != null) {
-                selected.push(id);
-
-                this.insturctor_Multiselect.first.value = selected;
-            }
-
-            this.instructorMultiselectSubscription.unsubscribe();
-        });
-    }
-
-    show(drivingLessonId?: number, instructorPersonalLesson: boolean = false, studentId: number = null, 
-        studentFirstName:string = "", studentLastName:string = ""): void {
+            if (vehicleId != null)
+            this.vehicleSetExternallyOnShow = true;
+        else
+            this.vehicleSetExternallyOnShow = false;
 
         this.instructorPersonalLesson = instructorPersonalLesson;
         this.selectedPdl = null;
@@ -125,38 +129,69 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
             this.drivingLesson = new CreateOrEditDrivingLessonDto();
 
-            if(studentId != null)
-            {
+            if (studentId != null) {
                 this.drivingLesson.studentId = studentId;
                 this.studentFirstName = studentFirstName;
                 this.studentLastName = studentLastName;
                 this.studentSelected = true;
                 this.showStudentSelection = false;
-                this.refreshCourses();
+                this.refreshCourses(preselectedCourseId);
             }
-            else
-            {
+            else {
                 this.studentFirstName = '';
                 this.studentLastName = '';
                 this.showStudentSelection = true;
             }
-        
+
             this.drivingLesson.id = drivingLessonId;
             this.drivingLesson.startTime = this._dateTimeService.getStartOfDay();
-            this.startTimeTime = new Date();
+            if (startTime != null) {
+                this.startTime = startTime;
+                this.startTimeTime = startTime;
+            }
+            else {
+                this.startTime = this._dateTimeService.getDate().toJSDate();
+                this.startTimeTime = this._dateTimeService.getDate().toJSDate();
+            }
             this.drivingLessonTopic = '';
             this.licenseClass = '';
-           
+
             this.vehicleName = '';
             this.drivingLesson.length = 1;
             this.drivingLesson.addingMinutesAfter = 0;
             this.refreshStudentFullName();
 
+            if(vehicleId != null)
+            {
+                this.drivingLesson.vehicleId = vehicleId;
+                this.vehicleName = vehicleName;
+            }
+
+            this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
+                "",
+                "",
+                0,
+                1000).subscribe(result => {
+                    this.instructors = [];
+                    this.instructorsSelectedItems = [];
+
+                    for (var i = 0; i < result.items.length; i++) {
+                        this.instructors.push(
+                            {
+                                item_id: result.items[i].id,
+                                item_text: result.items[i].displayName
+                            }
+                        );
+                        if (instructorId != null && result.items[i].id == instructorId) {
+                            this.instructorsSelectedItems.push({
+                                item_id: result.items[i].id,
+                                item_text: result.items[i].displayName
+                            });
+                        }
+                    }
+                });
+
             this.active = true;
-            this.updateInstructors(false);
-
-            this.updateMultiSelect(null);
-
             this.modal.show();
         } else if (this.instructorPersonalLesson) {
             this._instructorsOwnDrivingLessonsServiceProxy.getDrivingLessonForEdit(drivingLessonId).subscribe(result => {
@@ -167,7 +202,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                
+
                 this.startTime = result.drivingLesson.startTime.toJSDate();
                 this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
@@ -185,7 +220,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentLastName = (result.studentLastName == null) ? "" : result.studentLastName;
                 this.vehicleName = result.vehicleNameBrandModel;
                 this.refreshStudentFullName();
-                
+
                 this.startTime = result.drivingLesson.startTime.toJSDate();
                 this.startTimeTime = result.drivingLesson.startTime.toJSDate();
 
@@ -193,6 +228,40 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentSelected = true;
                 this.selectedStudentCourse = null;
                 this.studentCourses = null;
+
+                this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
+                    "",
+                    "",
+                    0,
+                    1000).subscribe(result => {
+                        this.instructors = [];
+                        this.instructorsSelectedItems = [];
+
+                        for (var i = 0; i < result.items.length; i++) {
+                            this.instructors.push(
+                                {
+                                    item_id: result.items[i].id,
+                                    item_text: result.items[i].displayName
+                                }
+                            );
+                        }
+
+                        if (this.drivingLesson.instructors != null && this.drivingLesson.instructors.length > 0) {
+                            for (var item of this.instructors) {
+                                for (var instr of this.drivingLesson.instructors) {
+                                    if (item.item_id == instr.id) {
+                                        this.instructorsSelectedItems.push(
+                                            {
+                                                item_id: item.item_id,
+                                                item_text: item.item_text
+                                            }
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    });
+
 
                 this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result2 => {
                     this.studentCourses = result2.courses;
@@ -210,9 +279,6 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 });
 
                 this.active = true;
-                this.updateInstructors(true);
-
-                this.updateMultiSelect(null);
 
                 this.modal.show();
             });
@@ -229,9 +295,9 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
         this.drivingLesson.instructors = [];
 
-       this.startTime.setHours(this.startTimeTime.getHours());
-       this.startTime.setMinutes(this.startTimeTime.getMinutes());
-       this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
+        this.startTime.setHours(this.startTimeTime.getHours());
+        this.startTime.setMinutes(this.startTimeTime.getMinutes());
+        this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
         this.drivingLesson.isExam = true;
 
@@ -244,13 +310,10 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
         this.drivingLesson.courseId = this.selectedStudentCourse.id;
 
-        if (this.insturctor_Multiselect.first.value != null) {
-            this.drivingLesson.instructors = [];
-            for (var j = 0; j < this.insturctor_Multiselect.first.value.length; j++) {
-                var ins: InstructorDto = new InstructorDto()
-                ins.id = Number(this.insturctor_Multiselect.first.value[j]);
-                this.drivingLesson.instructors.push(ins);
-            }
+        for (var instrSelected of this.instructorsSelectedItems) {
+            var instr: InstructorDto = new InstructorDto()
+            instr.id = instrSelected.item_id;
+            this.drivingLesson.instructors.push(instr);
         }
 
         if (this.instructorPersonalLesson) {
@@ -291,8 +354,8 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 for (var i = 0; i < result.items.length; i++) {
                     this.instructors.push(
                         {
-                            id: result.items[i].id,
-                            instr: result.items[i].displayName
+                            item_id: result.items[i].id,
+                            item_text: result.items[i].displayName
                         }
                     );
                 }
@@ -375,19 +438,46 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.refreshCourses();
     }
 
-    refreshCourses()
-    {
+    refreshCourses(preselectedCourseId: number = null) {
         this._drivingLessonsServiceProxy.getCoursesForCreateOrEdit(this.drivingLesson.studentId).subscribe(result => {
             this.studentCourses = result.courses
 
             if (this.studentCourses.length > 0) {
-                this.selectedStudentCourse = this.studentCourses[0];
+                if (preselectedCourseId) {
+                    for (var i of this.studentCourses)
+                        if (i.id == preselectedCourseId)
+                            this.selectedStudentCourse = i;
+                }
+                else {
+                    this.selectedStudentCourse = this.studentCourses[0];
+                }
             }
 
             this.currentStudentDefaultInstructorId = result.defaultInstructorId;
             this.drivingLesson.startingLocation = result.defaultStartingLocation;
 
-            this.updateMultiSelect(this.currentStudentDefaultInstructorId);
+            if (!this.instructorSetExternallyOnShow) {
+                this.instructorsSelectedItems = [];
+
+                for (var item of this.instructors) {
+                    if (item.item_id == this.currentStudentDefaultInstructorId) {
+                        //if (this.instructorsSelectedItems.find(x => x.id == this.currentStudentDefaultInstructorId)) {
+                        this.instructorsSelectedItems.push(
+                            {
+                                item_id: item.item_id,
+                                item_text: item.item_text
+                            }
+                        );
+                        //}
+                    }
+                }
+            }
+
+            if(!this.vehicleSetExternallyOnShow)
+            {
+                this.drivingLesson.vehicleId = result.defaultVehicleId;
+                this.vehicleName = result.defaultVehicleName
+            }
         })
     }
 
@@ -443,5 +533,13 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         this.modal.hide();
 
         this.studentSelected = null;
+    }
+
+    instructorSelected(): boolean {
+        return this.instructorsSelectedItems != null && this.instructorsSelectedItems.length > 0;
+    }
+
+    vehicleSelected(): boolean {
+        return this.drivingLesson.vehicleId != null;
     }
 }

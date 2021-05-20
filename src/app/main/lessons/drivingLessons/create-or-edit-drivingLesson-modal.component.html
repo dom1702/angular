@@ -9,13 +9,14 @@
                         <span *ngIf="!drivingLesson.id">{{l("CreateNewDrivingLesson")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                        <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
+               
                 </div>
                 <div class="modal-body">
 
                     <div class="form-group m-form__group" *ngIf="showStudentSelection">
-                        <label for="StudentFirstName">{{l("Student")}}  *</label>
+                        <label for="StudentFirstName">{{l("Student")}} *</label>
                         <div class="input-group">
                             <input class="form-control" id="studentFullName" name="studentFullName"
                                 [(ngModel)]="studentFullName" type="text" disabled>
@@ -34,53 +35,59 @@
 
                     <div class="form-group m-form__group" *ngIf="!showStudentSelection">
                         <h5>Student: {{studentFullName}}</h5>
+                        <button *ngIf="isGranted('Pages.Students')" class="btn btn-primary blue" (click)="goToStudentOverview()" type="button"><i
+                            class="fa fa-search"></i> {{l("GoToStudentsPage")}}</button>
                     </div>
 
-                    <div *ngIf="studentSelected">
-                        <div class="m--margin-top-40">
+                    <div *ngIf="studentSelected && studentCourses != null && studentCourses.length > 0"
+                        class="form-group">
+                        <div class="my-10">
 
                             <div *ngIf="studentCourses != null && studentCourses.length > 0">
                                 <label>Course Specific: </label><br>
                                 <div class="form-group">
 
                                     <select class="form-control" name="studentCourse"
-                                        [(ngModel)]="selectedStudentCourse">
-                                        <option *ngFor="let course of studentCourses" [ngValue]="course">
+                                        [(ngModel)]="selectedStudentCourse" (change)="courseSelected()">
+                                        <option *ngFor="let course of studentCourses" [ngValue]="course" >
                                             {{course.name}}
                                         </option>
                                     </select>
                                 </div>
                             </div>
-                            <div *ngIf="studentCourses != null && studentCourses.length == 0">
-                                <alert type="info" >
-                                    <strong>Note</strong> 
-                                    {{l("NoCourseSelected")}}!
-                                </alert>
-                            </div>
+
                             <div class="row">
                                 <div class="col-6 border-right">
                                     <div class="form-group">
-                                        <label class="radio">
+                                        <label class="radio" *ngIf="numberOfCheckedPdls == 0">
                                             <input type="radio" name="pdl_option" [value]="null"
                                                 [(ngModel)]="selectedPdl" (change)='updateCheck()'>
-                                                <span></span>
-                                                {{l('Basic Lesson')}}
-                                           
+                                            <span></span>
+                                            {{l('Basic Lesson')}}
+
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div *ngIf="selectedStudentCourse">
-                                     
+                                    <div *ngIf="selectedStudentCourse && this.drivingLesson.id != null">
                                         <div class="col-md-auto"
                                             *ngFor="let pdl of selectedStudentCourse.predefinedDrivingLessons">
                                             <label class="radio">
                                                 <input type="radio" name="pdl_option" [value]="pdl"
                                                     [(ngModel)]="selectedPdl" (change)='updateCheck()'>
-                                                    <span></span>
-                                                    {{pdl.name}}
-                                         
-
+                                                <span></span>
+                                                {{pdl.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-list"
+                                        *ngIf="selectedStudentCourse && this.drivingLesson.id == null">
+                                        <div *ngFor="let pdl of pdlCheckboxesList">
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="pdl_checkboxes" [(ngModel)]="pdl.checked"
+                                                    (change)='updatedCheckboxList()'>
+                                                <span></span>
+                                                {{pdl.name}}
                                             </label>
                                         </div>
                                     </div>
@@ -88,17 +95,24 @@
                             </div>
                         </div>
 
-                        <div class="checkbox-list">
+                        <div class="form-group" *ngIf="numberOfCheckedPdls > 1">
+                            <alert type="info">
+                                <strong>Info!</strong> Please note that you will create more than one lesson in a row
+                            </alert>
+                        </div>
+
+                        <div class="form-group" *ngIf="numberOfCheckedPdls < 2">
                             <label for="SetTopicAutomatically" class="checkbox">
                                 <input id="SetTopicAutomatically" type="checkbox" name="SetTopicAutomatically"
                                     [(ngModel)]="setTopicNameAutomatically">
-                                    <span></span>
+                                <span></span>
                                 {{l("SetTopicAutomatically")}}
-               
+
                             </label>
                         </div>
 
-                        <div *ngIf="!selectedPdl && !setTopicNameAutomatically" class="form-group m-form__group">
+                        <div *ngIf="!selectedPdl && !setTopicNameAutomatically && numberOfCheckedPdls < 2"
+                            class="form-group">
                             <label for="DrivingLessonTopic">{{l("DrivingLessonTopic")}}</label>
                             <div class="input-group">
                                 <input class="form-control" id="DrivingLessonTopic" name="drivingLessonTopic"
@@ -122,17 +136,19 @@
                                 [(ngModel)]="drivingLesson.startingLocation" name="StartingLocation" />
                         </div>
 
-                        <div class="m--margin-top-40">
+                        <div class="mt-20">
                             <h5>{{l("Resources")}}</h5>
-                            <div [hidden]="instructorPersonalLesson" class="form-group m-form__group">
-                                <label for="LicenseClassClass">{{l("Instructors")}}</label>
-                                <ejs-multiselect #instructor_multiselect id='multiselectelement'
-                                [dataSource]='instructors' [fields]='fields'
-                                [placeholder]='placeholderInstructorSelection'></ejs-multiselect>
+                            <div [hidden]="instructorPersonalLesson" class="form-group">
+                                <label>{{l("Instructors")}} *</label>
+                                <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"
+                                    [data]="instructors" [(ngModel)]="instructorsSelectedItems"
+                                    [ngModelOptions]="{standalone: true}">
+                                </ng-multiselect-dropdown>
+
                             </div>
 
                             <div class="form-group m-form__group">
-                                <label for="Vehicle">{{l("Vehicle")}}</label>
+                                <label for="Vehicle">{{l("Vehicle")}} *</label>
                                 <div class="input-group">
                                     <input class="form-control" id="Vehicle" name="vehicleName"
                                         [(ngModel)]="vehicleName" type="text" disabled>
@@ -153,7 +169,7 @@
                         </div>
 
 
-                        <div class="m--margin-top-40">
+                        <div class="mt-20">
                             <h5>{{l("Time")}}</h5>
                             <div class="row">
                                 <div class="col-6 border-right">
@@ -161,9 +177,10 @@
 
                                     <div class="form-group">
                                         <label for="DrivingLesson_StartTime">{{l("StartDate")}}</label>
-                                        <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier
-                                            [(date)]="startTime" id="DrivingLesson_StartTime"
-                                            name="DrivingLesson_StartTime"   [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
+                                        <input required class="form-control m-input" type="timepicker" bsDatepicker
+                                            datePickerLuxonModifier [(date)]="startTime" id="DrivingLesson_StartTime"
+                                            name="DrivingLesson_StartTime"
+                                            [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
                                     </div>
 
                                     <div class="form-group">
@@ -209,27 +226,67 @@
                                     [(ngModel)]="drivingLesson.internalDescription" name="InternalDescription" />
                             </div>
 
-                            <br />
-                            <div class="checkbox-list">
-                                <label for="DrivingLesson_Completed" class="checkbox">
-                                    <input id="DrivingLesson_Completed" type="checkbox" name="Completed"
-                                        [(ngModel)]="drivingLesson.completed">
+                            <div class="form-group">
+                                <div class="radio-list">
+                                    <label class="radio">
+                                        <input type="radio" name="state" id="state1" [value]="1"
+                                            [(ngModel)]="currentState" (change)="updateState()">
+                                        <span></span>
+                                        {{l("NotSet")}}
+
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="state" id="state2" [value]="2"
+                                            [(ngModel)]="currentState" (change)="updateState()">
                                         <span></span>
                                         {{l("Completed")}}
-                                   
-                                </label>
+
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="state" id="state3" [value]="3"
+                                            [(ngModel)]="currentState" (change)="updateState()">
+                                        <span></span>
+                                        {{l("StudentNotPresent")}}
+
+                                    </label>
+                                </div>
+                            </div>
+                            <div *ngIf="drivingLesson != null && drivingLesson.studentNotPresent" class="form-group">
+                                <h5>{{l('BillStudent')}}</h5>
+                                <div class="radio-list">
+                                    <label class="radio">
+                                        <input type="radio" name="billStudent_yes" [value]="true"
+                                            [(ngModel)]="drivingLesson.billToStudent">
+                                        <span></span>
+                                        {{l('Yes')}}
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="billStudent_no" [value]="false"
+                                            [(ngModel)]="drivingLesson.billToStudent">
+                                        <span></span>
+                                        {{l('No')}}
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
+                    </div>
+
+                    <div *ngIf="studentCourses != null && studentCourses.length == 0">
+                        <alert type="info">
+                            <strong>Note</strong>
+                            {{l("NoCourseSelected")}}!
+                        </alert>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button *ngIf="drivingLesson.id"
-                        [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') "
+                        [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') && !this.isGranted('Pages.Students.DrivingLessons.Delete')"
                         type="button" class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
-                    <button type="submit" class="btn btn-primary blue" [disabled]="!drivingLessonForm.form.valid"
+                    <button type="submit" class="btn btn-primary blue"
+                        [disabled]="!drivingLessonForm.form.valid || selectedStudentCourse == null || !instructorSelected() || !vehicleSelected()"
                         [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>

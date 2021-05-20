@@ -36,6 +36,7 @@ export class PricePackageLookupTableModalComponent extends AppComponentBase {
     show(): void {
         this.active = true;
         this.paginator.rows = 5;
+        this.filterText = '';
         this.getAll();
         this.modal.show();
     }

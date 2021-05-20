@@ -9,7 +9,7 @@
 						<span *ngIf="!student.id">{{l("CreateNewStudent")}}</span>
 					</h4>
 					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-						<span aria-hidden="true">&times;</span>
+						<i aria-hidden="true" class="ki ki-close"></i>
 					</button>
 				</div>
 				<div class="modal-body">
@@ -105,12 +105,6 @@
 					</div>
 
 					<div class="form-group">
-						<label for="Student_State">{{l("State")}}</label>
-						<input type="text" id="Student_State" class="form-control" [(ngModel)]="student.state"
-							name="State" />
-					</div>
-
-					<div class="form-group">
 						<label for="Student_Country">{{l("Country")}}</label>
 						<input type="text" id="Student_Country" class="form-control" [(ngModel)]="student.country"
 							name="Country" />
@@ -133,6 +127,19 @@
 						</div>
 					</div>
 					<input class="form-control" name="defaultInstructorId" [(ngModel)]="student.defaultInstructorId" type="text"  hidden>
+
+					<div class="form-group">
+						<label for="DefaultVehicle">{{l("DefaultVehicle")}}</label>
+						<div class="input-group">
+							<input class="form-control" id="vehicleName" name="vehicleName" [(ngModel)]="vehicleName" type="text" disabled>     
+							<div class="input-group-append">
+								<button class="btn btn-primary blue" (click)="openSelectVehicleModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+							</div> <div class="input-group-prepend">
+								<button class="btn btn-danger btn-icon" type="button" (click)="setVehicleNull()"><i class="fa fa-times"></i></button>
+							</div>
+						</div>
+					</div>
+					<input class="form-control" name="defaultVehicleId" [(ngModel)]="student.defaultVehicleId" type="text"  hidden>
 
 					<div class="form-group">
 						<label for="Student_DefaultLocation">{{l("DefaultLocation")}}</label>
@@ -193,4 +200,5 @@
 		</div>
 	</div>
 	<instructorLookupTableModal #instructorLookupTableModal (modalSave)="getNewInstructorId()"></instructorLookupTableModal>
+	<vehicleLookupTableModal #vehicleLookupTableModal (modalSave)="getNewVehicleId()"></vehicleLookupTableModal>
 </div>

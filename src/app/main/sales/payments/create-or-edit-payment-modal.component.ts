@@ -1,7 +1,7 @@
 ﻿import { Component, ViewChild, Injector, Output, EventEmitter } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { finalize } from "rxjs/operators";
-import { PaymentsServiceProxy, CreateOrEditPaymentDto } from "@shared/service-proxies/service-proxies";
+import { PaymentsServiceProxy, CreateOrEditPaymentDto, StudentInvoicesServiceProxy } from "@shared/service-proxies/service-proxies";
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { DateTime } from "luxon";
 
@@ -26,11 +26,18 @@ export class CreateOrEditPaymentModalComponent extends AppComponentBase {
 
     studentInvoiceUserFriendlyInvoiceId = "";
 
-    constructor(injector: Injector, private _paymentsServiceProxy: PaymentsServiceProxy, private _dateTimeService: DateTimeService) {
+    installments;
+    selectedInstallment;
+
+    constructor(injector: Injector, private _paymentsServiceProxy: PaymentsServiceProxy, private _studentInvoicesServiceProxy: StudentInvoicesServiceProxy, private _dateTimeService: DateTimeService) {
         super(injector);
     }
 
     show(paymentId?: number): void {
+
+        this.installments = null;
+        this.selectedInstallment = null;
+
         if (!paymentId) {
             this.payment = new CreateOrEditPaymentDto();
             this.payment.id = paymentId;
@@ -53,6 +60,11 @@ export class CreateOrEditPaymentModalComponent extends AppComponentBase {
 
     save(): void {
         this.saving = true;
+
+        if(this.selectedInstallment != null)
+            this.payment.installmentId = this.selectedInstallment.id;
+
+            console.log(this.payment);
 
         this._paymentsServiceProxy
             .createOrEdit(this.payment)
@@ -82,6 +94,12 @@ export class CreateOrEditPaymentModalComponent extends AppComponentBase {
     getNewStudentInvoiceId() {
         this.payment.studentInvoiceId = this.paymentStudentInvoiceLookupTableModal.id;
         this.studentInvoiceUserFriendlyInvoiceId = this.paymentStudentInvoiceLookupTableModal.displayName;
+
+        this._studentInvoicesServiceProxy.getInstallmentsOfStudentInvoice(this.payment.studentInvoiceId).subscribe((result) => 
+        {
+            console.log(result);
+            this.installments = result;
+        });
     }
 
     close(): void {

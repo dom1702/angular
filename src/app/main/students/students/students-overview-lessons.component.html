@@ -4,9 +4,11 @@
     <div class="mt-10">
 
         <div class="col text-right">
-            <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createExam()"
+            <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="addTheoryLessonManually()"
+            class="btn btn-secondary blue"><i class="fa fa-plus"></i> {{l("AddTheoryLessonManually")}}</button>
+            <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="createExam()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewExam")}}</button>
-            <button *ngIf="isGranted('Pages.DrivingLessons.Create')" (click)="createDrivingLesson()"
+            <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="createDrivingLesson()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewDrivingLesson")}}</button>
             <button *ngIf="isGranted('Pages.SimulatorLessons.Create')" (click)="createSimulatorLesson()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewSimulatorLesson")}}</button>
@@ -53,12 +55,17 @@
                             {{l('Simulator')}}
                             <p-sortIcon field="doneOnSimulator"></p-sortIcon>
                         </th>
+
+                        <th style="width: 50px" pSortableColumn="billToStudent">
+                            {{l('Bill')}}
+                            <p-sortIcon field="billToStudent"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-record="$implicit">
                     <tr>
                         <td style="width: 150px"
-                            [hidden]="!isGrantedAny('Pages.DrivingLessons.Edit', 'Pages.DrivingLessons.Delete')">
+                            [hidden]="!isGrantedAny('Pages.Students.DrivingLessons', 'Pages.Students.DrivingLessons.Edit', 'Pages.Students.DrivingLessons.Delete')">
                             <!-- <div class="btn-group dropdown" dropdown container="body">
                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                     <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
@@ -95,11 +102,11 @@
                                     (click)="showView(record)"><i class="fa fa-eye"></i></button>
 
                                     <button type="button" class="btn btn-outline-secondary btn-icon"
-                                    *ngIf="permission.isGranted('Pages.DrivingLessons.Edit')"
+                                    *ngIf="permission.isGranted('Pages.Students.DrivingLessons.Edit')"
                                     (click)="createOrEdit(record)"><i class="fa fa-edit"></i></button>
 
                                     <button type="button" class="btn btn-outline-secondary btn-icon"
-                                    *ngIf="permission.isGranted('Pages.DrivingLessons.Delete')"
+                                    *ngIf="permission.isGranted('Pages.Students.DrivingLessons.Delete')"
                                     (click)="deleteDrivingLesson(record)"><i class="fa fa-trash"></i></button>
                                 </div>
                            
@@ -147,6 +154,13 @@
                             <div *ngIf="!record.doneOnSimulator" class="text-center"><i class="fa fa-times-circle"
                                     title="False"></i></div>
                         </td>
+                        <td style="width:100px">
+                            <span class="p-column-title"> {{l('Bill')}}</span>
+                            <div *ngIf="record.billToStudent" class="text-center"><i
+                                    class="fa fa-check-circle m--font-success" title="True"></i></div>
+                            <div *ngIf="!record.billToStudent" class="text-center"><i class="fa fa-times-circle"
+                                    title="False"></i></div>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -163,5 +177,7 @@
     <createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="refresh()">
     </createOrEditSimulatorLessonModal>
     <viewSimulatorLessonModal #viewSimulatorLessonModal></viewSimulatorLessonModal>
+    <createOrEditForeignTheoryLessonModal #createOrEditForeignTheoryLessonModal (modalSave)="refresh()">
+    </createOrEditForeignTheoryLessonModal>
 
 </div>

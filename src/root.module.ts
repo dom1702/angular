@@ -33,6 +33,7 @@ import { LocaleMappingService } from '@shared/locale-mapping.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 
+
 export function appInitializerFactory(
     injector: Injector,
     platformLocation: PlatformLocation) {

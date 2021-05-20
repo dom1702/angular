@@ -12,6 +12,7 @@ import { PricePackageLookupTableModalComponent } from './pricePackage-lookup-tab
 import { TableModule } from 'primeng/table';
 import { CreateOrEditPricePackageModalComponent } from '@app/shared/common/sales/pricePackages/create-or-edit-pricePackage-modal.component';
 import { StudentsOverviewComponent } from './students-overview.component';
+import { ChangePricePackageModalComponent } from './change-price-package-modal.component';
 
 @Component({
     selector: 'students-overview-pricePackage',
@@ -24,6 +25,8 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
     @ViewChild('pricePackageLookupTableModal', { static: true }) pricePackageLookupTableModal: PricePackageLookupTableModalComponent;
     // This component is shared between this class and the price package admin part, maybe moving it into a shared folder?
     @ViewChild('createOrEditPricePackageModal', { static: true }) createOrEditPricePackageModal: CreateOrEditPricePackageModalComponent;
+    @ViewChild('changePricePackageModal', { static: true }) changePricePackageModal: ChangePricePackageModalComponent;
+    
 
     @Input() student: StudentDto;
     @Input() selectedStudentCourse: StudentCourseDto;
@@ -32,6 +35,8 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
     pricePackage: PricePackageDto;
 
     pricePackageName: string = 'None';
+
+    subscription : Subscription;
 
     constructor(
         injector: Injector,
@@ -44,21 +49,29 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
         super(injector);
     }
 
-    ngOnInit(): void {
-       this.refresh();
+    ngOnInit(): void 
+    {
+       this.parentOverview.onPricePackagesTabSelected.subscribe(() => {
 
-       this.parentOverview.courseChanged.subscribe(() => {
-
-        // At this point we need to wait a short time because Input variable student is not yet refreshed
-         setTimeout(() => {
             this.refresh();
-        }, 100);
-     
+
+            this.subscription = this.parentOverview.courseChanged.subscribe(() =>
+            {
+                // At this point we need to wait a short time because Input variable student is not yet refreshed
+                 setTimeout(() => {
+                    this.refresh();
+                }, 100);
+            });
+        });
+
+        this.parentOverview.onPricePackagesTabDeselected.subscribe(() => {
+
+            this.subscription.unsubscribe();
         });
     }
 
     refresh() : void{
-        console.log("refresh");
+
         if (this.selectedStudentCourse.pricePackageId != null) {
             this._pricePackageServiceProxy.getPricePackageForView(this.selectedStudentCourse.pricePackageId).subscribe(result => {
 
@@ -69,19 +82,7 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
     }
 
     updatePricePackage(pricePackageId?: number) {
-        // if (pricePackageId != null) {
-        //     this._pricePackageServiceProxy.getPricePackageForView(pricePackageId).subscribe(result => {
 
-        //         this.pricePackage = result.pricePackage;
-        //         this.pricePackageName = result.pricePackage.name;
-        //     });
-        // }
-        // else
-        // {
-        //     this.pricePackage = null;
-        //     this.pricePackageName = null;
-        // }
-        console.log("update");
         this._pricePackageServiceProxy.getPricePackageForView(this.selectedStudentCourse.pricePackageId).subscribe(result => {
 
             this.pricePackage = result.pricePackage;
@@ -89,6 +90,24 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
         });
 
         this.parentOverview.UpdateStudentView();
+    }
+
+    updateAfterChangingPricePackage()
+    {
+        var newPricePackageId = this.changePricePackageModal.newPricePackageId;
+        console.log(newPricePackageId);
+        this._pricePackageServiceProxy.getPricePackageForView(newPricePackageId).subscribe(result => {
+
+            this.pricePackage = result.pricePackage;
+            this.pricePackageName = result.pricePackage.name;
+        });
+
+        this.parentOverview.UpdateStudentView();
+    }
+
+    changePricePackage()
+    {
+        this.changePricePackageModal.show(this.student.id, this.selectedStudentCourse.course.id, this.selectedStudentCourse.pricePackage);
     }
 
     editPricePackage() {

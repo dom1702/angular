@@ -1,0 +1,248 @@
+﻿<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Todos' | localize" [description]="'TodosHeaderInfo' | localize">
+            <div role="actions">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{ l("ExportToExcel") }}</button>
+
+                <button *ngIf="isGranted('Pages.Administration.Todos.Create')" (click)="createTodo()" class="btn btn-primary blue">
+                    <i class="fa fa-plus"></i> {{ l("CreateNewTodo") }}
+                </button>
+            </div>
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <form class="form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input
+                                                [(ngModel)]="filterText"
+                                                name="filterText"
+                                                autoFocus
+                                                class="form-control m-input"
+                                                [placeholder]="l('SearchWithThreeDot')"
+                                                type="text"
+                                            />
+                                            <span class="input-group-btn">
+                                                <button (click)="getTodos()" class="btn btn-primary" type="submit">
+                                                    <i class="flaticon-search-1"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="TitleFilter">{{ l("Title") }}</label>
+                                        <input type="text" class="form-control" id="TitleFilter" name="titleFilter" [(ngModel)]="titleFilter" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="IsPredefinedFilterSelect">{{ l("IsPredefined") }}</label>
+                                    <select
+                                        class="form-control"
+                                        name="IsPredefinedFilter"
+                                        id="IsPredefinedFilterSelect"
+                                        [(ngModel)]="isPredefinedFilter"
+                                    >
+                                        <option value="-1">{{ l("All") }}</option>
+                                        <option value="0">{{ l("False") }}</option>
+                                        <option value="1">{{ l("True") }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="AddToNewStudentsFilterSelect">{{ l("AddToNewStudents") }}</label>
+                                    <select
+                                        class="form-control"
+                                        name="AddToNewStudentsFilter"
+                                        id="AddToNewStudentsFilterSelect"
+                                        [(ngModel)]="addToNewStudentsFilter"
+                                    >
+                                        <option value="-1">{{ l("All") }}</option>
+                                        <option value="0">{{ l("False") }}</option>
+                                        <option value="1">{{ l("True") }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="LicenseClassesFilter">{{ l("LicenseClasses") }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="LicenseClassesFilter"
+                                            name="licenseClassesFilter"
+                                            [(ngModel)]="licenseClassesFilter"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span
+                                        class="clickable-item text-muted"
+                                        *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
+                                        ><i class="fa fa-angle-down"></i> {{ l("ShowAdvancedFilters") }}</span
+                                    >
+                                    <span
+                                        class="clickable-item text-muted"
+                                        *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
+                                        ><i class="fa fa-angle-up"></i> {{ l("HideAdvancedFilters") }}</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table
+                                #dataTable
+                                (onLazyLoad)="getTodos($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                                [paginator]="false"
+                                [lazy]="true"
+                                [scrollable]="true"
+                                ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns"
+                            >
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th
+                                            style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Administration.Todos.Edit', 'Pages.Administration.Todos.Delete')"
+                                        >
+                                            {{ l("Actions") }}
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="title">
+                                            {{ l("Title") }}
+                                            <p-sortIcon field="todo.title"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="isPredefined">
+                                            {{ l("IsPredefined") }}
+                                            <p-sortIcon field="todo.isPredefined"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="addToNewStudents">
+                                            {{ l("AddToNewStudents") }}
+                                            <p-sortIcon field="todo.addToNewStudents"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="licenseClasses">
+                                            {{ l("LicenseClasses") }}
+                                            <p-sortIcon field="todo.licenseClasses"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="orderNo">
+                                            {{ l("Order") }}
+                                            <p-sortIcon field="todo.orderNo"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                                    <tr>
+                                        <td
+                                            style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Administration.Todos.Edit', 'Pages.Administration.Todos.Delete')"
+                                        >
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span> {{ l("Actions") }}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item" (click)="viewTodoModal.show(record)">{{
+                                                            l("View")
+                                                        }}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a
+                                                            href="javascript:;"
+                                                            *ngIf="permission.isGranted('Pages.Administration.Todos.Edit')"
+                                                            class="dropdown-item"
+                                                            (click)="createOrEditTodoModal.show(record.todo.id)"
+                                                            >{{ l("Edit") }}</a
+                                                        >
+                                                    </li>
+                                                    <li>
+                                                        <a
+                                                            class="dropdown-item"
+                                                            href="javascript:;"
+                                                            *ngIf="!record.todo.isPredefined && permission.isGranted('Pages.Administration.Todos.Delete')"
+                                                            (click)="deleteTodo(record.todo)"
+                                                            >{{ l("Delete") }}</a
+                                                        >
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="p-column-title"> {{ l("Title") }}</span>
+                                            {{ record.todo.title }}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="p-column-title"> {{ l("IsPredefined") }}</span>
+                                            <div *ngIf="record.todo.isPredefined" class="text-center">
+                                                <i class="fa fa-check-circle text-success" title="True"></i>
+                                            </div>
+                                            <div *ngIf="!record.todo.isPredefined" class="text-center">
+                                                <i class="fa fa-times-circle" title="False"></i>
+                                            </div>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="p-column-title"> {{ l("AddToNewStudents") }}</span>
+                                            <div *ngIf="record.todo.addToNewStudents" class="text-center">
+                                                <i class="fa fa-check-circle text-success" title="True"></i>
+                                            </div>
+                                            <div *ngIf="!record.todo.addToNewStudents" class="text-center">
+                                                <i class="fa fa-times-circle" title="False"></i>
+                                            </div>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="p-column-title"> {{ l("LicenseClass") }}</span>
+                                            {{ record.todo.licenseClass }}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="p-column-title"> {{ l("OrderNo") }}</span>
+                                            {{ record.todo.orderNo }}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{ l("NoData") }}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator
+                                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                    #paginator
+                                    (onPageChange)="getTodos($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                >
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{ l("TotalRecordsCount", primengTableHelper.totalRecordsCount) }}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <createOrEditTodoModal #createOrEditTodoModal (modalSave)="getTodos()"></createOrEditTodoModal>
+        <viewTodoModal #viewTodoModal></viewTodoModal>
+    </div>
+</div>

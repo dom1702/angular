@@ -7,7 +7,7 @@
                         <span>{{l("EditStudentsList")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                        <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -71,15 +71,15 @@
                                         </td>
 
                                         <td style="width:100px">
-                                                <span class="ui-column-title"> {{l('Id')}}</span>
+                                                <span class="p-column-title"> {{l('Id')}}</span>
                                                 {{record.id}}
                                             </td>
                                         <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('FirstName')}}</span>
+                                                <span class="p-column-title"> {{l('FirstName')}}</span>
                                                 {{record.firstName}}
                                             </td>
                                         <td style="width:150px">
-                                                <span class="ui-column-title"> {{l('LastName')}}</span>
+                                                <span class="p-column-title"> {{l('LastName')}}</span>
                                                 {{record.lastName}}
                                             </td>
 

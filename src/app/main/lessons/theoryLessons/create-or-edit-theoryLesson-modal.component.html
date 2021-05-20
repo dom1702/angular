@@ -1,4 +1,5 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form *ngIf="active" #theoryLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -8,93 +9,143 @@
                         <span *ngIf="!theoryLesson.id">{{l("CreateNewTheoryLesson")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                        <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group m-form__group">
-                        <label for="LicenseClassClass">{{l("Instructors")}}</label>
-						<ng-multiselect-dropdown
-                        [placeholder]="placeholder"
-                        [settings]="dropdownSettings"
-						[data]="dropdownList"
-						[(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
-						>
-						</ng-multiselect-dropdown>
-					</div> 
-
-					<div class="form-group m-form__group">
+                    <div class="form-group">
                         <label for="LicenseClassClass">{{l("LicenseClass")}}</label>
                         <div class="input-group">
-                            <input class="form-control" id="LicenseClassClass" name="licenseClassClass" [(ngModel)]="licenseClass" type="text" disabled>     
+                            <input class="form-control" id="LicenseClassClass" name="licenseClassClass"
+                                [(ngModel)]="licenseClass" type="text" disabled>
                             <div class="input-group-append">
-                                <button class="btn btn-primary blue" (click)="openSelectLicenseClassModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
-                            </div> <div class="input-group-prepend">
-                                <button class="btn btn-danger btn-icon" type="button" (click)="setLicenseClassNull()"><i class="fa fa-times"></i></button>
+                                <button class="btn btn-primary blue" (click)="openSelectLicenseClassModal()"
+                                    type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLicenseClassNull()"><i
+                                        class="fa fa-times"></i></button>
                             </div>
                         </div>
                     </div>
-                    <input class="form-control" name="theoryLesson.licenseClass" [(ngModel)]="theoryLesson.licenseClass" type="text"  hidden>		 
-				
-                    <div class="form-group">
-                        <label for="TheoryLesson_LessonLength">{{l("LessonLength")}}</label>
-                        <input type="number" id="TheoryLesson_LessonLength" class="form-control" [(ngModel)]="theoryLesson.lessonLength" name="LessonLength"  />
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="TheoryLesson_StartTime">{{l("StartDate")}}</label>
-                            <input required class="form-control m-input" type="timepicker" bsDatepicker datePickerLuxonModifier 
-                            [(date)]="startTime" id="TheoryLesson_StartTime" name="TheoryLesson_StartTime"
-                            [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="TheoryLesson_StartTime">{{l("StartTime")}}</label>
-                        <timepicker [(ngModel)]="startTimeTime" name="StartTime" [showMeridian]="false"></timepicker>
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="TheoryLesson_AddingMinutesAfter">{{l("AddingMinutesAfter")}}</label>
-                        <input type="number" id="TheoryLesson_AddingMinutesAfter" class="form-control" [(ngModel)]="theoryLesson.addingMinutesAfter" name="AddingMinutesAfter"  />
+                    <input class="form-control" name="theoryLesson.licenseClass" [(ngModel)]="theoryLesson.licenseClass"
+                        type="text" hidden>
+
+                    <div *ngIf="licenseClass">
+                        <label for="PredefinedTheoryLesson">{{l("Topic")}}</label>
+                        <div class="form-group" *ngIf="predefinedTheoryLessons">
+                            <div class="row">
+                                <div class="col-6" *ngFor="let ptl of predefinedTheoryLessons">
+                                    <div class="form-check">
+                                        <label class="radio">
+                                            <input type="radio" name="ptl_option" [value]="ptl"
+                                                [(ngModel)]="selectedPtl" required>
+                                            <span></span>
+                                            {{ptl.name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="selectedPtl === otherPtl">
+                            <label for="TheoryLesson_Topic">{{l("Topic")}}</label>
+                            <input type="text" id="TheoryLesson_Topic" class="form-control"
+                                [(ngModel)]="theoryLesson.topic" name="Topic" />
+                        </div>
+
+                        <div class="form-group m-form__group">
+                            <label for="OfficeName">{{l("Office")}}</label>
+                            <div class="input-group">
+                                <input class="form-control" id="OfficeName" name="officeName" [(ngModel)]="officeName"
+                                    type="text" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue" (click)="openSelectOfficeModal()" type="button"><i
+                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setOfficeIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="theoryLesson.officeId" [(ngModel)]="theoryLesson.officeId" type="text"
+                            hidden>
+
+                        <div class="form-group">
+                            <label for="LicenseClassClass">{{l("Instructors")}}</label>
+                            <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"
+                                [data]="dropdownList" [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                        <div class="form-group">
+                            <div><label for="TheoryLesson_LessonLength">{{l("NumberOfLessons")}}</label></div>
+                            <div><label>{{numberOfLessonsAddition}}</label></div>
+                            <input type="number" id="TheoryLesson_LessonLength" min="1" max="10" class="form-control"
+                                [(ngModel)]="theoryLesson.lessonLength" name="LessonLength" />
+                        </div>
+
+                        <div class="row">
+                        <div class="form-group col-6">
+                            <label for="TheoryLesson_StartTime">{{l("StartDate")}}</label>
+                            <input required class="form-control m-input" type="timepicker" bsDatepicker
+                                datePickerLuxonModifier [(date)]="startTime" id="TheoryLesson_StartTime"
+                                name="TheoryLesson_StartTime"
+                                [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
+                        </div>
+
+                        <div class="form-group col-6">
+                            <label for="TheoryLesson_StartTime">{{l("StartTime")}}</label>
+                            <timepicker [(ngModel)]="startTimeTime" name="StartTime" [showMeridian]="false">
+                            </timepicker>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="TheoryLesson_Office">{{l("Office")}}</label>
-                        <input type="text" id="TheoryLesson_Office" class="form-control" [(ngModel)]="theoryLesson.office" name="Office"    />
+                        <div class="form-group">
+                            <label for="TheoryLesson_AddingMinutesAfter">{{l("AddingMinutesAfter")}}</label>
+                            <input type="number" id="TheoryLesson_AddingMinutesAfter" class="form-control"
+                                [(ngModel)]="theoryLesson.addingMinutesAfter" name="AddingMinutesAfter" />
+                        </div>
+
+                       
+
+                        <div class="form-group">
+                            <label for="TheoryLesson_Description">{{l("Description")}}</label>
+                            <input type="text" id="TheoryLesson_Description" class="form-control"
+                                [(ngModel)]="theoryLesson.description" name="Description" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TheoryLesson_InternalDescription">{{l("InternalDescription")}}</label>
+                            <input type="text" id="TheoryLesson_InternalDescription" class="form-control"
+                                [(ngModel)]="theoryLesson.internalDescription" name="InternalDescription" />
+                        </div>
+                        <br />
+                        <div class="m-checkbox-list">
+                            <label for="TheoryLesson_Completed" class="m-checkbox">
+                                <input id="TheoryLesson_Completed" type="checkbox" name="Completed"
+                                    [(ngModel)]="completed">
+                                {{l("Completed")}}
+                                <span></span>
+                            </label>
+                        </div>
                     </div>
-        
-                    <div class="form-group">
-                        <label for="TheoryLesson_Topic">{{l("Topic")}}</label>
-                        <input type="text" id="TheoryLesson_Topic" class="form-control" [(ngModel)]="theoryLesson.topic" name="Topic"    />
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="TheoryLesson_Description">{{l("Description")}}</label>
-                        <input type="text" id="TheoryLesson_Description" class="form-control" [(ngModel)]="theoryLesson.description" name="Description"    />
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="TheoryLesson_InternalDescription">{{l("InternalDescription")}}</label>
-                        <input type="text" id="TheoryLesson_InternalDescription" class="form-control" [(ngModel)]="theoryLesson.internalDescription" name="InternalDescription"    />
-                    </div>
-					<br/>
-                    <div class="m-checkbox-list">
-                        <label for="TheoryLesson_Completed" class="m-checkbox">
-                            <input id="TheoryLesson_Completed" type="checkbox" name="Completed" [(ngModel)]="theoryLesson.completed"> 
-                            {{l("Completed")}}
-                            <span></span>
-                        </label>
-                    </div>
-                    <br/>
+                    <br />
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
-                    <button type="submit" class="btn btn-primary blue" [disabled]="!theoryLessonForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!theoryLessonForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
                 </div>
             </form>
         </div>
     </div>
-	<drivingLesson-licenseClassLookupTableModal #licenseClassLookupTableModal (modalSave)="getNewLicenseClass()"></drivingLesson-licenseClassLookupTableModal>
-   
+    <drivingLesson-licenseClassLookupTableModal #licenseClassLookupTableModal (modalSave)="getNewLicenseClass()">
+    </drivingLesson-licenseClassLookupTableModal>
+    <officeLookupTableModal #officeLookupTableModal (modalSave)="getNewOfficeId()">
+    </officeLookupTableModal>
 
 </div>

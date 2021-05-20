@@ -12,6 +12,7 @@ import {Table} from 'primeng/table';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
+import { EditStudentsCourseModalComponent } from './edit-students-course-modal.component';
 
 @Component({
     templateUrl: './courses.component.html',
@@ -24,6 +25,7 @@ export class CoursesComponent extends AppComponentBase {
     @ViewChild('viewCourseModalComponent', { static: true }) viewCourseModal: ViewCourseModalComponent;
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
+    @ViewChild('editStudentsCourseModalComponent', { static: true }) editStudentsCourseModalComponent: EditStudentsCourseModalComponent;
 
     advancedFiltersAreShown = false;
     filterText = '';

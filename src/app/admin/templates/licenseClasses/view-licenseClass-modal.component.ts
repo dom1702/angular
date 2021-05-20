@@ -17,6 +17,9 @@ export class ViewLicenseClassModalComponent extends AppComponentBase {
 
     item: GetLicenseClassForViewDto;
 
+    ptlList = '';
+    pdlList = '';
+
 
     constructor(
         injector: Injector
@@ -28,6 +31,30 @@ export class ViewLicenseClassModalComponent extends AppComponentBase {
 
     show(item: GetLicenseClassForViewDto): void {
         this.item = item;
+
+        this.ptlList = '';
+        this.pdlList = '';
+
+        for(var i = 0; i < item.licenseClass.predefinedTheoryLessons.length; i++)
+        {
+            if(i != 0)
+            {
+                this.ptlList += ", ";
+            }
+
+            this.ptlList += item.licenseClass.predefinedTheoryLessons[i].name;
+        }
+
+        for(var i = 0; i < item.licenseClass.predefinedDrivingLessons.length; i++)
+        {
+            if(i != 0)
+            {
+                this.pdlList += ", ";
+            }
+
+            this.pdlList += item.licenseClass.predefinedDrivingLessons[i].name;
+        }
+
         this.active = true;
         this.modal.show();
     }

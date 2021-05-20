@@ -8,7 +8,7 @@
 						<span>{{l("AssignToCourse")}}</span>
 					</h4>
 					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-						<span aria-hidden="true">&times;</span>
+						<i aria-hidden="true" class="ki ki-close"></i>
 					</button>
 				</div>
 				<div class="modal-body">
@@ -18,7 +18,7 @@
 						<label>{{student.firstName}} {{student.lastName}}</label>
 					</div>
 
-					<div class="form-group">
+					<div class="form-group" *ngIf="!courseReadOnly">
 						<label class="checkbox">
 							<input type="checkbox" name="showExpiredCourses" [(ngModel)]="showExpiredCourses" (change)="showExpiredCoursesChanged()">
 							<span></span>
@@ -26,7 +26,7 @@
 					
 						</label>
 					</div>
-					<div class="form-group">
+					<div class="form-group" *ngIf="!courseReadOnly">
 						<label>Course: *</label><br>
 						<select required *ngIf="availableCourses" name="selectedCourse" class="form-control"
 							(change)="selectedPricePackage = null" [(ngModel)]="selectedCourse">
@@ -34,6 +34,10 @@
 								{{course.courseName}}
 							</option>
 						</select>
+					</div>
+					<div class="form-group" *ngIf="courseReadOnly">
+						<label>{{l("Course")}}: </label><br>
+						<label>{{selectedCourse.courseName}}</label>
 					</div>
 					<div class="form-group">
 						<label *ngIf="selectedCourse">Price Package: *</label><br>

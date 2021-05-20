@@ -74,21 +74,29 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="SSNFilter">{{l("SSN")}}</label>
-                                        <input type="text" class="form-control" id="SSNFilter"
-                                            name="ssnFilter" [(ngModel)]="ssnFilter">
+                                        <input type="text" class="form-control" id="SSNFilter" name="ssnFilter"
+                                            [(ngModel)]="ssnFilter">
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <label for="MinDateOfBirthFilter">{{l("MinMax")}} {{l("DateOfBirth")}}</label>
-                                        <div class="input-group">
-                                            <input class="form-control m-input" id="MinDateOfBirthFilter"
-                                                name="MinDateOfBirthFilter" type="datetime" bsDatepicker
-                                                placeholder="{{l('MinValue')}}" [(ngModel)]="minDateOfBirthFilter">
-                                            <input class="form-control m-input" id="MaxDateOfBirthFilter"
-                                                name="MaxDateOfBirthFilter" type="datetime" bsDatepicker
-                                                placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDateOfBirthFilter">
-                                        </div>
-                                    </div> -->
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinLastLoginFilter">{{l("MinMax")}}
+                                            {{l("LastLogin")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinLastLoginFilter"
+                                                name="MinLastLoginFilter" type="datetime" bsDatepicker
+                                                datePickerLuxonModifier placeholder="{{l('MinValue')}}"
+                                                [(date)]="minLastLoginFilter"
+                                                [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY' }">
+                                            <input class="form-control m-input" id="MaxLastLoginFilter"
+                                                name="MaxLastLoginFilter" type="datetime" bsDatepicker
+                                                datePickerLuxonModifier placeholder="{{l('MaxValue')}}"
+                                                [(date)]="maxLastLoginFilter"
+                                                [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY' }">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="CityFilter">{{l("City")}}</label>
@@ -101,13 +109,6 @@
                                         <label for="ZipCodeFilter">{{l("ZipCode")}}</label>
                                         <input type="text" class="form-control" id="ZipCodeFilter" name="zipCodeFilter"
                                             [(ngModel)]="zipCodeFilter">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="StateFilter">{{l("State")}}</label>
-                                        <input type="text" class="form-control" id="StateFilter" name="stateFilter"
-                                            [(ngModel)]="stateFilter">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -177,8 +178,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                        <td style="width: 130px"
-                                            [hidden]="!isGrantedAny('Pages.Students.Edit', 'Pages.Students.Delete')">
+                                        <td style="width: 130px">
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
@@ -239,7 +239,7 @@
                                 {{l('NoData')}}
                             </div>
                             <div class="primeng-paging-container">
-                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                                     (onPageChange)="getStudents($event)"
                                     [totalRecords]="primengTableHelper.totalRecordsCount"
                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">

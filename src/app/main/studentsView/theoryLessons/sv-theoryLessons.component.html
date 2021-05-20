@@ -20,56 +20,40 @@
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div *ngIf="selectedStudentCourse != null">
-                        <h5 class="text-md-center">{{l("TheoryLessons")}} </h5>
                         <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-md-3 col-sm-12">
-                                    <div class="mt-10">
-
-                                        <div class="card">
-                                            <div class="card-header">
-                                                {{('Legend')}}
-                                            </div>
-                                            <div class="card-body">
-                                                <div><i class="fa fa-times-circle" title="True"></i><label
-                                                        style="padding-left:10px">{{('NotStarted')}}</label></div>
-                                                <div><i class="fa fa-spinner" title="False"></i><label
-                                                        style="padding-left:10px">{{('Running')}}</label>
-                                                </div>
-                                                <div><i class="fa fa-check-circle m--font-success"
-                                                        title="False"></i><label
-                                                        style="padding-left:10px">{{('Completed')}}</label></div>
-                                                <div><i class="fa fa-times-circle m--font-danger"
-                                                        title="False"></i><label
-                                                        style="padding-left:10px">{{('Canceled')}}</label></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;Start
+                                        Theory Lesson</a>
                                 </div>
-                                <div class="col-md-9 col-sm-12">
-                                    <div class="mt-10">
-                                        <div class="row">
-                                            <div class="col-6" *ngFor="let ptl of theoryLessons; index as i">
+                            </div>
+                            <div class="row justify-content-around">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="row my-10">
+                               
+                                        <div class="col-5 shadow p-3 m-5 bg-white rounded" *ngFor="let ptl of theoryLessons; index as i">
                                                 <div *ngIf="ptl.currentState === 0" class="text-center"><i
-                                                        class="fa fa-times-circle"
-                                                        title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                                    class="fa fa-times" style="color: Tomato;"
+                                                        title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
                                                 <div *ngIf="ptl.currentState === 1" class="text-center"><i
                                                         class="fa fa-spinner"
                                                         title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
                                                 <div *ngIf="ptl.currentState === 2" class="text-center"><i
-                                                        class="fa fa-check-circle m--font-success"
-                                                        title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                                    class="fa fa-check"
+                                                    style="color: rgb(71, 207, 58);"
+                                                        title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
                                                 <div *ngIf="ptl.currentState === 3" class="text-center"><i
-                                                        class="fa fa-times-circle m--font-danger"
-                                                        title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                                    class="fa fa-times" style="color: Tomato;"
+                                                        title="False"></i><label>&nbsp;{{ptl.name}} <span class="badge bg-warning">{{l('Canceled')}}</span></label></div>
                                             </div>
-                                        </div>
+                                       
                                     </div>
 
                                 </div>
                             </div>
                         </div>
+                        <hr />
                         <div class="mt-10">
                             <h5 class="text-md-center">{{l("Details")}} </h5>
                         </div>
@@ -113,7 +97,7 @@
                                                 <td style="width:150px">
                                                     <span class="p-column-title"> {{l('StartTime')}}</span>
                                                     <span *ngIf="record.startTime">
-                                                        {{record.startTime}}
+                                                        {{record.startTime | luxonFormat:'F'}}
                                                         <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
                                                     </span>
                                                     <span *ngIf="!record.startTime">-</span>
@@ -133,11 +117,11 @@
 
                                                 <td style="width:100px">
                                                     <span class="p-column-title"> {{l('Completed')}}</span>
-                                                    <div *ngIf="record.currentState === 2" class="text-center"><i
-                                                            class="fa fa-check-circle m--font-success" title="True"></i>
+                                                    <div *ngIf="record.currentState === 2" class="text-center"><i class="fa fa-check"
+                                                        style="color: rgb(71, 207, 58);" title="True"></i>
                                                     </div>
                                                     <div *ngIf="record.currentState !== 2" class="text-center"><i
-                                                            class="fa fa-times-circle" title="False"></i></div>
+                                                        class="fa fa-times" style="color: Tomato;" title="False"></i></div>
                                                 </td>
 
                                             </tr>
@@ -152,14 +136,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-10">
-                            <div class="text-md-center">
-                                <button type="button" class="btn btn-primary mr-5"
-                                    routerLink="/app/main/studentsView/theoryCourse/quiz">{{l("PrepareLessonStart")}}
-                                </button>
-                            </div>
-
-                        </div>
+                        
                     </div>
 
                     <div *ngIf="selectedStudentCourse == null">

@@ -28,6 +28,7 @@ export class ViewSimulatorLessonModalComponent extends AppComponentBase {
     }
 
     show(item: GetSimulatorLessonForViewDto): void {
+        console.log(item);
         this.item = item;
         this.active = true;
         this.modal.show();

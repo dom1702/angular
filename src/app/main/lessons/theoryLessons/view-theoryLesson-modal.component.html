@@ -6,7 +6,7 @@
                     <span>{{l("Details")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <h6>{{l("StartTime")}} :</h6>
-                        {{item.theoryLesson.startTime}}
+                        {{item.theoryLesson.startTime | luxonFormat:'F'}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("LessonLength")}} :</h6>
@@ -26,21 +26,20 @@
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Instructor")}} :</h6>
-                        {{instructorList}}
+                        {{instructorList | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Office")}} :</h6>
-                        {{item.theoryLesson.office}}
+                        {{item.officeName | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Topic")}} :</h6>
-                        {{item.theoryLesson.topic}}
+                        {{item.theoryLesson.topic| replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("Completed")}} :</h6>
                         {{item.theoryLesson.completed}}
                     </div>
-
                     <div class="col-6 mb-3">
                         <h6>{{l("LicenseClass")}} :</h6>
                         {{item.theoryLesson.licenseClass}}
@@ -51,7 +50,12 @@
                     </div>
 
                 </div>
-
+                <div class="row mt-15 mx-3">
+                    <p class="font-italic">Created: {{item.theoryLesson.creationTime | luxonFormat:'F' }} ({{item.theoryLesson.creationFullName }})</p>
+                </div>
+                <div class="row mx-3" *ngIf="item.theoryLesson.lastModificationTime != undefined">
+                    <p class="font-italic">Last modification: {{item.theoryLesson.lastModificationTime | luxonFormat:'F' }} ({{item.theoryLesson.lastModificationFullName }})</p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>

@@ -7,7 +7,7 @@
                     <span>{{l("Details")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -42,7 +42,12 @@
                         {{item.simulatorLesson.startCode}}
                     </div>
                 </div>
-
+                <div class="row mt-15 mx-3">
+                    <p class="font-italic">Created: {{item.simulatorLesson.creationTime | luxonFormat:'F' }} ({{item.simulatorLesson.creationFullName }})</p>
+                </div>
+                <div class="row mx-3" *ngIf="item.simulatorLesson.lastModificationTime != undefined">
+                    <p class="font-italic">Last modification: {{item.simulatorLesson.lastModificationTime | luxonFormat:'F' }} ({{item.simulatorLesson.lastModificationFullName }})</p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button [disabled]="saving" type="button" class="btn btn-primary blue"

@@ -38,7 +38,7 @@
               }
             ],
             "styles": [
-              
+              "node_modules/@progress/kendo-theme-bootstrap/dist/all.css",
               "node_modules/animate.css/animate.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
@@ -52,6 +52,8 @@
               "node_modules/@fullcalendar/core/main.css",
     "node_modules/@fullcalendar/daygrid/main.min.css",
     "node_modules/@fullcalendar/timegrid/main.min.css",
+
+
 
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.css",
@@ -166,6 +168,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "styles": [
+              "node_modules/@progress/kendo-theme-bootstrap/dist/all.css",
               "node_modules/animate.css/animate.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
@@ -180,6 +183,8 @@
               "node_modules/@fullcalendar/daygrid/main.min.css",
               "node_modules/@fullcalendar/timegrid/main.min.css",
 
+        
+              
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.css",
               "src/assets/primeng/tree/css/primeng.tree.css",

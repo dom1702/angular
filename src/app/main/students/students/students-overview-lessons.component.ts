@@ -16,6 +16,8 @@ import { CreateOrEditDrivingLessonModalComponent } from '@app/main/lessons/drivi
 import { CreateOrEditSimulatorLessonModalComponent } from '@app/main/lessons/simulatorLessons/create-or-edit-simulatorLesson-modal.component';
 import { ViewSimulatorLessonModalComponent } from '@app/main/lessons/simulatorLessons/view-simulatorLesson-modal.component';
 import { CreateOrEditExamDrivingModalComponent } from '@app/main/lessons/drivingLessons/create-or-edit-examDriving-modal.component';
+import { CreateOrEditForeignTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'students-overview-lessons',
@@ -31,11 +33,14 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
     @ViewChild('createOrEditExamDrivingModal') createOrEditExamDrivingModal: CreateOrEditExamDrivingModalComponent;
     @ViewChild('createOrEditSimulatorLessonModal') createOrEditSimulatorLessonModal: CreateOrEditSimulatorLessonModalComponent;
     @ViewChild('viewSimulatorLessonModal') viewSimulatorLessonModal: ViewSimulatorLessonModalComponent;
+    @ViewChild('createOrEditForeignTheoryLessonModal') createOrEditForeignTheoryLessonModal: CreateOrEditForeignTheoryLessonModalComponent;
 
     @Input() student: StudentDto;
     @Input() parentOverview: StudentsOverviewComponent;
 
     lessons: DrivingLessonOfCourseDto[];
+
+    subscription : Subscription;
 
     constructor(
         injector: Injector,
@@ -52,13 +57,24 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
         this.parentOverview.lessonsTabSelected.subscribe(() => {
 
-            if(this.lessons != null)
-                return;
+            //if(this.lessons != null)
+            //    return;
 
             this.refresh();
+
+            this.subscription = this.parentOverview.courseChanged.subscribe(() =>
+            {
+                // At this point we need to wait a short time because Input variable student is not yet refreshed
+                 setTimeout(() => {
+                    this.refresh();
+                }, 100);
+            });
         });
 
+        this.parentOverview.lessonsTabDeselected.subscribe(() => {
 
+            this.subscription.unsubscribe();
+        });
     }
     
     refresh() : void
@@ -82,7 +98,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
                     doneOnSimulator: i.doneOnSimulator, // not implemented
                     predefinedDrivingLessonId: i.predefinedDrivingLessonId,
                     feedbackPdfFileGuid: i.feedbackPdfFile,
-                    isExam: i.isExam
+                    isExam: i.isExam,
+                    billToStudent: i.billToStudent
                 }
 
                 if(lesson.predefinedDrivingLessonId == null && !lesson.isExam)
@@ -92,6 +109,7 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
                 drivingLessons.push(lesson);
             }
+            console.log(drivingLessons);
 
             this.primengTableHelper.totalRecordsCount = drivingLessons.length;
             this.primengTableHelper.records = drivingLessons;
@@ -172,16 +190,21 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
     createDrivingLesson(): void {
         // Instructor specific lesson with preselected instructor must work too !!!
-        this.createOrEditDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName);
+        this.createOrEditDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, null, this.parentOverview.selectedStudentCourse.course.id);
     }
 
     createExam(): void {
         // Instructor specific lesson with preselected instructor must work too !!!
-        this.createOrEditExamDrivingModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName);
+        this.createOrEditExamDrivingModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName,  null, this.parentOverview.selectedStudentCourse.course.id);
     }
 
     createSimulatorLesson(): void {
         this.createOrEditSimulatorLessonModal.show(null, this.parentOverview.student.id, this.parentOverview.student.firstName + " " + this.parentOverview.student.lastName);
+    }
+
+    addTheoryLessonManually() : void
+    {
+        this.createOrEditForeignTheoryLessonModal.show(this.parentOverview.selectedStudentCourse.course.licenseClass, this.parentOverview.selectedStudentCourse.course.id, this.parentOverview.student.id);
     }
 
     downloadFeedbackPdf(record): void

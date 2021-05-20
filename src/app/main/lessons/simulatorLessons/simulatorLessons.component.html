@@ -158,13 +158,18 @@
                                                             *ngIf="permission.isGranted('Pages.SimulatorLessons.Delete')"
                                                             (click)="deleteSimulatorLesson(record.simulatorLesson)">{{l('Delete')}}</a>
                                                     </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="entityHistoryEnabled"
+                                                            (click)="showHistory(record.simulatorLesson)">{{l('History')}}</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('StartTime')}}</span>
                                             <span *ngIf="record.simulatorLesson.startTime">
-                                                {{record.simulatorLesson.startTime}}
+                                                {{record.simulatorLesson.startTime | luxonFormat:'F'}}
                                             </span>
                                             <span *ngIf="!record.simulatorLesson.startTime">-</span>
                                         </td>
@@ -213,6 +218,6 @@
     <createOrEditSimulatorLessonModal #createOrEditSimulatorLessonModal (modalSave)="getSimulatorLessons()">
     </createOrEditSimulatorLessonModal>
     <viewSimulatorLessonModal #viewSimulatorLessonModal></viewSimulatorLessonModal>
-
+    <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
 
 </div>

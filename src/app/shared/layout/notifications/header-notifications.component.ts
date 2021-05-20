@@ -42,6 +42,7 @@ export class HeaderNotificationsComponent extends AppComponentBase implements On
             _forEach(result.items, (item: UserNotification) => {
                 this.notifications.push(this._userNotificationHelper.format(<any>item));
             });
+            console.log(this.notifications);
         });
     }
 

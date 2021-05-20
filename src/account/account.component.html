@@ -6,9 +6,9 @@
                     <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-dark.svg'" alt="logo" class="max-h-70px" />
                     <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=light&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" class="max-h-70px" />
                 </a>
-                <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #986923;">
+                <!-- <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #986923;">
                     Base solution for your <br/> next web application.
-                </h3>
+                </h3> -->
             </div>
             <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url(/assets/metronic/assets/media/svg/illustrations/login-visual-1.svg)"></div>
         </div>

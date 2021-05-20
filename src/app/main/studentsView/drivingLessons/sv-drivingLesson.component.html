@@ -1,52 +1,65 @@
 <div [@routerTransition]>
 
     <div class="content d-flex flex-column flex-column-fluid">
+
         <sub-header [title]="l('DrivingLessons')" [description]="'Review your past and upcoming driving lessons'">
-
             <div role="actions" style="width: 300px" *ngIf="selectedStudentCourse != null">
-
                 <label>Course: </label><br>
                 <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged()">
                     <option *ngFor="let course of studentCourses" [ngValue]="course">
                         {{course.name}}
                     </option>
                 </select>
-
             </div>
-
         </sub-header>
+
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div *ngIf="selectedStudentCourse != null">
-                        <div *ngIf="drivingLessons != null">
-                            <h5 class="text-md-center">{{l("DrivingLessons")}} </h5>
-                            <div class="mt-5">
-
-                                <label>{{l("BasicLessons")}} </label>
-                                <progressbar [animate]="true" [max]="12"
-                                    [value]="drivingLessons.basicLessonsCompletedCount" type="success">
-                                    {{drivingLessons.basicLessonsCompletedCount}} / 12
-                                </progressbar>
-                            </div>
-                            <div class="row mt-10">
-                                <div class="col-6"
-                                    *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
-                                    <div *ngIf="pdl.completed" class="text-center"><i
-                                            class="fa fa-check-circle m--font-success"
-                                            title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
-                                    <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
-                                            class="fa fa-times-circle m--font-danger"
-                                            title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
-                                    <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
-                                            class="fa fa-spinner m--font-info"
-                                            title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                    
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                        class="fa fa-car" title="False"></i>&nbsp;Book a Driving
+                                        Lesson</a>
                                 </div>
+                            </div>y
+                            <div class="row justify-content-around">
+                                <div class="col-md-6 col-sm-12">
+                                    <div *ngIf="drivingLessons != null">
+                                        <div class="mt-10">
 
+                                            <label>{{l("BasicLessons")}} </label>
+                                            <progressbar [animate]="true" [max]="12"
+                                                [value]="drivingLessons.basicLessonsCompletedCount" type="success">
+                                                {{drivingLessons.basicLessonsCompletedCount}} / 12
+                                            </progressbar>
+                                        </div>
+                                    </div>
+
+                                    <div class="row my-10">
+                                        <div class="col-5 shadow p-3 m-5 bg-white rounded"
+                                            *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
+                                            <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check"
+                                                    style="color: rgb(71, 207, 58);"
+                                                    title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                            <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
+                                                    class="fa fa-times" style="color: Tomato;"
+                                                    title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                            <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
+                                                    class="fa fa-clock" title="False"></i><label>&nbsp;{{pdl.name}}
+                                                    <span class="badge bg-secondary">{{l('Booked')}}</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <hr />
 
-                        <div class="mt-5">
+                        <div class="mt-15">
                             <h5 class="text-md-center">{{l("Details")}} </h5>
                         </div>
 
@@ -94,7 +107,7 @@
                                             <td style="width:150px">
                                                 <span class="p-column-title"> {{l('StartTime')}}</span>
                                                 <span *ngIf="record.startTime">
-                                                    {{record.startTime }}
+                                                    {{record.startTime | luxonFormat:'f' }}
                                                     <!--{{record.drivingLesson.startTime | momentFormat:'L'}}-->
                                                 </span>
                                                 <span *ngIf="!record.startTime">-</span>
@@ -109,7 +122,7 @@
                                             </td>
                                             <td style="width:150px">
                                                 <span class="p-column-title"> {{l('DrivingLessonTopic')}}</span>
-                                                {{record.vehicle}}
+                                                {{record.vehicle | replaceNullOrEmptyWithText}}
                                             </td>
                                             <td style="width:50px">
                                                 <span class="p-column-title"> {{l('Length')}}</span>
@@ -118,11 +131,12 @@
 
                                             <td style="width:100px">
                                                 <span class="p-column-title"> {{l('Completed')}}</span>
-                                                <div *ngIf="record.completed" class="text-center"><i
-                                                        class="fa fa-check-circle m--font-success" title="True"></i>
+                                                <div *ngIf="record.completed" class="text-center"><i class="fa fa-check"
+                                                        style="color: rgb(71, 207, 58);" title="True"></i>
                                                 </div>
                                                 <div *ngIf="!record.completed" class="text-center"><i
-                                                        class="fa fa-times-circle" title="False"></i></div>
+                                                        class="fa fa-times" style="color: Tomato;" title="False"></i>
+                                                </div>
                                             </td>
 
                                         </tr>

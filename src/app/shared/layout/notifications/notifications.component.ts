@@ -91,6 +91,7 @@ export class NotificationsComponent extends AppComponentBase {
             this.primengTableHelper.getSkipCount(this.paginator, event)
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe((result) => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
+            console.log(result);
             this.primengTableHelper.records = this.formatNotifications(result.items);
             this.primengTableHelper.hideLoadingIndicator();
         });

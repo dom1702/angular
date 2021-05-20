@@ -223,7 +223,7 @@
                                                     <li>
                                                         <a
                                                             href="javascript:;"
-                                                            *ngIf="permission.isGranted('Pages.Payments.Edit')"
+                                                            *ngIf="permission.isGranted('Pages.Payments.Edit') && !record.payment.paidWithApi"
                                                             class="dropdown-item"
                                                             (click)="createOrEditPaymentModal.show(record.payment.id)"
                                                             >{{ l("Edit") }}</a
@@ -233,7 +233,7 @@
                                                         <a
                                                             class="dropdown-item"
                                                             href="javascript:;"
-                                                            *ngIf="permission.isGranted('Pages.Payments.Delete')"
+                                                            *ngIf="permission.isGranted('Pages.Payments.Delete') && !record.payment.paidWithApi"
                                                             (click)="deletePayment(record.payment)"
                                                             >{{ l("Delete") }}</a
                                                         >

@@ -8,6 +8,12 @@
         </div>
 
         <div class="mt-10">
+            <h6>{{l("TotalPrice")}} :</h6>
+            {{pricePackage.totalPrice | currency:'EUR'}}
+        </div>
+
+
+        <div class="mt-10">
 
             <h6>{{l("Products")}} :</h6>
      
@@ -36,8 +42,7 @@
 
 
                 <button type="button" (click)="editPricePackage()" class="btn btn-primary mr-5">{{l("EditPricePackage")}}</button>
-
-
+                <button type="button" (click)="changePricePackage()" class="btn btn-primary mr-5">{{l("ChangePricePackage")}}</button>
             </div>
         </div>
 
@@ -51,3 +56,4 @@
 </div>
 
 <createOrEditPricePackageModal #createOrEditPricePackageModal (modalSave)="updatePricePackage()"></createOrEditPricePackageModal>
+<changePricePackageModal #changePricePackageModal (modalSave)="updateAfterChangingPricePackage()"></changePricePackageModal>

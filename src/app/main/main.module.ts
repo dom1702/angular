@@ -1,5 +1,5 @@
 ﻿import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { PaymentStudentInvoiceLookupTableModalComponent } from './sales/payments/payment-studentInvoice-lookup-table-modal.component';
@@ -7,11 +7,6 @@ import { PaymentStudentInvoiceLookupTableModalComponent } from './sales/payments
 import { PaymentsComponent } from './sales/payments/payments.component';
 import { ViewPaymentModalComponent } from './sales/payments/view-payment-modal.component';
 import { CreateOrEditPaymentModalComponent } from './sales/payments/create-or-edit-payment-modal.component';
-
-import { TestResourcesComponent } from './resources/testResources/testResources.component';
-import { ViewTestResourceModalComponent } from './resources/testResources/view-testResource-modal.component';
-import { CreateOrEditTestResourceModalComponent } from './resources/testResources/create-or-edit-testResource-modal.component';
-import { TestResourceVehicleLookupTableModalComponent } from './resources/testResources/testResource-vehicle-lookup-table-modal.component';
 
 import { UtilsModule } from '@shared/utils/utils.module';
 import { CountoModule } from 'angular2-counto';
@@ -123,7 +118,6 @@ import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
 import { DLLicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/drivingLesson-licenseClass-lookup-table-modal.component';
 import { InstructorLookupTableModalComponent } from '@app/shared/common/lookup/instructor-lookup-table-modal.component';
 import { StudentLookupTableModalComponent } from '@app/shared/common/lookup/student-lookup-table-modal.component';
-import { VehicleLookupTableModalComponent } from '@app/shared/common/lookup/vehicle-lookup-table-modal.component';
 import { LicenseClassLookupTableModalComponent } from '@app/shared/common/lookup/licenseClass-lookup-table-modal.component';
 import { OfficeLookupTableModalComponent } from '@app/shared/common/lookup/office-lookup-table-modal.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
@@ -136,6 +130,23 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { StudentsOverviewViewPaymentModalComponent } from './students/students/students-overview-invoices-payment-modal.component';
 import { MoveToAnotherCourseModalComponent } from './students/students/move-to-another-course-modal.component';
+import { ChangePricePackageModalComponent } from './students/students/change-price-package-modal.component';
+import { EditStudentsCourseModalComponent } from './courses/courses/edit-students-course-modal.component';
+import { CourseStudentLookupTableModalComponent } from './courses/courses/course-student-lookup-table-modal.component';
+import { SchedulerModule } from '@progress/kendo-angular-scheduler';
+
+import '@progress/kendo-angular-intl/locales/de/all';
+import { IntlModule } from '@progress/kendo-angular-intl';
+import { StudentsOverviewTasksComponent } from './students/students/students-overview-tasks.component';
+import { StudentPaymentModalComponent } from './studentsView/invoices/student-payment-modal.component';
+import { SVPaymentSuccessComponent } from './studentsView/invoices/payment-success.component';
+import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed.component';
+import { CreateOrEditForeignTheoryLessonModalComponent } from './lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
+import { StudentsOverviewTheoryLessonsComponent } from './students/students/students-overview-theory-lessons.component';
+import { ViewForeignTheoryLessonModalComponent } from './lessons/theoryLessons/view-foreign-theoryLesson-modal.component';
+import { SchedulerFilterModalComponent } from './scheduler/scheduler-filter-modal.component';
+import { StudentsOverviewSchedulerComponent } from './students/students/students-overview-scheduler.component';
+import { CreateOrEditWorkingHourModalComponent } from '@app/shared/common/scheduler/create-or-edit-workingHours-modal.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -172,7 +183,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         InputMaskModule,		
         TableModule,
         ReactiveFormsModule,
-        //TabsModule.forRoot(), try this if its not working
+        TabsModule.forRoot(),
         NgxChartsModule,
         NgMultiSelectDropDownModule.forRoot(),
         ScheduleAllModule,
@@ -195,7 +206,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         PaginationModule.forRoot(),
         ScrollPanelModule,
         CheckBoxModule  ,
-        FullCalendarModule
+        FullCalendarModule,
+        SchedulerModule,
+        IntlModule 
      ],
     declarations: [
     PaymentStudentInvoiceLookupTableModalComponent,
@@ -203,11 +216,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
 		ViewPaymentModalComponent,
 		CreateOrEditPaymentModalComponent,
-		TestResourcesComponent,
-
-		ViewTestResourceModalComponent,
-		CreateOrEditTestResourceModalComponent,
-    TestResourceVehicleLookupTableModalComponent,
         DashboardComponent,
         TheoryLessonsComponent,
       ViewTheoryLessonModalComponent,		
@@ -244,7 +252,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       SVOverviewComponent,
       SVTheoryLessonsComponent,
       SVInvoicesComponent,
-      VehicleLookupTableModalComponent,
       StudentLookupTableModalComponent,
       SVDrivingLessonComponent,
       PersonalSchedulerComponent,
@@ -266,6 +273,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       CreateOrEditCourseModalComponent,
       StudentsOverviewViewPaymentModalComponent,
       MoveToAnotherCourseModalComponent,
+      ChangePricePackageModalComponent,
+      EditStudentsCourseModalComponent,
+      CourseStudentLookupTableModalComponent,
       
       AssignStudentToCourseModalComponent,
       SVLicenseClassSelectionComponent,
@@ -279,11 +289,22 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       LicenseClassLookupTableModalComponent,
       SendMessageToStudentModalComponent,
       SVTheoryPracticeComponent,
-      OfficeLookupTableModalComponent  ],
+      OfficeLookupTableModalComponent,
+    StudentsOverviewTasksComponent,
+    StudentPaymentModalComponent,
+    SVPaymentSuccessComponent,
+    SVPaymentFailedComponent,
+      CreateOrEditForeignTheoryLessonModalComponent,
+      StudentsOverviewTheoryLessonsComponent,
+      ViewForeignTheoryLessonModalComponent,
+      SchedulerFilterModalComponent,
+      StudentsOverviewSchedulerComponent
+    ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
-        { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale }
+        { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale },
+        //{ provide: LOCALE_ID, useValue: 'de'}
     ]
 })
 export class MainModule { }
