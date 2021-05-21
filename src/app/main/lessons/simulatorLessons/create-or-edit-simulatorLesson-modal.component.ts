@@ -57,7 +57,8 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
     }
 
     show(simulatorLessonId?: number, studentId: number = null, 
-        studentName:string = "", studentLastName:string = "", startTime: Date = null): void {
+        studentName:string = "", studentLastName:string = "", startTime: Date = null, 
+        simulatorId : number = null, simulatorName : string = null): void {
 
         if (!simulatorLessonId) {
             this.simulatorLesson = new CreateOrEditSimulatorLessonDto();
@@ -86,6 +87,10 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
           
             this.simulatorName = '';
             this.simulatorLesson.length = 1;
+
+            // In case simulatorId and simulatorName is given on start we set everything up here
+            if(simulatorId != null && simulatorName != null)
+                this.setSimulator(simulatorId, simulatorName);
 
             this.active = true;
             this.modal.show();
@@ -176,8 +181,14 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
         this.studentCompleteName = this.simulatorLessonPersonLookupTableModal.displayName;
     }
     getNewSimulatorId() {
-        this.simulatorLesson.simulatorId = this.simulatorLessonSimulatorLookupTableModal.id;
-        this.simulatorName = this.simulatorLessonSimulatorLookupTableModal.displayName;
+        this.setSimulator(this.simulatorLessonSimulatorLookupTableModal.id, this.simulatorLessonSimulatorLookupTableModal.displayName);
+
+    }
+
+    setSimulator(simulatorId : number, simulatorName : string)
+    {
+        this.simulatorLesson.simulatorId = simulatorId;
+        this.simulatorName = simulatorName;
 
         this._simulatorLessonsServiceProxy.getAvailableModulesOnSimulator(this.simulatorLesson.simulatorId).subscribe(result => {
 
@@ -191,7 +202,7 @@ export class CreateOrEditSimulatorLessonModalComponent extends AppComponentBase 
             }
 
             this.simulatorModules = result;
-        })
+        });
     }
 
     delete(): void {

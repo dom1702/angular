@@ -64,6 +64,11 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
   studentLastName = '';
   studentId: number;
 
+  // temp variables that are used by the event type modal to open specific modals with predefined values like instructor id
+  private temp_instructorId : number;
+  private temp_vehicleId : number;
+  private temp_vehicleName : string;
+
   startTime: Date;
 
   events: any[];
@@ -73,6 +78,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
   showWeekends: boolean = false;
 
   currentView: string;
+
 
   simulatorFeatureEnabled;
   //calendarPlugins = [dayGridPlugin];
@@ -417,6 +423,30 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
       this.startTime = arg.date;
       this.openEventModal();
     }
+    else if(arg.resource != null && arg.resource._resource.id.startsWith('simu'))
+    {
+      var simId = arg.resource._resource.id.split('_')[1];
+
+      this.startTime = arg.date;
+ 
+      this.createOrEditSimulatorLessonModal.startTime = this.startTime;
+      this.createOrEditSimulatorLessonModal.show(null, null, "", "", this.startTime, simId, arg.resource._resource.title);
+    }
+    else if(arg.resource != null && arg.resource._resource.id.startsWith('instr'))
+    {
+      this.startTime = arg.date;
+      this.temp_instructorId = arg.resource._resource.id.split('_')[1];
+      this.createEventTypeModal.show(this, this.isGranted('Pages.DrivingLessons.Create'), this.isGranted('Pages.TheoryLessons.Create'), true,
+      false);
+    }
+    else if(arg.resource != null && arg.resource._resource.id.startsWith('veh'))
+    {
+      this.startTime = arg.date;
+      this.temp_vehicleId = arg.resource._resource.id.split('_')[1];
+      this.temp_vehicleName = arg.resource._resource.title;
+      this.createEventTypeModal.show(this, this.isGranted('Pages.DrivingLessons.Create'), false, false,
+      false);
+    }
     else
     {
       this.startTime = arg.date;
@@ -472,14 +502,32 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
 
   openDrivingLessonModal(): void {
     this.createEventTypeModal.close();
-    console.log(this.startTime);
 
-    this.createOrEditDrivingLessonModal.show(null, false, null, "", "", this.startTime);
+    if(this.temp_instructorId != null)
+      this.createOrEditDrivingLessonModal.show(null, false, null, "", "", this.startTime, null, this.temp_instructorId, null, null);
+    else if(this.temp_vehicleId != null)
+      this.createOrEditDrivingLessonModal.show(null, false, null, "", "", this.startTime, null, null, this.temp_vehicleId, this.temp_vehicleName);
+    else
+      this.createOrEditDrivingLessonModal.show(null, false, null, "", "", this.startTime);
+
+    this.temp_instructorId = null;
+    this.temp_vehicleId = null;
+    this.temp_vehicleName = null;
   }
 
   openExamModal(): void {
     this.createEventTypeModal.close();
-    this.createOrEditExamDrivingModal.show(null, false, null, "", "", this.startTime);
+
+    if(this.temp_instructorId != null)
+      this.createOrEditExamDrivingModal.show(null, false, null, "", "", this.startTime, null, this.temp_instructorId, null, null);
+      else if(this.temp_vehicleId != null)
+      this.createOrEditExamDrivingModal.show(null, false, null, "", "", this.startTime, null, null, this.temp_vehicleId, this.temp_vehicleName);
+    else
+      this.createOrEditExamDrivingModal.show(null, false, null, "", "", this.startTime);
+
+    this.temp_instructorId = null;
+    this.temp_vehicleId = null;
+    this.temp_vehicleName = null;
   }
 
   openTheoryLessonModal(): void {
