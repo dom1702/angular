@@ -25,7 +25,7 @@
                                         class="fa fa-car" title="False"></i>&nbsp;Book a Driving
                                         Lesson</a>
                                 </div>
-                            </div>y
+                            </div>
                             <div class="row justify-content-around">
                                 <div class="col-md-6 col-sm-12">
                                     <div *ngIf="drivingLessons != null">
@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row my-10">
+                                    <div class="row my-10" *ngIf="drivingLessons != null">
                                         <div class="col-5 shadow p-3 m-5 bg-white rounded"
                                             *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
                                             <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check"

@@ -70,7 +70,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-12 mt-5 text-right">
+                        <div class="col-md-4 col-sm-12 mt-5 text-right" *ngIf="isGranted('InstructorView')">
                             <button (click)="openWorkingHoursModal()" class="btn btn-primary blue"><i
                                 class="fa fa-filter"></i>
                             {{l("WorkingHours")}}</button>

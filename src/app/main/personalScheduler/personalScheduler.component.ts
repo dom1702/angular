@@ -291,6 +291,8 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
 
         console.log(data);
 
+        if(this.isGranted('InstructorView'))
+        {
         this._personalSchedulerServiceProxy.getWorkingHours(info.start, info.end).subscribe((result) => 
         {
           console.log(result);
@@ -312,6 +314,11 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
           console.log(data);
           successCallback(data);
         });
+      }
+      else
+      {
+        successCallback(data);
+      }
 
         //successCallback(data);
 

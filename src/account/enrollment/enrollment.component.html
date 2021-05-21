@@ -75,10 +75,10 @@
                                             </h3>
                                             <div *ngIf="licenseClasses != undefined" class="container">
                                            
-                                                    <div class="card-deck my-10">
+                                                    <div class="card-deck justify-content-center my-10">
 
 
-                                                        <div class="card text-center"
+                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;"
                                                             *ngFor="let licenseClass of licenseClasses.licenseClasses;  let i = index">
                                                             <img class="card-img-top"
                                                                 src="{{licenseClass.symbolImageUrl}}"
@@ -124,11 +124,11 @@
                                             <div class="form-group">
 
                                                 <div *ngIf="licenseClassesOwned != undefined" class="container my-5">
-                                                    <div class="row justify-content-center">
-                                                        <div class="card-deck">
+                                                  
+                                                        <div class="card-deck justify-content-center my-10">
 
 
-                                                            <div class="card text-center"
+                                                            <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;"
                                                                 *ngFor="let licenseClassOwned of licenseClassesOwned.licenseClasses;  let i = index">
                                                                 <img class="card-img-top"
                                                                     src="{{licenseClassOwned.symbolImageUrl}}"
@@ -155,7 +155,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                  
                                                 </div>
 
                                             </div>
@@ -175,11 +175,11 @@
                                         <div class="pb-5" data-wizard-type="step-content">
                                             <h3 class="text-center mb-10">What office do you want to go to?</h3>
                                             <div *ngIf="offices != undefined" class="container">
-                                                <div class="row justify-content-center">
-                                                    <div class="card-deck">
+                                               
+                                                    <div class="card-deck justify-content-center">
                         
                         
-                                                        <div class="card text-center" *ngFor="let location of offices.offices;  let i = index">
+                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;" *ngFor="let location of offices.offices;  let i = index">
                                                             <img class="card-img-top" src="assets/symbols/office.png" alt="Card image cap">
                                                             <div class="card-body">
                                                                 <h5 class="card-title"> {{location.officeName}}</h5>
@@ -200,7 +200,7 @@
                         
                         
                                                     </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <!--end: Form Wizard Step 3-->
@@ -210,11 +210,11 @@
                                             <h3 class="text-center mb-10">What course do you want to enroll in?
                                             </h3>
                                             <div *ngIf="courses != undefined" class="container">
-                                                <div class="row justify-content-center">
-                                                    <div class="card-deck">
-                        
-                        
-                                                        <div class="card text-center" *ngFor="let course of courses.courses;  let i = index">
+                                  
+                                                    <div class="card-deck justify-content-center my-10">
+
+
+                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;" *ngFor="let course of courses.courses;  let i = index">
                                                             <img class="card-img-top" src="assets/symbols/course.png" alt="Card image cap">
                                                             <div class="card-body">
                                                                 <!-- <h5 class="card-title"> {{course.courseName}}</h5>
@@ -241,7 +241,7 @@
                         
                         
                                                     </div>
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                         <!--end: Form Wizard Step 4-->
@@ -251,11 +251,11 @@
                                             <h3 class="text-center mb-10">What price package do you prefer?
                                             </h3>
                                             <div *ngIf="pricePackages != undefined" class="container">
-                                                <div class="row justify-content-center">
-                                                    <div class="card-deck">
-                        
-                        
-                                                        <div class="card text-center" *ngFor="let pp of pricePackages.pricePackages;  let i = index">
+                                                
+                                                    <div class="card-deck justify-content-center my-10">
+
+
+                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;" *ngFor="let pp of pricePackages.pricePackages;  let i = index">
                                                             <img class="card-img-top"
                                                                 [src]="pp.highlighted ? 'assets/symbols/price_highlighted.png' : 'assets/symbols/price.png'"
                                                                 alt="Card image cap">
@@ -289,7 +289,7 @@
                                                         </div>
                         
                         
-                                                    </div>
+                                                  
                                                 </div>
                                             </div>
                                         </div>

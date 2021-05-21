@@ -51,8 +51,12 @@
                         {{descr | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>{{l("Vehicle")}} :</h6>
-                        {{item.vehicleNameBrandModel | replaceNullOrEmptyWithText}}
+                        <h6>{{l("StartingLocation")}} :</h6>
+                        {{item.drivingLesson.startingLocation | replaceNullOrEmptyWithText}}
+                    </div>
+                    <div class="col-6 mb-3" *ngIf="item.drivingLesson.isExam">
+                        <h6>{{l("ExamLocation")}} :</h6>
+                        {{item.drivingLesson.examLocation | replaceNullOrEmptyWithText}}
                     </div>
                 </div>
                 <div class="row mt-15 mx-3">
