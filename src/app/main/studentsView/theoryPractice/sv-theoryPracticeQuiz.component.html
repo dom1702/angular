@@ -14,7 +14,7 @@
                                 <div class="row mb-3"> <!--Quiz State-->
                                     
                                     <div class="col-2">  <!--Time Progress-->
-                                        <h6>Time:</h6>
+                                        <h6>{{l("Time")}}:</h6>
                                     </div> 
                                     <div class="col-2">
                                         <p class="text-left">{{timerMinutes}}:{{timerSeconds}}</p>
@@ -24,7 +24,7 @@
                                     </div> 
                                     
                                     <div class="col-2 mt-3"> <!--Pagination-->
-                                        <h6>Part:</h6>
+                                        <h6>{{l("Part")}}:</h6>
                                     </div>
                                     <div class="col-2 mt-3">
                                         <p class="text-left">{{currentQuizSession.selectedQuestion}}/{{currentQuizSession.quiz.length}}</p>          
@@ -69,12 +69,12 @@
                                                             <img src={{currentQuizSession.quiz[questionContentIndex].answerOptions[0]}} 
                                                                 class="figure-img img-fluid" 
                                                                 style="max-width:128px; height:auto; width:100%;">       
-                                                            <figcaption class="figure-caption text-center">Sign 1</figcaption>
+                                                            <figcaption class="figure-caption text-center">{{l("Sign")}} 1</figcaption>
                                                         </figure> 
                                                     </div>
                                                     <div>
                                                         <button #pic01 class="btn btn-secondary mr-5" (click)="setQuestionAnswerPictureButton(0)">                           
-                                                            Select
+                                                            {{l("Select")}}
                                                         </button>
                                                     </div>                                      
                                                 </div>
@@ -85,12 +85,12 @@
                                                             <img src={{currentQuizSession.quiz[questionContentIndex].answerOptions[1]}} 
                                                                 class="figure-img img-fluid" 
                                                                 style="max-width:128px; height:auto; width:100%;">       
-                                                            <figcaption class="figure-caption text-center">Sign 2</figcaption>
+                                                            <figcaption class="figure-caption text-center">{{l("Sign")}} 2</figcaption>
                                                         </figure>
                                                     </div>
                                                      <div>
                                                         <button #pic02 class="btn btn-secondary mr-5" (click)="setQuestionAnswerPictureButton(1)">                        
-                                                            Select
+                                                            {{l("Select")}}
                                                         </button>
                                                      </div>                          
                                                 </div>
@@ -101,12 +101,12 @@
                                                             <img src={{currentQuizSession.quiz[questionContentIndex].answerOptions[2]}} 
                                                                 class="figure-img img-fluid" 
                                                                 style="max-width:128px; height:auto; width:100%;">       
-                                                            <figcaption class="figure-caption text-center">Sign 3</figcaption>
+                                                            <figcaption class="figure-caption text-center">{{l("Sign")}} 3</figcaption>
                                                         </figure> 
                                                     </div>                        
                                                     <div>
                                                         <button #pic03 class="btn btn-secondary mr-5" (click)="setQuestionAnswerPictureButton(2)">                                                      
-                                                            Select
+                                                            {{l("Select")}}
                                                         </button>
                                                     </div>                                                   
                                                 </div>
@@ -160,7 +160,7 @@
                                 <div class="row"> <!--Quiz Buttons--> 
                                     <div class="col-6 mb-1">
                                         <h6 class="m-portlet__head-text" *ngIf="currentQuizSession.quiz[questionContentIndex].selectedAnswer > -1">
-                                            Selected answer:  {{parsedAnswer}}
+                                            {{l("SelAnswer")}}:  {{parsedAnswer}}
                                         </h6>
                                     </div>
                                     <div class="col-sm-4 mb-1">
@@ -168,19 +168,19 @@
                                             *ngIf="currentQuizSession.isMarkable"
                                             class="btn btn-primary mr-5" type="button"
                                             (click)="markQuestion()">  
-                                            Mark                 
+                                            {{l("Mark")}}                 
                                         </button>                                                                      
                                         <button type="button" class="btn btn-primary mr-5"
                                             *ngIf="showDirectionalLinks"                      
                                             (click)="finishQuiz()">  
-                                                Results                 
+                                            {{l("Results")}}                 
                                         </button>                                         
                                     </div>                                                                                                                              
                                     <div class="col-2 mb-1"> 
                                         <button type="button" class="btn btn-primary mr-5"
                                         [disabled]="!currentQuizSession.hasAnswer(questionContentIndex)"
                                         (click)="nextPage(false)">  
-                                        Next                 
+                                        {{l("Next")}}                 
                                     </button>                  
                                     </div>                              
                                 </div>

@@ -44,10 +44,10 @@ export class SVQuestionComponent extends AppComponentBase {
         
         if(this.correctAnswer != value)
         {           
-            this.showMessage("error", "Wrong!", "Try again");
+            this.showMessage("error", this.l("Wrong1"), this.l("Wrong2"));
         }
         else {
-            this.showMessage("success", "Right!");
+            this.showMessage("success", this.l("Right"));
         }
         
         this.answerAttempts++;

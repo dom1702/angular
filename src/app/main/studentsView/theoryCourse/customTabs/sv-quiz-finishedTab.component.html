@@ -1,14 +1,14 @@
 <div class="row justify-content-center">
     <div class="col col-sm-2"></div>  
     <div class="col-sm-8">
-        <h1>Congratulations!</h1>
-        <h4>You have passed the lesson: {{currentLesson}} </h4>
+        <h1>{{l("Congrats")}}</h1>
+        <h4>{{l("Passed")}} {{currentLesson}} </h4>
         <div class="row">
             <div class="col-sm-5">
                 <button type="button" 
                     class="btn btn-primary mr-5"
                     routerLink="/app/main/studentsView/theoryLessons">
-                    Return to course overview
+                    {{l("ReturnCourse")}}
                 </button> 
             </div>
             <div class="col-sm-2">           
@@ -17,7 +17,7 @@
                 <button type="button"                
                 class="btn btn-primary mr-5"
                 (click)="continueLesson()">
-                Move to the next eLesson
+                    {{l("MoveCourse")}}
                 </button>  
             </div>
         </div>         

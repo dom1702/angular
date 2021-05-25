@@ -1,21 +1,16 @@
 <div [@routerTransition]>
-    <div class="content d-flex flex-column flex-column-fluid">
-        <div *ngIf="currentSession != null">
-    
-
-            <sub-header [title]="currentSession.quiz.quizTitle" [description]="currentSession.quiz.quizTitle">
-                <!-- Part {{currentSession.progress+1}} -->
-
-
-            </sub-header>
-  
-    </div>
+    <div class="content d-flex flex-column flex-column-fluid">        
+        <sub-header [title]= quizTitle>
+            <!-- Part {{currentSession.progress+1}} -->
+        </sub-header>
+        
+            
+        
      
-    <div *ngIf="currentSession == null">
+        <div *ngIf="currentSession == null">
             <sub-header [title]="'Lesson Room'">
 
             </sub-header>
-
         </div>
 
         <div [class]="containerClass">
@@ -100,17 +95,16 @@
 
                                         <div class="row mt-1">
                                             <div class="col-sm-6">
-                                                <span>Lesson room closes at {{closingTime.format("HH.mm")}} </span>
+                                                <span>{{l("Closing")}} {{closingTime.format("HH.mm")}} </span>
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <span>Mandatory minimum time for this part:
-                                                    {{tab.mandatoryTime}} minutes </span>
+                                                <span>{{l("MinTime")}}: {{tab.mandatoryTime}} {{l("minutes")}} </span>
                                             </div>
                                             <div class="col-sm-12">
-                                                <h3 class="m-portlet__head-text">
+                                                <h4 class="m-portlet__head-text">
                                                     {{tab.title}}
-                                                </h3>
+                                                </h4>
                                                 <hr class="ng-tns-c19-1">
                                             </div>
                                         </div>
@@ -170,20 +164,20 @@
                                         <div class="row justify-content-md-center mt-1">
                                             <div class="col" style="text-align:center;">
                                                 <button *ngIf="!quizAborted && !quizFinished" type="button"
-                                                    (click)="updateQuizProgress()" class="btn btn-primary mr-5"> Save
+                                                    (click)="updateQuizProgress()" class="btn btn-primary mr-5"> {{l("Save")}}
                                                 </button>
                                             </div>
                                             <div class="col"></div>
                                             <div class="col" style="text-align:center;">
                                                 <button *ngIf="!quizAborted && !quizFinished" type="button"
-                                                    (click)="cancelTabSelected()" class="btn btn-primary mr-5"> Cancel
+                                                    (click)="cancelTabSelected()" class="btn btn-primary mr-5"> {{l("Cancel")}}
                                                 </button>
                                             </div>
                                         </div>
                                     </tab>
                                 </ng-template>
 
-                               <!--<tab id="cancel" disabled="true">
+                                <!--<tab id="cancel" disabled="true">
                                     <ng-template tabHeading>
                                         <ng-template *ngIf="quizAborted; then homeBlock; else cancelBlock"></ng-template>
                                         <ng-template #homeBlock>

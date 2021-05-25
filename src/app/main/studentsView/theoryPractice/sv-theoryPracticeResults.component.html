@@ -2,30 +2,30 @@
 <div class="row justify-content-center">
     <button class="btn btn-primary mr-5" type="button"   
     routerLink="/app/main/studentsView/theoryPractice/licenseClassTasksOverview">  
-    Back to overview                 
+    {{l("OverviewBack")}}               
     </button>
 </div>
 
 <h4 class="m-portlet__head-text">
-    Number of correct answers:
+    {{l("NrCorrectAnswers")}}:
 </h4>
 
 <div *ngIf="showCategoryErrors">
     <h6 class="m-portlet__head-text">
-        Licence Class Questions: {{evaluatedQuiz.correctLicenceClassQuestions}} / {{evaluatedQuiz.totalLicenceClassQuestions}}
+        {{l("LCQuestions")}}: {{evaluatedQuiz.correctLicenceClassQuestions}} / {{evaluatedQuiz.totalLicenceClassQuestions}}
     </h6>
 
     <h6 class="m-portlet__head-text">
-        Traffic Situation questions: {{evaluatedQuiz.correctSituationQuestions}} / {{evaluatedQuiz.totalSituationQuestions}}
+        {{l("TSQuestions")}}: {{evaluatedQuiz.correctSituationQuestions}} / {{evaluatedQuiz.totalSituationQuestions}}
     </h6>
 
     <h6 class="m-portlet__head-text">
-        Risk identifying questions: {{evaluatedQuiz.correctRiskQuestions}} / {{evaluatedQuiz.totalRiskQuestions}}
+        {{l("RIQuestions")}}: {{evaluatedQuiz.correctRiskQuestions}} / {{evaluatedQuiz.totalRiskQuestions}}
     </h6>
 </div>
 
 <h6 class="m-portlet__head-text font-weight-bold">
-    Total: {{evaluatedQuiz.correctAnswersTotal}} / {{evaluatedQuiz.questionsTotal}}
+    {{l("Total")}}: {{evaluatedQuiz.correctAnswersTotal}} / {{evaluatedQuiz.questionsTotal}}
 </h6>
 
 <div class="container" *ngIf="showCategoryErrors">
@@ -39,15 +39,15 @@
 
 <div *ngIf="showCategoryErrors && !evaluatedQuiz.quizPassed">
     <h6 class="m-portlet__head-text text-danger">
-        Max error for license class questions is: {{maxErrorsLicenceClass}}
+        {{l("MaxErrorLCQ")}}: {{maxErrorsLicenceClass}}
     </h6>
 
     <h6 class="m-portlet__head-text text-danger">
-        Max errors for situation questions is: {{maxErrorsSituation}}
+        {{l("MaxErrorTSQ")}}: {{maxErrorsSituation}}
     </h6>
 
     <h6 class="m-portlet__head-text text-danger">
-        Max errors for max questions is:  {{maxErrorsRisk}}
+        {{l("MaxErrorRIQ")}}:  {{maxErrorsRisk}}
     </h6>
 </div>
 
@@ -55,7 +55,7 @@
     <hr style="height:2px;border-width:10;color:gray;background-color:gray">
 
     <h2 class="m-portlet__head-text mb-2" style="text-align:center;">
-        Feedback
+        {{l("Feedback")}}
     </h2>
 
     <p-scrollPanel [style]="{width: '100%', height: '650px'}" refresh>
@@ -85,12 +85,12 @@
                             <div *ngIf="question.selectedAnswer > -1; then answer else empty"></div> <!--User selection-->
                             <ng-template #answer> 
                                 <h6 class="m-portlet__head-text text-danger">
-                                    You answered: {{question.selectedAnswer+1}}. {{question.answerOptions[question.selectedAnswer]}}
+                                    {{l("Answer")}}: {{question.selectedAnswer+1}}. {{question.answerOptions[question.selectedAnswer]}}
                                 </h6>       
                             </ng-template>
                             <ng-template #empty>
                                 <h6 class="m-portlet__head-text text-danger">
-                                    You didn't answer this question.
+                                    {{l("AnswerEmpty")}}.
                                 </h6>
                             </ng-template>
                         </div>
@@ -100,7 +100,7 @@
                             </div>
                             <div *ngIf="question.hint"> 
                                 <h6 class="m-portlet__head-text">
-                                    Hint: {{question.hint}}
+                                    {{l("Hint")}}: {{question.hint}}
                                 </h6>
                             </div>                   
                         </div>
@@ -115,13 +115,13 @@
                                     <ng-template #correctFigure>                 
                                         <figure class="figure">
                                             <img src={{answer}} class="figure-img img-fluid correctResultBorder" style="max-width:128px; height:auto; width:100%;">       
-                                            <figcaption class="figure-caption text-success">Sign {{i+1}}</figcaption>
+                                            <figcaption class="figure-caption text-success">{{l("Sign")}} {{i+1}}</figcaption>
                                         </figure>  
                                     </ng-template>
                                     <ng-template #defaultFigure> 
                                         <figure class="figure">
                                             <img src={{answer}} class="figure-img img-fluid" style="max-width:128px; height:auto; width:100%;">       
-                                            <figcaption class="figure-caption">Sign {{i+1}}</figcaption>
+                                            <figcaption class="figure-caption">{{l("Sign")}} {{i+1}}</figcaption>
                                         </figure>
                                     </ng-template>
                                 </div> 
@@ -130,12 +130,12 @@
                             <div *ngIf="question.selectedAnswer > -1; then answer else empty"></div> <!--User selection-->
                             <ng-template #answer>
                                 <h6 class="m-portlet__head-text text-danger">
-                                    You answered: Sign {{question.selectedAnswer+1}}.
+                                    {{l("Answer")}}: {{l("Sign")}} {{question.selectedAnswer+1}}.
                                 </h6>              
                             </ng-template>
                             <ng-template #empty>
                                 <h6 class="m-portlet__head-text text-danger">
-                                    You didn't answer this question.
+                                    {{l("AnswerEmpty")}}.
                                 </h6>
                             </ng-template>
                         </div>           
@@ -146,23 +146,23 @@
                         <div class="col-sm-12">
                             <div>
                                 <h6 class="m-portlet__head-text">
-                                    Correct answer: {{question.answerOptions[question.correctAnswer]}}
+                                    {{l("CorrectAnswer")}}: {{question.answerOptions[question.correctAnswer]}}
                                 </h6>
                             </div>
                             <div *ngIf="question.selectedAnswer > -1; then answer else empty"></div> <!--User selection-->
                             <ng-template #answer>                                               
                                 <h6 class="m-portlet__head-text text-danger">
-                                    You answered: {{question.answerOptions[question.selectedAnswer]}}
+                                    {{l("Answer")}}: {{question.answerOptions[question.selectedAnswer]}}
                                 </h6>            
                             </ng-template>
                             <ng-template #empty>
                                 <h6 class="m-portlet__head-text text-danger">
-                                    You didn't answer this question.
+                                    {{l("AnswerEmpty")}}.
                                 </h6>
                             </ng-template>
                             <div *ngIf="question.hint"> 
                                 <h6 class="m-portlet__head-text">
-                                    Hint: {{question.hint}}
+                                    {{l("Hint")}}: {{question.hint}}
                                 </h6>
                             </div> 
                             <div *ngIf="question.pictureUrl">

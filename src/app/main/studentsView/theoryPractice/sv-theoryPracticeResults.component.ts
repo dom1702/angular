@@ -40,9 +40,9 @@ export class SVTheoryPracticeResultsComponent extends AppComponentBase implement
         if(this.evaluatedQuiz != null)
         {
             if(this.evaluatedQuiz.quizPassed)
-                this.show("success", "Congratulations! You passed the test.");
+                this.show("success", this.l("SuccessTEP"));
             else
-                this.show("error", "Unfortunately you failed the test.");
+                this.show("error", this.l("FailedTEP"));
         }
     }
 
