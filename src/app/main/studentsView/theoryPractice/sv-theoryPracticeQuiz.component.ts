@@ -106,11 +106,11 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
     get quizMainTitle() : string{
         if(this.currentQuizSession != null && !this.currentQuizSession.isMarkable)
         { 
-            return "Theory Practice"
+            return this.l("HeaderTEP2")
         }
         else
         {
-            return "Theory Exam";
+            return this.l("HeaderTEP1");
         }
     }
 
@@ -122,17 +122,17 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
                 let currQuestion = this.currentQuizSession.getCurrentQuestion();
                 switch (currQuestion.contentType) {
                     case 0:
-                        return "Licence class question";              
+                        return this.l("TSQuestion");              
                     case 1:
-                        return "Traffic situation question";              
+                        return this.l("LCQuestion");              
                     case 2:
-                        return "Risk identifying question";                          
+                        return this.l("RIQuestion");                          
                     default:
                         break;
                 }
             }
             else {
-                return "Results";
+                return this.l("Results");
             } 
         }
         else return "No Quiz";
@@ -150,7 +150,7 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
         //console.log("check can Deactivate");
         if(!this.quizFinished && this.currentQuizSession != null)
         {
-            this.message.confirm('Discard answers from this sheet?', '', (isConfirmed) => {
+            this.message.confirm(this.l("DiscardTEP1"), '', (isConfirmed) => {
                 if (isConfirmed) {
                     console.log("navigated away from TheoryPracticeQuiz");                   
                     this.navigateAwaySelection.next(isConfirmed);                       
@@ -242,9 +242,9 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
     }
 
     onFinishQuiz() { 
-        let message = "Otherwise check your answers.";
-        let title = this.currentQuizSession.isMarkable ?  "Do you want to end the theory exam simulation?" :
-            "Do you want to end the question series?";
+        let message = this.l("DiscardTEP2");
+        let title = this.currentQuizSession.isMarkable ?  this.l("DiscardTEP3") :
+            this.l("DiscardTEP4");
         this.message.confirm(message, title,
             (isConfirmed) => {
             if (isConfirmed) { 
@@ -637,11 +637,11 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
             if(currentQuestion.contentType != nextQuestion.contentType)
             {
                 if(nextQuestion.contentType == 1)
-                    this.addSingleToast("Next traffic situation exercices.",  "First claim: " + nextQuestion.quest);
+                    this.addSingleToast(this.l("TrafficSituationToast1"),  this.l("TrafficSituationToast4") + " " + nextQuestion.quest);
             }
             else {
                 if(currentQuestion.quest != nextQuestion.quest && nextQuestion.contentType == 1)
-                    this.addSingleToast("Next traffic situation.", "Claim: " + nextQuestion.quest);
+                    this.addSingleToast(this.l("TrafficSituationToast2"), this.l("TrafficSituationToast2") + " " + nextQuestion.quest);
             }               
         }
     }

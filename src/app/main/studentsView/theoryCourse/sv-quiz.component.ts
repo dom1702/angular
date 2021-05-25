@@ -106,6 +106,11 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             return 0;
     }
 
+    get quizTitle(): string {
+        let title = this.currentSession != null ? this.l("QuizTLP") : this.l("PreQuizTLP");
+        return title;      
+    }
+
     constructor(injector: Injector,          
         private router : Router, 
         private _onlineTheoryService : OnlineTheoryServiceProxy,
@@ -158,7 +163,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     startTabSelected() {
         if(!this.quizAborted)
         {
-            this.message.confirm('Confirm', "eLesson has to be started again if you cancel it, are you sure?",
+            this.message.confirm(this.l("Confirm1"), this.l("Confirm2"),
             (isConfirmed) => {
                 if (isConfirmed) {                               
                     this.enableQuizPart(this.currentSession.progress);  
@@ -172,7 +177,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             this.enableQuizPart(tabNumber);  
         }
         else {
-        this.message.confirm('Do you really want to skip back?', "Solved questions wont be saved.",
+        this.message.confirm(this.l("DiscardSheet2"), this.l("DiscardSheet3"),
             (isConfirmed) => {
                 if (isConfirmed) {                                    
                     this.enableQuizPart(tabNumber);  
@@ -187,7 +192,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     cancelTabSelected() {
         if(!this.quizAborted || this.isClosed)
         {
-            this.message.confirm('Do you really want to end?', "Progress will be lost.",
+            this.message.confirm(this.l("DiscardQuiz1"), this.l("DiscardQuiz2"),
             (isConfirmed) => {
                 if (isConfirmed) {  
                     this.finishQuiz(true);         
@@ -214,7 +219,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             return true;
         }
         else {
-            this.message.confirm('Discard answers from this sheet?',
+            this.message.confirm(this.l("DiscardSheet1"),
             '',
                 (isConfirmed) => {
                     if (isConfirmed) {
@@ -265,7 +270,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             content.completed = false;
             content.id = i;
             content.mandatoryTime = this.nextOnlineLesson.sections[i].mandatoryTimeInMinutes;
-            content.title = this.nextOnlineLesson.sections[i].name;
+            content.title = this.l(this.nextOnlineLesson.sections[i].name);
 
             let isVideoContent = this.nextOnlineLesson.sections[i].content.length == 1 && this.nextOnlineLesson.sections[i].content[0].videoOnly != null 
             if(isVideoContent) // create video content
@@ -347,7 +352,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             !this.sheetCompleted(this.currentSession.quiz.sheets[this.currentSession.progress]))
         {
             //console.log("sheet not completed yet " + this.currentTimer.toString());
-            this.showMessage("Sheet not completed yet.", 'You need to answer all questions correctly!');
+            this.showMessage(this.l("Completion1"), this.l("Completion2"));
         }
         /*else if(this.currentTimer > 0)
         {
@@ -465,30 +470,30 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     convertToQuestion(question : OTSingleChoiceDto) : Question {
         let temp : Question = new Question();
         temp.answerAttempts = 0;
-        temp.correctAnswer = question.correctAnswer-1;
+        temp.correctAnswer = question.correctAnswer;
         temp.pictureUrl = question.imageURL != null ? question.imageURL : null;
-        temp.quest = question.question;
+        temp.quest = this.l(question.question);
         let answersLength = this.getNumberOfAnswers(question);
         let answers : string[] = [];
         for (let index = 0; index < answersLength; index++) {
             let tempAnswer : string = "";
             if(index == 0)
-                tempAnswer = question.answer1;
+                tempAnswer = this.l(question.answer1);
             if(index == 1)
-                tempAnswer = question.answer2;
+                tempAnswer = this.l(question.answer2);
             if(index == 2)
             {
                 if(question.answer3 == "")
                     continue;
                 else
-                tempAnswer = question.answer3;
+                    tempAnswer = this.l(question.answer3);
             }
             if(index == 3 )
             {
                 if(question.answer4 == "")
                     continue;
                 else
-                tempAnswer = question.answer4;
+                tempAnswer = this.l(question.answer4);
             }           
             answers.push(tempAnswer);            
         }

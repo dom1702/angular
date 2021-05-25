@@ -3,13 +3,13 @@
     <div class="col-md-auto">
         <p-card styleClass="ui-card-shadow">                                                                     
             <div>
-                <span class="flaticon-exclamation"> Vehicle - {{classToken}} Dimensions:</span>
+                <span class="flaticon-exclamation"> {{l("Vehicle")}} - {{classToken}} {{l("Dimensions")}}:</span>
             </div>                                        
             <div style="font-size: 12px;font-weight: bold;">
-                <span>Length: {{dimension.maxLength}} m;</span>                
-                <span> Weight: {{getWeightText()}};</span>
-                <span *ngIf="dimension.height"> Height: {{dimension.height}} m;</span>
-                <span *ngIf="dimension.width">Width: {{dimension.width}} m;</span>
+                <span>{{l("Length")}}: {{dimension.maxLength}} m;</span>                
+                <span> {{l("Weight")}}: {{getWeightText()}};</span>
+                <span *ngIf="dimension.height"> {{l("Height")}}: {{dimension.height}} m;</span>
+                <span *ngIf="dimension.width">{{l("Width")}}: {{dimension.width}} m;</span>
             </div>                                                                                            
         </p-card>
     </div> 

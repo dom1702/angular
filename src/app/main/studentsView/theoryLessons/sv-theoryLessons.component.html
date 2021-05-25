@@ -1,6 +1,6 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header [title]="l('TheoryLessons')" [description]="'Review your past theory lessons'">
+        <sub-header [title]="l('OverviewTLP')" [description]="'Review your past theory lessons'">
 
             <div role="actions" style="width: 300px" *ngIf="selectedStudentCourse != null">
 
@@ -24,8 +24,9 @@
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
-                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;Start
-                                        Theory Lesson</a>
+                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;
+                                        {{l("StartTLP")}}
+                                    </a>
                                 </div>
                             </div>
                             <div class="row justify-content-around">

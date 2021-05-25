@@ -73,7 +73,7 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
                     break;
                 case"C1":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/C1_Truck.png";
-                    description = "Truck";
+                    description = "Truck with trailer";
                     dimension = new VehicleDimensions(7, 3, undefined, undefined, 5, 2.5);
                     break;
                 case "A":

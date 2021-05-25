@@ -23,6 +23,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     showVideoTest : boolean = false;
     closingTime : moment.Moment;
     openingTime : moment.Moment;
+    msgs : Message[] = [];
 
     _aborted : boolean;
     checked : boolean = false;
@@ -35,7 +36,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     quizMayStart = new EventEmitter();
 
     @Output()
-    studentPhoneNumber: number = 0;
+    studentPhoneNumber: string = "";
 
     @Input() 
     quizParts : number;
@@ -68,7 +69,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
                 value.day6OpeningHours, 
                 value.day7OpeningHours];
             this.upcomingOpeningHours = temp;
-            this.studentPhoneNumber = Number.parseInt(value.studentPhoneDefault);
+            this.studentPhoneNumber = value.studentPhoneDefault;
             this._todayOpeningHours = value;
 
             for (let index = 0; index < this.upcomingOpeningHours.length; index++) {
@@ -94,12 +95,7 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
             this.showOpeningHourMessages();
         }
     }
-
-    get studentPhoneNumberParsed() : string {
-        return this.studentPhoneNumber.toString();
-    }   
-    
-        
+           
     constructor(private injector: Injector, private messageService : MessageService, private _onlineTheoryService : OnlineTheoryServiceProxy) {       
         super(injector);             
     }
@@ -113,7 +109,9 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     }
 
     ngOnInit(): void {
-        this.prepareLessonStart();         
+        this.prepareLessonStart();  
+        
+        this.msgs.push({severity:'info', summary:'Info Message', detail:'PrimeNG rocks'});
     }
 
     show(intention: string, message : string, msg : Message[], detail? : string) {
@@ -123,12 +121,13 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     showOpeningHourMessages() {
         if(this.todayOpeningHours.closed)
             {
-                this.show("error", "The lesson room is closed.", this.closedMessage);
+                
+                this.show("error", this.l("ClosedMessage1"), this.closedMessage);
             }
-            else this.show("info", "The Drima control room is open today from " +  this.todayOpeningHours.currentDayOpeningHours.opening.slice(0,5) + 
+            else this.show("info", this.l("OpenMessage") +  this.todayOpeningHours.currentDayOpeningHours.opening.slice(0,5) + 
                 " to " +  this.todayOpeningHours.currentDayOpeningHours.closing.slice(0,5) + ".", this.closedMessage);      
-    
-            this.show("info", "eLesson requirements", this.requirementMessage, "The control room has to be able to contact you when needed. Check the number below and change it if needed. Check that the WhatsApp application is installed and running in the number below. The device, you are using for this eLesson, supports the media in it and the video format");   
+                  
+            this.show("info", this.l("ReqMessage1"), this.requirementMessage, this.l("ReqMessage2"));   
     }
 
     showToastError(sum: string, det? : string) {
@@ -142,10 +141,14 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
 
     startLesson() {                  
         if(!this.todayOpeningHours.mayStart)
-        {     
-            this.showToastError("lesson room closes soon!", "try again tomorrow.")      
+        {               
+            this.showToastError(this.l("ClosedMessage2"), this.l("ClosedMessage3"))      
         }
         else{
+            if(this.studentPhoneNumber != this.todayOpeningHours.studentPhoneDefault)
+            {
+                console.log(this.l("PhoneNrChanged"));
+            }
             this.aborted = false;
         }
     }

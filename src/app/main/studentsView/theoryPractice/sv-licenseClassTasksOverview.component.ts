@@ -201,7 +201,6 @@ export class SVLicenseClassTasksOverview extends AppComponentBase implements OnI
     duration: number = 30;
     nextTheoryExamId : number;
 
-    exam = "Theory Exam";
     previewReceived : boolean;
     
     constructor(injector: Injector, 
