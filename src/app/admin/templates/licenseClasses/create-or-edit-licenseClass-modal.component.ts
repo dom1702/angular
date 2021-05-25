@@ -53,6 +53,10 @@ export class CreateOrEditLicenseClassModalComponent extends AppComponentBase {
     ) {
         super(injector);
 
+      
+    }
+
+    ngOnInit(): void {
         this.dropdownSettings = 
         {
             singleSelection: false,
@@ -63,10 +67,6 @@ export class CreateOrEditLicenseClassModalComponent extends AppComponentBase {
             allowSearchFilter: false,
             noDataAvailablePlaceholderText: this.l('NoData')
         };
-    }
-
-    ngOnInit(): void {
-       
     }
 
   
@@ -94,7 +94,7 @@ export class CreateOrEditLicenseClassModalComponent extends AppComponentBase {
         this.ptlselectedItems = [];
 
         this._predefinedDrivingLessonsServiceProxy.getAllForLookup("").subscribe(result => {
-
+console.log(result);
             for (var i = 0; i < result.length; i++) {
                 this.pdlList.push(
                     {
@@ -126,30 +126,29 @@ export class CreateOrEditLicenseClassModalComponent extends AppComponentBase {
                 this.licenseClass = result.licenseClass;
 
 
-                    //for (var item of this.pdlList) {
+               
                         for (var pdl of this.licenseClass.predefinedDrivingLessons) {
-                            //if (item.item_text == pdl.name) {
+                           
                                 this.pdlselectedItems.push(
                                     {
                                         item_id: pdl.id,
                                         item_text: pdl.name
                                     }
                                 );
-                            //}
-                        //}
+                          
                     }
     
-                   // for (var item of this.ptlList) {
+                
                         for (var ptl of this.licenseClass.predefinedTheoryLessons) {
-                           // if (item.item_text == ptl.name) {
+                         
                                 this.ptlselectedItems.push(
                                     {
                                         item_id: ptl.id,
                                         item_text: ptl.name
                                     }
                                 );
-                          //  }
-                        //}
+                       
+                     
                     }
                 
 
