@@ -34478,6 +34478,7 @@ export class DrivingLessonDto implements IDrivingLessonDto {
     instructorNames!: string[] | undefined;
     predefinedDrivingLessonId!: string | undefined;
     isExam!: boolean;
+    examLocation!: string | undefined;
     creationFullName!: string | undefined;
     lastModificationFullName!: string | undefined;
     isDeleted!: boolean;
@@ -34522,6 +34523,7 @@ export class DrivingLessonDto implements IDrivingLessonDto {
             }
             this.predefinedDrivingLessonId = _data["predefinedDrivingLessonId"];
             this.isExam = _data["isExam"];
+            this.examLocation = _data["examLocation"];
             this.creationFullName = _data["creationFullName"];
             this.lastModificationFullName = _data["lastModificationFullName"];
             this.isDeleted = _data["isDeleted"];
@@ -34566,6 +34568,7 @@ export class DrivingLessonDto implements IDrivingLessonDto {
         }
         data["predefinedDrivingLessonId"] = this.predefinedDrivingLessonId;
         data["isExam"] = this.isExam;
+        data["examLocation"] = this.examLocation;
         data["creationFullName"] = this.creationFullName;
         data["lastModificationFullName"] = this.lastModificationFullName;
         data["isDeleted"] = this.isDeleted;
@@ -34595,6 +34598,7 @@ export interface IDrivingLessonDto {
     instructorNames: string[] | undefined;
     predefinedDrivingLessonId: string | undefined;
     isExam: boolean;
+    examLocation: string | undefined;
     creationFullName: string | undefined;
     lastModificationFullName: string | undefined;
     isDeleted: boolean;
@@ -34745,6 +34749,7 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
     courseId!: number | undefined;
     predefinedDrivingLessonId!: string | undefined;
     isExam!: boolean;
+    examLocation!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditDrivingLessonDto) {
@@ -34779,6 +34784,7 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
             this.courseId = _data["courseId"];
             this.predefinedDrivingLessonId = _data["predefinedDrivingLessonId"];
             this.isExam = _data["isExam"];
+            this.examLocation = _data["examLocation"];
             this.id = _data["id"];
         }
     }
@@ -34813,6 +34819,7 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
         data["courseId"] = this.courseId;
         data["predefinedDrivingLessonId"] = this.predefinedDrivingLessonId;
         data["isExam"] = this.isExam;
+        data["examLocation"] = this.examLocation;
         data["id"] = this.id;
         return data; 
     }
@@ -34836,6 +34843,7 @@ export interface ICreateOrEditDrivingLessonDto {
     courseId: number | undefined;
     predefinedDrivingLessonId: string | undefined;
     isExam: boolean;
+    examLocation: string | undefined;
     id: number | undefined;
 }
 
