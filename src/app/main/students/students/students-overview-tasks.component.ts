@@ -31,6 +31,8 @@ export class StudentsOverviewTasksComponent extends AppComponentBase {
 
     subscription : Subscription;
 
+    loading : boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -62,8 +64,9 @@ export class StudentsOverviewTasksComponent extends AppComponentBase {
 
     refresh()
     {
+        this.loading = true;
         this._todoServiceProxy.getAllTodosFromStudent(this.student.id, this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
-
+            this.loading = false;
             this.primengTableHelper.totalRecordsCount = result.todos.length;
             this.primengTableHelper.records = result.todos;
             this.todos = result.todos;

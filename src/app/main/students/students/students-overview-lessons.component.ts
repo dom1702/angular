@@ -42,6 +42,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
     subscription : Subscription;
 
+    loading : boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -79,6 +81,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
     
     refresh() : void
     {
+        this.loading = true;
+
         this._studentsServiceProxy.getAllDrivingLessonsOfCourse(this.parentOverview.selectedStudentCourse.course.id, this.student.id).subscribe(result => {
             this.lessons = result;
 
@@ -113,6 +117,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
             this.primengTableHelper.totalRecordsCount = drivingLessons.length;
             this.primengTableHelper.records = drivingLessons;
+
+            this.loading = false;
 
             //console.log(this.primengTableHelper.records);
         });
