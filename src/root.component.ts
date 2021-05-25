@@ -5,7 +5,7 @@ import {NgxSpinnerTextService} from '@app/shared/ngx-spinner-text.service';
     selector: 'app-root',
     template: `
         <router-outlet></router-outlet>
-        <ngx-spinner type="ball-clip-rotate" size="medium" color="#5ba7ea">
+        <ngx-spinner type="ball-scale-ripple" size="medium" color="#5ba7ea">
             <p *ngIf="ngxSpinnerText">{{getSpinnerText()}}</p>
         </ngx-spinner>
     `

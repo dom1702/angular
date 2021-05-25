@@ -1,4 +1,4 @@
-<div *ngIf="student">
+<div *ngIf="student" [busyIf]="loadingFormsList || loadingAvailableList">
 
     <div class="form-group mt-10">
         <div class="btn-group" dropdown>

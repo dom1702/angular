@@ -1,4 +1,4 @@
-<div [@routerTransition]>
+<div [@routerTransition] [busyIf]="loading">
 
     <!-- <div class="m-subheader">
         <div class="d-flex align-items-center">
@@ -93,7 +93,7 @@
                             </students-overview-pricePackage>
 
                         </tab>
-                        <tab *ngIf="isGranted('Pages.Students.ViewSpecificInvoice')" heading={{studentInvoicesTabName}}
+                        <tab *ngIf="isGranted('Pages.Students.ViewInvoices')" heading={{studentInvoicesTabName}}
                             id="tab5" (selectTab)="onStudentInvoicesTabSelect($event)"
                             (deselect)="onStudentInvoicesTabDeselect($event)">
 

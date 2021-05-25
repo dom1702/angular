@@ -41,6 +41,8 @@ export class StudentsOverviewTheoryLessonsComponent extends AppComponentBase imp
 
     subscription : Subscription;
 
+    loading : boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -75,9 +77,10 @@ export class StudentsOverviewTheoryLessonsComponent extends AppComponentBase imp
     
     refresh() : void
     {
+        this.loading = true;
         this._studentsServiceProxy.getAllTheoryLessonsOfCourse(this.parentOverview.selectedStudentCourse.course.id, this.student.id).subscribe(result => {
             this.lessons = result;
-
+            this.loading = false;
             console.log(this.lessons);
 
             // var theoryLessons: any[] = [];

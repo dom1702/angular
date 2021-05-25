@@ -72,6 +72,8 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
 
   showWeekends: boolean = false;
 
+  loading : boolean;
+
   simulatorFeatureEnabled;
   //calendarPlugins = [dayGridPlugin];
   calendarOptions: CalendarOptions = {
@@ -210,6 +212,8 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
   updateEvents(info, successCallback, failureCallback) {
     console.log(info);
 
+    this.loading = true;
+
     this._studentsServiceProxy.getAllEventsOfStudent(
       this.parentOverview.student.id,
       info.start,
@@ -219,6 +223,8 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
       true,
       true,
       true).subscribe(result => {
+
+        this.loading = false;
 
         console.log(result);
 

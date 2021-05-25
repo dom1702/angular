@@ -37,6 +37,8 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
     pricePackageName: string = 'None';
 
     subscription : Subscription;
+    
+    loading : boolean;
 
     constructor(
         injector: Injector,
@@ -71,12 +73,16 @@ export class StudentsOverviewPricePackageComponent extends AppComponentBase {
     }
 
     refresh() : void{
-
+ 
         if (this.selectedStudentCourse.pricePackageId != null) {
+
+            this.loading = true;
             this._pricePackageServiceProxy.getPricePackageForView(this.selectedStudentCourse.pricePackageId).subscribe(result => {
 
                 this.pricePackage = result.pricePackage;
                 this.pricePackageName = result.pricePackage.name;
+
+                this.loading = false;
             });
         }
     }

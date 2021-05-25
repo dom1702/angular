@@ -30,6 +30,8 @@ export class StudentsOverviewInvoicesComponent extends AppComponentBase {
 
     subscription : Subscription;
 
+    loading : boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -46,6 +48,8 @@ export class StudentsOverviewInvoicesComponent extends AppComponentBase {
     ngOnInit(): void {
 
         this.parentOverview.onStudentInvoicesTabSelected.subscribe(() => {
+
+         
 
             this.updateInvoices();
 
@@ -119,9 +123,11 @@ export class StudentsOverviewInvoicesComponent extends AppComponentBase {
 
     updateInvoices()
     {
+        this.loading = true;
         this._studentInvoicesServiceProxy.getAllInvoicesByStudentId(this.student.id, 
             (this.showInvoicesOfAllCourses) ? undefined : this.parentOverview.selectedStudentCourse.course.id).subscribe(result => {
             this.invoices = result;
+            this.loading = false;
         });
     }
 

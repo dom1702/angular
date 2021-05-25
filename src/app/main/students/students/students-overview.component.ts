@@ -43,6 +43,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     drivingLessons: StudentCourseDrivingLessonsDto;
 
+    loading : boolean;
+
     @Output() courseChanged = new EventEmitter();
     @Output() lessonsTabSelected = new EventEmitter();
     @Output() lessonsTabDeselected = new EventEmitter();
@@ -126,7 +128,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
     }
 
     ngOnInit(): void {
-
+        this.loading = true;
         this.subscription = this._activatedRoute.params.subscribe(params => {
 
             const id = params['id'] || '';
@@ -142,6 +144,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
                 this._studentsServiceProxy.getAllCourses(this.student.id).subscribe(result => {
 
                     this.studentCourses = result
+
+                    this.loading = false;
 
                     if(this.studentCourses.length > 0)
                     {

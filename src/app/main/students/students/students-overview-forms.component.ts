@@ -28,6 +28,9 @@ export class StudentsOverviewFormsComponent extends AppComponentBase {
     availableForms: FormDto[];
     selectedForm: FormDto;
 
+    loadingFormsList : boolean;
+    loadingAvailableList : boolean;
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
@@ -47,16 +50,20 @@ export class StudentsOverviewFormsComponent extends AppComponentBase {
 
         this.parentOverview.onFormsTabSelected.subscribe(() => {
 
+            this.loadingFormsList = true;
+            this.loadingAvailableList = true;
+
             this._studentFormsServiceProxy.getAllCreatedFormsByStudentId(this.student.id).subscribe(result => {
 
                 this.createdForms = result;
+                this.loadingFormsList = false;
     
             });
     
             this._formsServiceProxy.getAllUnfiltered().subscribe(result => {
     
                 this.availableForms = result;
-    
+                this.loadingAvailableList = false;
             });
         });
     }

@@ -44,7 +44,7 @@ export class BusyIfDirective implements OnChanges {
         component.name = this.spinnerName;
         component.fullScreen = false;
 
-        component.type = 'ball-clip-rotate';
+        component.type = 'ball-scale-ripple';//ball-clip-rotate';
         component.size = 'medium';
         component.color = '#5ba7ea';
     }
