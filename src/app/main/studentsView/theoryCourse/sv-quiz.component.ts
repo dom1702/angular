@@ -107,7 +107,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     }
 
     get quizTitle(): string {
-        let title = this.currentSession != null ? this.l("QuizTLP") : this.l("PreQuizTLP");
+        let title = this.currentSession != null ? this.l("OT_QuizTLP") : this.l("OT_PreQuizTLP");
         return title;      
     }
 
@@ -163,7 +163,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     startTabSelected() {
         if(!this.quizAborted)
         {
-            this.message.confirm(this.l("Confirm1"), this.l("Confirm2"),
+            this.message.confirm(this.l("OT_Confirm1"), this.l("OT_Confirm2"),
             (isConfirmed) => {
                 if (isConfirmed) {                               
                     this.enableQuizPart(this.currentSession.progress);  
@@ -177,7 +177,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             this.enableQuizPart(tabNumber);  
         }
         else {
-        this.message.confirm(this.l("DiscardSheet2"), this.l("DiscardSheet3"),
+        this.message.confirm(this.l("OT_DiscardSheet2"), this.l("OT_DiscardSheet3"),
             (isConfirmed) => {
                 if (isConfirmed) {                                    
                     this.enableQuizPart(tabNumber);  
@@ -192,7 +192,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     cancelTabSelected() {
         if(!this.quizAborted || this.isClosed)
         {
-            this.message.confirm(this.l("DiscardQuiz1"), this.l("DiscardQuiz2"),
+            this.message.confirm(this.l("OT_DiscardQuiz1"), this.l("OT_DiscardQuiz2"),
             (isConfirmed) => {
                 if (isConfirmed) {  
                     this.finishQuiz(true);         
@@ -352,7 +352,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             !this.sheetCompleted(this.currentSession.quiz.sheets[this.currentSession.progress]))
         {
             //console.log("sheet not completed yet " + this.currentTimer.toString());
-            this.showMessage(this.l("Completion1"), this.l("Completion2"));
+            this.showMessage(this.l("OT_Completion1"), this.l("OT_Completion2"));
         }
         /*else if(this.currentTimer > 0)
         {

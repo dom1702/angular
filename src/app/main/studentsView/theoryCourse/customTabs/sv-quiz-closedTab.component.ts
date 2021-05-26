@@ -122,12 +122,12 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
         if(this.todayOpeningHours.closed)
             {
                 
-                this.show("error", this.l("ClosedMessage1"), this.closedMessage);
+                this.show("error", this.l("OT_ClosedMessage1"), this.closedMessage);
             }
-            else this.show("info", this.l("OpenMessage") +  this.todayOpeningHours.currentDayOpeningHours.opening.slice(0,5) + 
+            else this.show("info", this.l("OT_OpenMessage") +  this.todayOpeningHours.currentDayOpeningHours.opening.slice(0,5) + 
                 " to " +  this.todayOpeningHours.currentDayOpeningHours.closing.slice(0,5) + ".", this.closedMessage);      
                   
-            this.show("info", this.l("ReqMessage1"), this.requirementMessage, this.l("ReqMessage2"));   
+            this.show("info", this.l("OT_ReqMessage1"), this.requirementMessage, this.l("OT_ReqMessage2"));   
     }
 
     showToastError(sum: string, det? : string) {
@@ -142,12 +142,12 @@ export class SVQuizClosedTabComponent extends AppComponentBase implements OnInit
     startLesson() {                  
         if(!this.todayOpeningHours.mayStart)
         {               
-            this.showToastError(this.l("ClosedMessage2"), this.l("ClosedMessage3"))      
+            this.showToastError(this.l("OT_ClosedMessage2"), this.l("OT_ClosedMessage3"))      
         }
         else{
             if(this.studentPhoneNumber != this.todayOpeningHours.studentPhoneDefault)
             {
-                console.log(this.l("PhoneNrChanged"));
+                console.log(this.l("OT_PhoneNrChanged"));
             }
             this.aborted = false;
         }

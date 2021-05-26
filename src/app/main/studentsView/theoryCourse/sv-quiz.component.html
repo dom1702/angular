@@ -95,11 +95,11 @@
 
                                         <div class="row mt-1">
                                             <div class="col-sm-6">
-                                                <span>{{l("Closing")}} {{closingTime.format("HH.mm")}} </span>
+                                                <span>{{l("OT_Closing")}} {{closingTime.format("HH.mm")}} </span>
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <span>{{l("MinTime")}}: {{tab.mandatoryTime}} {{l("minutes")}} </span>
+                                                <span>{{l("OT_MinTime")}}: {{tab.mandatoryTime}} {{l("minutes")}} </span>
                                             </div>
                                             <div class="col-sm-12">
                                                 <h4 class="m-portlet__head-text">
@@ -120,8 +120,8 @@
                                                             <h4>
                                                                 <span class="flaticon-medical"></span>
                                                                 {{tab.heading}}
-                                                                <span class="flaticon-lock customClass"
-                                                                    *ngIf="tab.disabled"></span>
+                                                                <!-- <span class="flaticon-lock customClass"
+                                                                    *ngIf="tab.disabled"></span> -->
                                                                 <span class="flaticon-trophy"
                                                                     *ngIf="tab.finished"></span>
                                                             </h4>
@@ -141,8 +141,8 @@
                                                             <h4>
                                                                 <span class="flaticon-edit"></span>
                                                                 {{tab.heading}}
-                                                                <span class="flaticon-lock customClass"
-                                                                    *ngIf="tab.disabled"></span>
+                                                                <!-- <span class="flaticon-lock customClass"
+                                                                    *ngIf="tab.disabled"></span> -->
                                                                 <span class="flaticon-trophy"
                                                                     *ngIf="tab.finished"></span>
                                                             </h4>

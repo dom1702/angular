@@ -1,95 +1,102 @@
-
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-8">
     <p-toast [style]="{marginTop: '80px'}" styleClass="custom-toast" key="toast" position="bottom-right"></p-toast>
-    <div class="col col-sm-2"></div>  
+    <div class="col col-sm-2"></div>
     <div class="col-sm-8">
 
-        <h3 class="m-portlet__head-text">
-            {{l("WelcomeELesson")}}
+        <h3>
+            {{l("OT_WelcomeELesson")}}
         </h3>
 
-        <div class="m--space-10"></div>
+        <div class="mt-5">
 
-        <span>{{l("ELessonInstruction1")}}</span>
+            <span>{{l("OT_ELessonInstruction1")}}</span>
+        </div>
 
-        <p-messages severity="error" [value]="closedMessage" [closable]="false"></p-messages>      
-    
-        <div class="m--space-10"></div>
+        <p-messages severity="error" [value]="closedMessage" [closable]="false"></p-messages>
 
-        <span>{{l("ELessonInstruction2")}}</span>
-        
-        <div class="m--space-10"></div>
+        <div class="mt-5">
 
-        
-        <h6>{{l("OpeningTime")}}</h6>
+            <span>{{l("OT_ELessonInstruction2")}}</span>
+        </div>
+        <div class="mt-5">
+
+
+            <h6>{{l("OT_OpeningTime")}}</h6>
+        </div>
         <div *ngIf="upcomingOpeningHours"></div>
         <ul>
             <li *ngFor="let temp of upcomingOpeningHours; index as i">
-                <div *ngIf="!temp.closed; then thenBlock else elseBlock"></div>                                  
+                <div *ngIf="!temp.closed; then thenBlock else elseBlock"></div>
                 <ng-template #thenBlock>
-                    {{getNextDayName(i)}}: {{temp.opening}} - {{temp.closing}}  
+                    {{getNextDayName(i)}}: {{temp.opening}} - {{temp.closing}}
                 </ng-template>
                 <ng-template #elseBlock>
                     {{getNextDayName(i)}}: {{l("Closed")}}
                 </ng-template>
-            </li>   
+            </li>
         </ul>
-        
-        <div *ngIf="todayOpeningHours">            
-            <span>                
-                <p-messages severity="info" [(value)]="requirementMessage" [closable]="false">               
-                </p-messages>                                 
-            </span>   
-                   
+
+        <div class="my-10" *ngIf="todayOpeningHours">
+            <span>
+                <alert type="info">
+                    <strong>{{l("OT_ReqMessage1")}}</strong> 
+                <br>{{l("OT_ReqMessage2")}}
+                  </alert>
+                <!-- <p-messages severity="info" [(value)]="requirementMessage" [closable]="false">
+                </p-messages> -->
+            </span>
+
             <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="input-group">                            
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Phone:</span>
-                            </div>
-                            <input type="text" class="form-control" [(ngModel)]="studentPhoneNumber" placeholder="Phonenumber" aria-describedby="basic-addon1">
-                        </div>                      
-                    </div>
-                    <div class="col-sm">
-                        <button type="button" class="btn btn-primary mr-5" (click)="toggleVideoTestBlock()" >{{videoTestButtonName}}</button>
+                <div class="row justify-content-center">
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Phone:</span>
+                        </div>
+                        <input type="text" class="form-control" [(ngModel)]="studentPhoneNumber"
+                            placeholder="Phonenumber" aria-describedby="basic-addon1">
                     </div>
                 </div>
+                <div class="row justify-content-center mt-5">
+                 
+                        <button type="button" class="btn btn-secondary mr-5"
+                            (click)="toggleVideoTestBlock()">{{videoTestButtonName}}</button>
+                 
+                </div>
             </div>
-                                  
-            <br>                       
-        
+
+            <br>
+
             <div *ngIf="showVideoTest">
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item"
-                        [src]="testVideoUrl | safeUrl"
-                        frameborder='0'
+                    <iframe class="embed-responsive-item" [src]="testVideoUrl | safeUrl" frameborder='0'
                         allowfullscreen>
-                    </iframe>      
-                </div> 
+                    </iframe>
+                </div>
             </div>
-            
+
             <div>
                 <span>
-                    <p-checkbox name="phoneNumber" binary="true" [(ngModel)]="checked">             
-                    </p-checkbox> 
-                    {{l("ELessonInstruction3")}}                                               
+                    <label class="checkbox">
+                        <input type="checkbox" name="phoneNumber" [(ngModel)]="checked">
+                        <span></span>
+                        {{l("OT_ELessonInstruction3")}}
+                    </label>
+                
                 </span>
-            </div>                            
-        
+            </div>
 
-       
-            <div class="m--space-10"></div>
 
-            <div class="row justify-content-md-center">             
+
+   
+            <div class="row justify-content-md-center mt-8">
                 <div class="col-md-auto">
-                    <button type="button"
-                        class="btn btn-primary mr-5"                       
+                    <button type="button" class="btn btn-primary mr-5"
                         [disabled]="todayOpeningHours.closed || !todayOpeningHours.closed && checked == false"
                         (click)="startLesson()">
-                        {{l("Start eLesson")}}
+                        {{l("OT_StartELesson")}}
                     </button>
-                </div>               
+                </div>
             </div>
         </div>
     </div>

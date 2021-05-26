@@ -17,12 +17,12 @@
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div *ngIf="selectedStudentCourse != null">
-                    
+
                         <div class="container">
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
-                                        class="fa fa-car" title="False"></i>&nbsp;Book a Driving
+                                            class="fa fa-car" title="False"></i>&nbsp;Book a Driving
                                         Lesson</a>
                                 </div>
                             </div>
@@ -38,24 +38,25 @@
                                             </progressbar>
                                         </div>
                                     </div>
-
-                                    <div class="row my-10" *ngIf="drivingLessons != null">
-                                        <div class="col-5 shadow p-3 m-5 bg-white rounded"
-                                            *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
-                                            <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check"
-                                                    style="color: rgb(71, 207, 58);"
-                                                    title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
-                                            <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
-                                                    class="fa fa-times" style="color: Tomato;"
-                                                    title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
-                                            <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
-                                                    class="fa fa-clock" title="False"></i><label>&nbsp;{{pdl.name}}
-                                                    <span class="badge bg-secondary">{{l('Booked')}}</span></label>
-                                            </div>
+                                </div>
+                            </div>
+                                <div class="row justify-content-center my-10" *ngIf="drivingLessons != null">
+                                    <div class="col-md-5 col-sm-12 shadow p-3 m-5 bg-white rounded"
+                                        *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
+                                        <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check"
+                                                style="color: rgb(71, 207, 58);"
+                                                title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                        <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
+                                                class="fa fa-times" style="color: Tomato;"
+                                                title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                        <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
+                                                class="fa fa-clock" title="False"></i><label>&nbsp;{{pdl.name}}
+                                                <span class="badge bg-secondary">{{l('Booked')}}</span></label>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+
+                          
                         </div>
                         <hr />
 

@@ -1,6 +1,6 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header [title]="l('OverviewTLP')" [description]="'Review your past theory lessons'">
+        <sub-header [title]="l('SVTheoryLessonsHeader')" [description]="'Review your past theory lessons'">
 
             <div role="actions" style="width: 300px" *ngIf="selectedStudentCourse != null">
 
@@ -23,35 +23,32 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
-                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;
-                                        {{l("StartTLP")}}
+                                    <a routerLink="/app/main/studentsView/theoryCourse/quiz"
+                                        class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                            class="fa fa-graduation-cap" title="False"></i>&nbsp;
+                                        {{l("SVStartTheoryLesson")}}
                                     </a>
                                 </div>
                             </div>
-                            <div class="row justify-content-around">
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="row my-10">
-                               
-                                        <div class="col-5 shadow p-3 m-5 bg-white rounded" *ngFor="let ptl of theoryLessons; index as i">
-                                                <div *ngIf="ptl.currentState === 0" class="text-center"><i
-                                                    class="fa fa-times" style="color: Tomato;"
-                                                        title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
-                                                <div *ngIf="ptl.currentState === 1" class="text-center"><i
-                                                        class="fa fa-spinner"
-                                                        title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
-                                                <div *ngIf="ptl.currentState === 2" class="text-center"><i
-                                                    class="fa fa-check"
-                                                    style="color: rgb(71, 207, 58);"
-                                                        title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
-                                                <div *ngIf="ptl.currentState === 3" class="text-center"><i
-                                                    class="fa fa-times" style="color: Tomato;"
-                                                        title="False"></i><label>&nbsp;{{ptl.name}} <span class="badge bg-warning">{{l('Canceled')}}</span></label></div>
-                                            </div>
-                                       
-                                    </div>
+                            <div class="row justify-content-center my-10">
 
+
+                                <div class="col-md-5 col-sm-12 shadow p-3 m-5 bg-white rounded"
+                                    *ngFor="let ptl of theoryLessons; index as i">
+                                    <div *ngIf="ptl.currentState === 0" class="text-center"><i class="fa fa-times"
+                                            style="color: Tomato;" title="False"></i><label>&nbsp;{{ptl.name}}</label>
+                                    </div>
+                                    <div *ngIf="ptl.currentState === 1" class="text-center"><i class="fa fa-spinner"
+                                            title="False"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                    <div *ngIf="ptl.currentState === 2" class="text-center"><i class="fa fa-check"
+                                            style="color: rgb(71, 207, 58);"
+                                            title="True"></i><label>&nbsp;{{ptl.name}}</label></div>
+                                    <div *ngIf="ptl.currentState === 3" class="text-center"><i class="fa fa-times"
+                                            style="color: Tomato;" title="False"></i><label>&nbsp;{{ptl.name}} <span
+                                                class="badge bg-warning">{{l('Canceled')}}</span></label></div>
                                 </div>
+
+
                             </div>
                         </div>
                         <hr />
@@ -118,11 +115,13 @@
 
                                                 <td style="width:100px">
                                                     <span class="p-column-title"> {{l('Completed')}}</span>
-                                                    <div *ngIf="record.currentState === 2" class="text-center"><i class="fa fa-check"
-                                                        style="color: rgb(71, 207, 58);" title="True"></i>
+                                                    <div *ngIf="record.currentState === 2" class="text-center"><i
+                                                            class="fa fa-check" style="color: rgb(71, 207, 58);"
+                                                            title="True"></i>
                                                     </div>
                                                     <div *ngIf="record.currentState !== 2" class="text-center"><i
-                                                        class="fa fa-times" style="color: Tomato;" title="False"></i></div>
+                                                            class="fa fa-times" style="color: Tomato;"
+                                                            title="False"></i></div>
                                                 </td>
 
                                             </tr>
@@ -137,7 +136,7 @@
                             </div>
                         </div>
 
-                        
+
                     </div>
 
                     <div *ngIf="selectedStudentCourse == null">
