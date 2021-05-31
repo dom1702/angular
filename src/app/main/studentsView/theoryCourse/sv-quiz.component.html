@@ -16,7 +16,18 @@
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-
+                    <div class="row">
+                        <div class="col-11">
+                    <h4 *ngIf="_nextOnlineLesson != null">{{localizedLessonTitle}}</h4>
+                    <div class="mb-5" *ngIf="closingTime != null">{{l("OT_Closing")}} {{closingTime.format("HH.mm")}} </div>
+                </div>
+                <div class="col-1">
+                    <button *ngIf="!quizAborted && !quizFinished" type="button" class="close" (click)="cancelTabSelected()" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                   
+                </div>
+                </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <tabset [justified]="true" #quizTabs>
@@ -47,8 +58,8 @@
                                                                 {{tab.heading}}
                                                                 <span class="flaticon-lock customClass"
                                                                     *ngIf="tab.disabled"></span>
-                                                                <span class="flaticon-trophy"
-                                                                    *ngIf="tab.finished"></span>
+                                                                <!-- <span class="flaticon-trophy"
+                                                                    *ngIf="tab.finished"></span> -->
                                                             </h4>
                                                         </div>
                                                     </ng-template>
@@ -62,8 +73,8 @@
                                                                 {{tab.heading}}
                                                                 <span class="flaticon-lock customClass"
                                                                     *ngIf="tab.disabled"></span>
-                                                                <span class="flaticon-trophy"
-                                                                    *ngIf="tab.finished"></span>
+                                                                <!-- <span class="flaticon-trophy"
+                                                                    *ngIf="tab.finished"></span> -->
                                                             </h4>
                                                         </div>
                                                     </ng-template>
@@ -94,14 +105,14 @@
                                         [id]="tab.id" [active]="tab.active" (selectTab)="onSelect($event)">
 
                                         <div class="row mt-1">
-                                            <div class="col-sm-6">
+                                            <!-- <div class="col-sm-6">
                                                 <span>{{l("OT_Closing")}} {{closingTime.format("HH.mm")}} </span>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 my-4">
                                                 <span>{{l("OT_MinTime")}}: {{tab.mandatoryTime}} {{l("minutes")}} </span>
                                             </div>
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12" *ngIf="!tab.video">
                                                 <h4 class="m-portlet__head-text">
                                                     {{tab.title}}
                                                 </h4>
@@ -122,8 +133,8 @@
                                                                 {{tab.heading}}
                                                                 <!-- <span class="flaticon-lock customClass"
                                                                     *ngIf="tab.disabled"></span> -->
-                                                                <span class="flaticon-trophy"
-                                                                    *ngIf="tab.finished"></span>
+                                                                <!-- <span class="flaticon-trophy"
+                                                                    *ngIf="tab.finished"></span> -->
                                                             </h4>
                                                         </div>
                                                     </ng-template>
@@ -143,8 +154,8 @@
                                                                 {{tab.heading}}
                                                                 <!-- <span class="flaticon-lock customClass"
                                                                     *ngIf="tab.disabled"></span> -->
-                                                                <span class="flaticon-trophy"
-                                                                    *ngIf="tab.finished"></span>
+                                                                <!-- <span class="flaticon-trophy"
+                                                                    *ngIf="tab.finished"></span> -->
                                                             </h4>
                                                         </div>
                                                     </ng-template>
@@ -161,18 +172,18 @@
                                             </div>
                                         </div>
 
-                                        <div class="row justify-content-md-center mt-1">
-                                            <div class="col" style="text-align:center;">
+                                        <div class="row justify-content-end mt-8">
+                                         
                                                 <button *ngIf="!quizAborted && !quizFinished" type="button"
-                                                    (click)="updateQuizProgress()" class="btn btn-primary mr-5"> {{l("Save")}}
+                                                    (click)="updateQuizProgress()" class="btn btn-primary mr-5 float-right"> {{l("Next")}}
                                                 </button>
-                                            </div>
-                                            <div class="col"></div>
-                                            <div class="col" style="text-align:center;">
+                                         
+
+                                            <!-- <div class="col" style="text-align:center;">
                                                 <button *ngIf="!quizAborted && !quizFinished" type="button"
                                                     (click)="cancelTabSelected()" class="btn btn-primary mr-5"> {{l("Cancel")}}
                                                 </button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </tab>
                                 </ng-template>

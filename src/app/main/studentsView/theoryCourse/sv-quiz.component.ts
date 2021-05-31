@@ -73,6 +73,11 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     }
 
     _nextOnlineLesson: OnlineTheoryLessonDto;
+
+    get localizedLessonTitle() : string
+    {
+        return this.l(this._nextOnlineLesson.title);
+    }
                 
     @ViewChild('quizTabs')
     quizTabs : TabsetComponent;

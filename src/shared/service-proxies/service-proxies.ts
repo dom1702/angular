@@ -43164,6 +43164,7 @@ export interface ISectionDto {
 
 export class OnlineTheoryLessonDto implements IOnlineTheoryLessonDto {
     predefinedTheoryLessonIdString!: string;
+    title!: string | undefined;
     sections!: SectionDto[] | undefined;
     id!: number;
 
@@ -43179,6 +43180,7 @@ export class OnlineTheoryLessonDto implements IOnlineTheoryLessonDto {
     init(_data?: any) {
         if (_data) {
             this.predefinedTheoryLessonIdString = _data["predefinedTheoryLessonIdString"];
+            this.title = _data["title"];
             if (Array.isArray(_data["sections"])) {
                 this.sections = [] as any;
                 for (let item of _data["sections"])
@@ -43198,6 +43200,7 @@ export class OnlineTheoryLessonDto implements IOnlineTheoryLessonDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["predefinedTheoryLessonIdString"] = this.predefinedTheoryLessonIdString;
+        data["title"] = this.title;
         if (Array.isArray(this.sections)) {
             data["sections"] = [];
             for (let item of this.sections)
@@ -43210,6 +43213,7 @@ export class OnlineTheoryLessonDto implements IOnlineTheoryLessonDto {
 
 export interface IOnlineTheoryLessonDto {
     predefinedTheoryLessonIdString: string;
+    title: string | undefined;
     sections: SectionDto[] | undefined;
     id: number;
 }
