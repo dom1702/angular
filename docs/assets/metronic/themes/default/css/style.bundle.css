@@ -60400,7 +60400,7 @@ body {
   .header-fixed .wrapper {
     padding-top: 65px; }
   .header-fixed.subheader-fixed.subheader-enabled .wrapper {
-    padding-top: 119px; }
+    padding-top: 149px; }
   .aside-fixed .wrapper {
     padding-left: 265px; }
   .aside-fixed.aside-minimize:not(.aside-minimize-hover) .wrapper {
@@ -62690,7 +62690,7 @@ body {
 @media (min-width: 992px) {
   .header-fixed.subheader-fixed .subheader {
     position: fixed;
-    height: 54px;
+    height: 84px;
     top: 65px;
     left: 0;
     right: 0;
