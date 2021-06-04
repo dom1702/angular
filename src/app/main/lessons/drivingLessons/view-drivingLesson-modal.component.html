@@ -60,10 +60,10 @@
                     </div>
                 </div>
                 <div class="row mt-15 mx-3">
-                    <p class="font-italic">Created: {{item.drivingLesson.creationTime | luxonFormat:'F' }} ({{item.drivingLesson.creationFullName }})</p>
+                    <p class="font-italic">{{l("Created")}}: {{item.drivingLesson.creationTime | luxonFormat:'F' }} ({{item.drivingLesson.creationFullName }})</p>
                 </div>
                 <div class="row mx-3" *ngIf="item.drivingLesson.lastModificationTime != undefined">
-                    <p class="font-italic">Last modification: {{item.drivingLesson.lastModificationTime | luxonFormat:'F' }} ({{item.drivingLesson.lastModificationFullName }})</p>
+                    <p class="font-italic">{{l("LastModification")}}: {{item.drivingLesson.lastModificationTime | luxonFormat:'F' }} ({{item.drivingLesson.lastModificationFullName }})</p>
                 </div>
             </div>
             <div class="modal-footer">

@@ -34,7 +34,7 @@
                         type="text" required hidden>
 
                     <div class="form-group m-form__group" *ngIf="!showStudentSelection">
-                        <h5>Student: {{studentFullName}}</h5>
+                        <h5>{{l("Student")}}: {{studentFullName}}</h5>
                         <button *ngIf="isGranted('Pages.Students')" class="btn btn-primary blue" (click)="goToStudentOverview()" type="button"><i
                             class="fa fa-search"></i> {{l("GoToStudentsPage")}}</button>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="my-10">
 
                             <div *ngIf="studentCourses != null && studentCourses.length > 0">
-                                <label>Course Specific: </label><br>
+                                <label>{{l("Course")}}: </label><br>
                                 <div class="form-group">
 
                                     <select class="form-control" name="studentCourse"
@@ -63,7 +63,7 @@
                                             <input type="radio" name="pdl_option" [value]="null"
                                                 [(ngModel)]="selectedPdl" (change)='updateCheck()'>
                                             <span></span>
-                                            {{l('Basic Lesson')}}
+                                            {{l('BasicLesson')}}
 
                                         </label>
                                     </div>
@@ -97,7 +97,7 @@
 
                         <div class="form-group" *ngIf="numberOfCheckedPdls > 1">
                             <alert type="info">
-                                <strong>Info!</strong> Please note that you will create more than one lesson in a row
+                                <strong>{{l('Info')}}!</strong> {{l('MoreThanOneLessonInARowInfo')}}
                             </alert>
                         </div>
 
@@ -274,7 +274,7 @@
 
                     <div *ngIf="studentCourses != null && studentCourses.length == 0">
                         <alert type="info">
-                            <strong>Note</strong>
+                            <strong>{{l("Note")}}</strong>
                             {{l("NoCourseSelected")}}!
                         </alert>
                     </div>

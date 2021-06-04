@@ -2,11 +2,7 @@
 
 
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header [title]="l('NewEnrollments')" [description]="l('NewEnrollmentsHeaderInfo')">
 
-
-
-        </sub-header>
 
 
         <div [class]="containerClass">
@@ -126,12 +122,12 @@
                                                 <td style="width:150px">
                                                     <span class="p-column-title"> {{l('Approved')}}</span>
                                                     <div *ngIf="record.enrollment.approved" class="text-success">
-                                                        Approved
+                                                        {{l('Approved')}}
                                                     </div>
-                                                    <div *ngIf="record.enrollment.denied" class="text-danger">Denied
+                                                    <div *ngIf="record.enrollment.denied" class="text-danger">{{l('Denied')}}
                                                     </div>
                                                     <div *ngIf="!record.enrollment.denied && !record.enrollment.approved"
-                                                        class="text-warning">Undecided</div>
+                                                        class="text-warning">{{l('Undecided')}}</div>
                                                 </td>
 
 
@@ -387,10 +383,10 @@
                                         </td>
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('Approved')}}</span>
-                                            <div *ngIf="record.enrollment.approved" class="text-success">Approved</div>
-                                            <div *ngIf="record.enrollment.denied" class="text-danger">Denied</div>
+                                            <div *ngIf="record.enrollment.approved" class="text-success">{{l('Approved')}}</div>
+                                            <div *ngIf="record.enrollment.denied" class="text-danger">{{l('Denied')}}</div>
                                             <div *ngIf="!record.enrollment.denied && !record.enrollment.approved"
-                                                class="text-warning">Undecided</div>
+                                                class="text-warning">{{l('Undecided')}}</div>
                                         </td>
 
 

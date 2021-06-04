@@ -38,7 +38,7 @@
             <div *ngIf="overallActive" role="actions" style="width: 300px">
                 <div>
                     
-                    <label>Course: </label> 
+                    <label>{{l("Course")}}: </label> 
                     <select class="form-control" title="test" [(ngModel)]="selectedStudentCourse"
                         (ngModelChange)="CallCourseChanged()">
                         <option *ngFor="let course of studentCourses" [ngValue]="course">

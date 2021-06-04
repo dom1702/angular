@@ -2,9 +2,9 @@
 
     <div class="content d-flex flex-column flex-column-fluid">
 
-        <sub-header [title]="l('StudentsOwnOverview')" [description]="l('StudentsOwnOverviewInfo')">
+        <sub-header [title]="l('SVOverviewHeader')" [description]="l('SVOverviewHeaderText')">
             <div role="actions" style="width: 300px" *ngIf="studentCourses !=null && studentCourses.length> 0">
-                <label>Course: </label><br>
+                <label>{{l('Course')}}: </label><br>
                 <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged()">
                     <option *ngFor="let course of studentCourses" [ngValue]="course">
                         {{course.name}}
@@ -15,8 +15,7 @@
 
         <div *ngIf="selectedStudentCourse == null">
             <alert type="danger">
-                <strong>Oh snap!</strong> You are not yet assigned to a course. Please contact your
-                school.
+                {{l('SVNotAssignedToCourseInfo')}}
             </alert>
         </div>
 
@@ -65,8 +64,7 @@
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
-                                        class="fa fa-car" title="False"></i>&nbsp;Book a Driving
-                                        Lesson</a>
+                                        class="fa fa-car" title="False"></i>&nbsp;{{l("BookADrivingLesson")}}</a>
                                 </div>
                             </div>
                             <div class="m-5">
@@ -103,8 +101,7 @@
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
-                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;Start
-                                        Theory Lesson</a>
+                                        class="fa fa-graduation-cap" title="False"></i>&nbsp;{{l("StartTheoryLesson")}}</a>
                                 </div>
                             </div>
                             <div class="row my-10">

@@ -22,7 +22,7 @@
 						</label>
 					</div>
 					<div class="form-group">
-						<label>Source course: *</label><br>
+						<label>{{l("SourceCourse")}}: *</label><br>
 						<select required class="form-control" [(ngModel)]="selectedStudentCourse"
 							name="selectedStudentCourse">
 							<option *ngFor="let course of studentsCourses" [ngValue]="course">
@@ -31,7 +31,7 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label>Target course: *</label><br>
+						<label>{{l("TargetCourse")}}: *</label><br>
 						<select required class="form-control" [(ngModel)]="selectedTargetCourse"
 							name="selectedTargetCourse">
 							<option *ngFor="let course of possibleTargetCourses" [ngValue]="course">

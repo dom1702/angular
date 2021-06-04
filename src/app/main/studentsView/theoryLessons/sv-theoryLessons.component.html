@@ -1,10 +1,10 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header [title]="l('SVTheoryLessonsHeader')" [description]="'Review your past theory lessons'">
+        <sub-header [title]="l('SVTheoryLessonsHeader')" [description]="l('SVTheoryLessonsHeaderText')">
 
             <div role="actions" style="width: 300px" *ngIf="selectedStudentCourse != null">
 
-                <label>Course: </label><br>
+                <label>{{l("Course")}}: </label><br>
                 <select class="form-control" [(ngModel)]="selectedStudentCourse" (ngModelChange)="courseChanged()">
                     <option *ngFor="let course of studentCourses" [ngValue]="course">
                         {{course.name}}

@@ -64,7 +64,7 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
 
     selectedPdl;
 
-    numberOfLessonsAddition: string = "(á -- minutes)";
+    numberOfLessonsAddition: string = this.l("NumberOfLessonsMinutesPerLessonAddition");
 
     setTopicNameAutomatically: boolean = true;
 

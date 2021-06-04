@@ -62,7 +62,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
     selectedPdl;
 
-    numberOfLessonsAddition: string = "(á -- minutes)";
+    numberOfLessonsAddition: string = this.l("NumberOfLessonsMinutesPerLessonAddition");
 
     setTopicNameAutomatically: boolean = true;
 

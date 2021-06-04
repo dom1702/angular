@@ -157,7 +157,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
                         this.pricePackageName = this.selectedStudentCourse.pricePackageName;
 
                         if(this.selectedStudentCourse.pricePackageModified)
-                            this.pricePackageName = this.pricePackageName + " (modified for this particular student)";
+                            this.pricePackageName = this.pricePackageName + " ("+ this.l("ModifiedForThisStudentInfo") +")";
                     }
                 });
             });
@@ -184,7 +184,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
                             this.pricePackageName = this.selectedStudentCourse.pricePackageName;
         
                             if(this.selectedStudentCourse.pricePackageModified)
-                                this.pricePackageName = this.pricePackageName + " (modified for this particular student)";
+                                this.pricePackageName = this.pricePackageName + " ("+ this.l("ModifiedForThisStudentInfo") +")";
                         }
                         else
                             this.pricePackageName = "";
@@ -224,7 +224,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     removeFromSelectedCourse() : void{
         this.message.confirm(
-            'Do you really want to remove this student from the currently selected course?',
+            this.l("RemoveStudentFromCourseQuestion"),
             '',
             (isConfirmed) => {
                 if (isConfirmed) {

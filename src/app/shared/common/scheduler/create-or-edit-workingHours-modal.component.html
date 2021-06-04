@@ -19,8 +19,7 @@
                         <li
                             [ngClass]="woDay.isToday ? 'list-group-item  list-group-item-info mb-1' :'list-group-item mb-1'">
                             <h6 class="mb-3">{{woDay.day | luxonFormat:'DDDD'}}</h6>
-                            <label *ngIf="woDay.timeslots == null || woDay.timeslots.length == 0">No working hours on
-                                this day</label>
+                            <label *ngIf="woDay.timeslots == null || woDay.timeslots.length == 0">{{l("NoWorkingHoursOnThisDay")}}</label>
                             <div class="row align-items-center m-1" *ngFor="let slot of woDay.timeslots">
                                 <div *ngIf="!isTimeslotCurrentlyInEdit(slot)" class="btn-group mr-5" role="group"
                                     aria-label="...">
@@ -68,8 +67,7 @@
 
                     <div class="form-group m-4 mt-8">
                         <h5>{{l('CopyWorkingHours')}}</h5>
-                        <label>This weeks defined working hours will be copied to the requested period of time you set
-                            below</label>
+                        <label>{{l('CopyWorkingHoursInfo')}}</label>
                         <div class="row">
                             <div class="col-9"><input type="text" name="Date_Range" placeholder="Daterangepicker" class="form-control"
                                 bsDaterangepicker

@@ -43,10 +43,10 @@
                     </div>
                 </div>
                 <div class="row mt-15 mx-3">
-                    <p class="font-italic">Created: {{item.simulatorLesson.creationTime | luxonFormat:'F' }} ({{item.simulatorLesson.creationFullName }})</p>
+                    <p class="font-italic">{{l("Created")}}: {{item.simulatorLesson.creationTime | luxonFormat:'F' }} ({{item.simulatorLesson.creationFullName }})</p>
                 </div>
                 <div class="row mx-3" *ngIf="item.simulatorLesson.lastModificationTime != undefined">
-                    <p class="font-italic">Last modification: {{item.simulatorLesson.lastModificationTime | luxonFormat:'F' }} ({{item.simulatorLesson.lastModificationFullName }})</p>
+                    <p class="font-italic">{{l("LastModification")}}: {{item.simulatorLesson.lastModificationTime | luxonFormat:'F' }} ({{item.simulatorLesson.lastModificationFullName }})</p>
                 </div>
             </div>
             <div class="modal-footer">
