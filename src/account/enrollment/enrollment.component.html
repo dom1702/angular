@@ -17,7 +17,7 @@
                                         <div class="wizard-label">
                                             <i class="wizard-icon flaticon-car"></i>
                                             <h3 class="wizard-title">
-                                                License Class
+                                                {{l("LicenseClass")}}
                                             </h3>
                                         </div>
                                     </a>
@@ -25,7 +25,7 @@
                                         <div class="wizard-label">
                                             <i class="wizard-icon flaticon-interface-5"></i>
                                             <h3 class="wizard-title">
-                                                Owned Licenses
+                                                {{l("OwnedLicenses")}}
                                             </h3>
                                         </div>
                                     </a>
@@ -33,7 +33,7 @@
                                         <div class="wizard-label">
                                             <i class="wizard-icon flaticon-bus-stop"></i>
                                             <h3 class="wizard-title">
-                                                Choose Office
+                                                {{l("ChooseOffice")}}
                                             </h3>
                                         </div>
                                     </a>
@@ -41,7 +41,7 @@
                                         <div class="wizard-label">
                                             <i class="wizard-icon flaticon-responsive"></i>
                                             <h3 class="wizard-title">
-                                                Choose Course
+                                                {{l("ChooseCourse")}}
                                             </h3>
                                         </div>
                                     </a>
@@ -49,7 +49,7 @@
                                         <div class="wizard-label">
                                             <i class="wizard-icon flaticon-globe"></i>
                                             <h3 class="wizard-title">
-                                                Choose Price Package
+                                                {{l("ChoosePricePackage")}}
                                             </h3>
                                         </div>
                                     </a>
@@ -57,7 +57,7 @@
                                         <div class="wizard-label">
                                             <i class="wizard-icon flaticon-list"></i>
                                             <h3 class="wizard-title">
-                                                Personal Data
+                                                {{l("PersonalData")}}
                                             </h3>
                                         </div>
                                     </a>
@@ -70,8 +70,7 @@
                                     <form class="form" id="kt_form">
                                         <!--begin: Form Wizard Step 1-->
                                         <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                            <h3 class="text-center mb-10">What license do you want to
-                                                acquire?
+                                            <h3 class="text-center mb-10">  {{l("Enrollment_LicenseQuestion")}}
                                             </h3>
                                             <div *ngIf="licenseClasses != undefined" class="container">
                                            
@@ -97,7 +96,7 @@
                                                                 <button class="btn btn-primary"
                                                                     data-wizard-type="action-next"
                                                                     (click)="classToAcquireSelected(licenseClass.licenseClass)">
-                                                                    Select
+                                                                    {{l('Select')}}
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -110,14 +109,13 @@
 
                                         <!--begin: Form Wizard Step 2-->
                                         <div class="pb-5" data-wizard-type="step-content">
-                                            <h3 class="text-center mb-10">Do you have any licenses
-                                                completed before?</h3>
+                                            <h3 class="text-center mb-10"> {{l('Enrollment_OwnedLicenseQuestion')}}</h3>
                                                 <div class="text-center">
                                             <div class="form-group">
                                                 <button
                                                     class="btn btn-success"
                                                     (click)="classesAlreadyOwnedSelected()">
-                                                    I don't have any license yet
+                                                    {{l('Enrollment_NoLicenseOwned')}}
                                                 </button>
                                             </div>
                                         </div>
@@ -150,7 +148,7 @@
                                                                         <input type="checkbox" name="licenseClassOwned"
                                                                             (change)="previousClassChecked(licenseClassOwned.licenseClass, $event)">
                                                                         <span></span>
-                                                                        I have this license
+                                                                        {{l('Enrollment_IHaveThisLicense')}}
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -165,7 +163,7 @@
                                                     [hidden]="previousClasses.length == 0"
                                                     class="btn btn-primary"
                                                     (click)="classesAlreadyOwnedSelected()">
-                                                    Next
+                                                    {{l('Next')}}
                                                 </button>
                                             </div>   </div>
                                         </div>
@@ -173,7 +171,7 @@
 
                                         <!--begin: Form Wizard Step 3-->
                                         <div class="pb-5" data-wizard-type="step-content">
-                                            <h3 class="text-center mb-10">What office do you want to go to?</h3>
+                                            <h3 class="text-center mb-10">  {{l('Enrollment_Office')}}</h3>
                                             <div *ngIf="offices != undefined" class="container">
                                                
                                                     <div class="card-deck justify-content-center">
@@ -193,7 +191,7 @@
                                                                 <button
                                                                     class="btn btn-primary"
                                                                     (click)="officeSelected(location.officeId)">
-                                                                    Select
+                                                                    {{l('Select')}}
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -207,7 +205,7 @@
 
                                         <!--begin: Form Wizard Step 4-->
                                         <div class="pb-5" data-wizard-type="step-content">
-                                            <h3 class="text-center mb-10">What course do you want to enroll in?
+                                            <h3 class="text-center mb-10">{{l('Enrollment_Course')}}
                                             </h3>
                                             <div *ngIf="courses != undefined" class="container">
                                   
@@ -234,7 +232,7 @@
                                                                 <button
                                                                     class="btn btn-primary"
                                                                     (click)="courseSelected(course.courseId)">
-                                                                    Select
+                                                                    {{l('Select')}}
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -248,7 +246,7 @@
 
                                         <!--begin: Form Wizard Step 5-->
                                         <div class="pb-5" data-wizard-type="step-content">
-                                            <h3 class="text-center mb-10">What price package do you prefer?
+                                            <h3 class="text-center mb-10">{{l('Enrollment_PricePackage')}}
                                             </h3>
                                             <div *ngIf="pricePackages != undefined" class="container">
                                                 
@@ -261,8 +259,7 @@
                                                                 alt="Card image cap">
                                                             <div class="card-body">
                                                                 <div *ngIf="pp.highlighted">
-                                                                    <h2><span class="badge badge-secondary">Standard
-                                                                            package</span></h2>
+                                                                    <h2><span class="badge badge-secondary">{{l('Enrollment_StandardPackage')}}</span></h2>
                                                                 </div>
                                                                 <h5 class="card-title"> {{pp.packageName}} </h5>
                                                                 <div class="card-header">
@@ -283,7 +280,7 @@
                                                                 <button
                                                                     class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--wide m-btn--uppercase m-btn--bolder m-btn--sm"
                                                                     (click)="pricePackageSelected(pp.pricePackageId)">
-                                                                    Select
+                                                                    {{l('Select')}}
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -296,35 +293,35 @@
                                         <!--end: Form Wizard Step 5-->
                                          <!--begin: Form Wizard Step 6-->
                                          <div class="pb-5" data-wizard-type="step-content">
-                                            <h3 class="text-center mb-10">Please enter your data to finish enrollment!
+                                            <h3 class="text-center mb-10">{{l('Enrollment_EnterData')}}
                                             </h3>
                                             <form (ngSubmit)="onSubmit()" #userDataForm="ngForm">
                                                 <div class="form-group row">
-                                                    <label for="personId" class="col-sm-2 col-form-label">Person ID *</label>
+                                                    <label for="personId" class="col-sm-2 col-form-label">{{l('SSN')}} *</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" id="personId" placeholder="PPKKVV-XXXX"
                                                             [(ngModel)]="userData.socialSecurityNo" name="ssn" required #ssc="ngModel">
-                                                        <div *ngIf="ssc.invalid && (ssc.dirty || ssc.touched)" class="alert alert-danger">
+                                                        <!-- <div *ngIf="ssc.invalid && (ssc.dirty || ssc.touched)" class="alert alert-danger">
                                                             <div *ngIf="ssc.errors.required">
                                                                 Person ID is required.
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="firstNameInput" class="col-sm-2 col-form-label">First Name *</label>
+                                                    <label for="firstNameInput" class="col-sm-2 col-form-label">{{l('FirstName')}} *</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" id="firstNameInput"
                                                             placeholder="Enter your first name" [(ngModel)]="userData.firstName"
                                                             name="firstName" required #firstName="ngModel">
-                                                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                                                        <!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
                                                             class="alert alert-danger">
                                                             <div *ngIf="firstName.errors.required">
                                                                 First name is required.
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
-                                                    <label for="lastNameInput" class="col-sm-2 col-form-label">Last Name *</label>
+                                                    <label for="lastNameInput" class="col-sm-2 col-form-label">{{l('LastName')}} *</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" id="lastNameInput"
                                                             placeholder="Enter your last name" [(ngModel)]="userData.lastName" name="lastName"
@@ -333,20 +330,20 @@
                                                 </div>
                         
                                                 <div class="form-group row">
-                                                    <label for="streetInput" class="col-sm-2 col-form-label">Street *</label>
+                                                    <label for="streetInput" class="col-sm-2 col-form-label">{{l('Street')}} *</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" id="streetInput" placeholder="Enter your street"
                                                             [(ngModel)]="userData.street" name="street" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="zipCodeInput" class="col-sm-2 col-form-label">ZIP code *</label>
+                                                    <label for="zipCodeInput" class="col-sm-2 col-form-label">{{l('ZipCode')}} *</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" id="zipCodeInput"
                                                             placeholder="Enter your ZIP code" [(ngModel)]="userData.zipCode" name="zipCode"
                                                             required>
                                                     </div>
-                                                    <label for="cityInput" class="col-sm-2 col-form-label">City *</label>
+                                                    <label for="cityInput" class="col-sm-2 col-form-label">{{l('City')}} *</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" id="cityInput" placeholder="Enter your city"
                                                             [(ngModel)]="userData.city" name="city" required>
@@ -354,7 +351,7 @@
                                                 </div>
                         
                                                 <div class="form-group row">
-                                                    <label for="phoneInput" class="col-sm-2 col-form-label">Phone *</label>
+                                                    <label for="phoneInput" class="col-sm-2 col-form-label">{{l('Phone')}} *</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" id="phoneInput"
                                                             placeholder="Enter your phone number" [(ngModel)]="userData.phone" name="phone"
@@ -362,18 +359,18 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="emailInput" class="col-sm-2 col-form-label">E-mail *</label>
+                                                    <label for="emailInput" class="col-sm-2 col-form-label">{{l('EmailAddress')}} *</label>
                                                     <div class="col-sm-4">
                                                         <input type="email" class="form-control" id="emailInput" placeholder="Enter your email"
                                                             [(ngModel)]="userData.email" name="email" required email #email="ngModel">
                                                         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
                                                             <div *ngIf="email.errors?.email">
-                                                                Email not valid.
+                                                                {{l('EmailNotValid')}}
                                                             </div>
                                                         </div>
                                                     </div>
                         
-                                                    <label for="confirmEmailInput" class="col-sm-2 col-form-label">Confirm e-mail *</label>
+                                                    <label for="confirmEmailInput" class="col-sm-2 col-form-label">{{l('EmailConfirm')}} *</label>
                                                     <div class="col-sm-4">
                                                         <input type="email" class="form-control" id="confirmEmailInput"
                                                             placeholder="Enter your email again" [(ngModel)]="userData.confirmEmail"
@@ -381,10 +378,10 @@
                                                         <div *ngIf="(confirmationEmail.invalid && (confirmationEmail.dirty || confirmationEmail.touched))
                                                     || confirmationEmail.value !== email.value" class="alert alert-danger">
                                                             <div *ngIf="confirmationEmail.errors?.email">
-                                                                Email not valid.
+                                                                {{l('EmailNotValid')}}
                                                             </div>
                                                             <div *ngIf="confirmationEmail.value !== email.value">
-                                                                Emails do not match each other.
+                                                                {{l('EmailsDoNotMatch')}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -431,8 +428,7 @@
                                                 </div>
                         
                                                 <div class="form-group row">
-                                                    <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">Additional
-                                                        information</label>
+                                                    <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">{{l("AdditionalInformation")}}</label>
                                                     <div class="col-sm-10"><textarea class="form-control" id="exampleFormControlTextarea1"
                                                             rows="3" [(ngModel)]="userData.additionalInformation"
                                                             name="additionalInformation"></textarea>
@@ -440,14 +436,14 @@
                                                 </div>
                         
                         
-                                                <h3 class="my-5">If you don't pay yourself, please add payer's data below!</h3>
+                                                <h3 class="my-5">{{l("Enrollment_PayerInfo")}}</h3>
                         
                                                 <div class="form-group row" *ngIf="!hasPayer">
                                                     <div class="col text-center">
                                                     <button
                                                         class="btn btn-link"
                                                         (click)="openPayerPart()">
-                                                        Add payer
+                                                        {{l("Enrollment_AddPayer")}}
                                                     </button>
                                                 </div>
                                                 </div>
@@ -456,19 +452,19 @@
                                                     <button
                                                         class="btn btn-link"
                                                         (click)="closePayerPart()">
-                                                        Remove payer
+                                                        {{l("Enrollment_RemovePayer")}}
                                                     </button>
                                                 </div>
                                                 </div>
                                                 <div *ngIf="hasPayer">
                                                     <div class="form-group row">
-                                                        <label for="payersPersonId" class="col-sm-2 col-form-label">Payers Person ID *</label>
+                                                        <label for="payersPersonId" class="col-sm-2 col-form-label">{{l("PayersSocialSecurityNo")}} *</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="payersPersonId"
                                                                 placeholder="PPKKVV-XXXX" [(ngModel)]="userData.payersSocialSecurityNo"
                                                                 name="payersSocialSecurityNo" [required]="hasPayer">
                                                         </div>
-                                                        <label for="payersNameInput" class="col-sm-2 col-form-label">Payers Name *</label>
+                                                        <label for="payersNameInput" class="col-sm-2 col-form-label">{{l("PayersName")}} *</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="payersNameInput"
                                                                 placeholder="Enter the payers name" [(ngModel)]="userData.payersName"
@@ -477,7 +473,7 @@
                                                     </div>
                         
                                                     <div class="form-group row">
-                                                        <label for="payersStreetInput" class="col-sm-2 col-form-label">Payers Street *</label>
+                                                        <label for="payersStreetInput" class="col-sm-2 col-form-label">{{l("PayersStreet")}} *</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" class="form-control" id="payersStreetInput"
                                                                 placeholder="Enter the payers street" [(ngModel)]="userData.payersStreet"
@@ -485,13 +481,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="payersZipCodeInput" class="col-sm-2 col-form-label">Payers ZIP code *</label>
+                                                        <label for="payersZipCodeInput" class="col-sm-2 col-form-label">{{l("PayersZipCode")}} *</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="payersZipCodeInput"
                                                                 placeholder="Enter the payers ZIP code" [(ngModel)]="userData.payersZipCode"
                                                                 name="payersZipCode" [required]="hasPayer">
                                                         </div>
-                                                        <label for="payersCityInput" class="col-sm-2 col-form-label">Payers City *</label>
+                                                        <label for="payersCityInput" class="col-sm-2 col-form-label">{{l("PayersCity")}} *</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="payersCityInput"
                                                                 placeholder="Enter the payers city" [(ngModel)]="userData.payersCity"
@@ -501,13 +497,13 @@
                         
                         
                                                     <div class="form-group row">
-                                                        <label for="payersPhoneInput" class="col-sm-2 col-form-label">Payers Phone *</label>
+                                                        <label for="payersPhoneInput" class="col-sm-2 col-form-label">{{l("PayersPhone")}} *</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="payersPhoneInput"
                                                                 placeholder="Enter the payers phone number" [(ngModel)]="userData.payersPhone"
                                                                 name="payersPhone" [required]="hasPayer">
                                                         </div>
-                                                        <label for="payersEmailInput" class="col-sm-2 col-form-label">Payers E-mail *</label>
+                                                        <label for="payersEmailInput" class="col-sm-2 col-form-label">{{l("PayersEmail")}} *</label>
                                                         <div class="col-sm-4">
                                                             <input type="email" class="form-control" id="payersEmailInput"
                                                                 placeholder="Enter the payers email" [(ngModel)]="userData.payersEmail"
@@ -522,12 +518,12 @@
                                                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
                                                             [(ngModel)]="confirmTerms" name="confirm" required #confirm="ngModel">
                                                         <label class="form-check-label" for="defaultCheck1">
-                                                            I have read the terms and conditions and agree with them.
+                                                            {{l("Enrollment_BusinessTermsAgreeing")}}
                                                         </label>
                                                         <div *ngIf="confirm.invalid && (confirm.dirty || confirm.touched)"
                                                             class="alert alert-danger">
                                                             <div *ngIf="!confirmTerms">
-                                                                You have to agree with terms and conditions.
+                                                                {{l("YouHaveToAgreeWithTerms")}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -546,7 +542,7 @@
                                                 <div *ngIf="!isFirstStep()"
                                                     class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4"
                                                     (click)="goToPreviousPage()">
-                                                    Previous
+                                                    {{l('Previous')}}
                                                 </div>
                                             </div>
                                             <div>

@@ -54,6 +54,7 @@ export class CreateOrEditVehicleModalComponent extends AppComponentBase implemen
         if (!vehicleId) {
             this.vehicle = new CreateOrEditVehicleDto();
             this.vehicle.id = vehicleId;
+            this.vehicle.inUse = true;
             this.instructorFullName = '';
 
             this.active = true;

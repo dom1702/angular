@@ -37,12 +37,12 @@
                             *ngIf="simulatorModules != null && simulatorModules.availableModulesOnSim != null">
                             <label for="SimulatorLesson_Modules">{{l("AvailableModules")}}</label>
                             <div *ngFor="let m of simulatorModules.availableModulesOnSim">
-                                <h6>{{m.identifier}}</h6>
+                                <h6>{{m.identifier | localize }}</h6>
                                 <div *ngFor="let eu of m.exerciseUnits">
                                     <label class="m-radio">
                                         <input type="radio" name="eu_option" [value]="eu"
                                             [(ngModel)]="selectedExerciseUnit" required>
-                                        {{eu.identifier}}
+                                        {{eu.identifier | localize}}
                                         <span></span>
                                     </label>
                                 </div>
