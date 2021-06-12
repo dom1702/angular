@@ -137,10 +137,12 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
       let topicEl = document.createElement('div');
       topicEl.innerHTML = info.event._def.title;
       arrayOfDomNodes.push(topicEl);
-      if (info.event._def.extendedProps.appointmentType == 0) {
+      if (info.event._def.extendedProps.appointmentType == 0|| info.event._def.extendedProps.appointmentType == 5) {
         let vehicleEl = document.createElement('div');
         if (info.event._def.extendedProps.startingLocation == null)
-          info.event._def.extendedProps.startingLocation;
+          vehicleEl.innerHTML = info.event._def.extendedProps.vehicleName;
+        else
+          vehicleEl.innerHTML = info.event._def.extendedProps.vehicleName + " - " + info.event._def.extendedProps.startingLocation;
         arrayOfDomNodes.push(vehicleEl);
       }
 
@@ -280,7 +282,10 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
               resourceIds: resourceIds,
               backgroundColor: backgroundColor,
               extendedProps: {
-                appointmentType: item.appointmentType
+                appointmentType: item.appointmentType,
+                vehicleName: item.vehicleName,
+                startingLocation: item.startingLocation,
+                simulatorName: item.simulatorName
               },
               allDay: item.allDay,
               borderColor: borderColor
@@ -363,12 +368,12 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
     this.createEventTypeModal.close();
     console.log(this.startTime);
 
-    this.createOrEditDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, this.startTime);
+    this.createOrEditDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, this.startTime, this.parentOverview.selectedStudentCourse.course.id, this.parentOverview.student.defaultInstructorId);
   }
 
   openExamModal(): void {
     this.createEventTypeModal.close();
-    this.createOrEditExamDrivingModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, this.startTime);
+    this.createOrEditExamDrivingModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, this.startTime, this.parentOverview.selectedStudentCourse.course.id, this.parentOverview.student.defaultInstructorId);
   }
 
   openTheoryLessonModal(): void {

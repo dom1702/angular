@@ -145,7 +145,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
       let topicEl = document.createElement('div');
       topicEl.innerHTML = info.event._def.title;
       arrayOfDomNodes.push(topicEl);
-      if (info.event._def.extendedProps.appointmentType == 0) {
+      if (info.event._def.extendedProps.appointmentType == 0 || info.event._def.extendedProps.appointmentType == 5) {
         let vehicleEl = document.createElement('div');
         if (info.event._def.extendedProps.startingLocation == null)
           vehicleEl.innerHTML = info.event._def.extendedProps.vehicleName;

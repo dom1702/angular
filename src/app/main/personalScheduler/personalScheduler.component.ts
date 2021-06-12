@@ -177,6 +177,8 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
     this.allowedToSeeOwnAppointments = this.isGranted('OwnAppointments');
     this.allowedToSeeOwnDrivingLessons = this.isGranted('Pages.InstructorsOwnDrivingLessons') && this.isGranted('InstructorView');
 
+    console.log(this.allowedToSeeOwnDrivingLessons);
+
     const name = Calendar.name;
     this.simulatorFeatureEnabled = abp.features.isEnabled("App.Simulator");
 
