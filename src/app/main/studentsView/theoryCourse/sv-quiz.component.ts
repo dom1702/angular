@@ -126,22 +126,20 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
 
     ngOnInit(): void {     
         this.quizAborted = true; 
-        this.quizFinished = false;        
-        /*this.closingTime = moment().locale(moment.defaultFormat);
-        this.openingTime = moment().locale(moment.defaultFormat);
-        this.closingTime.set("hour", 13);*/      
+        this.quizFinished = false;                   
     }
 
     ngOnDestroy() : void {
         this.resetQuizData();
     }
 
-    onSelect(data : TabDirective) : void {       
+    onSelect(data : TabDirective) : void {              
         var tabNumber = parseInt(data.id);
         if(tabNumber != NaN)
         {
             if(tabNumber < this.currentSession.progress)
-            {                                                             
+            {     
+                this.quizTabs.tabs[tabNumber].active = false;                                                        
                 this.previousTabSelected(tabNumber);          
             }
         }       
@@ -172,7 +170,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             (isConfirmed) => {
                 if (isConfirmed) {                               
                     this.enableQuizPart(this.currentSession.progress);  
-                }                 
+                }                               
             });
         }   
     }
@@ -182,15 +180,15 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             this.enableQuizPart(tabNumber);  
         }
         else {
-        this.message.confirm(this.l("OT_DiscardSheet2"), this.l("OT_DiscardSheet3"),
-            (isConfirmed) => {
-                if (isConfirmed) {                                    
-                    this.enableQuizPart(tabNumber);  
-                } 
-                else {                    
-                    this.quizTabs.tabs[this.currentSession.progress+1].active = true; 
-                }                  
-            });
+            this.message.confirm(this.l("OT_DiscardSheet2"), this.l("OT_DiscardSheet3"),
+                (isConfirmed) => {
+                    if (isConfirmed) { 
+                        this.enableQuizPart(tabNumber);  
+                    }      
+                    else {
+                        this.quizTabs.tabs[this.currentSession.progress].active = true;                        
+                    }            
+                });
         }
     }
 
@@ -359,12 +357,12 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             //console.log("sheet not completed yet " + this.currentTimer.toString());
             this.showMessage(this.l("OT_Completion1"), this.l("OT_Completion2"));
         }
-        /*else if(this.currentTimer > 0)
+        else if(this.currentTimer > 0)
         {
            // console.log("timer is not 0 yet " + this.currentTimer.toString());
             this.showMessage("Minimum time not reached yet!", 'You need to wait for another ' + 
                 this.getTimeInMinutes(this.currentTimer) + "!");
-        }*/
+        }
         else {
            // console.log("enable next sheet " + this.currentTimer.toString());
             this.enableQuizPart(this.currentSession.progress+1);
@@ -404,11 +402,12 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
                 return;
             }                                              
         }
-        else if(progress < this.currentSession.progress){
+        else { // tabNumber is less then current progress
             for (let index = this.currentSession.progress; index >= progress; index--) {
                 this.deleteQuizData(index);                
                 this.currentSession.quiz.sheets[index].completed = false;
                 this.tabsData[index].disabled = true;
+                this.tabsData[index].active = false;
                 this.changeTabState(index, "closedTab", false);  
                 this.questions.forEach(element => {
                     element.reset();
@@ -416,12 +415,12 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
             }            
         }
         
-        this.tabsData[progress].disabled = false;
-        this.tabsData[progress].active = true;   
+        this.tabsData[progress].disabled = false;  
+        this.tabsData[progress].active = true; 
         this.changeTabState(progress, "selectedTab", false)  
         this.startTimer(this.currentSession.quiz.sheets[progress].mandatoryTime);               
-        this.currentSession.progress = progress;      
-        this.messages = [];             
+        this.currentSession.progress = progress;                 
+        this.messages = [];               
     }
 
     addTabData(tabHeading: string, isDisabled : boolean, isActive, identifier: string, 
@@ -461,7 +460,7 @@ export class SVQuizComponent extends AppComponentBase implements OnInit, OnDestr
     startTimer(timerValue : number) {        
         this.currentTimer = timerValue * 60; //(timerValue * 60);
         let intervalId = setInterval(() => {
-            this.currentTimer =  (timerValue * 60);
+            this.currentTimer = (timerValue * 60);
             if(this.currentTimer === 0) clearInterval(intervalId)           
         }, 1000)
         //console.log("start timer... " + intervalId);
