@@ -48,6 +48,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
     languages: Language[];
 
     assignToCourseAfterSave = true;
+    createUserAccountAfterSave = true;
 
     justSaved = false;
 
@@ -128,6 +129,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
         this.vehicleName = '';
 
         this.assignToCourseAfterSave = true;
+        this.createUserAccountAfterSave = true;
         this.dateOfBirth = null;
 
         if (!studentId) {
@@ -318,6 +320,8 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
         }
         if (this.currentNativeLanguage != null)
             this.student.nativeLanguage = this._languagesService.getCode(this.currentNativeLanguage);
+
+        this.student.createUserAccount = this.createUserAccountAfterSave;
 
         if (this.student.id == null && this.assignToCourseAfterSave) {
 

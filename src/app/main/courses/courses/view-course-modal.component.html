@@ -17,6 +17,10 @@
                         {{ item.course.name }}
                     </div>
                     <div class="col-6 mb-3">
+                        <h6>{{l("StudentsEnrolled")}} :</h6>
+                        {{ item.course.enrolledStudentsCount}}
+                    </div>
+                    <div class="col-6 mb-3">
                         <h6>{{l("StartDate")}} :</h6>
                         {{ item.course.startDate  | luxonFormat:'D'}}
                     </div>

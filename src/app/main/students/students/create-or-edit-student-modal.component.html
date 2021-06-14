@@ -185,11 +185,18 @@
 				
 				</div>
 				<div class="modal-footer">
-					<label *ngIf="student.id == null" class="m-checkbox">
+					<div class="checkbox-list">
+					<label *ngIf="student.id == null" class="checkbox">
 						<input type="checkbox" name="assignToCourseAfterSave" [(ngModel)]="assignToCourseAfterSave">
-						{{l("AssignToCourseAfterSave")}}
 						<span></span>
+						{{l("AssignToCourseAfterSave")}}
 					</label>
+					<label *ngIf="student.id == null" class="checkbox">
+						<input type="checkbox" name="createUserAccount" [(ngModel)]="createUserAccountAfterSave">
+						<span></span>
+						{{l("CreateStudentUserAccount")}}
+					</label>
+				</div>
 					<button [disabled]="saving" type="button" class="btn btn-default"
 						(click)="close()">{{l("Cancel")}}</button>
 					<button type="submit" class="btn btn-primary blue" [disabled]="!studentForm.form.valid"
