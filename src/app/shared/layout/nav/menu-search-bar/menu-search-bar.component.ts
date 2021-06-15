@@ -1,8 +1,9 @@
 import { Component, Injector } from '@angular/core';
-import { NameValueOfString } from '@shared/service-proxies/service-proxies';
+import { NameValueOfString, StudentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppNavigationService } from '../app-navigation.service';
 import { Router } from '@angular/router';
+import { PermissionCheckerService } from 'abp-ng2-module';
 
 @Component({
   selector: 'menu-search-bar',
@@ -22,6 +23,8 @@ export class MenuSearchBarComponent extends AppComponentBase {
   constructor(
     injector: Injector,
     private _appNavigationService: AppNavigationService,
+    private _permissionChecker: PermissionCheckerService,
+    private _studentService : StudentsServiceProxy,
     private router: Router) {
 
     super(injector);
@@ -32,43 +35,49 @@ export class MenuSearchBarComponent extends AppComponentBase {
     return this._appNavigationService.showMenuItem(menuItem);
   }
 
-  private getAllMenuItems() {
-    return this._appNavigationService.getAllMenuItems().filter(item => this.showMenuItem(item) && item.route).map(menuItem => {
-      return {
-        name: this.l(menuItem.name),
-        route: menuItem.route
-      };
-    });
-  }
 
-  searchMenuItem(event) {
-    this.searchMenuResults = this.allMenuItems
-      .filter(item =>
-        item.name.toLowerCase().includes(event.query.toLowerCase()) ||
-        item.route.toLowerCase().includes(event.query.toLowerCase())
-      )
-      .map(menuItem =>
-        new NameValueOfString({
-          name: menuItem.name,
-          value: menuItem.route
-        }));
+  searchStudent(event) {
+    // this.searchMenuResults = this.allMenuItems
+    //   .filter(item =>
+    //     item.name.toLowerCase().includes(event.query.toLowerCase()) ||
+    //     item.route.toLowerCase().includes(event.query.toLowerCase())
+    //   )
+    //   .map(menuItem =>
+    //     new NameValueOfString({
+    //       name: menuItem.name,
+    //       value: menuItem.route
+    //     }));
+
+    //console.log(event)
+
+    this._studentService.getStudentsSearchResultsByName(event.query.toLowerCase()).subscribe(result =>
+      {
+       // console.log(result);
+                this.searchMenuResults =
+        result.map(st =>
+              new NameValueOfString({
+                name: st.firstName + " " + st.lastName,
+                value: st.id.toString()
+              }));
+      });
   }
 
   selectMenuItem(event) {
+    console.log(event);
     if (event && event.value) {
-      this.router.navigate([event.value]).then((navigated) => {
+      this.router.navigate(['app/main/students/students/students-overview', { id: event.value }]).then((navigated) => {
         this.selected = '';
       });
     }
   }
 
   private initializeMenuSearch() {
-    this.isMenuSearchActive = false;
-    let themeSettings = this.currentTheme.baseSettings;
 
-    if (themeSettings && themeSettings.menu && themeSettings.menu.searchActive) {
-      this.allMenuItems = this.getAllMenuItems();
+    // Set this based on permission if students can be seen
+    if(this._permissionChecker.isGranted('Pages.Students'))
       this.isMenuSearchActive = true;
-    }
+    else
+      this.isMenuSearchActive = false;
+   
   }
 }
