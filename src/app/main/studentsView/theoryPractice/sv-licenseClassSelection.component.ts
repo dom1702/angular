@@ -59,34 +59,34 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
             switch (response.licenseClasses[index].toLocaleUpperCase()) {
                 case "B": 
                     picUrl = "/assets/onlineTheory/licenceClassPictures/B_PassengerCar.png";
-                    description = "Passenger car";              
+                    description = this.l("ClassBDescription");              
                     break;
                 case "BE":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/BE_PassengerCarTrailer.png";
-                    description = "Passenger car with trailer";
+                    description = this.l("ClassBEDescription");
                     dimension = new VehicleDimensions(10, undefined, 2, 2.5);
                     break;
                 case"C":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/C_Truck.png";          
-                    description = "Truck";
+                    description = this.l("ClassCDescription");
                     dimension = new VehicleDimensions(10, 4, undefined, undefined, 15, 2.5);
                     break;
                 case"C1":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/C1_Truck.png";
-                    description = "Truck with trailer";
+                    description = this.l("ClassC1Description");
                     dimension = new VehicleDimensions(7, 3, undefined, undefined, 5, 2.5);
                     break;
                 case "A":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/A_Motorcycle.png";
-                    description = "Motorcycle";
+                    description = this.l("ClassADescription");
                     break;
                 case "AM120":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/A1_Moped.png";
-                    description = "Moped";
+                    description = this.l("ClassAM120Description");
                     break;
                 case"T":
                     picUrl = "/assets/onlineTheory/licenceClassPictures/T_Tractor.png";
-                    description = "Motorcycle";
+                    description = this.l("ClassTDescription");;
                     break;     
             }
 

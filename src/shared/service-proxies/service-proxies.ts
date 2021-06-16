@@ -7,13 +7,13 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-//import { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
-import { DateTime, Duration } from "luxon";
+import { Duration } from "luxon";
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -33176,6 +33176,7 @@ export class CourseDto implements ICourseDto {
     predefinedDrivingLessons!: PredefinedDrivingLessonDto[] | undefined;
     predefinedTheoryLessons!: PredefinedTheoryLessonDto[] | undefined;
     pricePackages!: PricePackageDto[] | undefined;
+    enrolledStudentsCount!: number;
     id!: number;
 
     constructor(data?: ICourseDto) {
@@ -33213,6 +33214,7 @@ export class CourseDto implements ICourseDto {
                 for (let item of _data["pricePackages"])
                     this.pricePackages!.push(PricePackageDto.fromJS(item));
             }
+            this.enrolledStudentsCount = _data["enrolledStudentsCount"];
             this.id = _data["id"];
         }
     }
@@ -33250,6 +33252,7 @@ export class CourseDto implements ICourseDto {
             for (let item of this.pricePackages)
                 data["pricePackages"].push(item.toJSON());
         }
+        data["enrolledStudentsCount"] = this.enrolledStudentsCount;
         data["id"] = this.id;
         return data; 
     }
@@ -33268,6 +33271,7 @@ export interface ICourseDto {
     predefinedDrivingLessons: PredefinedDrivingLessonDto[] | undefined;
     predefinedTheoryLessons: PredefinedTheoryLessonDto[] | undefined;
     pricePackages: PricePackageDto[] | undefined;
+    enrolledStudentsCount: number;
     id: number;
 }
 
@@ -50914,6 +50918,7 @@ export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
     payersCity!: string | undefined;
     payersPhone!: string | undefined;
     payersEmail!: string | undefined;
+    createUserAccount!: boolean;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditStudentDto) {
@@ -50961,6 +50966,7 @@ export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
             this.payersCity = _data["payersCity"];
             this.payersPhone = _data["payersPhone"];
             this.payersEmail = _data["payersEmail"];
+            this.createUserAccount = _data["createUserAccount"];
             this.id = _data["id"];
         }
     }
@@ -51008,6 +51014,7 @@ export class CreateOrEditStudentDto implements ICreateOrEditStudentDto {
         data["payersCity"] = this.payersCity;
         data["payersPhone"] = this.payersPhone;
         data["payersEmail"] = this.payersEmail;
+        data["createUserAccount"] = this.createUserAccount;
         data["id"] = this.id;
         return data; 
     }
@@ -51040,6 +51047,7 @@ export interface ICreateOrEditStudentDto {
     payersCity: string | undefined;
     payersPhone: string | undefined;
     payersEmail: string | undefined;
+    createUserAccount: boolean;
     id: number | undefined;
 }
 
@@ -58368,6 +58376,7 @@ export class UserRoleDto implements IUserRoleDto {
     roleDisplayName!: string | undefined;
     isAssigned!: boolean;
     inheritedFromOrganizationUnit!: boolean;
+    staticAndNotEditableByUser!: boolean;
 
     constructor(data?: IUserRoleDto) {
         if (data) {
@@ -58385,6 +58394,7 @@ export class UserRoleDto implements IUserRoleDto {
             this.roleDisplayName = _data["roleDisplayName"];
             this.isAssigned = _data["isAssigned"];
             this.inheritedFromOrganizationUnit = _data["inheritedFromOrganizationUnit"];
+            this.staticAndNotEditableByUser = _data["staticAndNotEditableByUser"];
         }
     }
 
@@ -58402,6 +58412,7 @@ export class UserRoleDto implements IUserRoleDto {
         data["roleDisplayName"] = this.roleDisplayName;
         data["isAssigned"] = this.isAssigned;
         data["inheritedFromOrganizationUnit"] = this.inheritedFromOrganizationUnit;
+        data["staticAndNotEditableByUser"] = this.staticAndNotEditableByUser;
         return data; 
     }
 }
@@ -58412,6 +58423,7 @@ export interface IUserRoleDto {
     roleDisplayName: string | undefined;
     isAssigned: boolean;
     inheritedFromOrganizationUnit: boolean;
+    staticAndNotEditableByUser: boolean;
 }
 
 export class GetUserForEditOutput implements IGetUserForEditOutput {
