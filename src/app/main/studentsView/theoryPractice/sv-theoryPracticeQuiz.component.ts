@@ -122,9 +122,9 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
                 let currQuestion = this.currentQuizSession.getCurrentQuestion();
                 switch (currQuestion.contentType) {
                     case 0:
-                        return this.l("TSQuestion");              
-                    case 1:
                         return this.l("LCQuestion");              
+                    case 1:
+                        return this.l("TSQuestion");              
                     case 2:
                         return this.l("RIQuestion");                          
                     default:
