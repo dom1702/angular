@@ -122,9 +122,9 @@
                                         <th style="width: 130px"
                                             [hidden]="!isGrantedAny('Pages.Courses.Edit', 'Pages.Courses.Delete')">
                                             {{l('Actions')}}</th>
-                                        <th style="width: 150px" pSortableColumn="officeFk.name">
-                                            {{l('Office')}}
-                                            <p-sortIcon field="officeName"></p-sortIcon>
+                                        <th style="width: 100px" pSortableColumn="enrolledStudentsCount">
+                                            {{l('StudentsEnrolled')}}
+                                            <p-sortIcon field="enrolledStudentsCount"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="name">
                                             {{l('Name')}}
@@ -185,9 +185,9 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td style="width:150px">
-                                            <span class="p-column-title"> {{l('Office')}}</span>
-                                            {{record.officeName}}
+                                        <td style="width:100px">
+                                            <span class="p-column-title"> {{l('StudentsEnrolled')}}</span>
+                                            {{record.course.enrolledStudentsCount}}
                                         </td>
                                         <td style="width:150px">
                                             <span class="p-column-title"> {{l('Name')}}</span>

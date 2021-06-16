@@ -1,5 +1,5 @@
-<p-autoComplete [(ngModel)]="selected" [suggestions]="searchMenuResults" (completeMethod)="searchMenuItem($event)"
+<p-autoComplete [(ngModel)]="selected" [suggestions]="searchMenuResults" (completeMethod)="searchStudent($event)"
     *ngIf="isMenuSearchActive" (onSelect)="selectMenuItem($event)" field="name"
-    placeholder="{{'QuickNav' | localize}}" [minLength]="1" inputStyleClass="form-control menuSearchBarInput"
+    placeholder="{{'SearchStudentQuickSearch' | localize}}" [minLength]="3" inputStyleClass="form-control menuSearchBarInput"
     styleClass="menuSearchBarContainer">
 </p-autoComplete>

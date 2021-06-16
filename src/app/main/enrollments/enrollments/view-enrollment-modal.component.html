@@ -26,11 +26,11 @@
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("PayersSocialSecurityNo")}} :</h6>
-                        {{ item.enrollment.payersSocialSecurityNo }}
+                        {{ item.enrollment.payersSocialSecurityNo | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("PayersName")}} :</h6>
-                        {{ item.enrollment.payersName }}
+                        {{ item.enrollment.payersName | replaceNullOrEmptyWithText}}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{l("LicenseClass")}} :</h6>
@@ -47,11 +47,11 @@
                     </div>
 
                     <div class="col-6 mb-3">
-                        <h6>({{l("Course")}}) {{l("Name")}} :</h6>
+                        <h6>{{l("Course")}} :</h6>
                         {{item.courseName}}
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>({{l("Office")}}) {{l("Name")}} :</h6>
+                        <h6>{{l("Office")}} :</h6>
                         {{item.officeName}}
                     </div>
 

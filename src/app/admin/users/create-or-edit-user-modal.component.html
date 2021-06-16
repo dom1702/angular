@@ -137,9 +137,9 @@
                             </ng-template>
                             <div class="checkbox-inline">
                                 <label attr.for="EditUser_{{role.roleName}}" class="checkbox" *ngFor="let role of roles">
-                                    <input id="EditUser_{{role.roleName}}" type="checkbox" name="{{role.roleName}}" [(ngModel)]="role.isAssigned" [disabled]="role.inheritedFromOrganizationUnit">
+                                    <input id="EditUser_{{role.roleName}}" type="checkbox" name="{{role.roleName}}" [(ngModel)]="role.isAssigned" [disabled]="role.inheritedFromOrganizationUnit || role.staticAndNotEditableByUser">
                                     <span></span>
-                                    {{role.roleDisplayName}} <small *ngIf="role.inheritedFromOrganizationUnit">({{'RoleIsInheritedFromOrganizationUnit' | localize}})</small>
+                                    {{role.roleDisplayName}} <small *ngIf="role.inheritedFromOrganizationUnit">({{'RoleIsInheritedFromOrganizationUnit' | localize}})</small><small *ngIf="role.staticAndNotEditableByUser">&nbsp; ({{'CannotBeEdited' | localize}})</small>
                                 </label>
                             </div>
                         </tab>

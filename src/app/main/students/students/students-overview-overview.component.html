@@ -87,15 +87,15 @@
                     <div class="m-5">
                         <div *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
                             <div *ngIf="pdl.completed"><i class="fa fa-check" style="color: rgb(71, 207, 58);"
-                                    title="True"></i><label>&nbsp;{{pdl.name}}</label>
+                                    title="True"></i><label>&nbsp;{{pdl.name | localize}}</label>
                                 <label *ngIf="pdl.doneOnSimulator">(Simulator)</label>
                             </div>
                             <div *ngIf="!pdl.completed && !pdl.running"><i class="fa fa-times" style="color: Tomato;"
-                                    title="False"></i><label>&nbsp;{{pdl.name}}</label>
+                                    title="False"></i><label>&nbsp;{{pdl.name | localize}}</label>
                             </div>
                             <div *ngIf="!pdl.completed && pdl.running "><i class="fa fa-clock"
                                     style="color: rgb(71, 151, 255);"
-                                    title="False"></i><label>&nbsp;{{pdl.name}}</label>
+                                    title="False"></i><label>&nbsp;{{pdl.name | localize}}</label>
                             </div>
                         </div>
 

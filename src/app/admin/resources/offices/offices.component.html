@@ -66,12 +66,6 @@
                             </div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="StateFilter">{{l("State")}}</label>
-									<input type="text" class="form-control" id="StateFilter" name="stateFilter" [(ngModel)]="stateFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
 									<label for="CountryFilter">{{l("Country")}}</label>
 									<input type="text" class="form-control" id="CountryFilter" name="countryFilter" [(ngModel)]="countryFilter">
 								</div>
@@ -132,10 +126,6 @@
                                         {{l('ZipCode')}}
                                         <p-sortIcon field="office.zipCode"></p-sortIcon>
                                     </th>
-                                    <th style="width: 150px" pSortableColumn="state">
-                                        {{l('State')}}
-                                        <p-sortIcon field="office.state"></p-sortIcon>
-                                    </th>
                                     <th style="width: 150px" pSortableColumn="country">
                                         {{l('Country')}}
                                         <p-sortIcon field="office.country"></p-sortIcon>
@@ -194,10 +184,6 @@
                                     <td style="width:150px">
 											<span class="p-column-title"> {{l('ZipCode')}}</span>
 											{{record.office.zipCode}}
-										</td>
-                                    <td style="width:150px">
-											<span class="p-column-title"> {{l('State')}}</span>
-											{{record.office.state}}
 										</td>
                                     <td style="width:150px">
 											<span class="p-column-title"> {{l('Country')}}</span>

@@ -40,7 +40,7 @@
                         <div class="m--margin-top-40">
 
                             <div *ngIf="studentCourses != null && studentCourses.length > 0">
-                                <label>{{l("Course")}}: </label><br>
+                                <label>{{l("Course")}} </label><br>
                                 <div class="form-group">
 
                                     <select class="form-control" name="studentCourse"
@@ -95,15 +95,15 @@
                                 [(ngModel)]="drivingLesson.startingLocation" name="StartingLocation" />
                         </div>
                         <div class="form-group">
-                            <label for="DrivingLesson_ExamLocation">{{l("ExamLocation")}}</label>
+                            <label for="DrivingLesson_ExamLocation">{{l("ExamLocation")}} *</label>
                             <input type="text" id="DrivingLesson_ExamLocation" class="form-control"
-                                [(ngModel)]="drivingLesson.examLocation" name="ExamLocation" />
+                                [(ngModel)]="drivingLesson.examLocation" name="ExamLocation" required/>
                         </div>
 
                         <div class="m--margin-top-40">
                             <h5>{{l("Resources")}}</h5>
                             <div [hidden]="instructorPersonalLesson" class="form-group m-form__group">
-                                <label for="LicenseClassClass">{{l("Instructors")}}</label>
+                                <label for="LicenseClassClass">{{l("Instructors")}} *</label>
                                 <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings"
                                 [data]="instructors" [(ngModel)]="instructorsSelectedItems"
                                 [ngModelOptions]="{standalone: true}">
@@ -111,7 +111,7 @@
                             </div>
 
                             <div class="form-group m-form__group">
-                                <label for="Vehicle">{{l("Vehicle")}}</label>
+                                <label for="Vehicle">{{l("Vehicle")}} *</label>
                                 <div class="input-group">
                                     <input class="form-control" id="Vehicle" name="vehicleName"
                                         [(ngModel)]="vehicleName" type="text" disabled>

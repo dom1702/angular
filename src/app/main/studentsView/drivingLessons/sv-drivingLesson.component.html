@@ -44,12 +44,12 @@
                                         *ngFor="let pdl of drivingLessons.predefinedDrivingLessons; index as i">
                                         <div *ngIf="pdl.completed" class="text-center"><i class="fa fa-check"
                                                 style="color: rgb(71, 207, 58);"
-                                                title="True"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                                title="True"></i><label>&nbsp;{{pdl.name | localize}}</label></div>
                                         <div *ngIf="!pdl.completed && !pdl.running" class="text-center"><i
                                                 class="fa fa-times" style="color: Tomato;"
-                                                title="False"></i><label>&nbsp;{{pdl.name}}</label></div>
+                                                title="False"></i><label>&nbsp;{{pdl.name | localize}}</label></div>
                                         <div *ngIf="!pdl.completed && pdl.running " class="text-center"><i
-                                                class="fa fa-clock" title="False"></i><label>&nbsp;{{pdl.name}}
+                                                class="fa fa-clock" title="False"></i><label>&nbsp;{{pdl.name | localize}}
                                                 <span class="badge bg-secondary">{{l('Booked')}}</span></label>
                                         </div>
                                     </div>

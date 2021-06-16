@@ -44,7 +44,7 @@
                         <div class="my-10">
 
                             <div *ngIf="studentCourses != null && studentCourses.length > 0">
-                                <label>{{l("Course")}}: </label><br>
+                                <label>{{l("Course")}} </label><br>
                                 <div class="form-group">
 
                                     <select class="form-control" name="studentCourse"
@@ -76,7 +76,7 @@
                                                 <input type="radio" name="pdl_option" [value]="pdl"
                                                     [(ngModel)]="selectedPdl" (change)='updateCheck()'>
                                                 <span></span>
-                                                {{pdl.name}}
+                                                {{pdl.name| localize}}
                                             </label>
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@
                                                 <input type="checkbox" name="pdl_checkboxes" [(ngModel)]="pdl.checked"
                                                     (change)='updatedCheckboxList()'>
                                                 <span></span>
-                                                {{pdl.name}}
+                                                {{pdl.name | localize}}
                                             </label>
                                         </div>
                                     </div>
