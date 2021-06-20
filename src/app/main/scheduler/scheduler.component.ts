@@ -287,6 +287,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
       info.end,
       (this.studentId == null) ? -1 : this.studentId,
       (this.instructorId == null) ? -1 : this.instructorId,
+      null,
       //this.vehicles.vehicles.map<number>(v => (v.id)),
       this.eventTypeFilter.drivingLessons,
       this.eventTypeFilter.theoryLessons,
@@ -324,12 +325,21 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
 
           if (item.vehicleId != null)
             resourceIds.push("veh_" + item.vehicleId);
+
+            if (item.simulatorId != null) {
+              resourceIds.push("simu_" + item.simulatorId);
+            }
+
           if (item.instructorIds != null) {
             for (var instructorId of item.instructorIds.keys())
               resourceIds.push("instr_" + item.instructorIds[instructorId]);
           }
-          if (item.simulatorId != null) {
-            resourceIds.push("simu_" + item.simulatorId);
+          else if(item.personId != null)
+          {
+            var i = this.instructorsResources.find(el => el.id.split("_", 2)[1] == item.personId);
+       
+            if(i != null && i.checked)
+              resourceIds.push(i.id);
           }
 
           var borderColor = 'yellow';
