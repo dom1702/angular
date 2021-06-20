@@ -76,11 +76,11 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
             let answer = this.currentQuizSession.quiz[this.questionContentIndex].selectedAnswer;
             if(this.currentQuizSession.quiz[this.questionContentIndex].displayType == 2)
             {    
-                return answer == 0 ? "Yes" : "No";
+                return answer == 0 ? this.l("Yes") : this.l("No");
             }
             else if(this.currentQuizSession.quiz[this.questionContentIndex].displayType == 1) {
                 let answer = this.currentQuizSession.quiz[this.questionContentIndex].selectedAnswer; 
-                let p = "Sign ";
+                let p = (this.l("Sign") +" ");
                 switch (answer) {
                     case 0:
                         return p += '1';
@@ -122,9 +122,9 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
                 let currQuestion = this.currentQuizSession.getCurrentQuestion();
                 switch (currQuestion.contentType) {
                     case 0:
-                        return this.l("TSQuestion");              
-                    case 1:
                         return this.l("LCQuestion");              
+                    case 1:
+                        return this.l("TSQuestion");              
                     case 2:
                         return this.l("RIQuestion");                          
                     default:
@@ -509,20 +509,31 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
                 temp.displayType = 2;
                 temp.contentType = 1;               
                 temp.pictureUrl = target.singleChoiceAnswer.imageUrl;   
-                temp.hint = target.hintAfterWrongAnswer;                     
+                temp.hint = this.l(target.hintAfterWrongAnswer);   
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer1));
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer2));                  
             break;
             case 1: // ClassRelated
                 temp.displayType = 0;
-                temp.contentType = 0;                    
+                temp.contentType = 0;  
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer1));
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer2));
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer3));                  
             break;
             case 2: // RiskIdentifying
                 temp.displayType = 0;
                 temp.contentType = 2;                   
-                temp.pictureUrl = target.singleChoiceAnswer.imageUrl;                
+                temp.pictureUrl = target.singleChoiceAnswer.imageUrl;  
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer1));
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer2));
+                temp.answerOptions.push(this.l(target.singleChoiceAnswer.answer3));              
             break;
             case 3: // Other --> PictureQuestion
                 temp.displayType = 1;
                 temp.contentType = 0;
+                temp.answerOptions.push(target.singleChoiceAnswer.answer1);
+                temp.answerOptions.push(target.singleChoiceAnswer.answer2);
+                temp.answerOptions.push(target.singleChoiceAnswer.answer3);
             break;                      
             default:
                 console.log("Display Question: Question type not found " + target.type);
@@ -530,13 +541,9 @@ export class SVTheoryPracticeQuizComponent extends AppComponentBase implements O
         }
         
         temp.correctAnswer = target.singleChoiceAnswer.correctAnswer; 
-        temp.questionId = target.id;                    
-        temp.answerOptions.push(target.singleChoiceAnswer.answer1);
-        temp.answerOptions.push(target.singleChoiceAnswer.answer2);
-        if(target.singleChoiceAnswer.answer3) temp.answerOptions.push(target.singleChoiceAnswer.answer3);
-        if(target.singleChoiceAnswer.answer4) temp.answerOptions.push(target.singleChoiceAnswer.answer4);
-        temp.quest = target.questionString;
-
+        temp.questionId = target.id;   
+        temp.quest = this.l(target.questionString);                 
+        
         return temp;
     }
 
