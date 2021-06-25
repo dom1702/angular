@@ -52,6 +52,8 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
 
     justSaved = false;
 
+    newStudent : boolean;
+
     @ViewChild('instructorLookupTableModal') instructorLookupTableModal: InstructorLookupTableModalComponent;
 
     instructorFullName = '';
@@ -133,6 +135,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
         this.dateOfBirth = null;
 
         if (!studentId) {
+            this.newStudent = true;
             this.student = new CreateOrEditStudentDto();
 
             for (var i = 0; i < this.countries.length; i++) {
@@ -150,6 +153,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
             this.updateLicenseClassesOwned(false);
             this.modal.show();
         } else {
+            this.newStudent = false;
             this._studentsServiceProxy.getStudentForEdit(studentId).subscribe(result => {
                 this.student = result.student;
                 this.student.id = studentId;
@@ -323,8 +327,7 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
 
         this.student.createUserAccount = this.createUserAccountAfterSave;
 
-        if (this.student.id == null && this.assignToCourseAfterSave) {
-
+   
             this._studentsServiceProxy.createAndGetId(this.student)
                 .pipe(finalize(() => { this.saving = false; }))
                 .subscribe((result) => {
@@ -333,18 +336,10 @@ export class CreateOrEditStudentModalComponent extends AppComponentBase implemen
                     this.close();
                     this.modalSave.emit(null);
                 });
-
-            this.justSaved = true;
-        }
-        else {
-            this._studentsServiceProxy.createOrEdit(this.student)
-                .pipe(finalize(() => { this.saving = false; }))
-                .subscribe(() => {
-                    this.notify.info(this.l('SavedSuccessfully'));
-                    this.close();
-                    this.modalSave.emit(null);
-                });
-        }
+            
+            if(this.newStudent && this.assignToCourseAfterSave)
+                this.justSaved = true;
+        
     }
 
     close(): void {

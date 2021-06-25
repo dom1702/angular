@@ -302,10 +302,26 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
           var backgroundColor;
           switch (item.appointmentType) {
             case EventType.DrivingLesson:
-              backgroundColor = '#F57F17';
+              if(item.licenseClass == "B")
+                backgroundColor = '#4caf50';
+              else if(item.licenseClass == "A")
+                backgroundColor = '#2196f3';
+                else if(item.licenseClass == "A1")
+                backgroundColor = '#064070';
+                else if(item.licenseClass == "A2")
+                backgroundColor = '#0960A8';
+                else if(item.licenseClass == "AM120")
+                backgroundColor = '#477998';
+                else if(item.licenseClass == "C")
+                backgroundColor = '#A3333D';
+                else if(item.licenseClass == "C1")
+                backgroundColor = '#F64740';
+                else
+                backgroundColor = '#4caf50';
+
               break;
             case EventType.DrivingExam:
-              backgroundColor = '#F17F17';
+              backgroundColor = '#FEA82F';
               break;
             case EventType.TheoryLesson:
               backgroundColor = '#7fa900';

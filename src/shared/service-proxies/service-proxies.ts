@@ -7,6 +7,7 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
@@ -45171,6 +45172,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
     personId!: number | undefined;
     completed!: boolean;
     studentNotPresent!: boolean;
+    licenseClass!: string | undefined;
     id!: number;
 
     constructor(data?: ISchedulerEventDto) {
@@ -45205,6 +45207,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
             this.personId = _data["personId"];
             this.completed = _data["completed"];
             this.studentNotPresent = _data["studentNotPresent"];
+            this.licenseClass = _data["licenseClass"];
             this.id = _data["id"];
         }
     }
@@ -45239,6 +45242,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
         data["personId"] = this.personId;
         data["completed"] = this.completed;
         data["studentNotPresent"] = this.studentNotPresent;
+        data["licenseClass"] = this.licenseClass;
         data["id"] = this.id;
         return data; 
     }
@@ -45262,6 +45266,7 @@ export interface ISchedulerEventDto {
     personId: number | undefined;
     completed: boolean;
     studentNotPresent: boolean;
+    licenseClass: string | undefined;
     id: number;
 }
 
