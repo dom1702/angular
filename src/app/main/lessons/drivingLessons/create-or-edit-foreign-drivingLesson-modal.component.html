@@ -1,0 +1,249 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #drivingLessonForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="drivingLesson.id">{{l("EditDrivingLesson")}}</span>
+                        <span *ngIf="!drivingLesson.id">{{l("CreateNewDrivingLesson")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+               
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group" *ngIf="showStudentSelection">
+                        <label for="StudentFirstName">{{l("Student")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="studentFullName" name="studentFullName"
+                                [(ngModel)]="studentFullName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectStudentModal()" type="button"><i
+                                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setStudentIdNull()"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="drivingLesson.studentId" [(ngModel)]="drivingLesson.studentId"
+                        type="text" required hidden>
+
+                    <div class="form-group m-form__group" *ngIf="!showStudentSelection">
+                        <h5>{{l("Student")}}: {{studentFullName}}</h5>
+                        <button *ngIf="isGranted('Pages.Students')" class="btn btn-primary blue" (click)="goToStudentOverview()" type="button"><i
+                            class="fa fa-search"></i> {{l("GoToStudentsPage")}}</button>
+                    </div>
+
+                    <div *ngIf="studentSelected && studentCourses != null && studentCourses.length > 0"
+                        class="form-group">
+                        <div class="my-10">
+
+                            <div *ngIf="studentCourses != null && studentCourses.length > 0">
+                                <label>{{l("Course")}} </label><br>
+                                <div class="form-group">
+
+                                    <select class="form-control" name="studentCourse"
+                                        [(ngModel)]="selectedStudentCourse" (change)="courseSelected()">
+                                        <option *ngFor="let course of studentCourses" [ngValue]="course" >
+                                            {{course.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 border-right">
+                                    <div class="form-group">
+                                        <label class="radio" *ngIf="numberOfCheckedPdls == 0">
+                                            <input type="radio" name="pdl_option" [value]="null"
+                                                [(ngModel)]="selectedPdl" (change)='updateCheck()'>
+                                            <span></span>
+                                            {{l('BasicLesson')}}
+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div *ngIf="selectedStudentCourse && this.drivingLesson.id != null">
+                                        <div class="col-md-auto"
+                                            *ngFor="let pdl of selectedStudentCourse.predefinedDrivingLessons">
+                                            <label class="radio">
+                                                <input type="radio" name="pdl_option" [value]="pdl"
+                                                    [(ngModel)]="selectedPdl" (change)='updateCheck()'>
+                                                <span></span>
+                                                {{pdl.name| localize}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-list"
+                                        *ngIf="selectedStudentCourse && this.drivingLesson.id == null">
+                                        <div *ngFor="let pdl of pdlCheckboxesList">
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="pdl_checkboxes" [(ngModel)]="pdl.checked"
+                                                    (change)='updatedCheckboxList()'>
+                                                <span></span>
+                                                {{pdl.name | localize}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="numberOfCheckedPdls > 1">
+                            <alert type="info">
+                                <strong>{{l('Info')}}!</strong> {{l('MoreThanOneLessonInARowInfo')}}
+                            </alert>
+                        </div>
+
+                        <div class="form-group" *ngIf="numberOfCheckedPdls < 2">
+                            <label for="SetTopicAutomatically" class="checkbox">
+                                <input id="SetTopicAutomatically" type="checkbox" name="SetTopicAutomatically"
+                                    [(ngModel)]="setTopicNameAutomatically">
+                                <span></span>
+                                {{l("SetTopicAutomatically")}}
+
+                            </label>
+                        </div>
+
+                        <div *ngIf="!selectedPdl && !setTopicNameAutomatically && numberOfCheckedPdls < 2"
+                            class="form-group">
+                            <label for="DrivingLessonTopic">{{l("DrivingLessonTopic")}}</label>
+                            <div class="input-group">
+                                <input class="form-control" id="DrivingLessonTopic" name="drivingLessonTopic"
+                                    [(ngModel)]="drivingLessonTopic" type="text">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue" (click)="openSelectDrivingLessonTopicModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger" type="button" (click)="setTopicNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="drivingLesson.topic" [(ngModel)]="drivingLesson.topic"
+                            type="text" hidden>
+
+                        <div class="form-group">
+                            <label for="DrivingLesson_StartingLocation">{{l("StartingLocation")}}</label>
+                            <input type="text" id="DrivingLesson_StartingLocation" class="form-control"
+                                [(ngModel)]="drivingLesson.startingLocation" name="StartingLocation" />
+                        </div>
+
+                        <div class="mt-20">
+                            <h5>{{l("Time")}}</h5>
+                            <div class="row">
+                                <div class="col-6 border-right">
+
+
+                                    <div class="form-group">
+                                        <label for="DrivingLesson_StartTime">{{l("StartDate")}}</label>
+                                        <input required class="form-control m-input" type="timepicker" bsDatepicker
+                                            datePickerLuxonModifier [(date)]="startTime" id="DrivingLesson_StartTime"
+                                            name="DrivingLesson_StartTime"
+                                            [bsConfig]="{ adaptivePosition: true, isAnimated: true , dateInputFormat: 'DD.MM.YYYY'}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="DrivingLesson_StartTime">{{l("StartTime")}}</label>
+                                        <timepicker [(ngModel)]="startTimeTime" [showMeridian]="ismeridian"
+                                            name="StartTime">
+                                        </timepicker>
+                                        <!-- <input required class="form-control m-input" type="time" timepicker [(ngModel)]="drivingLesson.startTime.time" id="DrivingLesson_StartTime" name="DrivingLesson_StartTime"> -->
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div><label for="DrivingLesson_Length">{{l("NumberOfLessons")}}</label></div>
+                                        <div><label>{{numberOfLessonsAddition}}</label></div>
+                                        <input type="number" id="DrivingLesson_Length" min="1" max="10"
+                                            class="form-control" [(ngModel)]="drivingLesson.length" name="Length" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="m--margin-top-60">
+                            <div class="form-group">
+                                <label for="DrivingLesson_Description">{{l("Description")}}</label>
+                                <input type="text" id="DrivingLesson_Description" class="form-control"
+                                    [(ngModel)]="drivingLesson.description" name="Description" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="DrivingLesson_InternalDescription">{{l("InternalDescription")}}</label>
+                                <input type="text" id="DrivingLesson_InternalDescription" class="form-control"
+                                    [(ngModel)]="drivingLesson.internalDescription" name="InternalDescription" />
+                            </div>
+
+                            <div class="form-group">
+                                <div class="radio-list">
+                                    <label class="radio">
+                                        <input type="radio" name="state" id="state1" [value]="1"
+                                            [(ngModel)]="currentState" (change)="updateState()">
+                                        <span></span>
+                                        {{l("NotSet")}}
+
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="state" id="state2" [value]="2"
+                                            [(ngModel)]="currentState" (change)="updateState()">
+                                        <span></span>
+                                        {{l("Completed")}}
+
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="state" id="state3" [value]="3"
+                                            [(ngModel)]="currentState" (change)="updateState()">
+                                        <span></span>
+                                        {{l("StudentNotPresent")}}
+
+                                    </label>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                    <div *ngIf="studentCourses != null && studentCourses.length == 0">
+                        <alert type="info">
+                            <strong>{{l("Note")}}</strong>
+                            {{l("NoCourseSelected")}}!
+                        </alert>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button *ngIf="drivingLesson.id"
+                        [disabled]="!isGranted('Pages.DrivingLessons.Delete') && !isGranted('Pages.InstructorsOwnDrivingLessons.Delete') && !this.isGranted('Pages.Students.DrivingLessons.Delete')"
+                        type="button" class="btn btn-danger" (click)="delete()">{{l("Delete")}}</button>
+                    <button type="submit" class="btn btn-primary blue"
+                        [disabled]="!drivingLessonForm.form.valid || selectedStudentCourse == null || !instructorSelected() || !vehicleSelected()"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <drivingLessonTopicLookupTableModal #drivingLessonTopicLookupTableModal (modalSave)="getNewTopic()">
+    </drivingLessonTopicLookupTableModal>
+    <drivingLesson-studentLookupTableModal #studentLookupTableModal (modalSave)="getNewStudentId()">
+    </drivingLesson-studentLookupTableModal>
+    <drivingLesson-licenseClassLookupTableModal #licenseClassLookupTableModal (modalSave)="getNewLicenseClass()">
+    </drivingLesson-licenseClassLookupTableModal>
+    <vehicleLookupTableModal #vehicleLookupTableModal (modalSave)="getNewVehicle()"></vehicleLookupTableModal>
+
+</div>

@@ -287,6 +287,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
       info.end,
       (this.studentId == null) ? -1 : this.studentId,
       (this.instructorId == null) ? -1 : this.instructorId,
+      null,
       //this.vehicles.vehicles.map<number>(v => (v.id)),
       this.eventTypeFilter.drivingLessons,
       this.eventTypeFilter.theoryLessons,
@@ -301,10 +302,26 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
           var backgroundColor;
           switch (item.appointmentType) {
             case EventType.DrivingLesson:
-              backgroundColor = '#F57F17';
+              if(item.licenseClass == "B")
+                backgroundColor = '#4caf50';
+              else if(item.licenseClass == "A")
+                backgroundColor = '#2196f3';
+                else if(item.licenseClass == "A1")
+                backgroundColor = '#064070';
+                else if(item.licenseClass == "A2")
+                backgroundColor = '#0960A8';
+                else if(item.licenseClass == "AM120")
+                backgroundColor = '#477998';
+                else if(item.licenseClass == "C")
+                backgroundColor = '#A3333D';
+                else if(item.licenseClass == "C1")
+                backgroundColor = '#F64740';
+                else
+                backgroundColor = '#4caf50';
+
               break;
             case EventType.DrivingExam:
-              backgroundColor = '#F17F17';
+              backgroundColor = '#FEA82F';
               break;
             case EventType.TheoryLesson:
               backgroundColor = '#7fa900';
@@ -324,12 +341,21 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
 
           if (item.vehicleId != null)
             resourceIds.push("veh_" + item.vehicleId);
+
+            if (item.simulatorId != null) {
+              resourceIds.push("simu_" + item.simulatorId);
+            }
+
           if (item.instructorIds != null) {
             for (var instructorId of item.instructorIds.keys())
               resourceIds.push("instr_" + item.instructorIds[instructorId]);
           }
-          if (item.simulatorId != null) {
-            resourceIds.push("simu_" + item.simulatorId);
+          else if(item.personId != null)
+          {
+            var i = this.instructorsResources.find(el => el.id.split("_", 2)[1] == item.personId);
+       
+            if(i != null && i.checked)
+              resourceIds.push(i.id);
           }
 
           var borderColor = 'yellow';

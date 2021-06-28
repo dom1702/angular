@@ -64,7 +64,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-record="$implicit">
                     <tr>
-                        <td style="width: 150px"
+                        <td style="width: 150px"  [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}"
                             [hidden]="!isGrantedAny('Pages.Students.DrivingLessons', 'Pages.Students.DrivingLessons.Edit', 'Pages.Students.DrivingLessons.Delete')">
                             <!-- <div class="btn-group dropdown" dropdown container="body">
                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
@@ -111,7 +111,7 @@
                                 </div>
                            
                         </td>
-                        <td style="width:150px">
+                        <td style="width:150px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('LessonType')}}</span>
                             <div *ngIf="record.predefinedDrivingLessonId == l('Exam')">
                                 <strong>{{record.predefinedDrivingLessonId}}</strong>
@@ -120,41 +120,41 @@
                                 {{record.predefinedDrivingLessonId}}
                             </div>
                         </td>
-                        <td style="width:150px">
+                        <td style="width:150px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('StartTime')}}</span>
                             <span *ngIf="record.startTime">
                                 {{record.startTime  | luxonFormat:'F'}}
                             </span>
                             <span *ngIf="!record.startTime">-</span>
                         </td>
-                        <td style="width:150px">
+                        <td style="width:150px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('Instructors')}}</span>
                             {{record.instructorNames}}
                         </td>
-                        <td style="width:150px">
+                        <td style="width:150px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('DrivingLessonTopic')}}</span>
                             {{record.vehicleNameBrandModel}}
                         </td>
-                        <td style="width:50px">
+                        <td style="width:50px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('Length')}}</span>
                             {{record.length}}
                         </td>
 
-                        <td style="width:100px">
+                        <td style="width:100px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('Completed')}}</span>
                             <div *ngIf="record.completed" class="text-center"><i
                                     class="fa fa-check-circle m--font-success" title="True"></i></div>
                             <div *ngIf="!record.completed" class="text-center"><i class="fa fa-times-circle"
                                     title="False"></i></div>
                         </td>
-                        <td style="width:100px">
+                        <td style="width:100px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('Simulator')}}</span>
                             <div *ngIf="record.doneOnSimulator" class="text-center"><i
                                     class="fa fa-check-circle m--font-success" title="True"></i></div>
                             <div *ngIf="!record.doneOnSimulator" class="text-center"><i class="fa fa-times-circle"
                                     title="False"></i></div>
                         </td>
-                        <td style="width:100px">
+                        <td style="width:100px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('Bill')}}</span>
                             <div *ngIf="record.billToStudent" class="text-center"><i
                                     class="fa fa-check-circle m--font-success" title="True"></i></div>

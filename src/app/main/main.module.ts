@@ -28,6 +28,7 @@ import { CreateOrEditEnrollmentModalComponent } from './enrollments/enrollments/
 import { EnrollmentsComponent } from './enrollments/enrollments/enrollments.component';
 import { ViewEnrollmentModalComponent } from './enrollments/enrollments/view-enrollment-modal.component';
 import { CreateOrEditDrivingLessonModalComponent } from './lessons/drivingLessons/create-or-edit-drivingLesson-modal.component';
+import { CreateOrEditForeignDrivingLessonModalComponent } from './lessons/drivingLessons/create-or-edit-foreign-drivingLesson-modal.component';
 import { CreateOrEditExamDrivingModalComponent } from './lessons/drivingLessons/create-or-edit-examDriving-modal.component';
 import { DLStudentLookupTableModalComponent } from './lessons/drivingLessons/drivingLesson-student-lookup-table-modal.component';
 import { DrivingLessonsComponent } from './lessons/drivingLessons/drivingLessons.component';
@@ -228,6 +229,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       DrivingLessonsComponent,
       ViewDrivingLessonModalComponent,		
       CreateOrEditDrivingLessonModalComponent,
+      CreateOrEditForeignDrivingLessonModalComponent,
       CreateOrEditExamDrivingModalComponent,
       DrivingLessonTopicLookupTableModalComponent,
       DLStudentLookupTableModalComponent,

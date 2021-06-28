@@ -44,6 +44,10 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
 
     loading : boolean;
 
+    completedColor = '#d2f9d2';
+    canceledColor = '#feaeae';
+    uncompletedColor = 'white';
+
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,

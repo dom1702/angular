@@ -27,8 +27,7 @@ export class AppNavigationService {
             new AppMenuItem('Scheduler', 'Pages.Scheduler', 'flaticon-calendar-with-a-clock-time-tools', '/app/main/scheduler'),
 
             new AppMenuItem("Overview", 'StudentView', "flaticon-book", "/app/main/studentsView/overview"),
-            new AppMenuItem('Enrollments', 'Pages.Enrollments', 'flaticon-user', '/app/main/enrollments/enrollments'),
-            new AppMenuItem("LearningPath", 'StudentView', "flaticon-book", "/app/main/studentsView/learningPath/learningPathOverview"),
+            new AppMenuItem('Enrollments', 'Pages.Enrollments', 'flaticon-user-add', '/app/main/enrollments/enrollments'),
             new AppMenuItem("TheoryLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryLessons"),
             new AppMenuItem("DrivingLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/drivingLessons"),
             new AppMenuItem("TheoryPractice", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryPractice/licenseClassSelection"),
@@ -40,46 +39,52 @@ export class AppNavigationService {
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
 
-            
-            new AppMenuItem('Students', 'Pages.Students', 'flaticon-users', '/app/main/students/students'),
-            new AppMenuItem('TheoryLessons', 'Pages.TheoryLessons', 'flaticon-presentation', '/app/main/lessons/theoryLessons'),
-            new AppMenuItem('DrivingLessons', 'Pages.DrivingLessons', 'flaticon-car', '/app/main/lessons/drivingLessons'),
-            new AppMenuItem('SimulatorLessons', 'Pages.SimulatorLessons', 'flaticon-more', '/app/main/lessons/simulatorLessons',
-                undefined, undefined, undefined, undefined, () => {return this._featureCheckerService.isEnabled('App.Simulator');
-                }, false),
+         
 
+
+            new AppMenuItem('Students', 'Pages.Students', 'flaticon-users', '/app/main/students/students'),
+           
+            new AppMenuItem('Lessons', '', 'flaticon-car', '', [], [
+                new AppMenuItem('TheoryLessons', 'Pages.TheoryLessons', 'flaticon-presentation', '/app/main/lessons/theoryLessons'),
+                new AppMenuItem('DrivingLessons', 'Pages.DrivingLessons', 'flaticon-car', '/app/main/lessons/drivingLessons'),
+                new AppMenuItem('SimulatorLessons', 'Pages.SimulatorLessons', 'flaticon-technology-2', '/app/main/lessons/simulatorLessons',
+                    undefined, undefined, undefined, undefined, () => {return this._featureCheckerService.isEnabled('App.Simulator');
+                    }, false)
+            ]),
             new AppMenuItem('StudentInvoices', 'Pages.StudentInvoices', 'flaticon-coins', '/app/main/sales/studentInvoices'),
 
 
 
 
-            new AppMenuItem('Courses', 'Pages.Courses', 'flaticon-tabs', '/app/main/courses/courses'),
 
            
-            new AppMenuItem('Payments', 'Pages.Payments', 'flaticon-more', '/app/main/sales/payments'),
+            new AppMenuItem('Payments', 'Pages.Payments', 'flaticon-piggy-bank', '/app/main/sales/payments'),
+
+            
+            new AppMenuItem('Courses', 'Pages.Courses', 'flaticon-tabs', '/app/main/courses/courses'),
              new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
                 //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
-            new AppMenuItem('BankAccounts', 'Pages.Administration.BankAccounts', 'flaticon-more', '/app/admin/resources/bankAccounts'),
+            new AppMenuItem('BankAccounts', 'Pages.Administration.BankAccounts', 'flaticon-piggy-bank', '/app/admin/resources/bankAccounts'),
             
-            new AppMenuItem('Todos', 'Pages.Administration.Todos', 'flaticon-more', '/app/admin/scheduler/todos'),
+            new AppMenuItem('Todos', 'Pages.Administration.Todos', 'flaticon-list-3', '/app/admin/scheduler/todos'),
             
-                new AppMenuItem('PredefinedTheoryLessons', 'Pages.Administration.PredefinedTheoryLessons', 'flaticon-more', '/app/admin/lessons/predefinedTheoryLessons'),
+                new AppMenuItem('PredefinedTheoryLessons', 'Pages.Administration.PredefinedTheoryLessons', 'flaticon-presentation', '/app/admin/lessons/predefinedTheoryLessons'),
 
-                new AppMenuItem('PredefinedDrivingLessons', 'Pages.Administration.PredefinedDrivingLessons', 'flaticon-more', '/app/admin/lessons/predefinedDrivingLessons'),
+                new AppMenuItem('PredefinedDrivingLessons', 'Pages.Administration.PredefinedDrivingLessons', 'flaticon-car', '/app/admin/lessons/predefinedDrivingLessons'),
 
-                new AppMenuItem('Forms', 'Pages.Administration.Forms', 'flaticon-more', '/app/admin/forms/forms'),
+                new AppMenuItem('Forms', 'Pages.Administration.Forms', 'flaticon-interface-10', '/app/admin/forms/forms'),
 
-                new AppMenuItem('PricePackages', 'Pages.Administration.PricePackages', 'flaticon-more', '/app/admin/sales/pricePackages'),
+                new AppMenuItem('PricePackages', 'Pages.Administration.PricePackages', 'flaticon-bag', '/app/admin/sales/pricePackages'),
 
-                new AppMenuItem('Products', 'Pages.Administration.Products', 'flaticon-more', '/app/admin/sales/products'),
+                new AppMenuItem('Products', 'Pages.Administration.Products', 'flaticon-price-tag', '/app/admin/sales/products'),
 
-                new AppMenuItem('Simulators', 'Pages.Administration.Simulators', 'flaticon-more', '/app/admin/resources/simulators'),
+                new AppMenuItem('Simulators', 'Pages.Administration.Simulators', 'flaticon-technology-2', '/app/admin/resources/simulators'),
 
-                new AppMenuItem('Offices', 'Pages.Administration.Offices', 'flaticon-more', '/app/admin/resources/offices'),
+                new AppMenuItem('Offices', 'Pages.Administration.Offices', 'flaticon-placeholder', '/app/admin/resources/offices'),
 
-                new AppMenuItem('Vehicles', 'Pages.Administration.Vehicles', 'flaticon-more', '/app/admin/resources/vehicles'),
+                new AppMenuItem('Vehicles', 'Pages.Administration.Vehicles', 'flaticon-truck', '/app/admin/resources/vehicles'),
 
 
                 new AppMenuItem('TheoryLessonTopics', 'Pages.Administration.TheoryLessonTopics', 'flaticon-interface-4', '/app/admin/templates/theoryLessonTopics'),
