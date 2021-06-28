@@ -46,6 +46,7 @@ import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-
                     { path: 'personalScheduler', component: PersonalSchedulerComponent, data: { permission: 'Pages.PersonalScheduler' } },
                     { path: 'sales/studentInvoices/create-studentInvoice', component: CreateStudentInvoiceComponent, data: { permission: 'Pages.StudentInvoices.Create' }},
                     { path: 'students/students/students-overview', component: StudentsOverviewComponent },
+                    { path: 'studentsView/learningPath', component: SVLearningPathOverviewComponent, data: { permission: 'StudentView' }},
                     { path: 'studentsView/overview', component: SVOverviewComponent, data: { permission: 'StudentView' } },
                     { path: 'studentsView/theoryLessons', component: SVTheoryLessonsComponent, data: { permission: 'StudentView' } },
                     { path: 'studentsView/drivingLessons', component: SVDrivingLessonComponent, data: { permission: 'StudentView' }},
@@ -70,7 +71,7 @@ import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-
                     { path: 'dashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' } },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'dashboard' },
-                    { path: 'studentsView/learningPath/learningPathOverview', component: SVLearningPathOverviewComponent, data: { permission: 'StudentView' }}
+                
                 ]
             }
         ])

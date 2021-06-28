@@ -28,7 +28,7 @@ export class AppNavigationService {
 
             new AppMenuItem("Overview", 'StudentView', "flaticon-book", "/app/main/studentsView/overview"),
             new AppMenuItem('Enrollments', 'Pages.Enrollments', 'flaticon-user-add', '/app/main/enrollments/enrollments'),
-            new AppMenuItem("LearningPath", 'StudentView', "flaticon-book", "/app/main/studentsView/learningPath/learningPathOverview"),
+            new AppMenuItem("LearningPath", 'StudentView', "flaticon-book", "/app/main/studentsView/learningPath"),
             new AppMenuItem("TheoryLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryLessons"),
             new AppMenuItem("DrivingLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/drivingLessons"),
             new AppMenuItem("TheoryPractice", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryPractice/licenseClassSelection"),
