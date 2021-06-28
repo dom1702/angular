@@ -44,8 +44,45 @@
                     </div>
 
                     <div class="container" [busyIf]="loading">
-                        <h2> Learning path test</h2>
-                        <p-steps [model]="learningUnits"></p-steps>
+                        <div class="row justify-content-center">
+                            <h3 class="m-portlet__head-text">
+                                Welcome to Drima learning path. Chose your learning unit
+                            </h3>
+                        </div>
+                        
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-success" role="progressbar" [style.width.%]="currentProgress">                      
+                            <span>{{currentProgress}}%</span>
+                            </div>
+                        </div>
+                        
+
+                        <hr class="ng-tns-c19-1">
+                        
+                        <div class="row">
+                            <div class="col-3"> steps</div>
+                            <div class="col-9">
+                                <div class="container" *ngFor="let unit of learningUnity; index as i;">
+                                    <div class="card">                      
+                                        <div class="card-header">
+                                      
+                                            <h3>{{unit.title}}</h3>
+                                            
+                                            <div style="text-align:center;">{{license.name}}</div>
+    
+                                            <button type="button" class="btn btn-primary">
+                                                Detail View
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Test
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--Steps component here-->
+                        </div>
                     </div>
                 </div>
             </div>

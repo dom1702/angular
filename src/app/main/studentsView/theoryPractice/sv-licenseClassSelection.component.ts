@@ -33,27 +33,35 @@ export class LearningUnit {
 export class SVLicenseClassSelectionComponent extends AppComponentBase implements OnInit {
 
     licenseClasses : LicenseClass[];
+    loading: boolean;
+
+    /// fields for learning path
+    currentProgress : number;
 
     learningUnits : LearningUnit[] = [
         new LearningUnit("Vehicle handling", "bla blubb vllt", true, 80, 80),
         new LearningUnit("Handling of traffic situations", "bla blubb usw", false, 10, 290),
         new LearningUnit("Handling of a journey", "bla bla", false, 0, 220),
-        new LearningUnit("Handling of driving in difficult weather conditions", "bla bla final", false, 0, 310)
+        new LearningUnit("Handling of driving in difficult weather conditions", "bla bla blubbi", false, 0, 310),
+        new LearningUnit("Control of own space", "bla bla final", false, 0, 120)
     ];
+
+    ///
     
-    constructor(
-        injector: Injector,  private _theoryExamService: TheoryExamsServiceProxy, 
-        public theoryPracticeHelper: SVTheoryPracticeHelperService,
-        private router: Router
-    ) {
-        super(injector);
-      
+    constructor(injector: Injector,  private _theoryExamService: TheoryExamsServiceProxy, 
+        public theoryPracticeHelper: SVTheoryPracticeHelperService, private router: Router) {
+        super(injector);     
     }
 
-    loading;
-
     ngOnInit(): void {
-        this.getAvailableLicenceClasses();         
+        this.getAvailableLicenceClasses();    
+        
+        if(this.learningUnits != null)
+        {
+            for (let index = 0; index < this.learningUnits.length; index++) {
+                this.currentProgress += this.learningUnits[index].progress;              
+            }
+        }
     }
 
     selectLicencseClass(index : number) : void  {
