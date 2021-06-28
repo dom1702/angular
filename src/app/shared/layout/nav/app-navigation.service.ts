@@ -28,10 +28,12 @@ export class AppNavigationService {
 
             new AppMenuItem("Overview", 'StudentView', "flaticon-book", "/app/main/studentsView/overview"),
             new AppMenuItem('Enrollments', 'Pages.Enrollments', 'flaticon-user', '/app/main/enrollments/enrollments'),
+            new AppMenuItem("LearningPath", 'StudentView', "flaticon-book", "/app/main/studentsView/learningPath/learningPathOverview"),
             new AppMenuItem("TheoryLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryLessons"),
             new AppMenuItem("DrivingLessons", 'StudentView', "flaticon-book", "/app/main/studentsView/drivingLessons"),
             new AppMenuItem("TheoryPractice", 'StudentView', "flaticon-book", "/app/main/studentsView/theoryPractice/licenseClassSelection"),
             new AppMenuItem("Invoices", 'StudentView', "flaticon-coins", "/app/main/studentsView/invoices"),
+            
             //new AppMenuItem("FAQ", 'StudentView', "flaticon-search-1", "/app/main/studentsView/frequentlyAskedQuestions"),
             new AppMenuItem("PlannedInstructorDL", 'InstructorView', "flaticon-book", "/app/main/studentsView/plannedDrivingLessons"),
 
@@ -39,8 +41,6 @@ export class AppNavigationService {
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
 
             
-
-
             new AppMenuItem('Students', 'Pages.Students', 'flaticon-users', '/app/main/students/students'),
             new AppMenuItem('TheoryLessons', 'Pages.TheoryLessons', 'flaticon-presentation', '/app/main/lessons/theoryLessons'),
             new AppMenuItem('DrivingLessons', 'Pages.DrivingLessons', 'flaticon-car', '/app/main/lessons/drivingLessons'),

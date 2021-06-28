@@ -42,6 +42,11 @@
                         </div>
 
                     </div>
+
+                    <div class="container" [busyIf]="loading">
+                        <h2> Learning path test</h2>
+                        <p-steps [model]="learningUnits"></p-steps>
+                    </div>
                 </div>
             </div>
         </div>

@@ -107,7 +107,7 @@ import { ScheduleAllModule } from '@syncfusion/ej2-angular-schedule';
 import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
-
+import {StepsModule} from 'primeng/steps';
 import { RadioButtonModule} from 'primeng/radiobutton';
 import {MultiSelectModule} from '@syncfusion/ej2-angular-dropdowns';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -147,6 +147,7 @@ import { ViewForeignTheoryLessonModalComponent } from './lessons/theoryLessons/v
 import { SchedulerFilterModalComponent } from './scheduler/scheduler-filter-modal.component';
 import { StudentsOverviewSchedulerComponent } from './students/students/students-overview-scheduler.component';
 import { CreateOrEditWorkingHourModalComponent } from '@app/shared/common/scheduler/create-or-edit-workingHours-modal.component';
+import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-learningPathOverview.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -208,7 +209,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         CheckBoxModule  ,
         FullCalendarModule,
         SchedulerModule,
-        IntlModule 
+        IntlModule,
+        StepsModule
      ],
     declarations: [
     PaymentStudentInvoiceLookupTableModalComponent,
@@ -298,7 +300,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       StudentsOverviewTheoryLessonsComponent,
       ViewForeignTheoryLessonModalComponent,
       SchedulerFilterModalComponent,
-      StudentsOverviewSchedulerComponent
+      StudentsOverviewSchedulerComponent,
+      SVLearningPathOverviewComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

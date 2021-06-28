@@ -25,6 +25,7 @@ import { SVLicenseClassTasksOverview } from './studentsView/theoryPractice/sv-li
 import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-theoryPracticeQuiz.component';
 import { SVPaymentSuccessComponent } from './studentsView/invoices/payment-success.component';
 import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed.component';
+import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-learningPathOverview.component';
 
 @NgModule({
     imports: [
@@ -68,7 +69,8 @@ import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed
                     },
                     { path: 'dashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' } },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-                    { path: '**', redirectTo: 'dashboard' }
+                    { path: '**', redirectTo: 'dashboard' },
+                    { path: 'studentsView/learningPath/learningPathOverview', component: SVLearningPathOverviewComponent, data: { permission: 'StudentView' }}
                 ]
             }
         ])
