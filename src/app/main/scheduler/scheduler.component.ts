@@ -365,7 +365,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
           else {
             if (item.completed)
               borderColor = 'green';
-            if (item.studentNotPresent)
+            if (item.studentNotPresent || item.examFailed)
               borderColor = 'red';
           }
 

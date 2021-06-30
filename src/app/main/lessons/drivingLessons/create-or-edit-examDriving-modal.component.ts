@@ -62,6 +62,8 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
 
     selectedPdl;
 
+    currentState = 0;
+
     numberOfLessonsAddition: string = this.l("NumberOfLessonsMinutesPerLessonAddition");
 
     setTopicNameAutomatically: boolean = true;
@@ -128,6 +130,7 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
         if (!drivingLessonId) {
 
             this.drivingLesson = new CreateOrEditDrivingLessonDto();
+            this.currentState = 1;
 
             if (studentId != null) {
                 this.drivingLesson.studentId = studentId;
@@ -228,6 +231,13 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                 this.studentSelected = true;
                 this.selectedStudentCourse = null;
                 this.studentCourses = null;
+
+                if (this.drivingLesson.completed)
+                this.currentState = 2;
+            else if (this.drivingLesson.examFailed)
+                this.currentState = 3;
+            else
+                this.currentState = 1;
 
                 this._drivingLessonsServiceProxy.getAllInstructorForLookupTable(
                     "",
@@ -334,6 +344,22 @@ export class CreateOrEditExamDrivingModalComponent extends AppComponentBase impl
                     this.modalSave.emit(null);
                 });
         }
+    }
+
+    updateState() {
+        if (this.currentState == 1) {
+            this.drivingLesson.completed = false;
+            this.drivingLesson.examFailed = false;
+        }
+        else if (this.currentState == 2) {
+            this.drivingLesson.completed = true;
+            this.drivingLesson.examFailed = false;
+        }
+        else if (this.currentState == 3) {
+            this.drivingLesson.completed = false;
+            this.drivingLesson.examFailed = true;
+        }
+        //console.log(this.currentState);
     }
 
     updateInstructors(drivingLessonEdit: boolean): void {

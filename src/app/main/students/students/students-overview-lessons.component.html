@@ -6,6 +6,10 @@
         <div class="col text-right">
             <!-- <button *ngIf="isGranted('Pages.TheoryLessons.Create')" (click)="addTheoryLessonManually()"
             class="btn btn-secondary blue"><i class="fa fa-plus"></i> {{l("AddTheoryLessonManually")}}</button> -->
+          
+                <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="addDrivingLessonManually()"
+                class="btn btn-secondary blue"><i class="fa fa-plus"></i> {{l("AddDrivingLessonManually")}}</button>
+         
             <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="createExam()"
                 class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewExam")}}</button>
             <button *ngIf="isGranted('Pages.Students.DrivingLessons.Create')" (click)="createDrivingLesson()"
@@ -128,12 +132,12 @@
                             <span *ngIf="!record.startTime">-</span>
                         </td>
                         <td style="width:150px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
-                            <span class="p-column-title"> {{l('Instructors')}}</span>
-                            {{record.instructorNames}}
+                            <span class="p-column-title"> {{l('Instructors')}}</span><span class="badge bg-secondary" *ngIf="record.doneAtForeignSchool">{{l('OtherSchool')}}</span>
+                            <div *ngIf="!record.doneAtForeignSchool">{{record.instructorNames}}</div>
                         </td>
                         <td style="width:150px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
-                            <span class="p-column-title"> {{l('DrivingLessonTopic')}}</span>
-                            {{record.vehicleNameBrandModel}}
+                            <span class="p-column-title"> {{l('DrivingLessonTopic')}}</span><span class="badge bg-secondary" *ngIf="record.doneAtForeignSchool">{{l('OtherSchool')}}</span>
+                            <div *ngIf="!record.doneAtForeignSchool">{{record.vehicleNameBrandModel}}</div>
                         </td>
                         <td style="width:50px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
                             <span class="p-column-title"> {{l('Length')}}</span>
@@ -155,10 +159,10 @@
                                     title="False"></i></div>
                         </td>
                         <td style="width:100px" [ngStyle]="record.completed ? {'background-color': completedColor} : record.studentNotPresent ? {'background-color': canceledColor} : {'background-color': uncompletedColor}">
-                            <span class="p-column-title"> {{l('Bill')}}</span>
-                            <div *ngIf="record.billToStudent" class="text-center"><i
+                            <span class="p-column-title"> {{l('Bill')}}</span><span class="badge bg-secondary" *ngIf="record.doneAtForeignSchool">{{l('OtherSchool')}}</span>
+                            <div *ngIf="record.billToStudent && !record.doneAtForeignSchool" class="text-center"><i
                                     class="fa fa-check-circle m--font-success" title="True"></i></div>
-                            <div *ngIf="!record.billToStudent" class="text-center"><i class="fa fa-times-circle"
+                            <div *ngIf="!record.billToStudent && !record.doneAtForeignSchool" class="text-center"><i class="fa fa-times-circle"
                                     title="False"></i></div>
                         </td>
                     </tr>
@@ -179,5 +183,7 @@
     <viewSimulatorLessonModal #viewSimulatorLessonModal></viewSimulatorLessonModal>
     <createOrEditForeignTheoryLessonModal #createOrEditForeignTheoryLessonModal (modalSave)="refresh()">
     </createOrEditForeignTheoryLessonModal>
+    <createOrEditForeignDrivingLessonModal #createOrEditForeignDrivingLessonModal (modalSave)="refresh()">
+    </createOrEditForeignDrivingLessonModal>
 
 </div>

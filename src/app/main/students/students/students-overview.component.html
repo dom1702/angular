@@ -50,10 +50,16 @@
 
         </sub-header>
 
-        <div *ngIf="drivingLessons != null && drivingLessons.completedExam">
-            <alert type="success">
-                {{l("CourseCompletedMessageStudentOverview")}}!
-            </alert>
+        <div *ngIf="drivingLessons != null && drivingLessons.completedExam" class="alert alert-success mx-8" role="alert">
+            <!-- <alert type="success">
+              
+            </alert> -->
+          
+                <h4 class="alert-heading">{{l("CourseCompletedMessageStudentOverview")}}!</h4>
+                <!-- <p>  </p> -->
+                <hr>
+                <p class="mb-0">{{l("ExamSuccessfullyCompletedOn")}} {{drivingLessons.completedExamDate  | luxonFormat:'D'}}</p>
+          
         </div>
 
         <div [class]="containerClass">
