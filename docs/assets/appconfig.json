@@ -1,6 +1,6 @@
 {
 "remoteServiceBaseUrl": "https://drima-test.azurewebsites.net",
-"appBaseUrl": "https://drima.rocks/",
+"appBaseUrl": "https://drima.rocks",
   "localeMappings": {
     "angular": [
       {
