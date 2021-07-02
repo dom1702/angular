@@ -1,6 +1,6 @@
 {
-"remoteServiceBaseUrl": "https://{TENANCY_NAME}.drima-test.azurewebsites.net",
-"appBaseUrl": "https://{TENANCY_NAME}.drima.rocks",
+"remoteServiceBaseUrl": "https://drima-test.azurewebsites.net",
+"appBaseUrl": "https://drima.rocks",
   "localeMappings": {
     "angular": [
       {
