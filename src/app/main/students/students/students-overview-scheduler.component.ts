@@ -77,7 +77,7 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
   simulatorFeatureEnabled;
   //calendarPlugins = [dayGridPlugin];
   calendarOptions: CalendarOptions = {
-    //timeZone: 'UTC',
+    timeZone: 'UTC-coercion',
     locale: abp.localization.currentLanguage.name,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
@@ -292,8 +292,8 @@ export class StudentsOverviewSchedulerComponent extends AppComponentBase impleme
               //Id: item.id,
               id: item.id,
               title: item.subject,
-              start: item.startTime.toJSDate(),
-              end: item.endTime.toJSDate(),
+              start: item.startTime.toJSDate().toISOString(),
+              end: item.endTime.toJSDate().toISOString(),
               resourceIds: resourceIds,
               backgroundColor: backgroundColor,
               extendedProps: {

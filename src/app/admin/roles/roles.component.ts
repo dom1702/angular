@@ -47,7 +47,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 
     getRoles(): void {
         this.primengTableHelper.showLoadingIndicator();
-        let selectedPermissions = this.permissionFilterTreeModal.getSelectedPermissions();
+        let selectedPermissions = [];//this.permissionFilterTreeModal.getSelectedPermissions();
 
         this._roleService.getRoles(new GetRolesInput({permissions: selectedPermissions}))
             .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
