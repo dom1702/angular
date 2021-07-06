@@ -77,7 +77,7 @@
                                                     <div class="card-deck justify-content-center my-10">
 
 
-                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;"
+                                                        <div class="card text-center m-3" style="min-width: 200px; max-width: 300px;"
                                                             *ngFor="let licenseClass of licenseClasses.licenseClasses;  let i = index">
                                                             <img class="card-img-top"
                                                                 src="{{licenseClass.symbolImageUrl}}"
@@ -85,7 +85,7 @@
                                                             <div class="card-body">
                                                                 <h5 class="card-title">{{l('Class')}}
                                                                     {{licenseClass.licenseClass}}</h5>
-                                                                <ul class="list-group list-group-flush mb-5"
+                                                                <ul class="list-group list-group-flush mb-1"
                                                                     *ngIf="licenseClass.description">
                                                                     <li class="list-group-item">
                                                                         {{licenseClass.description}}
@@ -126,7 +126,7 @@
                                                         <div class="card-deck justify-content-center my-10">
 
 
-                                                            <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;"
+                                                            <div class="card text-center m-3" style="min-width: 200px; max-width: 300px;"
                                                                 *ngFor="let licenseClassOwned of licenseClassesOwned.licenseClasses;  let i = index">
                                                                 <img class="card-img-top"
                                                                     src="{{licenseClassOwned.symbolImageUrl}}"
@@ -135,7 +135,7 @@
                                                                     <h5 class="card-title">{{l('Class')}}
                                                                         {{licenseClassOwned.licenseClass}}
                                                                     </h5>
-                                                                    <ul class="list-group list-group-flush mb-5"
+                                                                    <ul class="list-group list-group-flush mb-1"
                                                                         *ngIf="licenseClassOwned.description">
                                                                         <li class="list-group-item">
                                                                             {{licenseClassOwned.description}}
@@ -177,11 +177,11 @@
                                                     <div class="card-deck justify-content-center">
                         
                         
-                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;" *ngFor="let location of offices.offices;  let i = index">
+                                                        <div class="card text-center m-3" style="min-width: 200px; max-width: 300px;" *ngFor="let location of offices.offices;  let i = index">
                                                             <img class="card-img-top" src="assets/symbols/office.png" alt="Card image cap">
                                                             <div class="card-body">
                                                                 <h5 class="card-title"> {{location.officeName}}</h5>
-                                                                <ul class="list-group list-group-flush mb-5">
+                                                                <ul class="list-group list-group-flush mb-1">
                                                                     <li class="list-group-item">{{location.address}}
                                                                     </li>
                                                                 </ul>
@@ -212,7 +212,7 @@
                                                     <div class="card-deck justify-content-center my-10">
 
 
-                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;" *ngFor="let course of courses.courses;  let i = index">
+                                                        <div class="card text-center m-3" style="min-width: 200px; max-width: 300px;" *ngFor="let course of courses.courses;  let i = index">
                                                             <img class="card-img-top" src="assets/symbols/course.png" alt="Card image cap">
                                                             <div class="card-body">
                                                                 <!-- <h5 class="card-title"> {{course.courseName}}</h5>
@@ -220,7 +220,7 @@
                                                                     <p class="card-text" style="max-width: 18rem;"> {{course.description}} </p>
                                                                     <p class="card-text" style="max-width: 18rem;"> {{course.priceDescription}}</p> -->
                                                                 <h5 class="card-title"> {{course.courseName}}</h5>
-                                                                <ul class="list-group list-group-flush mb-5">
+                                                                <ul class="list-group list-group-flush mb-1">
                                                                     <li class="list-group-item">{{l('LicenseClass')}}: {{course.class}}
                                                                     </li>
                                                                     <li class="list-group-item">{{course.description}}</li>
@@ -253,7 +253,7 @@
                                                     <div class="card-deck justify-content-center my-10">
 
 
-                                                        <div class="card text-center m-3" style="min-width: 300px; max-width: 300px;" *ngFor="let pp of pricePackages.pricePackages;  let i = index">
+                                                        <div class="card text-center m-3" style="min-width: 200px; max-width: 300px;" *ngFor="let pp of pricePackages.pricePackages;  let i = index">
                                                             <img class="card-img-top"
                                                                 [src]="pp.highlighted ? 'assets/symbols/price_highlighted.png' : 'assets/symbols/price.png'"
                                                                 alt="Card image cap">
@@ -265,7 +265,7 @@
                                                                 <div class="card-header">
                                                                     {{pp.finalPrice}}€
                                                                 </div>
-                                                                <ul class="list-group list-group-flush mb-5">
+                                                                <ul class="list-group list-group-flush mb-1">
                         
                                                                     <li class="list-group-item"
                                                                         *ngFor="let product of pp.products;  let j = index">
