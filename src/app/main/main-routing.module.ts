@@ -26,6 +26,7 @@ import { SVTheoryPracticeQuizComponent } from './studentsView/theoryPractice/sv-
 import { SVPaymentSuccessComponent } from './studentsView/invoices/payment-success.component';
 import { SVPaymentFailedComponent } from './studentsView/invoices/payment-failed.component';
 import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-learningPathOverview.component';
+import { SVLearningPathDetailViewComponent } from './studentsView/learningPath/sv-learningPathDetailView.component';
 
 @NgModule({
     imports: [
@@ -47,6 +48,7 @@ import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-
                     { path: 'sales/studentInvoices/create-studentInvoice', component: CreateStudentInvoiceComponent, data: { permission: 'Pages.StudentInvoices.Create' }},
                     { path: 'students/students/students-overview', component: StudentsOverviewComponent },
                     { path: 'studentsView/learningPath', component: SVLearningPathOverviewComponent, data: { permission: 'StudentView' }},
+                    { path: 'studentsView/learningPath/detailView', component: SVLearningPathDetailViewComponent, data: { permission: 'StudentView' }},
                     { path: 'studentsView/overview', component: SVOverviewComponent, data: { permission: 'StudentView' } },
                     { path: 'studentsView/theoryLessons', component: SVTheoryLessonsComponent, data: { permission: 'StudentView' } },
                     { path: 'studentsView/drivingLessons', component: SVDrivingLessonComponent, data: { permission: 'StudentView' }},

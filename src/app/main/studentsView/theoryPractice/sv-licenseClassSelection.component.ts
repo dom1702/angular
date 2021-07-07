@@ -8,23 +8,6 @@ import { SVTheoryPracticeHelperService } from './sv-theoryPracticeHelper.service
 import { Router } from '@angular/router';
 import { MessageService, MenuItem} from 'primeng/api';
 
-
-export class LearningUnit {
-    title: string;
-    description: string;
-    isFinished: boolean;   
-    progress: number;  
-    maxProgress; 
-
-    constructor(title : string, description: string, isFinished: boolean, progress : number, maxProgress) {
-        this.title = title;
-        this.description = description;
-        this.isFinished = isFinished;
-        this.progress = progress;   
-        this.maxProgress = maxProgress;  
-    }  
-}
-
 @Component({
     templateUrl: './sv-licenseClassSelection.component.html',      
     animations: [appModuleAnimation()], 
@@ -36,15 +19,7 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
     loading: boolean;
 
     /// fields for learning path
-    currentProgress : number;
-
-    learningUnits : LearningUnit[] = [
-        new LearningUnit("Vehicle handling", "bla blubb vllt", true, 80, 80),
-        new LearningUnit("Handling of traffic situations", "bla blubb usw", false, 10, 290),
-        new LearningUnit("Handling of a journey", "bla bla", false, 0, 220),
-        new LearningUnit("Handling of driving in difficult weather conditions", "bla bla blubbi", false, 0, 310),
-        new LearningUnit("Control of own space", "bla bla final", false, 0, 120)
-    ];
+    
 
     ///
     
@@ -54,14 +29,7 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
     }
 
     ngOnInit(): void {
-        this.getAvailableLicenceClasses();    
-        
-        if(this.learningUnits != null)
-        {
-            for (let index = 0; index < this.learningUnits.length; index++) {
-                this.currentProgress += this.learningUnits[index].progress;              
-            }
-        }
+        this.getAvailableLicenceClasses();            
     }
 
     selectLicencseClass(index : number) : void  {

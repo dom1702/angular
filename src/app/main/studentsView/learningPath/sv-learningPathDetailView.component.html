@@ -1,0 +1,107 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="l('Learning Path')" [description]="title">
+        </sub-header>
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div [class]="containerClass">           
+                    
+                    <div class="container">
+                        <div class="row mb-5">
+                            <div class="col-sm-9">
+                                <h3 class="m-portlet__head-text">
+                                    Select a question series by hitting a button.
+                                </h3>
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-primary" type="button" routerLink="/app/main/studentsView/learningPath">
+                                    <i class="flaticon2-back-1"></i>&nbsp;
+                                        {{l("Back to overview")}}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <hr>
+
+                        <div class="container" *ngIf="currentLevelData"> 
+                            <p-toast key="levelFinishedToast" position="center" closable="true">
+                                <ng-template let-message pTemplate="message">    
+                                    <div class="container">
+                                        <div style="text-align: center">
+                                            <i class="flaticon2-cup" style="font-size: 12em"></i>
+                                            <h2>{{message.summary}}</h2>
+                                            <p>{{message.detail}}</p>
+                                        </div>
+                                        <div class="row">   
+                                            <div class="col">
+                                                <button class="btn btn-primary btn-block" type="button" (click)=onConfirm()>                     
+                                                    {{l("Yes")}}
+                                                </button>
+                                            </div>                                 
+                                            <div class="col">
+                                                <button class="btn btn-primary btn-block" type="button" (click)=onReject()>                     
+                                                    {{l("Back to overview")}}
+                                                </button>
+                                            </div>                                     
+                                        </div>
+                                    </div>                                               
+                                </ng-template>
+                            </p-toast>
+                            <h2 class="m-portlet__head-text">
+                                {{subtitle}}
+                            </h2>
+                            <div class="row justify-content-center">                                             
+                                <div class="card" style="width: 18rem;" *ngFor="let chapter of currentLevelData.chapters; index as i">
+                                    <div class="card-header">
+                                        <div class="row justify-content-center">
+                                            <div *ngIf="targetChapterFinished(i); then success else progress;"></div>
+                                            <ng-template #success>              
+                                                <i class="flaticon2-correct" style="color:#1bc5bd;font-size:4em;"> </i>  
+                                            </ng-template>
+                                            <ng-template #progress>
+                                                <i class="flaticon2-menu-1" style="color:gray;font-size:4em;"></i>
+                                            </ng-template>
+                                        </div>                                    
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{i+1}}. {{currentLevelData.chapters[i].title}}</h3>
+
+                                        <button class="btn btn-primary btn-block" type="button">
+                                            <i class="flaticon2-file"></i>&nbsp;
+                                                {{l("Show learning material")}}
+                                        </button>
+        
+                                        <h5 class="card-title mt-1">Question series:</h5>
+
+                                        <div class="row justify-content-center">                       
+                                            <div *ngFor="let questionSeries of chapter.quizze; index as j"> 
+                                                <div *ngIf="questionSeries.isFinished(); then successBtn else defaultBtn"></div>
+                                                <ng-template #successBtn> 
+                                                    <button class="btn btn-success px-5 py-5 mx-2 my-1" type="button"      
+                                                        (click)="showQuiz(currentLevelData.level, i, j, chapter.title)">                                
+                                                        {{j+1}}
+                                                    </button>
+                                                </ng-template>
+                                                <ng-template #defaultBtn> 
+                                                    <button class="btn btn-primary px-5 py-5 mx-2 my-1" type="button"      
+                                                        (click)="showQuiz(currentLevelData.level, i, j, chapter.title)">                                
+                                                        {{j+1}}
+                                                    </button>
+                                                </ng-template>
+                                            </div> 
+                                        </div> 
+                                        <hr>
+                                    </div>
+                                </div>                                                                                                                     
+                                                  
+                            </div> 
+                        </div>                      
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+    <learningPathQuizModal #learningPathQuizModal (modalSave)="onQuizFinished()">
+    </learningPathQuizModal>
+</div>

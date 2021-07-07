@@ -1,0 +1,79 @@
+<div bsModal #quizModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
+    aria-labelledby="quizModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">               
+                <div class="container">                                     
+                    <div class="row">                          
+                        <div class="col-sm-7">
+                            <h1 class="flaticon-layer" style="color:#36A2EB;">                               
+                                {{getLevelTitle()}}
+                            </h1>
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col">
+                                    <h4 class="modal-title" *ngIf="level">Chapter: {{chapterTitle}}</h4>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col">
+                                    <h4 class="modal-title" *ngIf="quizNumber">Quiz: {{quizNumber}}</h4>
+                                </div>
+                            </div>                                      
+                        </div>
+                        <div class="col-sm-5 mt-5">
+                            <button class="btn btn-primary mb-2" type="button" (click)="showQuestionList()">                  
+                                <i class="flaticon2-list-1"></i>
+                                {{questionListButtonTitle()}}
+                            </button>
+                            <button class="btn btn-primary" type="button" (click)="close()">
+                                <i class="flaticon2-delete"></i>
+                                {{l("Abbrechen")}}
+                            </button>        
+                        </div>             
+                    </div>  
+                </div>                                                       
+            </div>
+            <div class="modal-body">
+                <div *ngIf="questionListEnabled; then questionList else currentQuestion"></div>
+                <ng-template #currentQuestion>
+                    <div class="container">
+                        current question
+                    </div>
+                </ng-template>
+                <ng-template #questionList>
+                    <div class="container">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let question of currentSelectedQuiz.questions; index as i;">
+                                <span>{{i+1}}. {{question.quest}} 
+                                <i class="flaticon2-correct" style="color:#1bc5bd;"
+                                    *ngIf="question.isFinished()"></i></span>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-template>
+                
+                
+                
+            </div>
+            <div class="modal-footer">
+                <div class="row">  
+                    <div class="col">
+                        <button class="btn btn-primary" type="button" (click)="finishQuiz()">                  
+                            {{l("Finish")}}
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" type="button" (click)="submit()">
+                            <i class="flaticon2-next"></i>&nbsp;
+                                {{l("Submit")}}
+                        </button>
+                    </div>              
+                                      
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>

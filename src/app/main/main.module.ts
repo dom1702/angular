@@ -108,7 +108,8 @@ import { ScheduleAllModule } from '@syncfusion/ej2-angular-schedule';
 import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
-import {StepsModule} from 'primeng/steps';
+import {DialogModule} from 'primeng/dialog';
+import {ChartModule} from 'primeng/chart';
 import { RadioButtonModule} from 'primeng/radiobutton';
 import {MultiSelectModule} from '@syncfusion/ej2-angular-dropdowns';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -149,7 +150,9 @@ import { SchedulerFilterModalComponent } from './scheduler/scheduler-filter-moda
 import { StudentsOverviewSchedulerComponent } from './students/students/students-overview-scheduler.component';
 import { CreateOrEditWorkingHourModalComponent } from '@app/shared/common/scheduler/create-or-edit-workingHours-modal.component';
 import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-learningPathOverview.component';
-
+import { SVLearningPathDetailViewComponent } from './studentsView/learningPath/sv-learningPathDetailView.component';
+import {FieldsetModule} from 'primeng/fieldset';
+import { SVLearningPathQuizModalComponent } from './studentsView/learningPath/sv-learningPathQuizModal.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -211,7 +214,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
         FullCalendarModule,
         SchedulerModule,
         IntlModule,
-        StepsModule
+        DialogModule,
+        ChartModule,
+        FieldsetModule
      ],
     declarations: [
     PaymentStudentInvoiceLookupTableModalComponent,
@@ -303,7 +308,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       ViewForeignTheoryLessonModalComponent,
       SchedulerFilterModalComponent,
       StudentsOverviewSchedulerComponent,
-      SVLearningPathOverviewComponent
+      SVLearningPathOverviewComponent,
+      SVLearningPathDetailViewComponent,
+      SVLearningPathQuizModalComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

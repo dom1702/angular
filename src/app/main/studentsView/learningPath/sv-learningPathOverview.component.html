@@ -3,54 +3,221 @@
     <div class="content d-flex flex-column flex-column-fluid">
         <sub-header [title]="l('Learning Path')" [description]="l('Overview')">
         </sub-header>
-     <!--   <div [class]="containerClass">
+        <div [class]="containerClass">
+            <p-dialog header="Learning environment self-study instructions" [(visible)]="displaySelfStudyGuide" [style]="{width: '65w'}">               
+                    Drima learning tasks are based on the GDE matrix and its five knowledge levels. The levels include vehicle handling, traffic situations, context of a trip, driving in difficult conditions, and managing your own space.
+
+                    <ul class="list-group">
+                        <li class="list-group-item">Read the introductions first.</li>
+                        <li class="list-group-item">Open the vehicle handling level (Level 1).</li>
+                        <li class="list-group-item">Open the electronic textbook to the left (study materials) and carefully study the subject in the book. Also see possible video material.</li>
+                        <li class="list-group-item">Then answer the basic tasks one by one. The answers to the basic tasks can be found in the textbook.</li>
+                        <li class="list-group-item">After all the basic tasks have been completed, the tasks applied to the topic will be opened. Responses to applied tasks may not be found directly in the textbook. You will need to apply the knowledge already learned and possibly find the answer elsewhere, for instance the Internet. Do both basic and applied tasks carefully as the program calculates your success rate.</li>
+                        <li class="list-group-item">After all level tasks have been completed, the next level will be unlocked</li>
+                    </ul>
+                    
+                <p-footer>
+                    Enjoyable and successful studying!
+                </p-footer>
+            </p-dialog>
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <h3 class="m-portlet__head-text">
-                                Welcome to Drima learning path. Chose your learning unit
-                            </h3>
-                        </div>
-                        <div class="row">
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="container" [busyIf]="loading">
+                        <div class="row mb-5">
+                            <div class="col-sm-9">
+                                <h3 class="m-portlet__head-text">
+                                    Welcome to Drima learning path. Chose your learning unit
+                                </h3>
+
+                                <div>
+                                    {{progressInPercent()}} completed
+                                    <progressbar [max]="currentProgressMax" [animate]="false" [value]="currentProgress"></progressbar>                                                             
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-3 mt-2">
+                                <button class="btn btn-primary px-5 py-5" type="button" (click)="showSelfStudyGuide()">
+                                    <i class="flaticon-exclamation-2"></i>
+                                        {{l("Self-study guide")}}
+                                </button>
                             </div>
                         </div>
-
+                                                  
                         <hr class="ng-tns-c19-1">
-                        
-                        <div class="row">
-                            <div class="container" *ngFor="let unit of learningUnits; index as i;">  
-                                <div class="row">                         
-                                    <div class="col-1">
-                                        
-                                        <hr class="ng-tns-c19-1" width="1" size="10">
+                         
+                        <tabset [justified]="true" #levelTabs>
+                            <tab id="1" [disabled]="currentLearningUnits[0].disabled" 
+                                [active]="currentLearningUnits[0].active" 
+                                (selectTab)="onSelect($event)">
+                                <ng-template tabHeading>
+                                    <div [class]="containerClass">                                        
+                                        <h3 class="flaticon-folder">
+                                            Level 1
+                                        </h3>
                                     </div>
-                                    <div class="col-1">
+                                </ng-template>
+                                <div class="container">
+                                    <div class="row mt-5">
+                                        <div class="col-sm-12">
+                                            <h3>1. Vehicle handling</h3> 
+                                        </div>
+                                    </div>                               
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-5">                  
+                                            <span>Controls used to regulate the direction and speed of a car are nearly the same in all cars. In addition to compulsory equipment a modern car has plenty of additional equipment that make driving easier. It is important, that you know the equipment and that you are able to use it while driving.</span> 
+                                        </div>
+                                        <div class="col-sm-4 mt-2">
+                                            <h6 style="text-align:center;">completion: {{currentLearningUnits[0].progress}}/{{currentLearningUnits[0].max}}</h6>         
+                                            <p-chart type="doughnut" #lvl1chart [data]="lvl1Data" [options]="options" width="75" height="75"></p-chart>    
+                                        </div> 
+                                        <div class="col-sm-3 mt-2">
+                                            <button class="btn btn-primary mr-5" type="button"
+                                                routerLink="/app/main/studentsView/learningPath/detailView"
+                                                (click)="loadLevelData(1)">
+                                                <i class="flaticon2-magnifier-tool"></i>
+                                                Details
+                                            </button>                                                 
+                                        </div>                                    
+                                    </div>
+                                </div>                                                             
+                            </tab>
 
+                            <tab id="2" [disabled]="currentLearningUnits[1].disabled" 
+                                [active]="currentLearningUnits[1].active" 
+                                (selectTab)="onSelect($event)">
+                                <ng-template tabHeading>
+                                    <div [class]="containerClass">                                        
+                                        <h3 class="wizard-title wizard-icon flaticon-folder">
+                                            Level 2
+                                        </h3>
                                     </div>
-                                                                              
-                                    <div class="col-10">
-                                        
-                                        {{unit.title}} {{unit.description}}
-                                        
-                                        <button class="btn btn-primary mr-5" type="button" >                     
-                                            View               
-                                        </button>
- 
-                                        <button class="btn btn-primary mr-5" type="button" >                     
-                                            Test               
-                                        </button>
+                                </ng-template>
+                                <div class="row mt-5">
+                                    <div class="col-sm-12">
+                                        <h3>2. Handling of traffic situations</h3> 
                                     </div>
-                                </div> 
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-sm-4">                  
+                                        <span>How fast can you interpret the prohibitions, warnings and instructions from the traffic signs in the picture? We have only seconds to interpret traffic control devices; this means that it is important to learn them in the beginning of the course.</span> 
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <h6 style="text-align:center;">completion: {{currentLearningUnits[1].progress}}/{{currentLearningUnits[1].max}}</h6>         
+                                        <p-chart type="doughnut" #lvl2chart [data]="lvl2Data" [options]="options" width="75" height="75"></p-chart>    
+                                    </div> 
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-primary mr-5" type="button" 
+                                            (click)="loadLevelData(2)"
+                                            routerLink="/app/main/studentsView/learningPath/detailView">
+                                            <i class="flaticon2-magnifier-tool"></i>
+                                            Details
+                                        </button>                                               
+                                    </div>                                    
+                                </div>
+                            </tab> 
+
+                            <tab id="3" [disabled]="currentLearningUnits[2].disabled" 
+                                [active]="currentLearningUnits[2].active" 
+                                (selectTab)="onSelect($event)">
+                                <ng-template tabHeading>
+                                    <div [class]="containerClass">                                        
+                                        <h3 class="wizard-title wizard-icon flaticon-folder">
+                                            Level 3
+                                        </h3>
+                                    </div>
+                                </ng-template>
+                                <div class="row mt-5">
+                                    <div class="col-sm-12">
+                                        <h3>3. Handling of a journey</h3> 
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-sm-4">                  
+                                        <span>Planning and predicting are essential for a successful car trip. It is advisable to plan the routes and schedules beforehand.</span> 
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <h6 style="text-align:center;">completion: {{currentLearningUnits[2].progress}}/{{currentLearningUnits[2].max}}</h6>         
+                                        <p-chart type="doughnut" #lvl3chart [data]="lvl3Data" [options]="options" width="75" height="75"></p-chart>    
+                                    </div> 
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-primary mr-5" type="button" 
+                                            (click)="loadLevelData(3)"
+                                            routerLink="/app/main/studentsView/learningPath/detailView">
+                                            <i class="flaticon2-magnifier-tool"></i>
+                                            Details
+                                        </button>                                                
+                                    </div>                                    
+                                </div>
+                            </tab>
+
+                            <tab id="4" [disabled]="currentLearningUnits[3].disabled" 
+                                [active]="currentLearningUnits[3].active" 
+                                (selectTab)="onSelect($event)">
+                            <ng-template tabHeading>
+                                <div [class]="containerClass">                                        
+                                    <h3 class="wizard-title wizard-icon flaticon-folder">
+                                        Level 4
+                                    </h3>
+                                </div>
+                            </ng-template> 
+                            <div class="row mt-5">
+                                <div class="col-sm-12">
+                                    <h3>4. Handling of driving in difficult conditions</h3> 
+                                </div>
                             </div>
-                        </div>
- 
+                            <div class="row justify-content-center">
+                                <div class="col-sm-4">                  
+                                    <span>When driving in the rain a car must be handled with sedate manners. This applies on steering, clutch usage, braking and use of the accelerator</span> 
+                                </div>
+                                <div class="col-sm-4 mt-2">
+                                    <h6 style="text-align:center;">completion: {{currentLearningUnits[3].progress}}/{{currentLearningUnits[3].max}}</h6>         
+                                    <p-chart type="doughnut" #lvl4chart [data]="lvl4Data" [options]="options" width="75" height="75"></p-chart>    
+                                </div> 
+                                <div class="col-sm-4 mt-2">
+                                    <button class="btn btn-primary mr-5" type="button" (click)="loadLevelData(4)" routerLink="/app/main/studentsView/learningPath/detailView">
+                                        <i class="flaticon2-magnifier-tool"></i> 
+                                        Details
+                                    </button>                                          
+                                </div>                                    
+                            </div>
+                            </tab>
+
+                            <tab id="5" [disabled]="currentLearningUnits[4].disabled" 
+                                [active]="currentLearningUnits[4].active" 
+                                (selectTab)="onSelect($event)">
+                                <ng-template tabHeading>
+                                    <div [class]="containerClass">                                        
+                                        <h3 class="wizard-title wizard-icon flaticon-folder">
+                                            Level 5
+                                        </h3>
+                                    </div>
+                                </ng-template>
+                                <div class="row mt-5">
+                                    <div class="col-sm-12">
+                                        <h3>5. Control of own space</h3> 
+                                    </div>
+                                </div>  
+                                <div class="row justify-content-center">
+                                    <div class="col-sm-4">                  
+                                        <span style="font-style: italic;">"A skilled driver barely escapes from those hazardous situations that a good driver never encounters."</span> 
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <h6 style="text-align:center;">completion: {{currentLearningUnits[4].progress}}/{{currentLearningUnits[4].max}}</h6>         
+                                        <p-chart type="doughnut" #lvl5chart [data]="lvl5Data" [options]="options" width="75" height="75"></p-chart>    
+                                    </div> 
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-primary mr-5" type="button" (click)="loadLevelData(5)" routerLink="/app/main/studentsView/learningPath/detailView">
+                                            Details
+                                        </button>                                               
+                                    </div>                                    
+                                </div>  
+                            </tab>
+                        </tabset>
+                         
                     </div>
                 </div>
             </div>
-        </div>
-    -->
+        </div>  
     </div>
 </div>
+
