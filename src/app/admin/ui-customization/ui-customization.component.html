@@ -16,7 +16,7 @@
                                     <span class="theme-name">{{getLocalizedThemeName(themeSetting.theme)}}</span>
                                 </div>
                             </ng-template>
-
+<div class="mt-10">
                             <default-theme-ui-settings *ngIf="themeSetting.theme == 'default'"
                                 [settings]="themeSetting"></default-theme-ui-settings>
                             <theme2-theme-ui-settings *ngIf="themeSetting.theme == 'theme2'" [settings]="themeSetting">
@@ -39,6 +39,7 @@
                                 [settings]="themeSetting"></theme10-theme-ui-settings>
                             <theme11-theme-ui-settings *ngIf="themeSetting.theme == 'theme11'"
                                 [settings]="themeSetting"></theme11-theme-ui-settings>
+                            </div>
                         </tab>
                     </tabset>
                 </div>

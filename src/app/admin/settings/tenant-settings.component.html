@@ -67,9 +67,9 @@
                         </tab>
                         <tab class="p-5" *ngIf="true" heading="{{'UserManagement' | localize}}">
                             <div class="form">
-                                <h5>{{"FormBasedRegistration" | localize}}</h5>
+                               <!-- <h5>{{"FormBasedRegistration" | localize}}</h5>-->
                                 <div class="checkbox-list">
-                                    <div class="form-group">
+                                     <!-- <div class="form-group">
                                         <label for="Setting_AllowSelfRegistration" class="checkbox"
                                             style="margin-bottom: 0">
                                             <input id="Setting_AllowSelfRegistration" class="check" type="checkbox"
@@ -110,15 +110,15 @@
                                             <span></span>
                                             {{"UseCaptchaOnLogin" | localize}}
                                         </label>
-                                    </div>
-                                    <h5>{{"CookieConsent" | localize}}</h5>
+                                    </div> -->
+                                   <h5>{{"CookieConsent" | localize}}</h5>
                                     <label for="Settings_IsCookieConsentEnabled" class="checkbox">
                                         <input id="Settings_IsCookieConsentEnabled" class="md-check" type="checkbox"
                                             name="IsCookieConsentEnabled"
                                             [(ngModel)]="settings.userManagement.isCookieConsentEnabled">
                                         <span></span>
                                         {{"IsCookieConsentEnabled" | localize}}
-                                    </label>
+                                    </label> 
                                     <h5>{{"SessionTimeOut" | localize}}</h5>
                                     <label for="Setting_IsSessionTimeOutEnabled" class="checkbox">
                                         <input id="Setting_IsSessionTimeOutEnabled" class="md-check" type="checkbox"
@@ -188,13 +188,13 @@
                                     <span></span>
                                     {{"EmailConfirmationRequiredForLogin" | localize}}
                                 </label>
-                                <h5>{{"Profile" | localize}}</h5>
+                                <!-- <h5>{{"Profile" | localize}}</h5>
                                 <label for="Setting_AllowUsingGravatarProfilePicture" class="checkbox">
                                    <input id="Setting_AllowUsingGravatarProfilePicture" class="md-check" type="checkbox" name="AllowUsingGravatarProfilePicture"
                                        [(ngModel)]="settings.userManagement.allowUsingGravatarProfilePicture">
                                    <span></span>
                                    {{"AllowUsingGravatarProfilePicture" | localize}}
-                               </label>
+                               </label> -->
                             </div>
                         </tab>
                         <tab class="p-5" *ngIf="true" heading="{{'Security' | localize}}">
@@ -259,7 +259,7 @@
                                             {{"PasswordComplexity_RequireUppercase" | localize}}
                                         </label>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mt-5">
                                         <label>{{"PasswordComplexity_RequiredLength" | localize}}</label>
                                         <input type="number" name="RequiredLength" class="form-control"
                                             [ngClass]="{'edited':settings.security.passwordComplexity.requiredLength}"
@@ -274,7 +274,7 @@
                             </div>
                             <div>
                                 <h5>{{"UserLockOut" | localize}}</h5>
-                                <div class="md-checkbox-list">
+                                <div class="checkbox-list my-5">
                                     <div>
                                         <label for="Setting_UserLockOut_IsEnabled" class="checkbox">
                                             <input id="Setting_UserLockOut_IsEnabled" type="checkbox"
@@ -453,8 +453,8 @@
                                 </div>
                             </div>
                         </tab>
-                        <tab class="p-5" *ngIf="true" heading="{{'Invoice' | localize}}">
-                            <!-- *ngIf="true" is a workaround for https://github.com/valor-software/ng2-bootstrap/issues/823 -->
+                        <!-- <tab class="p-5" *ngIf="true" heading="{{'Invoice' | localize}}">
+                 
                             <h5>{{"InvoiceInformation" | localize}}</h5>
                             <div class="form-group">
                                 <label for="LegalName">{{"LegalName" | localize}}</label>
@@ -474,7 +474,7 @@
                                     [ngClass]="{'edited':settings.billing.taxVatNo}"
                                     [(ngModel)]="settings.billing.taxVatNo" maxlength="32">
                             </div>
-                        </tab>
+                        </tab> -->
                         <tab class="p-5" *ngIf="!isMultiTenancyEnabled" heading="{{'OtherSettings' | localize}}">
                             <div class="checkbox-list">
                                 <h5>{{"IsQuickThemeSelectEnabled" | localize}}</h5>

@@ -7,7 +7,6 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
@@ -4061,6 +4060,58 @@ export class DrivingLessonsServiceProxy {
     }
 
     protected processCreateMultiple(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEditForeignSchool(body: CreateOrEditForeignDrivingLessonDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/DrivingLessons/CreateOrEditForeignSchool";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditForeignSchool(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditForeignSchool(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEditForeignSchool(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -34655,6 +34706,9 @@ export class DrivingLessonDto implements IDrivingLessonDto {
     predefinedDrivingLessonId!: string | undefined;
     isExam!: boolean;
     examLocation!: string | undefined;
+    examFailed!: boolean;
+    doneAtForeignSchool!: boolean;
+    foreignSchoolName!: string | undefined;
     creationFullName!: string | undefined;
     lastModificationFullName!: string | undefined;
     isDeleted!: boolean;
@@ -34700,6 +34754,9 @@ export class DrivingLessonDto implements IDrivingLessonDto {
             this.predefinedDrivingLessonId = _data["predefinedDrivingLessonId"];
             this.isExam = _data["isExam"];
             this.examLocation = _data["examLocation"];
+            this.examFailed = _data["examFailed"];
+            this.doneAtForeignSchool = _data["doneAtForeignSchool"];
+            this.foreignSchoolName = _data["foreignSchoolName"];
             this.creationFullName = _data["creationFullName"];
             this.lastModificationFullName = _data["lastModificationFullName"];
             this.isDeleted = _data["isDeleted"];
@@ -34745,6 +34802,9 @@ export class DrivingLessonDto implements IDrivingLessonDto {
         data["predefinedDrivingLessonId"] = this.predefinedDrivingLessonId;
         data["isExam"] = this.isExam;
         data["examLocation"] = this.examLocation;
+        data["examFailed"] = this.examFailed;
+        data["doneAtForeignSchool"] = this.doneAtForeignSchool;
+        data["foreignSchoolName"] = this.foreignSchoolName;
         data["creationFullName"] = this.creationFullName;
         data["lastModificationFullName"] = this.lastModificationFullName;
         data["isDeleted"] = this.isDeleted;
@@ -34775,6 +34835,9 @@ export interface IDrivingLessonDto {
     predefinedDrivingLessonId: string | undefined;
     isExam: boolean;
     examLocation: string | undefined;
+    examFailed: boolean;
+    doneAtForeignSchool: boolean;
+    foreignSchoolName: string | undefined;
     creationFullName: string | undefined;
     lastModificationFullName: string | undefined;
     isDeleted: boolean;
@@ -34926,6 +34989,9 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
     predefinedDrivingLessonId!: string | undefined;
     isExam!: boolean;
     examLocation!: string | undefined;
+    examFailed!: boolean;
+    doneAtForeignSchool!: boolean;
+    foreignSchoolName!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditDrivingLessonDto) {
@@ -34961,6 +35027,9 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
             this.predefinedDrivingLessonId = _data["predefinedDrivingLessonId"];
             this.isExam = _data["isExam"];
             this.examLocation = _data["examLocation"];
+            this.examFailed = _data["examFailed"];
+            this.doneAtForeignSchool = _data["doneAtForeignSchool"];
+            this.foreignSchoolName = _data["foreignSchoolName"];
             this.id = _data["id"];
         }
     }
@@ -34996,6 +35065,9 @@ export class CreateOrEditDrivingLessonDto implements ICreateOrEditDrivingLessonD
         data["predefinedDrivingLessonId"] = this.predefinedDrivingLessonId;
         data["isExam"] = this.isExam;
         data["examLocation"] = this.examLocation;
+        data["examFailed"] = this.examFailed;
+        data["doneAtForeignSchool"] = this.doneAtForeignSchool;
+        data["foreignSchoolName"] = this.foreignSchoolName;
         data["id"] = this.id;
         return data; 
     }
@@ -35020,6 +35092,9 @@ export interface ICreateOrEditDrivingLessonDto {
     predefinedDrivingLessonId: string | undefined;
     isExam: boolean;
     examLocation: string | undefined;
+    examFailed: boolean;
+    doneAtForeignSchool: boolean;
+    foreignSchoolName: string | undefined;
     id: number | undefined;
 }
 
@@ -35117,6 +35192,78 @@ export class CreateMultipleDrivingLessonsInput implements ICreateMultipleDriving
 export interface ICreateMultipleDrivingLessonsInput {
     drivingLesson: CreateOrEditDrivingLessonDto;
     predefinedLessonIdStrings: string[] | undefined;
+}
+
+export class CreateOrEditForeignDrivingLessonDto implements ICreateOrEditForeignDrivingLessonDto {
+    startTime!: DateTime;
+    topic!: string | undefined;
+    internalDescription!: string | undefined;
+    licenseClass!: string | undefined;
+    courseId!: number;
+    predefinedDrivingLessonId!: string | undefined;
+    studentId!: number;
+    foreignSchoolName!: string | undefined;
+    length!: number;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditForeignDrivingLessonDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startTime = _data["startTime"] ? DateTime.fromISO(_data["startTime"].toString()) : <any>undefined;
+            this.topic = _data["topic"];
+            this.internalDescription = _data["internalDescription"];
+            this.licenseClass = _data["licenseClass"];
+            this.courseId = _data["courseId"];
+            this.predefinedDrivingLessonId = _data["predefinedDrivingLessonId"];
+            this.studentId = _data["studentId"];
+            this.foreignSchoolName = _data["foreignSchoolName"];
+            this.length = _data["length"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditForeignDrivingLessonDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditForeignDrivingLessonDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startTime"] = this.startTime ? this.startTime.toString() : <any>undefined;
+        data["topic"] = this.topic;
+        data["internalDescription"] = this.internalDescription;
+        data["licenseClass"] = this.licenseClass;
+        data["courseId"] = this.courseId;
+        data["predefinedDrivingLessonId"] = this.predefinedDrivingLessonId;
+        data["studentId"] = this.studentId;
+        data["foreignSchoolName"] = this.foreignSchoolName;
+        data["length"] = this.length;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditForeignDrivingLessonDto {
+    startTime: DateTime;
+    topic: string | undefined;
+    internalDescription: string | undefined;
+    licenseClass: string | undefined;
+    courseId: number;
+    predefinedDrivingLessonId: string | undefined;
+    studentId: number;
+    foreignSchoolName: string | undefined;
+    length: number;
+    id: number | undefined;
 }
 
 export class DrivingLessonStudentLookupTableDto implements IDrivingLessonStudentLookupTableDto {
@@ -45172,6 +45319,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
     personId!: number | undefined;
     completed!: boolean;
     studentNotPresent!: boolean;
+    examFailed!: boolean;
     licenseClass!: string | undefined;
     id!: number;
 
@@ -45207,6 +45355,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
             this.personId = _data["personId"];
             this.completed = _data["completed"];
             this.studentNotPresent = _data["studentNotPresent"];
+            this.examFailed = _data["examFailed"];
             this.licenseClass = _data["licenseClass"];
             this.id = _data["id"];
         }
@@ -45242,6 +45391,7 @@ export class SchedulerEventDto implements ISchedulerEventDto {
         data["personId"] = this.personId;
         data["completed"] = this.completed;
         data["studentNotPresent"] = this.studentNotPresent;
+        data["examFailed"] = this.examFailed;
         data["licenseClass"] = this.licenseClass;
         data["id"] = this.id;
         return data; 
@@ -45266,6 +45416,7 @@ export interface ISchedulerEventDto {
     personId: number | undefined;
     completed: boolean;
     studentNotPresent: boolean;
+    examFailed: boolean;
     licenseClass: string | undefined;
     id: number;
 }
@@ -52030,6 +52181,7 @@ export class StudentCourseDrivingLessonsDto implements IStudentCourseDrivingLess
     predefinedDrivingLessons!: PredefinedDL[] | undefined;
     basicLessonsCompletedCount!: number;
     completedExam!: boolean;
+    completedExamDate!: DateTime;
 
     constructor(data?: IStudentCourseDrivingLessonsDto) {
         if (data) {
@@ -52054,6 +52206,7 @@ export class StudentCourseDrivingLessonsDto implements IStudentCourseDrivingLess
             }
             this.basicLessonsCompletedCount = _data["basicLessonsCompletedCount"];
             this.completedExam = _data["completedExam"];
+            this.completedExamDate = _data["completedExamDate"] ? DateTime.fromISO(_data["completedExamDate"].toString()) : <any>undefined;
         }
     }
 
@@ -52078,6 +52231,7 @@ export class StudentCourseDrivingLessonsDto implements IStudentCourseDrivingLess
         }
         data["basicLessonsCompletedCount"] = this.basicLessonsCompletedCount;
         data["completedExam"] = this.completedExam;
+        data["completedExamDate"] = this.completedExamDate ? this.completedExamDate.toString() : <any>undefined;
         return data; 
     }
 }
@@ -52087,6 +52241,7 @@ export interface IStudentCourseDrivingLessonsDto {
     predefinedDrivingLessons: PredefinedDL[] | undefined;
     basicLessonsCompletedCount: number;
     completedExam: boolean;
+    completedExamDate: DateTime;
 }
 
 export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
@@ -52110,6 +52265,8 @@ export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
     doneOnSimulator!: boolean;
     feedbackPdfFile!: string | undefined;
     isExam!: boolean;
+    examFailed!: boolean;
+    doneAtForeignSchool!: boolean;
 
     constructor(data?: IDrivingLessonOfCourseDto) {
         if (data) {
@@ -52142,6 +52299,8 @@ export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
             this.doneOnSimulator = _data["doneOnSimulator"];
             this.feedbackPdfFile = _data["feedbackPdfFile"];
             this.isExam = _data["isExam"];
+            this.examFailed = _data["examFailed"];
+            this.doneAtForeignSchool = _data["doneAtForeignSchool"];
         }
     }
 
@@ -52174,6 +52333,8 @@ export class DrivingLessonOfCourseDto implements IDrivingLessonOfCourseDto {
         data["doneOnSimulator"] = this.doneOnSimulator;
         data["feedbackPdfFile"] = this.feedbackPdfFile;
         data["isExam"] = this.isExam;
+        data["examFailed"] = this.examFailed;
+        data["doneAtForeignSchool"] = this.doneAtForeignSchool;
         return data; 
     }
 }
@@ -52199,6 +52360,8 @@ export interface IDrivingLessonOfCourseDto {
     doneOnSimulator: boolean;
     feedbackPdfFile: string | undefined;
     isExam: boolean;
+    examFailed: boolean;
+    doneAtForeignSchool: boolean;
 }
 
 export class TheoryLessonOfCourseDto implements ITheoryLessonOfCourseDto {

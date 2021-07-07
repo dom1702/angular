@@ -18,6 +18,7 @@ import { ViewSimulatorLessonModalComponent } from '@app/main/lessons/simulatorLe
 import { CreateOrEditExamDrivingModalComponent } from '@app/main/lessons/drivingLessons/create-or-edit-examDriving-modal.component';
 import { CreateOrEditForeignTheoryLessonModalComponent } from '@app/main/lessons/theoryLessons/create-or-edit-foreign-theoryLesson-modal.component';
 import { Subscription } from 'rxjs';
+import { CreateOrEditForeignDrivingLessonModalComponent } from '@app/main/lessons/drivingLessons/create-or-edit-foreign-drivingLesson-modal.component';
 
 @Component({
     selector: 'students-overview-lessons',
@@ -33,7 +34,7 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
     @ViewChild('createOrEditExamDrivingModal') createOrEditExamDrivingModal: CreateOrEditExamDrivingModalComponent;
     @ViewChild('createOrEditSimulatorLessonModal') createOrEditSimulatorLessonModal: CreateOrEditSimulatorLessonModalComponent;
     @ViewChild('viewSimulatorLessonModal') viewSimulatorLessonModal: ViewSimulatorLessonModalComponent;
-    @ViewChild('createOrEditForeignTheoryLessonModal') createOrEditForeignTheoryLessonModal: CreateOrEditForeignTheoryLessonModalComponent;
+    @ViewChild('createOrEditForeignDrivingLessonModal') createOrEditForeignDrivingLessonModal: CreateOrEditForeignDrivingLessonModalComponent;
 
     @Input() student: StudentDto;
     @Input() parentOverview: StudentsOverviewComponent;
@@ -107,7 +108,8 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
                     predefinedDrivingLessonId: i.predefinedDrivingLessonId,
                     feedbackPdfFileGuid: i.feedbackPdfFile,
                     isExam: i.isExam,
-                    billToStudent: i.billToStudent
+                    billToStudent: i.billToStudent,
+                    doneAtForeignSchool: i.doneAtForeignSchool
                 }
 
                 if(lesson.predefinedDrivingLessonId == null && !lesson.isExam)
@@ -155,11 +157,17 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
         {
             this.createOrEditSimulatorLessonModal.show(record.id);
         }
+    
+        else if(record.doneAtForeignSchool)
+        {
+            this.createOrEditForeignDrivingLessonModal.show(record.id);
+        }
         else
         {
             this.createOrEditDrivingLessonModal.show(record.id);
     
         }
+        console.log(record);
     }
 
     deleteDrivingLesson(record): void {
@@ -212,9 +220,9 @@ export class StudentsOverviewLessonsComponent extends AppComponentBase implement
         this.createOrEditSimulatorLessonModal.show(null, this.parentOverview.student.id, this.parentOverview.student.firstName + " " + this.parentOverview.student.lastName);
     }
 
-    addTheoryLessonManually() : void
+    addDrivingLessonManually() : void
     {
-        this.createOrEditForeignTheoryLessonModal.show(this.parentOverview.selectedStudentCourse.course.licenseClass, this.parentOverview.selectedStudentCourse.course.id, this.parentOverview.student.id);
+        this.createOrEditForeignDrivingLessonModal.show(null, false, this.parentOverview.student.id, this.parentOverview.student.firstName, this.parentOverview.student.lastName, new Date(), this.parentOverview.selectedStudentCourse.course.id, null, null, null);
     }
 
     downloadFeedbackPdf(record): void

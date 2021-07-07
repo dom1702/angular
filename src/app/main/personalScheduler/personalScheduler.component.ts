@@ -74,7 +74,7 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
   simulatorFeatureEnabled;
   //calendarPlugins = [dayGridPlugin];
   calendarOptions: CalendarOptions = {
-    //timeZone: 'UTC',
+    timeZone: 'UTC-coercion',
     locale: abp.localization.currentLanguage.name,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
@@ -236,7 +236,22 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
           var backgroundColor;
           switch (item.appointmentType) {
             case EventType.DrivingLesson:
-              backgroundColor = '#F57F17';
+              if(item.licenseClass == "B")
+                backgroundColor = '#4caf50';
+              else if(item.licenseClass == "A")
+                backgroundColor = '#2196f3';
+                else if(item.licenseClass == "A1")
+                backgroundColor = '#064070';
+                else if(item.licenseClass == "A2")
+                backgroundColor = '#0960A8';
+                else if(item.licenseClass == "AM120")
+                backgroundColor = '#477998';
+                else if(item.licenseClass == "C")
+                backgroundColor = '#A3333D';
+                else if(item.licenseClass == "C1")
+                backgroundColor = '#F64740';
+                else
+                backgroundColor = '#4caf50';
               break;
             case EventType.TheoryLesson:
               backgroundColor = '#7fa900';
@@ -268,7 +283,7 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
           else {
             if (item.completed)
               borderColor = 'green';
-            if (item.studentNotPresent)
+            if (item.studentNotPresent || item.examFailed)
               borderColor = 'red';
           }
 
@@ -277,8 +292,8 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
               //Id: item.id,
               id: item.id,
               title: item.subject,
-              start: item.startTime.toJSDate(),
-              end: item.endTime.toJSDate(),
+              start: item.startTime.toJSDate().toISOString(),
+              end: item.endTime.toJSDate().toISOString(),
               resourceIds: resourceIds,
               backgroundColor: backgroundColor,
               extendedProps: {

@@ -79,11 +79,17 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
 
   currentView: string;
 
+  getTimezone() : string
+  {
+    console.log(abp.timing);
+    return abp.timing.timeZoneInfo.iana.timeZoneId;
+  }
+
 
   simulatorFeatureEnabled;
   //calendarPlugins = [dayGridPlugin];
   calendarOptions: CalendarOptions = {
-    //timeZone: 'local',
+    timeZone: 'UTC-coercion',
     locale: abp.localization.currentLanguage.name,
     schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     initialView: 'timeGridWeek',
@@ -365,7 +371,7 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
           else {
             if (item.completed)
               borderColor = 'green';
-            if (item.studentNotPresent)
+            if (item.studentNotPresent || item.examFailed)
               borderColor = 'red';
           }
 
@@ -373,8 +379,8 @@ export class SchedulerComponent extends AppComponentBase implements OnInit, ISch
             {
               id: item.id,
               title: item.subject,
-              start: item.startTime.toJSDate(),
-              end: item.endTime.toJSDate(),
+              start: item.startTime.toJSDate().toISOString(),
+              end: item.endTime.toJSDate().toISOString(),
               resourceIds: resourceIds,
               backgroundColor: backgroundColor,
               extendedProps: {

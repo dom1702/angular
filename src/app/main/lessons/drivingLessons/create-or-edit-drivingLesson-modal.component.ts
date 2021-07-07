@@ -372,6 +372,8 @@ export class CreateOrEditDrivingLessonModalComponent extends AppComponentBase im
         this.drivingLesson.startTime = this._dateTimeService.fromJSDate(this.startTime);
 
         this.drivingLesson.courseId = this.selectedStudentCourse.id;
+        this.drivingLesson.doneAtForeignSchool = false;
+        this.drivingLesson.foreignSchoolName = "";
 
         this.drivingLesson.instructors = [];
         for (var instrSelected of this.instructorsSelectedItems) {
