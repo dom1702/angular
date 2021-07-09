@@ -1,78 +1,156 @@
 <div bsModal #quizModal="bs-modal" class="modal fade" style="overflow-y: inherit" tabindex="-1" role="dialog"
     aria-labelledby="quizModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div *ngIf="currentQuiz" class="modal-content">
             <div class="modal-header">               
                 <div class="container">                                     
-                    <div class="row">                          
-                        <div class="col-sm-7">
-                            <h1 class="flaticon-layer" style="color:#36A2EB;">                               
-                                {{getLevelTitle()}}
-                            </h1>
-                            <div class="row">
-                                <div class="col-1"></div>
-                                <div class="col">
+                    <div class="row">  
+                        <h1 class="flaticon-layer" style="color:#36A2EB;">                               
+                            {{getLevelTitle()}}
+                        </h1>
+                    </div>
+                    
+                    <div class="row">                      
+                        <div class="col-sm-6">                      
+                                <div>
                                     <h4 class="modal-title" *ngIf="level">Chapter: {{chapterTitle}}</h4>
-                                </div>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="col-1"></div>
-                                <div class="col">
+                                </div>                               
+                                <div>
                                     <h4 class="modal-title" *ngIf="quizNumber">Quiz: {{quizNumber}}</h4>
-                                </div>
-                            </div>                                      
+                                </div>                                        
                         </div>
-                        <div class="col-sm-5 mt-5">
-                            <button class="btn btn-primary mb-2" type="button" (click)="showQuestionList()">                  
-                                <i class="flaticon2-list-1"></i>
-                                {{questionListButtonTitle()}}
-                            </button>
+                        <div class="col-sm-6">  
+                            <button class="btn btn-primary" type="button" 
+                                (click)="repeat()"
+                                [disabled]="!currentQuiz.isFinished()">
+                                <i class="flaticon2-refresh-arrow"></i>
+                                {{l("Repeat")}}
+                            </button>  
+                            <button class="btn btn-primary" type="button" (click)="showHelp()">                  
+                                <i class="flaticon-info"></i>                               
+                            </button>                       
                             <button class="btn btn-primary" type="button" (click)="close()">
                                 <i class="flaticon2-delete"></i>
                                 {{l("Abbrechen")}}
                             </button>        
-                        </div>             
-                    </div>  
+                        </div> 
+                    </div>
+                                                                                 
                 </div>                                                       
             </div>
             <div class="modal-body">
                 <div *ngIf="questionListEnabled; then questionList else currentQuestion"></div>
                 <ng-template #currentQuestion>
-                    <div class="container">
-                        current question
-                    </div>
+                    <div *ngIf="helpEnabled; then helpContainer else questionContainer"></div>
+                    <ng-template #questionContainer>
+                        <div class="container" [ngSwitch]="currentSelectedQuestion.questionType">
+                            <div *ngSwitchCase="0"> <!--Single Choice Question-->
+                                <div class="row">
+                                    <h3 class="m-portlet__head-text mb-4" style="text-align:center;">
+                                        {{currentSelectedQuestion.quest}}
+                                    </h3>  
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3" *ngFor="let answer of currentSelectedQuestion.answerOptions; index as i"> 
+                                            <p-radioButton                               
+                                                value={{i}}                                         
+                                                (click)="selected(i)"
+                                                [disabled]="questionDisabled()"
+                                                [(ngModel)]="selectedOptionSingleChoice">
+                                            </p-radioButton>
+                                            <span> {{currentSelectedQuestion.answerOptions[i]}}</span>
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="row" *ngIf="answerSelected">
+                                    <div *ngIf="currentSelectedQuestion.hasCorrectAnswer(); then successAlert else dangerAlert"></div>
+                                    <ng-template #dangerAlert>
+                                        <div class="alert alert-danger">
+                                            You did not chose the correct response.
+                                        </div>                                      
+                                    </ng-template>
+                                    <ng-template #successAlert>
+                                        <div class="alert alert-success" role="alert">
+                                            That's right! You chose the correct response.
+                                        </div>                                      
+                                    </ng-template>
+                                </div>                        
+                            </div>
+                            <div *ngSwitchCase="1"> <!--Binary Choice Picture Question-->
+                                <div class="row">
+    
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="2"> <!--Field Point Question-->
+                                <div class="row">
+    
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="3"> <!--Drag And Drop Question-->
+                                <div class="row">
+    
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="4"> <!--Select Box Question-->
+                                <div class="row">
+    
+                                </div>
+                            </div> 
+                            <div *ngSwitchCase="4"> <!--Ordable List Question-->
+                                <div class="row">
+    
+                                </div>
+                            </div>                      
+                        </div>
+                    </ng-template>
+                    <ng-template #helpContainer>
+                        <div class="container">
+                            {{currentSelectedQuestion.showDisplayTypeInfo()}}
+                        </div>
+                    </ng-template>                  
                 </ng-template>
                 <ng-template #questionList>
                     <div class="container">
                         <ul class="list-group">
-                            <li class="list-group-item" *ngFor="let question of currentSelectedQuiz.questions; index as i;">
-                                <span>{{i+1}}. {{question.quest}} 
-                                <i class="flaticon2-correct" style="color:#1bc5bd;"
-                                    *ngIf="question.isFinished()"></i></span>
+                            <li class="list-group-item" *ngFor="let question of currentQuiz.questions; index as i;">
+                                <button type="button" class="btn btn-light btn-block" (click)="questionSelected(i)">
+                                    <span>{{i+1}}. {{question.quest}} 
+                                        <i class="flaticon2-correct" style="color:#1bc5bd;"
+                                            *ngIf="question.hasCorrectAnswer()"></i>
+                                    </span>
+                                </button>                              
                             </li>
                         </ul>
                     </div>
-                </ng-template>
-                
-                
-                
+                </ng-template>    
             </div>
             <div class="modal-footer">
-                <div class="row">  
-                    <div class="col">
-                        <button class="btn btn-primary" type="button" (click)="finishQuiz()">                  
-                            {{l("Finish")}}
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-primary" type="button" (click)="submit()">
-                            <i class="flaticon2-next"></i>&nbsp;
-                                {{l("Submit")}}
-                        </button>
-                    </div>              
-                                      
-                </div>              
+                <div class="container">
+                    <div class="row">  
+                        <div class="col-sm">                          
+                            <button class="btn btn-primary mb-2" type="button" (click)="showQuestionList()">                  
+                                <i class="flaticon2-list-1"></i>
+                                {{questionListButtonTitle()}}
+                            </button>
+                        </div>
+                                                
+                        <div class="col-4">
+                            
+                        </div>
+                                                 
+                        <div class="col-sm">
+                            <button class="btn btn-primary" type="button" (click)="finishQuiz()">                  
+                                {{l("Fin")}}
+                            </button>
+                            <button class="btn btn-primary" type="button" (click)="continue()" [disabled]="continueDisabled()">
+                                <i class="flaticon2-next"></i>&nbsp;
+                                    {{continueButtonTitle}}
+                            </button>
+                        </div>                                                                             
+                    </div> 
+                </div>
+                             
             </div>
         </div>
     </div>

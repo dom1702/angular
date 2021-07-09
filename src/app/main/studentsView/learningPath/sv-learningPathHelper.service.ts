@@ -12,23 +12,27 @@ export enum QuestionDisplayType {
 
 export class LearningPathQuestion {
     quest : string;
-    answerOptions : string[];
+    answerOptions : any[];
     answerIndex : number;
     questionType :  QuestionDisplayType;
     points: number;
 
     selectedAnswerIndex : number = -1;
 
-    isFinished() : boolean {
+    hasCorrectAnswer() : boolean {
         return this.selectedAnswerIndex === this.answerIndex;
     }
 
-    constructor(quest : string, answerIndex : number, answerOptions : string[]) {
+    constructor(quest : string, answerIndex : number, answerOptions : any[], questionDisplayType : QuestionDisplayType) {
         this.quest = quest;
         this.answerIndex = answerIndex;
-        this.questionType = 0;
+        this.questionType = questionDisplayType;
         this.answerOptions = answerOptions;
         this.points = 10;
+    }
+
+    showDisplayTypeInfo() : string {        
+        return "Each display type should contain some hints for users to explain clearly what to do (maybe pictures too)..."          
     }
 }
 
@@ -52,10 +56,19 @@ export class LearningPathQuiz {
             this.max += questions[index].points;           
         }
     }   
-    
+ 
     completeQuiz() : number {
         this.progress = this.max;
         return this.progress
+    }
+
+    toggleAnswers(showAnswers : boolean) {
+        for (let index = 0; index < this.questions.length; index++) {
+            if(showAnswers)
+                this.questions[index].selectedAnswerIndex = this.questions[index].answerIndex; 
+            else 
+                this.questions[index].selectedAnswerIndex = -1;         
+        }
     }
 }
 
@@ -105,11 +118,13 @@ export class LearningUnitChapter {
 
 export class LearningUnit {
     level : number;
+    title : string
     chapters : LearningUnitChapter[];
     max : number = 0;
     progress : number = 0;
 
-    constructor(level : number, chapters : LearningUnitChapter[]) {
+    constructor(title: string, level : number, chapters : LearningUnitChapter[]) {
+        this.title = title;
         this.level = level;
         this.chapters = chapters;
 
@@ -156,9 +171,9 @@ export class LearningUnit {
 })
 
 export class SVLearningPathHelperService {     
-    dummyQuest1 : LearningPathQuestion = new LearningPathQuestion("are you an optimist", 0, ["no", "sometimes, yes"]);
-    dummyQuest2 : LearningPathQuestion = new LearningPathQuestion("do you love black metal", 1, ["yes", "HELL YES"]);
-    dummyQuest3 : LearningPathQuestion = new LearningPathQuestion("1+(-2)=?", 0, ["0", "-1"]);
+    dummyQuest1 : LearningPathQuestion = new LearningPathQuestion("are you an optimist", 0, ["no", "sometimes, yes"], 0);
+    dummyQuest2 : LearningPathQuestion = new LearningPathQuestion("do you love black metal", 1, ["yes", "HELL YES"], 0);
+    dummyQuest3 : LearningPathQuestion = new LearningPathQuestion("1+(-2)=?", 0, ["0", "-1"], 0);
 
     dummyQuiz1 : LearningPathQuiz = new LearningPathQuiz("dummy1", [this.dummyQuest1, this.dummyQuest2], 0);
     dummyQuiz2 : LearningPathQuiz = new LearningPathQuiz("dummy2", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
@@ -176,49 +191,68 @@ export class SVLearningPathHelperService {
     dummyQuiz13 : LearningPathQuiz = new LearningPathQuiz("dummy13", [this.dummyQuest1, this.dummyQuest2], 0);
     dummyQuiz14 : LearningPathQuiz = new LearningPathQuiz("dummy14", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
     dummyQuiz15 : LearningPathQuiz = new LearningPathQuiz("dummy15", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
+  
+    dummyQuiz16 : LearningPathQuiz = new LearningPathQuiz("dummy16", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz17 : LearningPathQuiz = new LearningPathQuiz("dummy17", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3], 0);
+    dummyQuiz18 : LearningPathQuiz = new LearningPathQuiz("dummy18", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz19 : LearningPathQuiz = new LearningPathQuiz("dummy19", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz20 : LearningPathQuiz = new LearningPathQuiz("dummy20", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
+
+    dummyQuiz21 : LearningPathQuiz = new LearningPathQuiz("dummy21", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz22 : LearningPathQuiz = new LearningPathQuiz("dummy22", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3], 0);
+    dummyQuiz23 : LearningPathQuiz = new LearningPathQuiz("dummy23", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz24 : LearningPathQuiz = new LearningPathQuiz("dummy24", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz25 : LearningPathQuiz = new LearningPathQuiz("dummy25", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz26 : LearningPathQuiz = new LearningPathQuiz("dummy26", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz27 : LearningPathQuiz = new LearningPathQuiz("dummy27", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3], 0);
+    dummyQuiz28 : LearningPathQuiz = new LearningPathQuiz("dummy28", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz29 : LearningPathQuiz = new LearningPathQuiz("dummy29", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz30 : LearningPathQuiz = new LearningPathQuiz("dummy30", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz31 : LearningPathQuiz = new LearningPathQuiz("dummy31", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz32 : LearningPathQuiz = new LearningPathQuiz("dummy32", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
 
     dummyChapterQuizze1_1 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz3, this.dummyQuiz4];
     dummyChapterQuizze1_2 : LearningPathQuiz[] = [this.dummyQuiz5, this.dummyQuiz6, this.dummyQuiz7, this.dummyQuiz8, this.dummyQuiz9];
     dummyChapterQuizze1_3 : LearningPathQuiz[] = [this.dummyQuiz11, this.dummyQuiz15, this.dummyQuiz12, this.dummyQuiz14, this.dummyQuiz13]
 
-    dummyChapterQuizze2_1 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze2_2 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze2_3 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz3, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz3, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze2_4 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze2_5 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze2_6 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz3, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz3, this.dummyQuiz1, this.dummyQuiz2];
+    dummyChapterQuizze2_1 : LearningPathQuiz[] = [this.dummyQuiz21, this.dummyQuiz22];
+    dummyChapterQuizze2_2 : LearningPathQuiz[] = [this.dummyQuiz23, this.dummyQuiz24];
+    dummyChapterQuizze2_3 : LearningPathQuiz[] = [this.dummyQuiz25, this.dummyQuiz26];
+    dummyChapterQuizze2_4 : LearningPathQuiz[] = [this.dummyQuiz27, this.dummyQuiz28];
+    dummyChapterQuizze2_5 : LearningPathQuiz[] = [this.dummyQuiz29, this.dummyQuiz30];
+    dummyChapterQuizze2_6 : LearningPathQuiz[] = [this.dummyQuiz31, this.dummyQuiz32];
 
-    dummyChapterQuizze3_1 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
+    dummyChapterQuizze3_1 : LearningPathQuiz[] = [this.dummyQuiz16];
     
-    dummyChapterQuizze4_1 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze4_2 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
-    dummyChapterQuizze4_3 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz3, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz3, this.dummyQuiz1, this.dummyQuiz2];
+    dummyChapterQuizze4_1 : LearningPathQuiz[] = [this.dummyQuiz17];
+    dummyChapterQuizze4_2 : LearningPathQuiz[] = [this.dummyQuiz18];
+    dummyChapterQuizze4_3 : LearningPathQuiz[] = [this.dummyQuiz19];
 
-    dummyChapterQuizze5_1 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz1, this.dummyQuiz2];
+    dummyChapterQuizze5_1 : LearningPathQuiz[] = [this.dummyQuiz20];
   
     lvl1chapter1 : LearningUnitChapter = new LearningUnitChapter("Car and handling of it", this.dummyChapterQuizze1_1);
     lvl1chapter2 : LearningUnitChapter = new LearningUnitChapter("Behavior of a car and its equipment", this.dummyChapterQuizze1_2);
     lvl1chapter3 : LearningUnitChapter = new LearningUnitChapter("Taking care of the car", this.dummyChapterQuizze1_3);
-    lvl1 : LearningUnit = new LearningUnit(1, [this.lvl1chapter1, this.lvl1chapter2, this.lvl1chapter3]);
+    lvl1 : LearningUnit = new LearningUnit("Vehicle handling", 1, [this.lvl1chapter1, this.lvl1chapter2, this.lvl1chapter3]);
    
-    lvl2chapter1 : LearningUnitChapter = new LearningUnitChapter("Trafficenvironment and regulation of traffic", this.dummyChapterQuizze2_1);
+    lvl2chapter1 : LearningUnitChapter = new LearningUnitChapter("Traffic environment and regulation of traffic", this.dummyChapterQuizze2_1);
     lvl2chapter2 : LearningUnitChapter = new LearningUnitChapter("Interaction in traffic", this.dummyChapterQuizze2_2);
     lvl2chapter3 : LearningUnitChapter = new LearningUnitChapter("Basic skills of a responsible driver", this.dummyChapterQuizze2_3);
     lvl2chapter4 : LearningUnitChapter = new LearningUnitChapter("Merging the traffic and driving in traffic", this.dummyChapterQuizze2_4);
     lvl2chapter5 : LearningUnitChapter = new LearningUnitChapter("Driving in intersections - driving lines", this.dummyChapterQuizze2_5);
     lvl2chapter6 : LearningUnitChapter = new LearningUnitChapter("Driving in intersections - priority rules", this.dummyChapterQuizze2_6);
-    lvl2 : LearningUnit = new LearningUnit(2, [this.lvl2chapter1, this.lvl2chapter2, this.lvl2chapter3, this.lvl2chapter4, this.lvl2chapter5, this.lvl2chapter6]);
+    lvl2 : LearningUnit = new LearningUnit("Traffic situations", 2, [this.lvl2chapter1, this.lvl2chapter2, this.lvl2chapter3, this.lvl2chapter4, this.lvl2chapter5, this.lvl2chapter6]);
 
     lvl3chapter1 : LearningUnitChapter = new LearningUnitChapter("Handling luggage space", this.dummyChapterQuizze3_1);
-    lvl3 : LearningUnit = new LearningUnit(3, [this.lvl3chapter1]);
+    lvl3 : LearningUnit = new LearningUnit("Context of a trip", 3, [this.lvl3chapter1]);
 
     lvl4chapter1 : LearningUnitChapter = new LearningUnitChapter("Driving snow", this.dummyChapterQuizze4_1);
     lvl4chapter2 : LearningUnitChapter = new LearningUnitChapter("Driving rain", this.dummyChapterQuizze4_2);
     lvl4chapter3 : LearningUnitChapter = new LearningUnitChapter("Driving wind", this.dummyChapterQuizze4_3);
-    lvl4 : LearningUnit = new LearningUnit(4, [this.lvl4chapter1, this.lvl4chapter2, this.lvl4chapter3]);
+    lvl4 : LearningUnit = new LearningUnit("Driving in difficult situations", 4, [this.lvl4chapter1, this.lvl4chapter2, this.lvl4chapter3]);
     
     lvl5chapter1 : LearningUnitChapter = new LearningUnitChapter("Key of driving, real magic", this.dummyChapterQuizze5_1);
-    lvl5 : LearningUnit = new LearningUnit(5, [this.lvl5chapter1]);
+    lvl5 : LearningUnit = new LearningUnit("Managing your own space", 5, [this.lvl5chapter1]);
 
     overviewData : LearningUnitDisplayData[] = [
         new LearningUnitDisplayData(this.lvl1.progress, this.lvl1.max),
@@ -228,8 +262,6 @@ export class SVLearningPathHelperService {
         new LearningUnitDisplayData(this.lvl5.progress, this.lvl5.max)
     ];
 
-    currentDetailViewTitle: string;
-    currentDetailViewSubtitle : string;
     currentLevel : number;
     currentUnit : LearningUnit;
 
@@ -327,8 +359,15 @@ export class SVLearningPathHelperService {
         }
     }
 
+    parseToLearningPathQuestion(quest : string, answerIndex : number, answerOptions : any[], questionDisplayType : number) : LearningPathQuestion 
+    {
+        let q : LearningPathQuestion = new LearningPathQuestion(quest, answerIndex, answerOptions, questionDisplayType);
+        return q;
+    }
 
-
-  
-    
+    parseToLearningPathQuiz(title : string, questions : LearningPathQuestion[], progress : number) : LearningPathQuiz 
+    {
+        let quiz : LearningPathQuiz = new LearningPathQuiz(title, questions, progress);
+        return quiz;
+    }  
 }

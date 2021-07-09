@@ -1,9 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Injector, OnChanges, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {  Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 
-import { MessageService } from 'primeng/api';
-import { SimpleChanges } from '@angular/core';
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { TabView } from 'primeng/tabview';
 import { LearningUnitDisplayData, SVLearningPathHelperService } from './sv-learningPathHelper.service';
@@ -115,29 +113,19 @@ export class SVLearningPathOverviewComponent extends AppComponentBase implements
 
     loadLevelData(targetLevel : number) {      
         switch (targetLevel) {
-            case 1:
-                this.learningPathHelper.currentDetailViewTitle = "Level 1"; 
-                this.learningPathHelper.currentDetailViewSubtitle = "1. Vehicle handling"; 
+            case 1:                
                 this.learningPathHelper.currentLevel = 1;
             break;
-            case 2:
-                this.learningPathHelper.currentDetailViewTitle = "Level 2";
-                this.learningPathHelper.currentDetailViewSubtitle = "2. Traffic situations"; 
+            case 2:              
                 this.learningPathHelper.currentLevel = 2;
             break;
-            case 3:
-                this.learningPathHelper.currentDetailViewTitle = "Level 3";
-                this.learningPathHelper.currentDetailViewSubtitle = "3. Context of a tripp"; 
+            case 3:              
                 this.learningPathHelper.currentLevel = 3;
             break;
-            case 4:
-                this.learningPathHelper.currentDetailViewTitle = "Level 4";
-                this.learningPathHelper.currentDetailViewSubtitle = "4. Driving in difficult situations"; 
+            case 4:                
                 this.learningPathHelper.currentLevel = 4;
             break;
-            case 5:
-                this.learningPathHelper.currentDetailViewTitle = "Level 5";
-                this.learningPathHelper.currentDetailViewSubtitle = "5. Managing your own space"; 
+            case 5:                
                 this.learningPathHelper.currentLevel = 5;
             break;
         
