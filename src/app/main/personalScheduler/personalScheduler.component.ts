@@ -306,6 +306,41 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
             });
         }
 
+        data.push(
+          {
+            //Id: item.id,
+            id: 2598,
+            title: 'Slot',
+            start: new Date('2021-07-06T10:00:00').toISOString(),
+            end: new Date('2021-07-06T10:50:00').toISOString(),
+            //resourceIds: resourceIds,
+            backgroundColor: 'red',
+            extendedProps: {
+              appointmentType: EventType.DrivingSlot
+            },
+            allDay: false,
+            borderColor: 'grey'
+            //AppointmentType: item.appointmentType.toString(),
+            // VehicleID: 1
+          });
+          data.push(
+            {
+              //Id: item.id,
+              id: 2599,
+              title: 'Slot',
+              start: new Date('2021-07-06T11:00:00').toISOString(),
+              end: new Date('2021-07-06T11:50:00').toISOString(),
+              //resourceIds: resourceIds,
+              backgroundColor: 'red',
+              extendedProps: {
+                appointmentType: EventType.DrivingSlot
+              },
+              allDay: false,
+              borderColor: 'grey'
+              //AppointmentType: item.appointmentType.toString(),
+              // VehicleID: 1
+            });
+
         console.log(data);
 
         if(this.isGranted('InstructorView'))
@@ -537,5 +572,23 @@ export class PersonalSchedulerComponent extends AppComponentBase implements OnIn
   workingHoursSet()
   {
     this.refetchEvents();
+  }
+
+  editSlots()
+  {
+    var events = this.calendarComponent.getApi().getEvents().filter(x => x.extendedProps.appointmentType == EventType.DrivingSlot);
+    for(var e of events)
+    {
+      e.setProp('display', 'auto');
+    }
+  }
+
+  saveSlots()
+  {
+    var events = this.calendarComponent.getApi().getEvents().filter(x => x.extendedProps.appointmentType == EventType.DrivingSlot);
+    for(var e of events)
+    {
+      e.setProp('display', 'background');
+    }
   }
 }

@@ -37,6 +37,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     student: StudentDto;
     pricePackageName: string = "";
+    studentsUserAccountIsActive : boolean = true;
 
     selectedStudentCourse: StudentCourseDto;
     studentCourses: StudentCourseDto[];
@@ -136,6 +137,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
             this._studentsServiceProxy.getStudentForView(id).subscribe(result => {
 
                 this.student = result.student;
+
+                this.studentsUserAccountIsActive = result.userAccountIsActive;
 
                 this.title = this.l('StudentOverview') + " - " + this.student.firstName + " " + this.student.lastName + " (" + this.student.customerId + ")";
 

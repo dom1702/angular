@@ -7,12 +7,13 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -23101,6 +23102,62 @@ export class StudentsViewServiceProxy {
         }
         return _observableOf<PaymentFailedOutput>(<any>null);
     }
+
+    /**
+     * @param date (optional) 
+     * @return Success
+     */
+    getDrivingSlotsForTheDay(date: DateTime | undefined): Observable<GetSlotsForTheDayOutput> {
+        let url_ = this.baseUrl + "/api/services/app/StudentsView/GetDrivingSlotsForTheDay?";
+        if (date === null)
+            throw new Error("The parameter 'date' cannot be null.");
+        else if (date !== undefined)
+            url_ += "Date=" + encodeURIComponent(date ? "" + date.toJSON() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDrivingSlotsForTheDay(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDrivingSlotsForTheDay(<any>response_);
+                } catch (e) {
+                    return <Observable<GetSlotsForTheDayOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetSlotsForTheDayOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDrivingSlotsForTheDay(response: HttpResponseBase): Observable<GetSlotsForTheDayOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetSlotsForTheDayOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetSlotsForTheDayOutput>(<any>null);
+    }
 }
 
 @Injectable()
@@ -45299,6 +45356,7 @@ export enum EventType {
     Holiday = 3,
     SimulatorLesson = 4,
     DrivingExam = 5,
+    DrivingSlot = 6,
 }
 
 export class SchedulerEventDto implements ISchedulerEventDto {
@@ -51129,6 +51187,7 @@ export interface IStudentDto {
 export class GetStudentForViewDto implements IGetStudentForViewDto {
     student!: StudentDto;
     licenseClasses!: string[] | undefined;
+    userAccountIsActive!: boolean;
 
     constructor(data?: IGetStudentForViewDto) {
         if (data) {
@@ -51147,6 +51206,7 @@ export class GetStudentForViewDto implements IGetStudentForViewDto {
                 for (let item of _data["licenseClasses"])
                     this.licenseClasses!.push(item);
             }
+            this.userAccountIsActive = _data["userAccountIsActive"];
         }
     }
 
@@ -51165,6 +51225,7 @@ export class GetStudentForViewDto implements IGetStudentForViewDto {
             for (let item of this.licenseClasses)
                 data["licenseClasses"].push(item);
         }
+        data["userAccountIsActive"] = this.userAccountIsActive;
         return data; 
     }
 }
@@ -51172,6 +51233,7 @@ export class GetStudentForViewDto implements IGetStudentForViewDto {
 export interface IGetStudentForViewDto {
     student: StudentDto;
     licenseClasses: string[] | undefined;
+    userAccountIsActive: boolean;
 }
 
 export class PagedResultDtoOfGetStudentForViewDto implements IPagedResultDtoOfGetStudentForViewDto {
@@ -53622,6 +53684,90 @@ export interface IPaymentFailedOutput {
     totalAmount: number;
     reference: string | undefined;
     providerName: string | undefined;
+}
+
+export class GetSlotsForTheDaySlot implements IGetSlotsForTheDaySlot {
+    from!: DateTime;
+    to!: DateTime;
+
+    constructor(data?: IGetSlotsForTheDaySlot) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.from = _data["from"] ? DateTime.fromISO(_data["from"].toString()) : <any>undefined;
+            this.to = _data["to"] ? DateTime.fromISO(_data["to"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetSlotsForTheDaySlot {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetSlotsForTheDaySlot();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["from"] = this.from ? this.from.toString() : <any>undefined;
+        data["to"] = this.to ? this.to.toString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetSlotsForTheDaySlot {
+    from: DateTime;
+    to: DateTime;
+}
+
+export class GetSlotsForTheDayOutput implements IGetSlotsForTheDayOutput {
+    slots!: GetSlotsForTheDaySlot[] | undefined;
+
+    constructor(data?: IGetSlotsForTheDayOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["slots"])) {
+                this.slots = [] as any;
+                for (let item of _data["slots"])
+                    this.slots!.push(GetSlotsForTheDaySlot.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetSlotsForTheDayOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetSlotsForTheDayOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.slots)) {
+            data["slots"] = [];
+            for (let item of this.slots)
+                data["slots"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetSlotsForTheDayOutput {
+    slots: GetSlotsForTheDaySlot[] | undefined;
 }
 
 export class TenantListDto implements ITenantListDto {
