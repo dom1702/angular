@@ -153,6 +153,7 @@ import { SVLearningPathOverviewComponent } from './studentsView/learningPath/sv-
 import { SVLearningPathDetailViewComponent } from './studentsView/learningPath/sv-learningPathDetailView.component';
 import {FieldsetModule} from 'primeng/fieldset';
 import { SVLearningPathQuizModalComponent } from './studentsView/learningPath/sv-learningPathQuizModal.component';
+import { StudentsOverviewSettingsComponent } from './students/students/students-overview-settings.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -310,7 +311,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       StudentsOverviewSchedulerComponent,
       SVLearningPathOverviewComponent,
       SVLearningPathDetailViewComponent,
-      SVLearningPathQuizModalComponent
+      SVLearningPathQuizModalComponent,
+      StudentsOverviewSettingsComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

@@ -140,6 +140,13 @@
                             </students-overview-scheduler>
 
                         </tab>
+                        <tab *ngIf="isGranted('Pages.Administration')" heading={{studentSettingsTabName}} id="tab9"
+                        (selectTab)="onSettingsTabSelect($event)" (deselect)="onSettingsTabDeselect($event)">
+
+                        <students-overview-settings [student]="student" [parentOverview]="this">
+                        </students-overview-settings>
+
+                    </tab>
                     </tabset>
 
                 </div>

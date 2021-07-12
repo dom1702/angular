@@ -7,7 +7,6 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
@@ -22103,6 +22102,58 @@ export class StudentsServiceProxy {
         }
         return _observableOf<SchedulerEventDto[]>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateStudentViewFeatures(body: UpdateStudentViewFeaturesInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Students/UpdateStudentViewFeatures";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateStudentViewFeatures(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateStudentViewFeatures(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateStudentViewFeatures(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -23770,6 +23821,70 @@ export class TenantServiceProxy {
     }
 
     protected processUnlockTenantAdmin(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class TenantBillingServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    handleEvent(body: StudentEnrolledInCourseEventData | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TenantBilling/HandleEvent";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processHandleEvent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processHandleEvent(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processHandleEvent(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -51040,6 +51155,10 @@ export class StudentDto implements IStudentDto {
     lastLogin!: DateTime | undefined;
     additionalInformation!: string | undefined;
     additionalInformationInternal!: string | undefined;
+    allowOnlineTheoryLessons!: boolean;
+    allowLearningPath!: boolean;
+    allowTheoryExamPractice!: boolean;
+    allowStudyingBook!: boolean;
     id!: number;
 
     constructor(data?: IStudentDto) {
@@ -51092,6 +51211,10 @@ export class StudentDto implements IStudentDto {
             this.lastLogin = _data["lastLogin"] ? DateTime.fromISO(_data["lastLogin"].toString()) : <any>undefined;
             this.additionalInformation = _data["additionalInformation"];
             this.additionalInformationInternal = _data["additionalInformationInternal"];
+            this.allowOnlineTheoryLessons = _data["allowOnlineTheoryLessons"];
+            this.allowLearningPath = _data["allowLearningPath"];
+            this.allowTheoryExamPractice = _data["allowTheoryExamPractice"];
+            this.allowStudyingBook = _data["allowStudyingBook"];
             this.id = _data["id"];
         }
     }
@@ -51144,6 +51267,10 @@ export class StudentDto implements IStudentDto {
         data["lastLogin"] = this.lastLogin ? this.lastLogin.toString() : <any>undefined;
         data["additionalInformation"] = this.additionalInformation;
         data["additionalInformationInternal"] = this.additionalInformationInternal;
+        data["allowOnlineTheoryLessons"] = this.allowOnlineTheoryLessons;
+        data["allowLearningPath"] = this.allowLearningPath;
+        data["allowTheoryExamPractice"] = this.allowTheoryExamPractice;
+        data["allowStudyingBook"] = this.allowStudyingBook;
         data["id"] = this.id;
         return data; 
     }
@@ -51181,6 +51308,10 @@ export interface IStudentDto {
     lastLogin: DateTime | undefined;
     additionalInformation: string | undefined;
     additionalInformationInternal: string | undefined;
+    allowOnlineTheoryLessons: boolean;
+    allowLearningPath: boolean;
+    allowTheoryExamPractice: boolean;
+    allowStudyingBook: boolean;
     id: number;
 }
 
@@ -52714,6 +52845,58 @@ export interface IChangePricePackageOutput {
     newPricePackageId: number;
 }
 
+export class UpdateStudentViewFeaturesInput implements IUpdateStudentViewFeaturesInput {
+    studentId!: number;
+    allowOnlineTheoryLessons!: boolean;
+    allowLearningPath!: boolean;
+    allowTheoryExamPractice!: boolean;
+    allowStudyingBook!: boolean;
+
+    constructor(data?: IUpdateStudentViewFeaturesInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentId = _data["studentId"];
+            this.allowOnlineTheoryLessons = _data["allowOnlineTheoryLessons"];
+            this.allowLearningPath = _data["allowLearningPath"];
+            this.allowTheoryExamPractice = _data["allowTheoryExamPractice"];
+            this.allowStudyingBook = _data["allowStudyingBook"];
+        }
+    }
+
+    static fromJS(data: any): UpdateStudentViewFeaturesInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateStudentViewFeaturesInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["allowOnlineTheoryLessons"] = this.allowOnlineTheoryLessons;
+        data["allowLearningPath"] = this.allowLearningPath;
+        data["allowTheoryExamPractice"] = this.allowTheoryExamPractice;
+        data["allowStudyingBook"] = this.allowStudyingBook;
+        return data; 
+    }
+}
+
+export interface IUpdateStudentViewFeaturesInput {
+    studentId: number;
+    allowOnlineTheoryLessons: boolean;
+    allowLearningPath: boolean;
+    allowTheoryExamPractice: boolean;
+    allowStudyingBook: boolean;
+}
+
 export class SVPersonalDataDto implements ISVPersonalDataDto {
     firstName!: string | undefined;
     lastName!: string | undefined;
@@ -54171,6 +54354,50 @@ export class EntityDto implements IEntityDto {
 
 export interface IEntityDto {
     id: number;
+}
+
+export class StudentEnrolledInCourseEventData implements IStudentEnrolledInCourseEventData {
+    studentId!: number;
+    eventTime!: DateTime;
+    eventSource!: any | undefined;
+
+    constructor(data?: IStudentEnrolledInCourseEventData) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentId = _data["studentId"];
+            this.eventTime = _data["eventTime"] ? DateTime.fromISO(_data["eventTime"].toString()) : <any>undefined;
+            this.eventSource = _data["eventSource"];
+        }
+    }
+
+    static fromJS(data: any): StudentEnrolledInCourseEventData {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentEnrolledInCourseEventData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["eventTime"] = this.eventTime ? this.eventTime.toString() : <any>undefined;
+        data["eventSource"] = this.eventSource;
+        return data; 
+    }
+}
+
+export interface IStudentEnrolledInCourseEventData {
+    studentId: number;
+    eventTime: DateTime;
+    eventSource: any | undefined;
 }
 
 export class MemberActivity implements IMemberActivity {

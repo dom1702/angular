@@ -34,6 +34,7 @@ export class StudentsOverviewComponent extends AppComponentBase {
     lessonsTabName: string = this.l("Driving");
     theoryLessonsTabName: string = this.l("Theory");
     studentSchedulerTabName: string = this.l("Scheduler");
+    studentSettingsTabName: string = this.l("StudentSettings");
 
     student: StudentDto;
     pricePackageName: string = "";
@@ -61,6 +62,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
     @Output() onTodosTabDeselected = new EventEmitter();
     @Output() onSchedulerTabSelected = new EventEmitter();
     @Output() onSchedulerTabDeselected = new EventEmitter();
+    @Output() onSettingsTabSelected = new EventEmitter();
+    @Output() onSettingsTabDeselected = new EventEmitter();
 
     constructor(
         injector: Injector,
@@ -126,6 +129,14 @@ export class StudentsOverviewComponent extends AppComponentBase {
 
     onSchedulerTabDeselect(data: TabDirective): void {
         this.onSchedulerTabDeselected.emit();
+    }
+
+    onSettingsTabSelect(data: TabDirective): void {
+        this.onSettingsTabSelected.emit();
+    }
+
+    onSettingsTabDeselect(data: TabDirective): void {
+        this.onSettingsTabDeselected.emit();
     }
 
     ngOnInit(): void {

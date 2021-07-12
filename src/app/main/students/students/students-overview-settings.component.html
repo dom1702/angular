@@ -1,0 +1,34 @@
+<div *ngIf="student" [busyIf]="loading">
+    <div class="row align-items-center m-10">
+        <div class="checkbox-list">
+         
+                <label class="checkbox">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowOnlineTheoryLessons">
+                    <span></span>
+                    {{l("EnableOnlineTheoryLessons")}}
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowLearningPath">
+                    <span></span>
+                    {{l("EnableLearningPath")}}
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowTheoryExamPractice">
+                    <span></span>
+                    {{l("EnableTheoryExamPractice")}}
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowStudyingBook">
+                    <span></span>
+                    {{l("EnableStudyingBook")}}
+                </label>
+        </div>
+    </div>
+    <div class="mt-10">
+
+        <div class="col text-right">
+            <button *ngIf="isGranted('Pages.Administration') && showApplyButton" (click)="apply()"
+                class="btn btn-danger">{{l("Apply")}}</button>
+        </div>
+    </div>
+</div>
