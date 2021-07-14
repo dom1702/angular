@@ -55,9 +55,9 @@ export class SVLearningPathOverviewComponent extends AppComponentBase implements
         super(injector);
     }
 
-    ngOnInit(): void {  
-                 
-        this.learningPathHelper.loadPathProgress();
+    ngOnInit(): void 
+    {                  
+        this.learningPathHelper.loadLearningPath();
 
         this.currentProgress = this.learningPathHelper.pathProgress;
         this.currentProgressMax = this.learningPathHelper.maxPathProgress;
@@ -79,7 +79,7 @@ export class SVLearningPathOverviewComponent extends AppComponentBase implements
                     break;                 
                 }                    
             }  
-            
+                       
             this.currentLearningUnits[currUnit].disabled = false;
             this.currentLearningUnits[currUnit].active = true;
             let outstanding = this.currentLearningUnits[currUnit].max - this.currentLearningUnits[currUnit].progress;
@@ -111,29 +111,30 @@ export class SVLearningPathOverviewComponent extends AppComponentBase implements
         this.displaySelfStudyGuide = true;
     }
 
-    loadLevelData(targetLevel : number) {      
-        switch (targetLevel) {
-            case 1:                
-                this.learningPathHelper.currentLevel = 1;
-            break;
-            case 2:              
-                this.learningPathHelper.currentLevel = 2;
-            break;
-            case 3:              
-                this.learningPathHelper.currentLevel = 3;
-            break;
-            case 4:                
-                this.learningPathHelper.currentLevel = 4;
-            break;
-            case 5:                
-                this.learningPathHelper.currentLevel = 5;
-            break;
-        
-            default:
-                break;          
+    loadLevelData(targetLevel : number) {  
+        if(this.learningPathHelper.currentDetailView == null)
+        {
+            switch (targetLevel) {
+                case 1:                
+                    this.learningPathHelper.getUserDetailViewAsync(1);               
+                break;
+                case 2:              
+                    this.learningPathHelper.getUserDetailViewAsync(2); 
+                break;
+                case 3:              
+                    this.learningPathHelper.getUserDetailViewAsync(3); 
+                break;
+                case 4:                
+                    this.learningPathHelper.getUserDetailViewAsync(4); 
+                break;
+                case 5:                
+                    this.learningPathHelper.getUserDetailViewAsync(5); 
+                break;
+            
+                default:
+                    break;          
+            }
         }
-
-        this.learningPathHelper.getLearningPathLevelData();
     }
 
     changePieChartValues(index : number, progress: number, outstanding : number) : void {

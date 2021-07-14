@@ -16,13 +16,13 @@
                                     <h4 class="modal-title" *ngIf="level">Chapter: {{chapterTitle}}</h4>
                                 </div>                               
                                 <div>
-                                    <h4 class="modal-title" *ngIf="quizNumber">Quiz: {{quizNumber}}</h4>
+                                    <h4 class="modal-title" *ngIf="quizNumber">Quiz: {{quizNumber+1}}</h4>
                                 </div>                                        
                         </div>
                         <div class="col-sm-6">  
                             <button class="btn btn-primary" type="button" 
                                 (click)="repeat()"
-                                [disabled]="!currentQuiz.isFinished()">
+                                [disabled]="!isFinished">
                                 <i class="flaticon2-refresh-arrow"></i>
                                 {{l("Repeat")}}
                             </button>  
@@ -107,6 +107,9 @@
                     <ng-template #helpContainer>
                         <div class="container">
                             {{currentSelectedQuestion.showDisplayTypeInfo()}}
+                            <button class="btn btn-primary" type="button" (click)="hideHelp()">                      
+                                Got it!
+                            </button>
                         </div>
                     </ng-template>                  
                 </ng-template>
@@ -135,22 +138,17 @@
                             </button>
                         </div>
                                                 
-                        <div class="col-4">
-                            
+                        <div class="col-sm-6">                            
                         </div>
                                                  
                         <div class="col-sm">
-                            <button class="btn btn-primary" type="button" (click)="finishQuiz()">                  
-                                {{l("Fin")}}
-                            </button>
                             <button class="btn btn-primary" type="button" (click)="continue()" [disabled]="continueDisabled()">
                                 <i class="flaticon2-next"></i>&nbsp;
                                     {{continueButtonTitle}}
                             </button>
                         </div>                                                                             
                     </div> 
-                </div>
-                             
+                </div>      
             </div>
         </div>
     </div>
