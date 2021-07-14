@@ -75,6 +75,16 @@
                                 class="fa fa-filter"></i>
                             {{l("WorkingHours")}}</button>
                         </div>
+                        <div class="col-md-4 col-sm-12 mt-5 text-right" *ngIf="isGranted('InstructorView')">
+                            <button (click)="editSlots()" class="btn btn-primary blue"><i
+                                class="fa fa-filter"></i>
+                            {{l("EditSlots")}}</button>
+                        </div>
+                        <div class="col-md-4 col-sm-12 mt-5 text-right" *ngIf="isGranted('InstructorView')">
+                            <button (click)="saveSlots()" class="btn btn-primary blue"><i
+                                class="fa fa-filter"></i>
+                            {{l("SaveSlots")}}</button>
+                        </div>
                     </div>
 
 

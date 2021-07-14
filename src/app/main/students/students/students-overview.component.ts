@@ -34,9 +34,11 @@ export class StudentsOverviewComponent extends AppComponentBase {
     lessonsTabName: string = this.l("Driving");
     theoryLessonsTabName: string = this.l("Theory");
     studentSchedulerTabName: string = this.l("Scheduler");
+    studentSettingsTabName: string = this.l("StudentSettings");
 
     student: StudentDto;
     pricePackageName: string = "";
+    studentsUserAccountIsActive : boolean = true;
 
     selectedStudentCourse: StudentCourseDto;
     studentCourses: StudentCourseDto[];
@@ -60,6 +62,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
     @Output() onTodosTabDeselected = new EventEmitter();
     @Output() onSchedulerTabSelected = new EventEmitter();
     @Output() onSchedulerTabDeselected = new EventEmitter();
+    @Output() onSettingsTabSelected = new EventEmitter();
+    @Output() onSettingsTabDeselected = new EventEmitter();
 
     constructor(
         injector: Injector,
@@ -127,6 +131,14 @@ export class StudentsOverviewComponent extends AppComponentBase {
         this.onSchedulerTabDeselected.emit();
     }
 
+    onSettingsTabSelect(data: TabDirective): void {
+        this.onSettingsTabSelected.emit();
+    }
+
+    onSettingsTabDeselect(data: TabDirective): void {
+        this.onSettingsTabDeselected.emit();
+    }
+
     ngOnInit(): void {
         this.loading = true;
         this.subscription = this._activatedRoute.params.subscribe(params => {
@@ -136,6 +148,8 @@ export class StudentsOverviewComponent extends AppComponentBase {
             this._studentsServiceProxy.getStudentForView(id).subscribe(result => {
 
                 this.student = result.student;
+
+                this.studentsUserAccountIsActive = result.userAccountIsActive;
 
                 this.title = this.l('StudentOverview') + " - " + this.student.firstName + " " + this.student.lastName + " (" + this.student.customerId + ")";
 

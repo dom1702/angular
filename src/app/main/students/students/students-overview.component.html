@@ -62,6 +62,18 @@
           
         </div>
 
+        <div *ngIf="student != null && student.userId != null && !studentsUserAccountIsActive" class="alert alert-warning mx-8" role="alert">
+            <!-- <alert type="success">
+              
+            </alert> -->
+          
+                <h4 class="alert-heading">{{l("AccountInactive")}}!</h4>
+                <!-- <p>  </p> -->
+                <hr>
+                <p class="mb-0">{{l("StudentsUserAccountInactiveInfo")}}</p>
+          
+        </div>
+
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
                 <div *ngIf="overallActive" class="card-body">
@@ -128,6 +140,13 @@
                             </students-overview-scheduler>
 
                         </tab>
+                        <tab *ngIf="isGranted('Pages.Administration')" heading={{studentSettingsTabName}} id="tab9"
+                        (selectTab)="onSettingsTabSelect($event)" (deselect)="onSettingsTabDeselect($event)">
+
+                        <students-overview-settings [student]="student" [parentOverview]="this">
+                        </students-overview-settings>
+
+                    </tab>
                     </tabset>
 
                 </div>
