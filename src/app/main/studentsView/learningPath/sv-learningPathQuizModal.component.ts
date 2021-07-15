@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from "@angular/core";
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { ModalDirective } from "ngx-bootstrap/modal";
-import { LearningPathQuestion, LearningPathQuiz, QuestionDisplayType, SVLearningPathHelperService } from "./sv-learningPathHelper.service";
+import { LearningPathQuestion, LearningPathQuiz, QuestionDisplayType, QuizDisplayData, SVLearningPathHelperService } from "./sv-learningPathHelper.service";
 
 @Component({
     selector: 'learningPathQuizModal',
@@ -16,20 +16,20 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
     
     level: number;  
     chapterTitle: string;
-    quizNumber: number;   
-    continueButtonTitle : string = this.l("Continue");
+    chapterNumber : number
+    quizNumber: number;  
+    currentQuiz : LearningPathQuiz;    
+    currentSelectedQuestion : LearningPathQuestion;
+    currentIndex = 0;
+    savedQuiz : LearningPathQuiz; 
 
+    continueButtonTitle : string = this.l("Continue");
     questionListEnabled : boolean = false;
     helpEnabled : boolean = false;
     answerSelected : boolean = false;
-
-    currentQuiz : LearningPathQuiz;
-    currentSelectedQuestion : LearningPathQuestion;
-    currentIndex = 0;
-    savedQuiz : LearningPathQuiz;
+    isFinished : boolean = false;
 
     selectedOptionSingleChoice: number = -1;
-
     ngSwitch = 0;
 
     questionListButtonTitle() : string {
@@ -45,7 +45,7 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
             if(this.savedQuiz != null)
                 return false;
             else
-                return this.currentQuiz.isFinished();
+                return this.isFinished;
         }   
         return true; 
     }
@@ -68,7 +68,7 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
     };
 
     continueDisabled() : boolean {
-        if(this.currentQuiz.isFinished())
+        if(this.isFinished)
         {
             if(this.savedQuiz)
                 return false;
@@ -82,12 +82,17 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
         super(injector);
     }
 
+    setQuizDisplayData(isFinished : boolean) : boolean{       
+        this.isFinished = isFinished;
+        return isFinished;
+    }
+
     show() : void 
     {
         this.modal.show();
         this.continueButtonTitle = this.l("Continue");
 
-        if(!this.currentQuiz.isFinished())
+        if(this.isFinished != true)
             this.startQuiz()
         else
             this.showAnswers();
@@ -111,11 +116,7 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
         this.refuseAnswer();
 
         if(!this.checkQuizCompleted())
-        {
-            if(!this.currentSelectedQuestion.hasCorrectAnswer())
-            {
-                this.currentSelectedQuestion.selectedAnswerIndex = -1; 
-            }              
+        {          
             this.setNextAvailableQuestion();
         }
         else        
@@ -126,7 +127,7 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
     {
         console.log("repeat quiz but don't lose answers");
         let clonedQuestions = this.cloneQuestions(this.currentQuiz.questions);
-        let clonedQuiz : LearningPathQuiz = new LearningPathQuiz(this.currentQuiz.title, clonedQuestions, this.currentQuiz.progress);
+        let clonedQuiz : LearningPathQuiz = new LearningPathQuiz(this.currentQuiz.title, clonedQuestions);
         this.savedQuiz = clonedQuiz;
 
         for (let index = 0; index < this.currentQuiz.questions.length; index++) {
@@ -134,7 +135,6 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
             this.currentSelectedQuestion.selectedAnswerIndex = -1;
             this.refuseAnswer();          
         }
-        this.currentQuiz.progress = 0;
 
         this.startQuiz();
     }
@@ -148,24 +148,34 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
     showAnswers() : void {
         this.answerSelected = true;
         this.questionListEnabled = true;
+        this.currentSelectedQuestion = this.currentQuiz.questions[0];
 
+        for (let index = 0; index < this.currentQuiz.questions.length; index++) {
+            this.currentSelectedQuestion = this.currentQuiz.questions[index];
+            this.currentSelectedQuestion.selectedAnswerIndex = this.currentSelectedQuestion.answerIndex;
+            this.loadAnswer();       
+        }
+        
         this.currentSelectedQuestion = this.currentQuiz.questions[0];
         this.currentIndex = 0;
-
-        this.loadAnswer();
     }
 
     finishQuiz() : void 
-    {       
-        let prog = this.currentQuiz.completeQuiz();
-        this.learningPathHelper.updatePathProgress(prog);
-        this.learningPathHelper.updateDisplayData(this.level-1, prog);
-        this.modalSave.emit(prog);
-                  
+    {    
+        if(this.savedQuiz == null)
+        {   
+            //this.displayData.completeQuiz();
+            this.learningPathHelper.updatePathProgress(this.currentQuiz.max);
+            this.learningPathHelper.updateDisplayData(this.currentQuiz.title, this.level, this.chapterNumber, this.quizNumber, this.currentQuiz.max);
+            this.modalSave.emit();
+        }
+        else this.savedQuiz = null;
+        
+        this.selectedOptionSingleChoice = -1;
         this.close();
     }
 
-    loadAnswer() : void{
+    loadAnswer() : void {
         if(this.currentSelectedQuestion != null)
         {
             switch (this.currentSelectedQuestion.questionType) {
@@ -237,47 +247,57 @@ export class SVLearningPathQuizModalComponent extends AppComponentBase {
     }
 
     selected(value : any) {
-        console.log("selected value: " + value);
-        if (this.currentSelectedQuestion) {
-            if(this.currentQuiz.isFinished())
-            {
-                //do nothing
-            }
-            else {
-                this.answerSelected = true;
-                switch (this.currentSelectedQuestion.questionType) {
-                    case QuestionDisplayType.SingleChoice:
-                    let selNr : number = parseInt(value);
-                    this.currentSelectedQuestion.selectedAnswerIndex = selNr;
-                    break;
-                case QuestionDisplayType.BinaryChoicePicture:
-                    console.log("Warning: select value for binary choice not implemented yet!");
-                    break;
-                case QuestionDisplayType.DragAndDrop:
-                    console.log("Warning: select value for drag and drop not implemented yet!");
-                    break;
-                case QuestionDisplayType.OrdableList:
-                    console.log("Warning: select value for ordable list not implemented yet!");
-                    break;
-                case QuestionDisplayType.SelectBox:
-                    console.log("Warning: select value for select box not implemented yet!");
-                    break;
-                case QuestionDisplayType.FieldPoint:
-                    console.log("Warning: select value for field choice not implemented yet!");
-                    break;           
-                default:
-                    console.log("Warning: Unknown QuestionDisplayType detected");
-                    break;
-                }
-            }
+        //console.log("selected value: " + value);
+        let allowSelectAnswer = false;
+        if(this.isFinished)
+        {
+            if(this.savedQuiz != null)
+                allowSelectAnswer = true;
+            //do nothing
+        }
+        else {
+            allowSelectAnswer = true;
         }
 
-        if(this.checkQuizCompleted())
-            this.continueButtonTitle = this.l("Finish");
+        if(allowSelectAnswer)
+        {
+            this.answerSelected = true;
+            switch (this.currentSelectedQuestion.questionType) {
+                case QuestionDisplayType.SingleChoice:
+                let selNr : number = parseInt(value);
+                this.currentSelectedQuestion.selectedAnswerIndex = selNr;
+                break;
+            case QuestionDisplayType.BinaryChoicePicture:
+                console.log("Warning: select value for binary choice not implemented yet!");
+                break;
+            case QuestionDisplayType.DragAndDrop:
+                console.log("Warning: select value for drag and drop not implemented yet!");
+                break;
+            case QuestionDisplayType.OrdableList:
+                console.log("Warning: select value for ordable list not implemented yet!");
+                break;
+            case QuestionDisplayType.SelectBox:
+                console.log("Warning: select value for select box not implemented yet!");
+                break;
+            case QuestionDisplayType.FieldPoint:
+                console.log("Warning: select value for field choice not implemented yet!");
+                break;           
+            default:
+                console.log("Warning: Unknown QuestionDisplayType detected");
+                break;
+            }
+
+            if(this.checkQuizCompleted())
+                this.continueButtonTitle = this.l("Finish");
+        }
     }
    
     showQuestionList() : void {
         this.questionListEnabled = !this.questionListEnabled;
+    }
+
+    hideHelp() : void {
+        this.helpEnabled = false;
     }
 
     refuseAnswer() {               

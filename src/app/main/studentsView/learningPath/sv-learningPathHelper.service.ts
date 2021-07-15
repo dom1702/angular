@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { ThemeMenuSettingsDto } from "@shared/service-proxies/service-proxies";
 
 export enum QuestionDisplayType {
     SingleChoice,   
@@ -34,33 +33,29 @@ export class LearningPathQuestion {
     showDisplayTypeInfo() : string {        
         return "Each display type should contain some hints for users to explain clearly what to do (maybe pictures too)..."          
     }
+
+    toggleAnswer(value : boolean) {
+        if(value == true)
+            this.selectedAnswerIndex = this.answerIndex;
+        else 
+            this.selectedAnswerIndex = -1;
+    }
 }
 
 export class LearningPathQuiz {
     title : string;
     questions : LearningPathQuestion[];
-    progress : number;
     max : number;
-    
-    isFinished() : boolean {
-        return this.progress === this.max;
-    }
-    
-    constructor(title : string, questions : LearningPathQuestion[], progress : number) {
+
+    constructor(title : string, questions : LearningPathQuestion[]) {
         this.title = title;
-        this.questions = questions;    
-        this.progress = progress;  
+        this.questions = questions;   
         this.max = 0;
         
         for (let index = 0; index < questions.length; index++) {
             this.max += questions[index].points;           
         }
     }   
- 
-    completeQuiz() : number {
-        this.progress = this.max;
-        return this.progress
-    }
 
     toggleAnswers(showAnswers : boolean) {
         for (let index = 0; index < this.questions.length; index++) {
@@ -70,11 +65,17 @@ export class LearningPathQuiz {
                 this.questions[index].selectedAnswerIndex = -1;         
         }
     }
+
+    
 }
 
-export class LearningUnitDisplayData {   
+export class LearningUnitDisplayData { 
+    level : number;
+    subTitle : string;  
     progress: number;  
     max: number; 
+       
+    chaptersProgress : ChapterDisplayData[] = [];
 
     disabled: boolean;
     active: boolean;
@@ -83,7 +84,9 @@ export class LearningUnitDisplayData {
         return this.progress === this.max;
     }
 
-    constructor(progress : number, maxProgress: number) {    
+    constructor(level: number, subtitle : string, progress : number, maxProgress: number) {  
+        this.level = level;
+        this. subTitle = subtitle;  
         this.progress = progress;   
         this.max = maxProgress;  
 
@@ -92,7 +95,23 @@ export class LearningUnitDisplayData {
     }  
 }
 
-export class LearningUnitChapter {
+export class ChapterDisplayData {
+    title : string;
+    isFinished : boolean = false;
+    quizzeStates : QuizDisplayData[] = [];
+}
+
+export class QuizDisplayData {
+    title : string;
+    state : boolean;
+
+    completeQuiz() : boolean {
+        this.state = true;
+        return true;
+    }
+}
+
+export class LearningUnitChapter {  
     title: string;
     quizze : LearningPathQuiz[];
 
@@ -114,6 +133,36 @@ export class LearningUnitChapter {
                 return this.quizze[index];
         }
     }
+
+    getDisplayData() : ChapterDisplayData {
+        let d = new ChapterDisplayData();
+        d.isFinished = this.isFinished;
+        d.title = this.title;
+        
+        let quizzeData : QuizDisplayData[] = [];
+        if(this.quizze != null)
+        {
+            for (let index = 0; index < this.quizze.length; index++) {
+                let quizData = new QuizDisplayData();
+                quizData.state = false;
+                quizData.title = this.quizze[index].title;
+                quizzeData.push(quizData);               
+            }
+            d.quizzeStates = quizzeData;
+        }
+        return d;
+    }
+
+    getChapterMaxProgress() : number {
+        let max : number = 0;
+        if(this.quizze != null)
+        {
+            for (let index = 0; index < this.quizze.length; index++) {
+                max += this.quizze[index].max;               
+            }
+        }
+        return max;
+    }
 }
 
 export class LearningUnit {
@@ -121,7 +170,6 @@ export class LearningUnit {
     title : string
     chapters : LearningUnitChapter[];
     max : number = 0;
-    progress : number = 0;
 
     constructor(title: string, level : number, chapters : LearningUnitChapter[]) {
         this.title = title;
@@ -139,30 +187,27 @@ export class LearningUnit {
                     }  
                 }                   
             }
-        }
-
-        if(this.chapters != null) // set currentProgress
-        {
-            for (let i = 0; i < this.chapters.length; i++) {
-                if(this.chapters[i].quizze != null)
-                {
-                    for (let j = 0; j < this.chapters[i].quizze.length; j++) {
-                        if(this.chapters[i].quizze[j] != null)                   
-                            this.progress += this.chapters[i].quizze[j].progress;              
-                    }  
-                }                   
-            }
-        }
+        }        
     }
+  
 
-    isFinished() : boolean {
-        if(this.max > 1)
-            return this.progress === this.max;
-        else
+    getDisplayData() : LearningUnitDisplayData {
+        let d = new LearningUnitDisplayData(this.level, "Level " + this.level.toString(), 0, 0);
+        d.disabled = true;
+        d.active = false;
+        let max : number = 0;
+
+        if(this.chapters != null)
         {
-            console.log("warning: parsed LearningUnit have maxProgress of " + this.max);
-            return false;
+            for (let index = 0; index < this.chapters.length; index++) {
+                let chapterProgress : number = this.chapters[index].getChapterMaxProgress();
+                let chapterData = this.chapters[index].getDisplayData();
+                d.chaptersProgress.push(chapterData);
+                max += chapterProgress;
+            }           
         }
+        d.max = max;
+        return d;
     }
 }
 
@@ -175,41 +220,41 @@ export class SVLearningPathHelperService {
     dummyQuest2 : LearningPathQuestion = new LearningPathQuestion("do you love black metal", 1, ["yes", "HELL YES"], 0);
     dummyQuest3 : LearningPathQuestion = new LearningPathQuestion("1+(-2)=?", 0, ["0", "-1"], 0);
 
-    dummyQuiz1 : LearningPathQuiz = new LearningPathQuiz("dummy1", [this.dummyQuest1, this.dummyQuest2], 0);
-    dummyQuiz2 : LearningPathQuiz = new LearningPathQuiz("dummy2", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz3 : LearningPathQuiz = new LearningPathQuiz("dummy3", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz1 : LearningPathQuiz = new LearningPathQuiz("dummy1", [this.dummyQuest1, this.dummyQuest2]);
+    dummyQuiz2 : LearningPathQuiz = new LearningPathQuiz("dummy2", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz3 : LearningPathQuiz = new LearningPathQuiz("dummy3", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
 
-    dummyQuiz4 : LearningPathQuiz = new LearningPathQuiz("dummy4", [this.dummyQuest1, this.dummyQuest2], 0);
-    dummyQuiz5 : LearningPathQuiz = new LearningPathQuiz("dummy5", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz6 : LearningPathQuiz = new LearningPathQuiz("dummy6", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz7 : LearningPathQuiz = new LearningPathQuiz("dummy7", [this.dummyQuest1, this.dummyQuest2], 0);
-    dummyQuiz8 : LearningPathQuiz = new LearningPathQuiz("dummy8", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz9 : LearningPathQuiz = new LearningPathQuiz("dummy9", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz10 : LearningPathQuiz = new LearningPathQuiz("dummy10", [this.dummyQuest1, this.dummyQuest2], 0);
-    dummyQuiz11 : LearningPathQuiz = new LearningPathQuiz("dummy11", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz12 : LearningPathQuiz = new LearningPathQuiz("dummy12", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz13 : LearningPathQuiz = new LearningPathQuiz("dummy13", [this.dummyQuest1, this.dummyQuest2], 0);
-    dummyQuiz14 : LearningPathQuiz = new LearningPathQuiz("dummy14", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz15 : LearningPathQuiz = new LearningPathQuiz("dummy15", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
+    dummyQuiz4 : LearningPathQuiz = new LearningPathQuiz("dummy4", [this.dummyQuest1, this.dummyQuest2]);
+    dummyQuiz5 : LearningPathQuiz = new LearningPathQuiz("dummy5", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz6 : LearningPathQuiz = new LearningPathQuiz("dummy6", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz7 : LearningPathQuiz = new LearningPathQuiz("dummy7", [this.dummyQuest1, this.dummyQuest2]);
+    dummyQuiz8 : LearningPathQuiz = new LearningPathQuiz("dummy8", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz9 : LearningPathQuiz = new LearningPathQuiz("dummy9", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz10 : LearningPathQuiz = new LearningPathQuiz("dummy10", [this.dummyQuest1, this.dummyQuest2]);
+    dummyQuiz11 : LearningPathQuiz = new LearningPathQuiz("dummy11", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz12 : LearningPathQuiz = new LearningPathQuiz("dummy12", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz13 : LearningPathQuiz = new LearningPathQuiz("dummy13", [this.dummyQuest1, this.dummyQuest2]);
+    dummyQuiz14 : LearningPathQuiz = new LearningPathQuiz("dummy14", [this.dummyQuest2, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz15 : LearningPathQuiz = new LearningPathQuiz("dummy15", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
   
-    dummyQuiz16 : LearningPathQuiz = new LearningPathQuiz("dummy16", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz17 : LearningPathQuiz = new LearningPathQuiz("dummy17", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3], 0);
-    dummyQuiz18 : LearningPathQuiz = new LearningPathQuiz("dummy18", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz19 : LearningPathQuiz = new LearningPathQuiz("dummy19", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz20 : LearningPathQuiz = new LearningPathQuiz("dummy20", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz16 : LearningPathQuiz = new LearningPathQuiz("dummy16", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz17 : LearningPathQuiz = new LearningPathQuiz("dummy17", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3]);
+    dummyQuiz18 : LearningPathQuiz = new LearningPathQuiz("dummy18", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz19 : LearningPathQuiz = new LearningPathQuiz("dummy19", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz20 : LearningPathQuiz = new LearningPathQuiz("dummy20", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1]);
 
-    dummyQuiz21 : LearningPathQuiz = new LearningPathQuiz("dummy21", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz22 : LearningPathQuiz = new LearningPathQuiz("dummy22", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3], 0);
-    dummyQuiz23 : LearningPathQuiz = new LearningPathQuiz("dummy23", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz24 : LearningPathQuiz = new LearningPathQuiz("dummy24", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz25 : LearningPathQuiz = new LearningPathQuiz("dummy25", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz26 : LearningPathQuiz = new LearningPathQuiz("dummy26", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz27 : LearningPathQuiz = new LearningPathQuiz("dummy27", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3], 0);
-    dummyQuiz28 : LearningPathQuiz = new LearningPathQuiz("dummy28", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3], 0);
-    dummyQuiz29 : LearningPathQuiz = new LearningPathQuiz("dummy29", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz30 : LearningPathQuiz = new LearningPathQuiz("dummy30", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz31 : LearningPathQuiz = new LearningPathQuiz("dummy31", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1], 0);
-    dummyQuiz32 : LearningPathQuiz = new LearningPathQuiz("dummy32", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1], 0);
+    dummyQuiz21 : LearningPathQuiz = new LearningPathQuiz("dummy21", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz22 : LearningPathQuiz = new LearningPathQuiz("dummy22", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3]);
+    dummyQuiz23 : LearningPathQuiz = new LearningPathQuiz("dummy23", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz24 : LearningPathQuiz = new LearningPathQuiz("dummy24", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz25 : LearningPathQuiz = new LearningPathQuiz("dummy25", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz26 : LearningPathQuiz = new LearningPathQuiz("dummy26", [this.dummyQuest2, this.dummyQuest2, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz27 : LearningPathQuiz = new LearningPathQuiz("dummy27", [this.dummyQuest1, this.dummyQuest2, this.dummyQuest3, this.dummyQuest3]);
+    dummyQuiz28 : LearningPathQuiz = new LearningPathQuiz("dummy28", [this.dummyQuest3, this.dummyQuest1, this.dummyQuest2, this.dummyQuest3]);
+    dummyQuiz29 : LearningPathQuiz = new LearningPathQuiz("dummy29", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz30 : LearningPathQuiz = new LearningPathQuiz("dummy30", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz31 : LearningPathQuiz = new LearningPathQuiz("dummy31", [this.dummyQuest1, this.dummyQuest1, this.dummyQuest2, this.dummyQuest1]);
+    dummyQuiz32 : LearningPathQuiz = new LearningPathQuiz("dummy32", [this.dummyQuest3, this.dummyQuest3, this.dummyQuest2, this.dummyQuest1]);
 
     dummyChapterQuizze1_1 : LearningPathQuiz[] = [this.dummyQuiz1, this.dummyQuiz2, this.dummyQuiz3, this.dummyQuiz4];
     dummyChapterQuizze1_2 : LearningPathQuiz[] = [this.dummyQuiz5, this.dummyQuiz6, this.dummyQuiz7, this.dummyQuiz8, this.dummyQuiz9];
@@ -255,36 +300,44 @@ export class SVLearningPathHelperService {
     lvl5 : LearningUnit = new LearningUnit("Managing your own space", 5, [this.lvl5chapter1]);
 
     overviewData : LearningUnitDisplayData[] = [
-        new LearningUnitDisplayData(this.lvl1.progress, this.lvl1.max),
-        new LearningUnitDisplayData(this.lvl2.progress, this.lvl2.max),
-        new LearningUnitDisplayData(this.lvl3.progress, this.lvl3.max),
-        new LearningUnitDisplayData(this.lvl4.progress, this.lvl4.max),
-        new LearningUnitDisplayData(this.lvl5.progress, this.lvl5.max)
+        this.lvl1.getDisplayData(),
+        this.lvl2.getDisplayData(),
+        this.lvl3.getDisplayData(),
+        this.lvl4.getDisplayData(),
+        this.lvl5.getDisplayData()
     ];
 
     currentLevel : number;
     currentUnit : LearningUnit;
+    currentDetailView : LearningUnitDisplayData;
 
     pathProgress : number = 0;
     maxPathProgress : number = 0;
-
-    getLearningPathLevelData() : LearningUnit {
-        switch (this.currentLevel) {
+  
+    getTargetQuiz(selectedLevel : number, selectedChapterNr : number, selectedQuizNr : number, title : string) : LearningPathQuiz
+    {
+        let q : LearningPathQuiz;
+        switch (selectedLevel) {
             case 1:
-                return this.lvl1;
-            case 2:
-                return this.lvl2;
-            case 3:
-                return this.lvl3;
-            case 4:
-                return this.lvl4;
-            case 5:
-                return this.lvl5;        
-            default:
-                console.log("Warning: target learning unity not found in LearningPathService");
+                q = this.lvl1.chapters[selectedChapterNr].quizze[selectedQuizNr];
                 break;
-        }      
-    } 
+            case 2:
+                q = this.lvl2.chapters[selectedChapterNr].quizze[selectedQuizNr];
+                break;
+            case 3:
+                q = this.lvl3.chapters[selectedChapterNr].quizze[selectedQuizNr];
+                break;
+            case 4:
+                q = this.lvl4.chapters[selectedChapterNr].quizze[selectedQuizNr];
+                break;
+            case 5:
+                q = this.lvl5.chapters[selectedChapterNr].quizze[selectedQuizNr];
+                break;       
+            default:
+                break;
+        }
+        return q;
+    }
 
     updatePathProgress(progressPoints : number) : void {
         if(this.pathProgress < this.maxPathProgress)
@@ -293,66 +346,77 @@ export class SVLearningPathHelperService {
             console.log("Warning: Max pathProgress already reached");
     }
 
-    updateDisplayData(level : number, progress : number) {   
+    updateDisplayData(title: string, level : number, chapter : number, quizNr : number, progress : number) {   
         switch (level) {
-            case 0:
-                this.overviewData[0].progress += progress;
-                this.lvl1.progress += progress;
-                break;
             case 1:
-                this.overviewData[1].progress += progress;
-                this.lvl2.progress += progress;
+                this.overviewData[0].progress += progress;               
+                this.overviewData[0].chaptersProgress[chapter].quizzeStates[quizNr].state = true;             
+                //this.lvl1.progress += progress;
                 break;
             case 2:
-                this.overviewData[2].progress += progress;
-                this.lvl3.progress += progress;
+                this.overviewData[1].progress += progress;
+                this.overviewData[1].chaptersProgress[chapter].quizzeStates[quizNr].state = true;
+                //this.lvl2.progress += progress;
                 break;
             case 3:
-                this.overviewData[3].progress += progress;
-                this.lvl4.progress += progress;
+                this.overviewData[2].progress += progress;
+                this.overviewData[2].chaptersProgress[chapter].quizzeStates[quizNr].state = true;
+                //this.lvl3.progress += progress;
                 break;
             case 4:
+                this.overviewData[3].progress += progress;
+                this.overviewData[3].chaptersProgress[chapter].quizzeStates[quizNr].state = true;
+                //this.lvl4.progress += progress;
+                break;
+            case 5:
                 this.overviewData[4].progress += progress;
-                this.lvl5.progress += progress;
+                this.overviewData[4].chaptersProgress[chapter].quizzeStates[quizNr].state = true;
+                //this.lvl5.progress += progress;
                 break;
         
             default:
                 break;
-        }                      
+        }
+        
+        this.currentDetailView.chaptersProgress[chapter].quizzeStates[quizNr].state = true;
+        this.setUserChapterProgressAsync(level, progress, title);
+        this.setUserQuizResultAsync(title, true);                      
     }
   
-    loadPathProgress() {
-        this.maxPathProgress = 0;
-        this.maxPathProgress += this.lvl1.max;
-        this.maxPathProgress += this.lvl2.max;
-        this.maxPathProgress += this.lvl3.max;
-        this.maxPathProgress += this.lvl4.max;
-        this.maxPathProgress += this.lvl5.max;
-
-        this.pathProgress = 0;
-        this.pathProgress += this.lvl1.progress;
-        this.pathProgress += this.lvl2.progress;
-        this.pathProgress += this.lvl3.progress;
-        this.pathProgress += this.lvl4.progress;
-        this.pathProgress += this.lvl5.progress;
+    loadLearningPath() 
+    {         
+        if(this.maxPathProgress <= 0)
+        {  
+            this.maxPathProgress = 0;
+            this.maxPathProgress += this.lvl1.max;
+            this.maxPathProgress += this.lvl2.max;
+            this.maxPathProgress += this.lvl3.max;
+            this.maxPathProgress += this.lvl4.max;
+            this.maxPathProgress += this.lvl5.max;
+        }
+    
+        if(this.overviewData == null)
+        {
+            this.getUserUnlockedLevelsAsync();
+        }
     }
 
-    finishLevel(level : number) : void {
-        switch (level) {
+    finishLevel() : void {
+        switch (this.currentLevel) {
             case 1:
-                this.lvl1.progress = this.lvl1.max;
+                this.overviewData[0].progress = this.lvl1.max;
                 break;
             case 2:
-                this.lvl2.progress = this.lvl2.max;
+                this.overviewData[1].progress = this.lvl2.max;
                 break;
             case 3:
-                this.lvl3.progress = this.lvl3.max;
+                this.overviewData[2].progress = this.lvl3.max;
                 break;
             case 4:
-                this.lvl4.progress = this.lvl4.max;
+                this.overviewData[3].progress = this.lvl4.max;
                 break;
             case 5:
-                this.lvl5.progress = this.lvl5.max;
+                this.overviewData[4].progress = this.lvl5.max;
                 break;               
             default:
                 break;
@@ -365,9 +429,167 @@ export class SVLearningPathHelperService {
         return q;
     }
 
-    parseToLearningPathQuiz(title : string, questions : LearningPathQuestion[], progress : number) : LearningPathQuiz 
+    parseToLearningPathQuiz(title : string, questions : LearningPathQuestion[]) : LearningPathQuiz 
     {
-        let quiz : LearningPathQuiz = new LearningPathQuiz(title, questions, progress);
+        let quiz : LearningPathQuiz = new LearningPathQuiz(title, questions);
         return quiz;
     }  
+    
+    getLevelDisplayData(targetLevel : number) : LearningUnitDisplayData 
+    {
+        switch (targetLevel) {
+            case 1:
+                return this.lvl1.getDisplayData();
+            case 2:
+                return this.lvl2.getDisplayData();
+            case 3:
+                return this.lvl3.getDisplayData();
+            case 4:
+                return this.lvl4.getDisplayData();
+            case 5:
+                return this.lvl5.getDisplayData();                     
+            default:
+                break;
+        }
+    }
+
+    getUserDetailViewAsync(targetLevel : number) : LearningUnitDisplayData
+    {
+        let input : any = { // temporary
+            user : "?",
+            currentLevel : targetLevel
+        };
+
+        let response : any = { // example response
+            level : 2,
+            chapters : [
+                {                   
+                    isFinished : true,
+                    quizStates : [true, true]
+                },
+                {                  
+                    isFinished : true,
+                    quizStates : [true, true]
+                },
+                {
+                    isFinished : false,
+                    quizStates : [false, false]
+                },
+                {
+                    isFinished : false,
+                    quizStates : [true, false]
+                },
+                {
+                    isFinished : false,
+                    quizStates : [false, false]
+                },
+                {
+                    isFinished : false,
+                    quizStates : [false, false]
+                }
+            ]
+        }
+        
+        let level = this.getLevelDisplayData(targetLevel); //this.getLevelDisplayData(response.level);
+        if(response.chapters.length === level.chaptersProgress.length) { // assign quizStates from response
+            for (let i = 0; i < response.chapters.length; i++) {           
+                if(response.chapters[i].quizStates.length !== level.chaptersProgress[i].quizzeStates.length)
+                {
+                    console.log("Warning! Wrong Chapter found on creating DetailView " + level.chaptersProgress[i].title); 
+                    break;
+                }
+                else {
+                    for (let j = 0; j < level.chaptersProgress[i].quizzeStates.length; j++)                 
+                        level.chaptersProgress[i].quizzeStates[j].state = response.chapters[i].quizStates[j];                                       
+                }
+            }                     
+        }
+        else
+            console.log("Warning! number of chapters are wrong " + response);  
+        
+        this.currentDetailView = level;
+        return level;
+    }
+
+    getUserUnlockedLevelsAsync() 
+    {
+        this.overviewData = [];
+        this.pathProgress = 0;
+
+        let input : any = { // temporary
+            user : "?"
+        };
+
+        // let response;
+        /*this.learningPathService.getUnlockedLevels(input).subscribe(
+            (response)                      
+         ); */
+
+        let response : any = { // example response
+            unlockedLevels : [
+                {
+                    level: 1,
+                    progress: this.lvl1.max,
+                    disabled: false
+                },
+                {
+                    level: 2,
+                    progress: 80,
+                    disabled: false
+                },
+                {
+                    level: 3,
+                    progress: 0,
+                    disabled: true
+                },
+                {
+                    level: 4,
+                    progress: 0,
+                    disabled: true
+                },
+                {
+                    level: 5,
+                    progress: 0,
+                    disabled: true
+                }
+            ]
+        }
+
+        let activeLevel : LearningUnitDisplayData;
+        for (let index = 0; index < response.unlockedLevels.length; index++) 
+        {                     
+            this.pathProgress += response.unlockedLevels[index].progress;
+            let level = response.unlockedLevels[index].level;
+            let currData = this.getLevelDisplayData(level);
+
+            currData.disabled = response.unlockedLevels[index].disabled;
+            currData.progress = response.unlockedLevels[index].progress;
+
+            if(!currData.disabled)
+                activeLevel = currData;
+           
+            this.overviewData.push(currData); 
+        }
+
+        activeLevel.active = true;
+    }
+
+    setUserQuizResultAsync(quizTitle : string, state : boolean)  : void
+    {
+        let input: any = {
+            title : quizTitle,
+            state : state
+        };
+        
+        //this.learningPathService.finishLearningPathQuiz(input);                  
+    }
+
+    setUserChapterProgressAsync(targetLevel : number, progress : number, quizTitle : string) : void {
+        let input: any = {
+            level : targetLevel,
+            quizTitle : quizTitle
+        };
+        
+        //this.learningPathService.updateUserLearningUnitProgress(input);
+    }
 }
