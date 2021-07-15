@@ -37,6 +37,7 @@ import { InstructorsComponent } from './instructors/instructors/instructors.comp
 import { DrivingLessonTopicsComponent } from './templates/drivingLessonTopics/drivingLessonTopics.component';
 import { LicenseClassesComponent } from './templates/licenseClasses/licenseClasses.component';
 import { TheoryLessonTopicsComponent } from './templates/theoryLessonTopics/theoryLessonTopics.component';
+import { TenantOverviewComponent } from './tenants/tenant-overview.component';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { TheoryLessonTopicsComponent } from './templates/theoryLessonTopics/theo
                     { path: 'dynamic-property', component: DynamicPropertyComponent, data: { permission: 'Pages.Administration.DynamicProperties' } },
                     { path: 'dynamic-entity-property/:entityFullName', component: DynamicEntityPropertyComponent, data: { permission: 'Pages.Administration.DynamicEntityProperties' } },
                     { path: 'dynamic-entity-property-value/manage-all/:entityFullName/:rowId', component: DynamicEntityPropertyValueComponent, data: { permission: 'Pages.Administration.DynamicEntityProperties' } },
+                    { path: 'tenants/tenant-overview', component: TenantOverviewComponent },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'hostDashboard' }
                 ]

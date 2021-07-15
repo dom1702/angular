@@ -6,6 +6,7 @@ import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { TabView } from 'primeng/tabview';
 import { LearningUnitDisplayData, SVLearningPathHelperService } from './sv-learningPathHelper.service';
 import { ChartModule, UIChart } from 'primeng/chart';
+import { StudentViewHelper } from '../studentViewHelper.component';
 
 
 @Component({
@@ -51,7 +52,7 @@ export class SVLearningPathOverviewComponent extends AppComponentBase implements
         return (this.learningPathHelper.pathProgress / (this.learningPathHelper.maxPathProgress / 100)).toFixed(0) + "%";
     }
 
-    constructor(injector: Injector, public learningPathHelper: SVLearningPathHelperService) {
+    constructor(injector: Injector, public learningPathHelper: SVLearningPathHelperService, public helper : StudentViewHelper) {
         super(injector);
     }
 

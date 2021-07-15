@@ -28,7 +28,7 @@ export class SVOverviewComponent extends AppComponentBase implements OnInit, OnD
         injector: Injector,
         private _studentViewService : StudentsViewServiceProxy,
         private _onlineTheoryService : OnlineTheoryServiceProxy,
-        private _helper : StudentViewHelper
+        public _helper : StudentViewHelper
     ) {
         super(injector);
     }

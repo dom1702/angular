@@ -7,6 +7,7 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
@@ -23852,30 +23853,25 @@ export class TenantBillingServiceProxy {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    handleEvent(body: StudentEnrolledInCourseEventData | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/TenantBilling/HandleEvent";
+    processBillingWithDefault(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TenantBilling/ProcessBillingWithDefault";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processHandleEvent(response_);
+            return this.processProcessBillingWithDefault(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processHandleEvent(<any>response_);
+                    return this.processProcessBillingWithDefault(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -23884,7 +23880,7 @@ export class TenantBillingServiceProxy {
         }));
     }
 
-    protected processHandleEvent(response: HttpResponseBase): Observable<void> {
+    protected processProcessBillingWithDefault(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -23901,6 +23897,130 @@ export class TenantBillingServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param daysBack (optional) 
+     * @return Success
+     */
+    processBilling(daysBack: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TenantBilling/ProcessBilling?";
+        if (daysBack === null)
+            throw new Error("The parameter 'daysBack' cannot be null.");
+        else if (daysBack !== undefined)
+            url_ += "daysBack=" + encodeURIComponent("" + daysBack) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processProcessBilling(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processProcessBilling(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processProcessBilling(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param tenantId (optional) 
+     * @param minDate (optional) 
+     * @param maxDate (optional) 
+     * @param studentClientId (optional) 
+     * @return Success
+     */
+    getStudentCourseBillingsFromTenant(tenantId: number | undefined, minDate: DateTime | null | undefined, maxDate: DateTime | null | undefined, studentClientId: string | null | undefined): Observable<GetStudentCourseBillingsFromTenantOutput[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantBilling/GetStudentCourseBillingsFromTenant?";
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "TenantId=" + encodeURIComponent("" + tenantId) + "&";
+        if (minDate !== undefined && minDate !== null)
+            url_ += "MinDate=" + encodeURIComponent(minDate ? "" + minDate.toJSON() : "") + "&";
+        if (maxDate !== undefined && maxDate !== null)
+            url_ += "MaxDate=" + encodeURIComponent(maxDate ? "" + maxDate.toJSON() : "") + "&";
+        if (studentClientId !== undefined && studentClientId !== null)
+            url_ += "StudentClientId=" + encodeURIComponent("" + studentClientId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStudentCourseBillingsFromTenant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStudentCourseBillingsFromTenant(<any>response_);
+                } catch (e) {
+                    return <Observable<GetStudentCourseBillingsFromTenantOutput[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetStudentCourseBillingsFromTenantOutput[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStudentCourseBillingsFromTenant(response: HttpResponseBase): Observable<GetStudentCourseBillingsFromTenantOutput[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetStudentCourseBillingsFromTenantOutput.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetStudentCourseBillingsFromTenantOutput[]>(<any>null);
     }
 }
 
@@ -51155,10 +51275,6 @@ export class StudentDto implements IStudentDto {
     lastLogin!: DateTime | undefined;
     additionalInformation!: string | undefined;
     additionalInformationInternal!: string | undefined;
-    allowOnlineTheoryLessons!: boolean;
-    allowLearningPath!: boolean;
-    allowTheoryExamPractice!: boolean;
-    allowStudyingBook!: boolean;
     id!: number;
 
     constructor(data?: IStudentDto) {
@@ -51211,10 +51327,6 @@ export class StudentDto implements IStudentDto {
             this.lastLogin = _data["lastLogin"] ? DateTime.fromISO(_data["lastLogin"].toString()) : <any>undefined;
             this.additionalInformation = _data["additionalInformation"];
             this.additionalInformationInternal = _data["additionalInformationInternal"];
-            this.allowOnlineTheoryLessons = _data["allowOnlineTheoryLessons"];
-            this.allowLearningPath = _data["allowLearningPath"];
-            this.allowTheoryExamPractice = _data["allowTheoryExamPractice"];
-            this.allowStudyingBook = _data["allowStudyingBook"];
             this.id = _data["id"];
         }
     }
@@ -51267,10 +51379,6 @@ export class StudentDto implements IStudentDto {
         data["lastLogin"] = this.lastLogin ? this.lastLogin.toString() : <any>undefined;
         data["additionalInformation"] = this.additionalInformation;
         data["additionalInformationInternal"] = this.additionalInformationInternal;
-        data["allowOnlineTheoryLessons"] = this.allowOnlineTheoryLessons;
-        data["allowLearningPath"] = this.allowLearningPath;
-        data["allowTheoryExamPractice"] = this.allowTheoryExamPractice;
-        data["allowStudyingBook"] = this.allowStudyingBook;
         data["id"] = this.id;
         return data; 
     }
@@ -51308,10 +51416,6 @@ export interface IStudentDto {
     lastLogin: DateTime | undefined;
     additionalInformation: string | undefined;
     additionalInformationInternal: string | undefined;
-    allowOnlineTheoryLessons: boolean;
-    allowLearningPath: boolean;
-    allowTheoryExamPractice: boolean;
-    allowStudyingBook: boolean;
     id: number;
 }
 
@@ -52625,6 +52729,11 @@ export class StudentCourseDto implements IStudentCourseDto {
     enrollmentDate!: DateTime;
     pricePackage!: PricePackageDto;
     originalPricePackageId!: number;
+    allowOnlineTheoryLessons!: boolean;
+    allowLearningPath!: boolean;
+    allowTheoryExamPractice!: boolean;
+    allowStudyingBook!: boolean;
+    allowDrivingLessonBooking!: boolean;
 
     constructor(data?: IStudentCourseDto) {
         if (data) {
@@ -52644,6 +52753,11 @@ export class StudentCourseDto implements IStudentCourseDto {
             this.enrollmentDate = _data["enrollmentDate"] ? DateTime.fromISO(_data["enrollmentDate"].toString()) : <any>undefined;
             this.pricePackage = _data["pricePackage"] ? PricePackageDto.fromJS(_data["pricePackage"]) : <any>undefined;
             this.originalPricePackageId = _data["originalPricePackageId"];
+            this.allowOnlineTheoryLessons = _data["allowOnlineTheoryLessons"];
+            this.allowLearningPath = _data["allowLearningPath"];
+            this.allowTheoryExamPractice = _data["allowTheoryExamPractice"];
+            this.allowStudyingBook = _data["allowStudyingBook"];
+            this.allowDrivingLessonBooking = _data["allowDrivingLessonBooking"];
         }
     }
 
@@ -52663,6 +52777,11 @@ export class StudentCourseDto implements IStudentCourseDto {
         data["enrollmentDate"] = this.enrollmentDate ? this.enrollmentDate.toString() : <any>undefined;
         data["pricePackage"] = this.pricePackage ? this.pricePackage.toJSON() : <any>undefined;
         data["originalPricePackageId"] = this.originalPricePackageId;
+        data["allowOnlineTheoryLessons"] = this.allowOnlineTheoryLessons;
+        data["allowLearningPath"] = this.allowLearningPath;
+        data["allowTheoryExamPractice"] = this.allowTheoryExamPractice;
+        data["allowStudyingBook"] = this.allowStudyingBook;
+        data["allowDrivingLessonBooking"] = this.allowDrivingLessonBooking;
         return data; 
     }
 }
@@ -52675,6 +52794,11 @@ export interface IStudentCourseDto {
     enrollmentDate: DateTime;
     pricePackage: PricePackageDto;
     originalPricePackageId: number;
+    allowOnlineTheoryLessons: boolean;
+    allowLearningPath: boolean;
+    allowTheoryExamPractice: boolean;
+    allowStudyingBook: boolean;
+    allowDrivingLessonBooking: boolean;
 }
 
 export class SendEmailToStudentInput implements ISendEmailToStudentInput {
@@ -52847,10 +52971,12 @@ export interface IChangePricePackageOutput {
 
 export class UpdateStudentViewFeaturesInput implements IUpdateStudentViewFeaturesInput {
     studentId!: number;
+    courseId!: number;
     allowOnlineTheoryLessons!: boolean;
     allowLearningPath!: boolean;
     allowTheoryExamPractice!: boolean;
     allowStudyingBook!: boolean;
+    allowDrivingLessonBooking!: boolean;
 
     constructor(data?: IUpdateStudentViewFeaturesInput) {
         if (data) {
@@ -52864,10 +52990,12 @@ export class UpdateStudentViewFeaturesInput implements IUpdateStudentViewFeature
     init(_data?: any) {
         if (_data) {
             this.studentId = _data["studentId"];
+            this.courseId = _data["courseId"];
             this.allowOnlineTheoryLessons = _data["allowOnlineTheoryLessons"];
             this.allowLearningPath = _data["allowLearningPath"];
             this.allowTheoryExamPractice = _data["allowTheoryExamPractice"];
             this.allowStudyingBook = _data["allowStudyingBook"];
+            this.allowDrivingLessonBooking = _data["allowDrivingLessonBooking"];
         }
     }
 
@@ -52881,20 +53009,24 @@ export class UpdateStudentViewFeaturesInput implements IUpdateStudentViewFeature
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["studentId"] = this.studentId;
+        data["courseId"] = this.courseId;
         data["allowOnlineTheoryLessons"] = this.allowOnlineTheoryLessons;
         data["allowLearningPath"] = this.allowLearningPath;
         data["allowTheoryExamPractice"] = this.allowTheoryExamPractice;
         data["allowStudyingBook"] = this.allowStudyingBook;
+        data["allowDrivingLessonBooking"] = this.allowDrivingLessonBooking;
         return data; 
     }
 }
 
 export interface IUpdateStudentViewFeaturesInput {
     studentId: number;
+    courseId: number;
     allowOnlineTheoryLessons: boolean;
     allowLearningPath: boolean;
     allowTheoryExamPractice: boolean;
     allowStudyingBook: boolean;
+    allowDrivingLessonBooking: boolean;
 }
 
 export class SVPersonalDataDto implements ISVPersonalDataDto {
@@ -52986,6 +53118,11 @@ export class SVStudentCoursesDto implements ISVStudentCoursesDto {
     enrollmentDate!: DateTime;
     pricePackage!: PricePackageDto;
     originalPricePackageId!: number;
+    allowOnlineTheoryLessons!: boolean;
+    allowLearningPath!: boolean;
+    allowTheoryExamPractice!: boolean;
+    allowStudyingBook!: boolean;
+    allowDrivingLessonBooking!: boolean;
 
     constructor(data?: ISVStudentCoursesDto) {
         if (data) {
@@ -53002,6 +53139,11 @@ export class SVStudentCoursesDto implements ISVStudentCoursesDto {
             this.enrollmentDate = _data["enrollmentDate"] ? DateTime.fromISO(_data["enrollmentDate"].toString()) : <any>undefined;
             this.pricePackage = _data["pricePackage"] ? PricePackageDto.fromJS(_data["pricePackage"]) : <any>undefined;
             this.originalPricePackageId = _data["originalPricePackageId"];
+            this.allowOnlineTheoryLessons = _data["allowOnlineTheoryLessons"];
+            this.allowLearningPath = _data["allowLearningPath"];
+            this.allowTheoryExamPractice = _data["allowTheoryExamPractice"];
+            this.allowStudyingBook = _data["allowStudyingBook"];
+            this.allowDrivingLessonBooking = _data["allowDrivingLessonBooking"];
         }
     }
 
@@ -53018,6 +53160,11 @@ export class SVStudentCoursesDto implements ISVStudentCoursesDto {
         data["enrollmentDate"] = this.enrollmentDate ? this.enrollmentDate.toString() : <any>undefined;
         data["pricePackage"] = this.pricePackage ? this.pricePackage.toJSON() : <any>undefined;
         data["originalPricePackageId"] = this.originalPricePackageId;
+        data["allowOnlineTheoryLessons"] = this.allowOnlineTheoryLessons;
+        data["allowLearningPath"] = this.allowLearningPath;
+        data["allowTheoryExamPractice"] = this.allowTheoryExamPractice;
+        data["allowStudyingBook"] = this.allowStudyingBook;
+        data["allowDrivingLessonBooking"] = this.allowDrivingLessonBooking;
         return data; 
     }
 }
@@ -53027,6 +53174,11 @@ export interface ISVStudentCoursesDto {
     enrollmentDate: DateTime;
     pricePackage: PricePackageDto;
     originalPricePackageId: number;
+    allowOnlineTheoryLessons: boolean;
+    allowLearningPath: boolean;
+    allowTheoryExamPractice: boolean;
+    allowStudyingBook: boolean;
+    allowDrivingLessonBooking: boolean;
 }
 
 export class SVTheoryLessonDto implements ISVTheoryLessonDto {
@@ -54356,12 +54508,14 @@ export interface IEntityDto {
     id: number;
 }
 
-export class StudentEnrolledInCourseEventData implements IStudentEnrolledInCourseEventData {
-    studentId!: number;
-    eventTime!: DateTime;
-    eventSource!: any | undefined;
+export class BillingActionDto implements IBillingActionDto {
+    studentCourseBillingId!: number;
+    studentCourseBilling!: StudentCourseBillingDto;
+    actionDate!: DateTime;
+    doneAction!: string | undefined;
+    id!: number;
 
-    constructor(data?: IStudentEnrolledInCourseEventData) {
+    constructor(data?: IBillingActionDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -54372,32 +54526,198 @@ export class StudentEnrolledInCourseEventData implements IStudentEnrolledInCours
 
     init(_data?: any) {
         if (_data) {
-            this.studentId = _data["studentId"];
-            this.eventTime = _data["eventTime"] ? DateTime.fromISO(_data["eventTime"].toString()) : <any>undefined;
-            this.eventSource = _data["eventSource"];
+            this.studentCourseBillingId = _data["studentCourseBillingId"];
+            this.studentCourseBilling = _data["studentCourseBilling"] ? StudentCourseBillingDto.fromJS(_data["studentCourseBilling"]) : <any>undefined;
+            this.actionDate = _data["actionDate"] ? DateTime.fromISO(_data["actionDate"].toString()) : <any>undefined;
+            this.doneAction = _data["doneAction"];
+            this.id = _data["id"];
         }
     }
 
-    static fromJS(data: any): StudentEnrolledInCourseEventData {
+    static fromJS(data: any): BillingActionDto {
         data = typeof data === 'object' ? data : {};
-        let result = new StudentEnrolledInCourseEventData();
+        let result = new BillingActionDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["studentId"] = this.studentId;
-        data["eventTime"] = this.eventTime ? this.eventTime.toString() : <any>undefined;
-        data["eventSource"] = this.eventSource;
+        data["studentCourseBillingId"] = this.studentCourseBillingId;
+        data["studentCourseBilling"] = this.studentCourseBilling ? this.studentCourseBilling.toJSON() : <any>undefined;
+        data["actionDate"] = this.actionDate ? this.actionDate.toString() : <any>undefined;
+        data["doneAction"] = this.doneAction;
+        data["id"] = this.id;
         return data; 
     }
 }
 
-export interface IStudentEnrolledInCourseEventData {
+export interface IBillingActionDto {
+    studentCourseBillingId: number;
+    studentCourseBilling: StudentCourseBillingDto;
+    actionDate: DateTime;
+    doneAction: string | undefined;
+    id: number;
+}
+
+export class BilledActionDto implements IBilledActionDto {
+    studentCourseBilling!: StudentCourseBillingDto;
+    billedActionDate!: DateTime;
+    billedDoneAction!: string | undefined;
+    id!: number;
+
+    constructor(data?: IBilledActionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentCourseBilling = _data["studentCourseBilling"] ? StudentCourseBillingDto.fromJS(_data["studentCourseBilling"]) : <any>undefined;
+            this.billedActionDate = _data["billedActionDate"] ? DateTime.fromISO(_data["billedActionDate"].toString()) : <any>undefined;
+            this.billedDoneAction = _data["billedDoneAction"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): BilledActionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BilledActionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentCourseBilling"] = this.studentCourseBilling ? this.studentCourseBilling.toJSON() : <any>undefined;
+        data["billedActionDate"] = this.billedActionDate ? this.billedActionDate.toString() : <any>undefined;
+        data["billedDoneAction"] = this.billedDoneAction;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IBilledActionDto {
+    studentCourseBilling: StudentCourseBillingDto;
+    billedActionDate: DateTime;
+    billedDoneAction: string | undefined;
+    id: number;
+}
+
+export class StudentCourseBillingDto implements IStudentCourseBillingDto {
+    tenantId!: number;
+    studentId!: number;
+    courseId!: number;
+    dateOfEnrollment!: DateTime;
+    billingActions!: BillingActionDto[] | undefined;
+    billedActions!: BilledActionDto[] | undefined;
+    id!: number;
+
+    constructor(data?: IStudentCourseBillingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tenantId = _data["tenantId"];
+            this.studentId = _data["studentId"];
+            this.courseId = _data["courseId"];
+            this.dateOfEnrollment = _data["dateOfEnrollment"] ? DateTime.fromISO(_data["dateOfEnrollment"].toString()) : <any>undefined;
+            if (Array.isArray(_data["billingActions"])) {
+                this.billingActions = [] as any;
+                for (let item of _data["billingActions"])
+                    this.billingActions!.push(BillingActionDto.fromJS(item));
+            }
+            if (Array.isArray(_data["billedActions"])) {
+                this.billedActions = [] as any;
+                for (let item of _data["billedActions"])
+                    this.billedActions!.push(BilledActionDto.fromJS(item));
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): StudentCourseBillingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentCourseBillingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenantId"] = this.tenantId;
+        data["studentId"] = this.studentId;
+        data["courseId"] = this.courseId;
+        data["dateOfEnrollment"] = this.dateOfEnrollment ? this.dateOfEnrollment.toString() : <any>undefined;
+        if (Array.isArray(this.billingActions)) {
+            data["billingActions"] = [];
+            for (let item of this.billingActions)
+                data["billingActions"].push(item.toJSON());
+        }
+        if (Array.isArray(this.billedActions)) {
+            data["billedActions"] = [];
+            for (let item of this.billedActions)
+                data["billedActions"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IStudentCourseBillingDto {
+    tenantId: number;
     studentId: number;
-    eventTime: DateTime;
-    eventSource: any | undefined;
+    courseId: number;
+    dateOfEnrollment: DateTime;
+    billingActions: BillingActionDto[] | undefined;
+    billedActions: BilledActionDto[] | undefined;
+    id: number;
+}
+
+export class GetStudentCourseBillingsFromTenantOutput implements IGetStudentCourseBillingsFromTenantOutput {
+    studentCourseBilling!: StudentCourseBillingDto;
+
+    constructor(data?: IGetStudentCourseBillingsFromTenantOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentCourseBilling = _data["studentCourseBilling"] ? StudentCourseBillingDto.fromJS(_data["studentCourseBilling"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetStudentCourseBillingsFromTenantOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetStudentCourseBillingsFromTenantOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentCourseBilling"] = this.studentCourseBilling ? this.studentCourseBilling.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetStudentCourseBillingsFromTenantOutput {
+    studentCourseBilling: StudentCourseBillingDto;
 }
 
 export class MemberActivity implements IMemberActivity {

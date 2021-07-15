@@ -152,6 +152,7 @@ import { TheoryLessonTopicsComponent } from './templates/theoryLessonTopics/theo
 import { ViewTheoryLessonTopicModalComponent } from './templates/theoryLessonTopics/view-theoryLessonTopic-modal.component';
 import { OfficeLookupTableModalComponent } from './instructors/instructors/office-lookup-table-modal.component';
 import { LicenseClassLookupTableModalComponent } from './instructors/instructors/licenseClass-lookup-table-modal.component';
+import { TenantOverviewComponent } from './tenants/tenant-overview.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -300,7 +301,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ManageValuesModalComponent,
         ManagerComponent,
         DynamicEntityPropertyListComponent,
-        SelectAnEntityModalComponent
+        SelectAnEntityModalComponent,
+        TenantOverviewComponent
     ],
     exports: [
         AddMemberModalComponent,

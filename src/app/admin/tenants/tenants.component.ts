@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ImpersonationService } from '@app/admin/users/impersonation.service';
 import { CommonLookupModalComponent } from '@app/shared/common/lookup/common-lookup-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -51,7 +51,8 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
         private _activatedRoute: ActivatedRoute,
         private _commonLookupService: CommonLookupServiceProxy,
         private _impersonationService: ImpersonationService,
-        private _dateTimeService: DateTimeService
+        private _dateTimeService: DateTimeService,
+        private _router: Router
     ) {
         super(injector);
         this.setFiltersFromRoute();
@@ -189,5 +190,10 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
                 parseInt(item.value),
                 this.impersonateUserLookupModal.tenantId
             );
+    }
+
+    goToOverview(id : number)
+    {
+        this._router.navigate(['app/admin/tenants/tenant-overview', { id: id }]);
     }
 }

@@ -25,6 +25,8 @@ export class SVTheoryLessonsComponent extends AppComponentBase implements OnInit
 
     theoryLessons: StudentCoursePredefinedTheoryLessonDto[];
     theoryLessonsList : SVTheoryLessonDto[];
+
+    helper : StudentViewHelper;
        
     constructor(
         injector: Injector,
@@ -33,6 +35,7 @@ export class SVTheoryLessonsComponent extends AppComponentBase implements OnInit
         private _onlineTheoryService : OnlineTheoryServiceProxy
     ) {
         super(injector);
+        this.helper = _helper;
     }
 
     ngOnInit(): void {

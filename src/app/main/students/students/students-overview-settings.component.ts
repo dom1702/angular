@@ -1,6 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentInvoiceDto, StudentInvoicesServiceProxy, PaymentDto, TodoDto, TodosServiceProxy, AddTodoToStudentInput, StudentTodoDto, ChangeTodoStateInput, UpdateOrderOfStudentInput } from '@shared/service-proxies/service-proxies';
+import { StudentsServiceProxy, StudentDto, PricePackagesServiceProxy, PricePackageDto, StudentInvoiceDto, StudentInvoicesServiceProxy, PaymentDto, TodoDto, TodosServiceProxy, AddTodoToStudentInput, StudentTodoDto, ChangeTodoStateInput, UpdateOrderOfStudentInput, UpdateStudentViewFeaturesInput } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -18,6 +18,7 @@ import { StudentsOverviewComponent } from './students-overview.component';
 export class StudentsOverviewSettingsComponent extends AppComponentBase {
 
     @Input() student: StudentDto;
+    
     @Input() parentOverview: StudentsOverviewComponent;
 
     showApplyButton : boolean;
@@ -29,11 +30,6 @@ export class StudentsOverviewSettingsComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _studentsServiceProxy: StudentsServiceProxy,
-        private _tokenAuth: TokenAuthServiceProxy,
-        private _activatedRoute: ActivatedRoute,
-        private _fileDownloadService: FileDownloadService,
-        private _todoServiceProxy: TodosServiceProxy,
-        private _router: Router
     ) {
         super(injector);
     }
@@ -68,8 +64,35 @@ export class StudentsOverviewSettingsComponent extends AppComponentBase {
         // });
     }
 
+    change()
+    {
+        this.showApplyButton = true;
+    }
+
     apply()
     {
+        var input : UpdateStudentViewFeaturesInput = new UpdateStudentViewFeaturesInput();
+        input.allowLearningPath = this.parentOverview.selectedStudentCourse.allowLearningPath;
+        input.allowOnlineTheoryLessons = this.parentOverview.selectedStudentCourse.allowOnlineTheoryLessons;
+        input.allowTheoryExamPractice = this.parentOverview.selectedStudentCourse.allowTheoryExamPractice;
+        input.allowStudyingBook = this.parentOverview.selectedStudentCourse.allowStudyingBook;
+        input.allowDrivingLessonBooking = this.parentOverview.selectedStudentCourse.allowDrivingLessonBooking;
+        input.studentId = this.student.id;
+        input.courseId = this.parentOverview.selectedStudentCourse.course.id;
+
+        this.message.confirm(
+            this.l('StudentSettingsBillingInfo'),
+            this.l('Billing'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._studentsServiceProxy.updateStudentViewFeatures(input).subscribe((result) =>
+                    {
+                        this.showApplyButton = false;
+                        this.notify.success(this.l('SavedSuccessfully'));
+                    });
+                }
+            }
+        );
         
     }
 }

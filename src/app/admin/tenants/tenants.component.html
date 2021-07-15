@@ -146,6 +146,10 @@
                                                 </button>
                                                 <ul class="dropdown-menu"
                                                     *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="goToOverview(record.id)">{{l('Overview')}}</a>
+                                                    </li>
                                                     <li [class.disabled]="!record.isActive">
                                                         <a href="javascript:;"
                                                             class="dropdown-item"

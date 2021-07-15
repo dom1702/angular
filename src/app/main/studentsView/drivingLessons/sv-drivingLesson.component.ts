@@ -28,12 +28,15 @@ export class SVDrivingLessonComponent extends AppComponentBase implements OnInit
     drivingLessons: StudentCourseDrivingLessonsDto;
 
     drivingLessonsList : SVDrivingLessonDto[];
+
+    helper : StudentViewHelper;
     
     constructor(
         injector: Injector,
         private _studentViewService: StudentsViewServiceProxy,
         private _helper : StudentViewHelper) {
         super(injector);
+        this.helper = _helper;
     }
 
     ngOnInit(): void {

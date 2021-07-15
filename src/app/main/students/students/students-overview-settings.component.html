@@ -3,30 +3,35 @@
         <div class="checkbox-list">
          
                 <label class="checkbox">
-                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowOnlineTheoryLessons">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="parentOverview.selectedStudentCourse.allowOnlineTheoryLessons" (change)="change()">
                     <span></span>
                     {{l("EnableOnlineTheoryLessons")}}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowLearningPath">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="parentOverview.selectedStudentCourse.allowLearningPath" (change)="change()">
                     <span></span>
                     {{l("EnableLearningPath")}}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowTheoryExamPractice">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="parentOverview.selectedStudentCourse.allowTheoryExamPractice" (change)="change()">
                     <span></span>
                     {{l("EnableTheoryExamPractice")}}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="student.allowStudyingBook">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="parentOverview.selectedStudentCourse.allowStudyingBook" (change)="change()">
                     <span></span>
                     {{l("EnableStudyingBook")}}
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="theoryLessons_checkboxes" [(ngModel)]="parentOverview.selectedStudentCourse.allowDrivingLessonBooking" (change)="change()">
+                    <span></span>
+                    {{l("EnableDrivingLessonBooking")}}
                 </label>
         </div>
     </div>
     <div class="mt-10">
 
-        <div class="col text-right">
+        <div class="col text-left ">
             <button *ngIf="isGranted('Pages.Administration') && showApplyButton" (click)="apply()"
                 class="btn btn-danger">{{l("Apply")}}</button>
         </div>

@@ -45,6 +45,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.OnlineTheoryServiceProxy,
         ApiServiceProxies.PaymentServiceProxy,
         ApiServiceProxies.TodosServiceProxy,
+        ApiServiceProxies.TenantBillingServiceProxy,
 
         ApiServiceProxies.AuditLogServiceProxy,
         ApiServiceProxies.CachingServiceProxy,

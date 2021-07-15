@@ -7,6 +7,7 @@ import { LicenseClass, VehicleDimensions } from './sv-licenseClassTasksOverview.
 import { SVTheoryPracticeHelperService } from './sv-theoryPracticeHelper.service';
 import { Router } from '@angular/router';
 import { MessageService, MenuItem} from 'primeng/api';
+import { StudentViewHelper } from '../studentViewHelper.component';
 
 @Component({
     templateUrl: './sv-licenseClassSelection.component.html',      
@@ -23,7 +24,7 @@ export class SVLicenseClassSelectionComponent extends AppComponentBase implement
 
     ///
     
-    constructor(injector: Injector,  private _theoryExamService: TheoryExamsServiceProxy, 
+    constructor(injector: Injector,  private _theoryExamService: TheoryExamsServiceProxy, public helper : StudentViewHelper, 
         public theoryPracticeHelper: SVTheoryPracticeHelperService, private router: Router) {
         super(injector);     
     }

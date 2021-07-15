@@ -1,0 +1,43 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Tenant' | localize"
+            [description]="''">
+            
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <tabset>
+                        <!-- <tab heading={{overviewTabName}} id="tab1">
+
+
+                            <students-overview-overview [student]="student" [parentOverview]="this"
+                                [pricePackageName]="pricePackageName" [drivingLessons]="this.drivingLessons">
+                            </students-overview-overview>
+
+
+                        </tab>
+                        <tab heading={{lessonsTabName}} id="tab2" (selectTab)="onLessonsTabSelect($event)"
+                            (deselect)="onLessonsTabDeselect($event)">
+
+                            <tenant-overview-lessons [student]="student" [parentOverview]="this">
+                            </tenant-overview-lessons>
+
+                        </tab> -->
+                      
+                    </tabset>
+
+                 
+                </div>
+            </div>
+        </div>
+
+        <!-- <editTenantModal #editTenantModal
+            (modalSave)="getTenants()"></editTenantModal>
+        <tenantFeaturesModal #tenantFeaturesModal></tenantFeaturesModal>
+        <commonLookupModal #impersonateUserLookupModal
+            (itemSelected)="impersonateUser($event)"></commonLookupModal>
+        <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal> -->
+    </div>
+</div>

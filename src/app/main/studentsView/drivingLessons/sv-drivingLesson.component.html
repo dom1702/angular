@@ -20,7 +20,7 @@
 
                         <div class="container">
                             <div class="row">
-                                <div class="col-12 text-center">
+                                <div class="col-12 text-center" *ngIf="helper.selectedCourse.allowDrivingLessonBooking">
                                     <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
                                             class="fa fa-car" title="False"></i>&nbsp;{{l("BookADrivingLesson")}}</a>
                                 </div>

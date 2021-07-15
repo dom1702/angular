@@ -63,7 +63,7 @@
                         <div class="card-body" *ngIf="drivingLessons != null">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                    <a class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5" *ngIf="_helper.selectedCourse.allowDrivingLessonBooking"><i
                                         class="fa fa-car" title="False"></i>&nbsp;{{l("BookADrivingLesson")}}</a>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                         <div class="card-body" *ngIf="theoryLessons != null">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"><i
+                                    <a routerLink="/app/main/studentsView/theoryCourse/quiz" class="btn btn-primary font-weight-bold font-size-h3 px-12 py-5"  *ngIf="_helper.selectedCourse.allowOnlineTheoryLessons"><i
                                         class="fa fa-graduation-cap" title="False"></i>&nbsp;{{l("StartTheoryLesson")}}</a>
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 <div [@routerTransition]>
 
-    <div class="content d-flex flex-column flex-column-fluid">
+    <div class="content d-flex flex-column flex-column-fluid"  *ngIf="helper.selectedCourse.allowLearningPath">
         <sub-header [title]="l('Learning Path')" [description]="l('Overview')">
         </sub-header>
         <div [class]="containerClass">
@@ -219,5 +219,10 @@
             </div>
         </div>  
     </div>
+    <div class="container" [busyIf]="loading" *ngIf="!helper.selectedCourse.allowLearningPath">
+        <div class="alert alert-warning" role="alert">
+            {{l("StudentFeatureDisabledInfo")}}
+          </div>
+    </div>    
 </div>
 

@@ -6,7 +6,7 @@
         <div [class]="containerClass">
             <div class="card card-custom gutter-b">
                 <div class="card-body">
-                    <div class="container" [busyIf]="loading">
+                    <div class="container" [busyIf]="loading" *ngIf="helper.selectedCourse.allowTheoryExamPractice">
                         <div class="row justify-content-center">
                             <h3 class="m-portlet__head-text">
                                 {{l("WelcomeTEP")}}
@@ -41,7 +41,12 @@
                             </div>
                         </div>
 
-                    </div>                  
+                    </div> 
+                    <div class="container" [busyIf]="loading" *ngIf="!helper.selectedCourse.allowTheoryExamPractice">
+                        <div class="alert alert-warning" role="alert">
+                            {{l("StudentFeatureDisabledInfo")}}
+                          </div>
+                    </div>                 
                 </div>
             </div>
         </div>
